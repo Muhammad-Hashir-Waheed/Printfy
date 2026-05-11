@@ -8,7 +8,7 @@
    "scripts": {
       "dev": "next dev -p 7777",
       "build": "next build",
-      "vercel-build": "npm install --prefix ../../packages/domain-checkout && npm install --prefix ../../packages/domain-orders && npm install --prefix ../../packages/domain-fulfillment && prisma generate && next build",
+      "vercel-build": "prisma generate && next build",
       "start": "next start",
       "lint": "next lint",
       "postinstall": "prisma generate",

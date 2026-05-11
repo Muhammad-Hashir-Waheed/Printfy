@@ -1,4 +1,10 @@
-import type { DiscountCode, Prisma, PrismaClient } from '@prisma/client'
+import type { Prisma, PrismaClient } from '@prisma/client'
+
+export type DiscountCode = {
+   id: string
+   percent: number
+   maxDiscountAmount: number
+}
 import { initializeOrderFulfillment, processOrderAsync } from '../../domain-fulfillment/src'
 import { calculatePrice, type PricingVariant } from '../../domain-pricing/src'
 

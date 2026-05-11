@@ -1,10 +1,43 @@
 import type { Prisma, PrismaClient } from '@prisma/client'
-import {
-   FulfillmentStatusEnum,
-   FulfillmentTaskStatusEnum,
-   FulfillmentTaskTypeEnum,
-   ShipmentStatusEnum,
-} from '@prisma/client'
+
+export const FulfillmentStatusEnum = {
+   pending: 'pending',
+   printing: 'printing',
+   packed: 'packed',
+   shipped: 'shipped',
+   delivered: 'delivered',
+} as const
+
+export type FulfillmentStatusEnum =
+   (typeof FulfillmentStatusEnum)[keyof typeof FulfillmentStatusEnum]
+
+export const FulfillmentTaskStatusEnum = {
+   pending: 'pending',
+   in_progress: 'in_progress',
+   completed: 'completed',
+} as const
+
+export type FulfillmentTaskStatusEnum =
+   (typeof FulfillmentTaskStatusEnum)[keyof typeof FulfillmentTaskStatusEnum]
+
+export const FulfillmentTaskTypeEnum = {
+   print: 'print',
+   pack: 'pack',
+   ship: 'ship',
+} as const
+
+export type FulfillmentTaskTypeEnum =
+   (typeof FulfillmentTaskTypeEnum)[keyof typeof FulfillmentTaskTypeEnum]
+
+export const ShipmentStatusEnum = {
+   pending: 'pending',
+   shipped: 'shipped',
+   in_transit: 'in_transit',
+   delivered: 'delivered',
+} as const
+
+export type ShipmentStatusEnum =
+   (typeof ShipmentStatusEnum)[keyof typeof ShipmentStatusEnum]
 
 export class DomainFulfillmentError extends Error {
    code:

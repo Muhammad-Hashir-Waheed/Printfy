@@ -21,6 +21,8 @@
       ],
       "paths": {
          "@/*": ["./src/*"],
+         "@prisma/client": ["./node_modules/@prisma/client"],
+         "zod": ["./node_modules/zod"],
          "@domain-pricing": ["../../packages/domain-pricing/src/index.ts"],
          "@domain-orders": ["../../packages/domain-orders/src/index.ts"],
          "@domain-checkout": ["../../packages/domain-checkout/src/index.ts"],
