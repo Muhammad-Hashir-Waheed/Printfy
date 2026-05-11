@@ -2,12 +2,13 @@
    "name": "next-prisma-tailwind-ecommerce",
    "version": "1.0.0",
    "scripts": {
-      "prepare": "husky install",
+      "prepare": "node -e \"if (!process.env.VERCEL && !process.env.CI) require('child_process').execSync('husky install', { stdio: 'inherit' })\"",
       "update": "npx npm-check-updates -u",
       "dev:storefront": "npm --prefix apps/storefront run dev",
       "dev:admin": "npm --prefix apps/admin run dev",
       "db:up": "docker compose up -d",
-      "db:push": "npm --prefix apps/storefront run db:push"
+      "db:push": "npm --prefix apps/storefront run db:push",
+      "vercel-build": "npm --prefix apps/storefront run vercel-build"
    },
    "author": {
       "name": "Sesto",
@@ -23,6 +24,7 @@
       "eslint": "^8.57.0",
       "eslint-config-next": "^14.2.15",
       "eslint-plugin-react": "^7.37.1",
+      "next": "14.2.15",
       "husky": "^9.1.6",
       "lint-staged": "^15.2.10",
       "prettier": "^3.3.3",
