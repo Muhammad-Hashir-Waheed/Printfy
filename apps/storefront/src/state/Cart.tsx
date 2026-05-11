@@ -7,7 +7,7 @@ const CartContext = createContext({
    cart: null,
    loading: true,
    refreshCart: () => {},
-   dispatchCart: (object) => {},
+   dispatchCart: (_cart: unknown) => {},
 })
 
 export const useCartContext = () => {
@@ -15,7 +15,7 @@ export const useCartContext = () => {
 }
 
 export const CartContextProvider = ({ children }) => {
-   const { refreshUser, user } = useUserContext()
+   const { user } = useUserContext()
 
    const [cart, setCart] = useState(null)
    const [loading, setLoading] = useState(true)

@@ -1,5 +1,5 @@
 import { useAuthenticated } from '@/hooks/useAuthentication'
-import { isVariableValid, validateBoolean } from '@/lib/utils'
+import { isVariableValid } from '@/lib/utils'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const UserContext = createContext({
@@ -42,8 +42,8 @@ export const UserContextProvider = ({ children }) => {
    }
 
    useEffect(() => {
-      try {
-         async function fetchData() {
+      const fetchData = async () => {
+         try {
             const response = await fetch(`/api/profile`, {
                cache: 'no-store',
             })
@@ -54,12 +54,15 @@ export const UserContextProvider = ({ children }) => {
                setUser(json)
                setLoading(false)
             }
+         } catch (error) {
+            console.error({ error })
          }
+      }
 
-         if (authenticated) fetchData()
-         if (!authenticated) setLoading(false)
-      } catch (error) {
-         console.error({ error })
+      if (authenticated) {
+         fetchData()
+      } else {
+         setLoading(false)
       }
    }, [authenticated])
 

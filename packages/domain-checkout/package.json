@@ -5,6 +5,7 @@
    "types": "src/index.ts",
    "license": "MIT",
    "dependencies": {
+      "@prisma/client": "^5.20.0",
       "zod": "^3.23.8"
    }
 }

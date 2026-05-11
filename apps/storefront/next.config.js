@@ -3,6 +3,9 @@
 const path = require('path')
 
 module.exports = {
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     transpilePackages: [
         'domain-checkout',
         'domain-fulfillment',

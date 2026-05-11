@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
    try {
       const { sub } = await verifyJWT<{ sub: string }>(token)
       response.headers.set('X-USER-ID', sub)
-   } catch (error) {
+   } catch {
       if (isTargetingAPI()) {
          return getErrorResponse(401, 'UNAUTHORIZED')
       }

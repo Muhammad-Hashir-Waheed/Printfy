@@ -6,7 +6,7 @@ export function getLocalCart() {
    if (typeof window !== 'undefined' && window.localStorage) {
       try {
          return JSON.parse(window.localStorage.getItem('Cart'))
-      } catch (error) {
+      } catch {
          writeLocalCart({ items: [] })
          return { items: [] }
       }
