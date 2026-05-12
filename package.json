@@ -7,7 +7,8 @@
       "dev:storefront": "npm --prefix apps/storefront run dev",
       "dev:admin": "npm --prefix apps/admin run dev",
       "db:up": "docker compose up -d",
-      "db:push": "npm --prefix apps/storefront run db:push"
+      "db:push": "npm --prefix apps/storefront run db:push",
+      "postinstall": "prisma generate --schema=./apps/storefront/prisma/schema.prisma"
    },
    "author": {
       "name": "Sesto",
@@ -15,6 +16,7 @@
    },
    "license": "MIT",
    "dependencies": {
+      "@prisma/client": "^5.20.0",
       "next": "14.2.15",
       "react": "18.3.1",
       "react-dom": "18.3.1"
@@ -31,6 +33,7 @@
       "husky": "^9.1.6",
       "lint-staged": "^15.2.10",
       "prettier": "^3.3.3",
-      "prettier-plugin-tailwindcss": "^0.6.8"
+      "prettier-plugin-tailwindcss": "^0.6.8",
+      "prisma": "^5.20.0"
    }
 }
