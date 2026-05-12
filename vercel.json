@@ -1,5 +1,6 @@
 {
    "$schema": "https://openapi.vercel.sh/vercel.json",
-   "installCommand": "npm install --prefix apps/storefront",
-   "buildCommand": "npm run vercel-build --prefix apps/storefront"
+   "framework": "nextjs",
+   "installCommand": "bash -c \"if [ -f next.config.js ]; then npm install; else npm install && npm install --prefix apps/storefront; fi\"",
+   "buildCommand": "bash -c \"if [ -f next.config.js ]; then npm run vercel-build; else npm run vercel-build --prefix apps/storefront; fi\""
 }
