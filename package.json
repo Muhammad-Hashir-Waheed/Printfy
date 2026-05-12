@@ -7,17 +7,13 @@
       "dev:storefront": "npm --prefix apps/storefront run dev",
       "dev:admin": "npm --prefix apps/admin run dev",
       "db:up": "docker compose up -d",
-      "db:push": "npm --prefix apps/storefront run db:push",
-      "vercel-build": "npm --prefix apps/storefront run vercel-build"
+      "db:push": "npm --prefix apps/storefront run db:push"
    },
    "author": {
       "name": "Sesto",
       "url": "https://github.com/sesto-dev"
    },
    "license": "MIT",
-   "dependencies": {
-      "next": "14.2.15"
-   },
    "devDependencies": {
       "@commitlint/cli": "^19.5.0",
       "@commitlint/config-conventional": "^19.5.0",
