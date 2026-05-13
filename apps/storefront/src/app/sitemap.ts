@@ -1,5 +1,7 @@
 import prisma from '@/lib/prisma'
 
+
+// Site map address
 const URL = process.env.NEXT_PUBLIC_URL
 
 export const dynamic = 'force-dynamic'
