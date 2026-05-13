@@ -14,28 +14,39 @@ if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
    process.exit(0)
 }
 
-function mirrorPath(source, target) {
-   if (!fs.existsSync(source)) {
-      return
-   }
-
-   fs.mkdirSync(path.dirname(target), { recursive: true })
-   fs.rmSync(target, { recursive: true, force: true })
-   fs.cpSync(source, target, { recursive: true })
-}
-
 const storefrontNodeModules = path.join(storefrontDir, 'node_modules')
 const rootNodeModules = path.join(repoRoot, 'node_modules')
 
-fs.mkdirSync(rootNodeModules, { recursive: true })
-mirrorPath(
-   path.join(storefrontNodeModules, '.prisma'),
-   path.join(rootNodeModules, '.prisma')
-)
-mirrorPath(
-   path.join(storefrontNodeModules, '@prisma', 'client'),
-   path.join(rootNodeModules, '@prisma', 'client')
-)
+/**
+ * Monorepo root deploy: Next uses outputFileTracingRoot = repo root, so the
+ * server trace expects deps under /vercel/path0/node_modules. They are
+ * installed under apps/storefront/node_modules — merge them up after build.
+ */
+function mergeStorefrontNodeModulesIntoRoot() {
+   if (!fs.existsSync(storefrontNodeModules)) {
+      return
+   }
+
+   fs.mkdirSync(rootNodeModules, { recursive: true })
+
+   for (const name of fs.readdirSync(storefrontNodeModules)) {
+      if (name === '.cache') {
+         continue
+      }
+
+      const from = path.join(storefrontNodeModules, name)
+      const to = path.join(rootNodeModules, name)
+
+      try {
+         fs.cpSync(from, to, { recursive: true })
+      } catch (err) {
+         console.error(`sync-vercel-output: failed to copy ${name}:`, err.message)
+         process.exit(1)
+      }
+   }
+}
+
+mergeStorefrontNodeModulesIntoRoot()
 
 if (!fs.existsSync(sourceDir)) {
    process.exit(0)
