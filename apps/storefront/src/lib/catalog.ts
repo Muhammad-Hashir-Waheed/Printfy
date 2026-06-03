@@ -11,6 +11,15 @@ import {
 
 export type { CatalogProduct }
 
+/** Stable storefront product slugs (all PDP routes use these ids) */
+export const CATALOG_PRODUCT_IDS = DUMMY_PRODUCTS.map((p) => p.id)
+
+const CATALOG_ID_SET = new Set(CATALOG_PRODUCT_IDS)
+
+export function isCatalogProductId(productId: string) {
+   return CATALOG_ID_SET.has(productId)
+}
+
 export type CatalogSearchParams = {
    sort?: string
    isAvailable?: string
@@ -69,7 +78,20 @@ function normalizeProduct(product: CatalogProduct): CatalogProduct {
       ...product,
       images: resolveProductImages(product.id, product.images),
       variants: product.variants ?? [],
+      keywords: Array.isArray(product.keywords) ? product.keywords : [],
    }
+}
+
+function mergeMetadata(
+   ...sources: Array<unknown>
+): CatalogProduct['metadata'] {
+   const merged: Record<string, unknown> = {}
+   for (const source of sources) {
+      if (source && typeof source === 'object' && !Array.isArray(source)) {
+         Object.assign(merged, source as Record<string, unknown>)
+      }
+   }
+   return merged as CatalogProduct['metadata']
 }
 
 /** Keep DB rows in sync with catalog dummy (images, copy, variants) by stable product id */
@@ -87,20 +109,69 @@ export function mergeWithCatalogDefaults(product: CatalogProduct): CatalogProduc
       price: product.price ?? dummy.price,
       discount: product.discount ?? dummy.discount,
       keywords: product.keywords?.length ? product.keywords : dummy.keywords,
-      metadata: {
-         ...((dummy.metadata as object) ?? {}),
-         ...((product.metadata as object) ?? {}),
-      } as CatalogProduct['metadata'],
-      images: resolveProductImages(
-         product.id,
-         product.images?.length ? product.images : dummy.images
-      ),
+      metadata: mergeMetadata(dummy.metadata, product.metadata),
+      images: resolveProductImages(product.id, dummy.images),
       brand: product.brand ?? dummy.brand,
       categories: product.categories?.length ? product.categories : dummy.categories,
       variants: product.variants?.length ? product.variants : dummy.variants,
    }
 
    return normalizeProduct(merged)
+}
+
+function safeCatalogProduct(product: CatalogProduct): CatalogProduct | null {
+   try {
+      return mergeWithCatalogDefaults(product)
+   } catch {
+      const dummy = DUMMY_PRODUCTS.find((entry) => entry.id === product.id)
+      return dummy ? normalizeProduct(dummy) : null
+   }
+}
+
+/** Dummy catalog row + optional DB overlay (price/stock/variants) */
+function overlayDbOnDummy(
+   dummy: CatalogProduct,
+   db: CatalogProduct | null | undefined
+): CatalogProduct {
+   if (!db) {
+      return normalizeProduct(dummy)
+   }
+
+   return (
+      safeCatalogProduct({
+         ...(dummy as CatalogProduct),
+         price: Number(db.price) || dummy.price,
+         discount: Number(db.discount) ?? dummy.discount,
+         stock: db.stock ?? dummy.stock,
+         isAvailable: db.isAvailable ?? dummy.isAvailable,
+         isFeatured: db.isFeatured ?? dummy.isFeatured,
+         variants: db.variants?.length ? db.variants : dummy.variants,
+      }) ?? normalizeProduct(dummy)
+   )
+}
+
+/**
+ * Full POD catalog: always every dummy product, merged with DB when available.
+ * Production stays usable even when Prisma/DB is down or partially seeded.
+ */
+export async function listAllCatalogProducts(): Promise<CatalogProduct[]> {
+   const dbProducts = await fetchDbProducts()
+   const dbById = new Map(
+      dbProducts.map((p) => [p.id, p as CatalogProduct])
+   )
+
+   const catalog = DUMMY_PRODUCTS.map((dummy) =>
+      overlayDbOnDummy(dummy, dbById.get(dummy.id))
+   )
+
+   for (const db of dbProducts) {
+      if (!CATALOG_ID_SET.has(db.id)) {
+         const safe = safeCatalogProduct(db as CatalogProduct)
+         if (safe) catalog.push(safe)
+      }
+   }
+
+   return catalog
 }
 
 function filterProducts(
@@ -213,9 +284,7 @@ export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
    const dbProducts = await fetchDbProducts()
    const useDummy = dbProducts.length === 0
 
-   const allProducts = useDummy
-      ? DUMMY_PRODUCTS.map(normalizeProduct)
-      : dbProducts.map((product) => mergeWithCatalogDefaults(product))
+   const allProducts = await listAllCatalogProducts()
    const brands = useDummy
       ? DUMMY_BRANDS
       : await prisma.brand.findMany().catch(() => DUMMY_BRANDS)
@@ -242,8 +311,30 @@ export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
 export async function getCatalogProduct(
    productId: string
 ): Promise<CatalogProduct | null> {
+   const dummy = DUMMY_PRODUCTS.find((p) => p.id === productId)
+
+   if (dummy) {
+      try {
+         const dbProduct = await prisma.product.findUnique({
+            where: { id: productId },
+            include: {
+               brand: true,
+               categories: true,
+               variants: true,
+            },
+         })
+         return overlayDbOnDummy(
+            dummy,
+            dbProduct ? (dbProduct as CatalogProduct) : null
+         )
+      } catch (error) {
+         console.error('[CATALOG_PRODUCT]', productId, error)
+         return normalizeProduct(dummy)
+      }
+   }
+
    try {
-      const product = await prisma.product.findUnique({
+      const dbProduct = await prisma.product.findUnique({
          where: { id: productId },
          include: {
             brand: true,
@@ -251,15 +342,14 @@ export async function getCatalogProduct(
             variants: true,
          },
       })
-      if (product) {
-         return mergeWithCatalogDefaults(product as CatalogProduct)
+      if (dbProduct) {
+         return safeCatalogProduct(dbProduct as CatalogProduct)
       }
-   } catch {
-      // fall through to dummy
+   } catch (error) {
+      console.error('[CATALOG_PRODUCT]', productId, error)
    }
 
-   const dummy = DUMMY_PRODUCTS.find((p) => p.id === productId)
-   return dummy ? normalizeProduct(dummy) : null
+   return null
 }
 
 export async function getRelatedProducts(
@@ -267,11 +357,7 @@ export async function getRelatedProducts(
    limit = 4
 ): Promise<CatalogProduct[]> {
    const categoryTitle = product.categories?.[0]?.title
-   const dbProducts = await fetchDbProducts()
-   const pool =
-      dbProducts.length > 0
-         ? dbProducts.map((p) => mergeWithCatalogDefaults(p))
-         : DUMMY_PRODUCTS.map(normalizeProduct)
+   const pool = await listAllCatalogProducts()
 
    return pool
       .filter(

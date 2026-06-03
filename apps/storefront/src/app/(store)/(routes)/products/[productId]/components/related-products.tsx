@@ -3,7 +3,14 @@ import { Separator } from '@/components/native/separator'
 import { getRelatedProducts, type CatalogProduct } from '@/lib/catalog'
 
 export async function RelatedProducts({ product }: { product: CatalogProduct }) {
-   const related = await getRelatedProducts(product, 4)
+   let related: CatalogProduct[] = []
+
+   try {
+      related = await getRelatedProducts(product, 4)
+   } catch (error) {
+      console.error('[RELATED_PRODUCTS]', error)
+      return null
+   }
 
    if (!related.length) return null
 

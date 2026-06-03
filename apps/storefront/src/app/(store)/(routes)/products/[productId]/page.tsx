@@ -9,25 +9,39 @@ import { DataSection } from './components/data'
 import { ProductGallery } from './components/gallery'
 import { RelatedProducts } from './components/related-products'
 
+export const dynamic = 'force-dynamic'
+
 type Props = {
    params: { productId: string }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-   const product = await getCatalogProduct(params.productId)
-
-   return {
-      title: product?.title ?? 'Product',
-      description: product?.description ?? 'Product detail',
-      keywords: product?.keywords ?? ['product'],
-      openGraph: {
-         images: product?.images ?? [],
-      },
+   try {
+      const product = await getCatalogProduct(params.productId)
+      return {
+         title: product?.title ?? 'Product',
+         description: product?.description ?? 'Product detail',
+         keywords: product?.keywords ?? ['product'],
+         openGraph: {
+            images: product?.images ?? [],
+         },
+      }
+   } catch {
+      return {
+         title: 'Product',
+         description: 'Product detail',
+      }
    }
 }
 
 export default async function ProductPage({ params }: Props) {
-   const product = await getCatalogProduct(params.productId)
+   let product = null
+
+   try {
+      product = await getCatalogProduct(params.productId)
+   } catch (error) {
+      console.error('[PRODUCT_PAGE]', params.productId, error)
+   }
 
    if (!isVariableValid(product)) {
       notFound()

@@ -1,19 +1,14 @@
-import prisma from '@/lib/prisma'
+import { listAllCatalogProducts } from '@/lib/catalog'
 import { NextResponse } from 'next/server'
 
-export async function GET(req: Request) {
-   try {
-      const products = await prisma.product.findMany({
-         include: {
-            brand: true,
-            categories: true,
-            variants: true,
-         },
-      })
+export const dynamic = 'force-dynamic'
 
+export async function GET() {
+   try {
+      const products = await listAllCatalogProducts()
       return NextResponse.json(products)
    } catch (error) {
-      console.error('[PRODUCT_GET]', error)
+      console.error('[PRODUCTS_LIST]', error)
       return new NextResponse('Internal error', { status: 500 })
    }
 }

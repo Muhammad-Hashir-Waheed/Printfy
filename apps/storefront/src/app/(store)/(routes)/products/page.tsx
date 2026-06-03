@@ -10,6 +10,8 @@ import Link from 'next/link'
 
 import { CatalogFiltersPanel } from './components/catalog-filters'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Products({
    searchParams,
 }: {

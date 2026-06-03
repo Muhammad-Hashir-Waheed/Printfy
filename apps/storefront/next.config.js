@@ -37,6 +37,11 @@ module.exports = {
                 destination: '/products',
                 permanent: true,
             },
+            {
+                source: '/favicon.ico',
+                destination: '/favicon.svg',
+                permanent: false,
+            },
         ]
     },
 }
