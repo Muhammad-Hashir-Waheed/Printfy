@@ -1,4 +1,4 @@
-import { sanitizeProductImages } from '@/lib/catalog-images'
+import { resolveProductImages } from '@/lib/catalog-images'
 import prisma from '@/lib/prisma'
 import { slugify } from '@persepolis/slugify'
 import {
@@ -67,9 +67,40 @@ export function isCustomizable(product: CatalogProduct) {
 function normalizeProduct(product: CatalogProduct): CatalogProduct {
    return {
       ...product,
-      images: sanitizeProductImages(product.images),
+      images: resolveProductImages(product.id, product.images),
       variants: product.variants ?? [],
    }
+}
+
+/** Keep DB rows in sync with catalog dummy (images, copy, variants) by stable product id */
+export function mergeWithCatalogDefaults(product: CatalogProduct): CatalogProduct {
+   const dummy = DUMMY_PRODUCTS.find((entry) => entry.id === product.id)
+   if (!dummy) {
+      return normalizeProduct(product)
+   }
+
+   const merged: CatalogProduct = {
+      ...dummy,
+      ...product,
+      title: product.title || dummy.title,
+      description: product.description || dummy.description,
+      price: product.price ?? dummy.price,
+      discount: product.discount ?? dummy.discount,
+      keywords: product.keywords?.length ? product.keywords : dummy.keywords,
+      metadata: {
+         ...((dummy.metadata as object) ?? {}),
+         ...((product.metadata as object) ?? {}),
+      } as CatalogProduct['metadata'],
+      images: resolveProductImages(
+         product.id,
+         product.images?.length ? product.images : dummy.images
+      ),
+      brand: product.brand ?? dummy.brand,
+      categories: product.categories?.length ? product.categories : dummy.categories,
+      variants: product.variants?.length ? product.variants : dummy.variants,
+   }
+
+   return normalizeProduct(merged)
 }
 
 function filterProducts(
@@ -182,7 +213,9 @@ export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
    const dbProducts = await fetchDbProducts()
    const useDummy = dbProducts.length === 0
 
-   const allProducts = useDummy ? DUMMY_PRODUCTS : dbProducts
+   const allProducts = useDummy
+      ? DUMMY_PRODUCTS.map(normalizeProduct)
+      : dbProducts.map((product) => mergeWithCatalogDefaults(product))
    const brands = useDummy
       ? DUMMY_BRANDS
       : await prisma.brand.findMany().catch(() => DUMMY_BRANDS)
@@ -218,7 +251,9 @@ export async function getCatalogProduct(
             variants: true,
          },
       })
-      if (product) return product as CatalogProduct
+      if (product) {
+         return mergeWithCatalogDefaults(product as CatalogProduct)
+      }
    } catch {
       // fall through to dummy
    }
@@ -235,7 +270,7 @@ export async function getRelatedProducts(
    const dbProducts = await fetchDbProducts()
    const pool =
       dbProducts.length > 0
-         ? dbProducts
+         ? dbProducts.map((p) => mergeWithCatalogDefaults(p))
          : DUMMY_PRODUCTS.map(normalizeProduct)
 
    return pool

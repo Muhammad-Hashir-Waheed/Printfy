@@ -2,8 +2,17 @@ import { verifyJWT } from '@/lib/jwt'
 import { getErrorResponse } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
+function isPublicApi(pathname: string) {
+   if (pathname.startsWith('/api/auth')) return true
+   if (pathname === '/api/checkout/demo') return true
+   if (pathname.startsWith('/api/payments/verify')) return true
+   if (pathname === '/api/products') return true
+   if (pathname.startsWith('/api/products/')) return true
+   return false
+}
+
 export async function middleware(req: NextRequest) {
-   if (req.nextUrl.pathname.startsWith('/api/auth')) return NextResponse.next()
+   if (isPublicApi(req.nextUrl.pathname)) return NextResponse.next()
 
    function isTargetingAPI() {
       return req.nextUrl.pathname.startsWith('/api')

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { useAuthenticated } from '@/hooks/useAuthentication'
+import { resolveProductImages } from '@/lib/catalog-images'
 import {
    getProductType,
    groupVariants,
@@ -97,6 +98,14 @@ function PurchaseInner({ product }: { product: CatalogProduct }) {
       }
    }
 
+   const productForCart = useMemo(
+      () => ({
+         ...product,
+         images: resolveProductImages(product.id, product.images),
+      }),
+      [product]
+   )
+
    async function addToCart() {
       if (!canAdd) {
          toast.error('Select all options before adding to cart.')
@@ -109,7 +118,7 @@ function PurchaseInner({ product }: { product: CatalogProduct }) {
          const next = upsertCartLine({
             items,
             productId: product.id,
-            product,
+            product: productForCart,
             selectedVariants,
             delta: quantity,
          })
@@ -132,7 +141,7 @@ function PurchaseInner({ product }: { product: CatalogProduct }) {
          const next = upsertCartLine({
             items,
             productId: product.id,
-            product,
+            product: productForCart,
             selectedVariants,
             delta,
          })

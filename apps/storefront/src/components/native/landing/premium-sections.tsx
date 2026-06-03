@@ -10,64 +10,64 @@ import Link from 'next/link'
 const productTiles = [
    {
       title: 'T-shirts',
-      href: '/products?productType=t-shirts',
+      href: '/products/classic-crew-tee',
       image:
          'https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop',
       imageClassName: 'object-top',
    },
    {
       title: 'Bags',
-      href: '/products?productType=bags',
+      href: '/products/canvas-tote',
       image:
          'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1200&auto=format&fit=crop',
       imageClassName: 'object-top',
    },
    {
       title: 'Coffee mugs',
-      href: '/products?productType=drinkware',
+      href: '/products/ceramic-mug',
       image:
          'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Embroidered shirts',
-      href: '/products?productType=t-shirts',
+      href: '/products/polo-shirt',
       image:
          'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Phone cases',
-      href: '/products?productType=accessories',
+      href: '/products/sticker-pack',
       image:
          'https://images.unsplash.com/photo-1601593346740-925612772716?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Leggings',
-      href: '/products?productType=pants',
+      href: '/products/leggings',
       image:
          'https://images.pexels.com/photos/4210866/pexels-photo-4210866.jpeg?auto=compress&cs=tinysrgb&w=1200',
    },
    {
       title: 'Hoodies',
-      href: '/products?productType=hoodies',
+      href: '/products/pullover-hoodie',
       image:
          'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1200&auto=format&fit=crop',
    },
    {
       title: 'Flags',
-      href: '/products?productType=accessories',
+      href: '/products/poster-print',
       image:
          'https://images.pexels.com/photos/4386429/pexels-photo-4386429.jpeg?auto=compress&cs=tinysrgb&w=1200',
       imageClassName: 'object-center',
    },
    {
       title: 'Pants',
-      href: '/products?productType=pants',
+      href: '/products/jogger-pants',
       image:
          'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Sweatshirts',
-      href: '/products?productType=hoodies',
+      href: '/products/pullover-hoodie',
       image:
          'https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=900&auto=format&fit=crop',
    },

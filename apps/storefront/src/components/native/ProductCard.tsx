@@ -22,6 +22,7 @@ export function ProductCard({ product }: { product: ProductWithIncludes }) {
                   className="relative block h-full w-full"
                >
                   <ProductImage
+                     productId={product.id}
                      src={product.images?.[0]}
                      alt={product.title}
                      className="transition duration-200 group-hover:scale-105"

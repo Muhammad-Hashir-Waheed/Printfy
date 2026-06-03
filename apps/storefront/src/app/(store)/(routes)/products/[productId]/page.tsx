@@ -45,10 +45,10 @@ export default async function ProductPage({ params }: Props) {
    )
 }
 
-const ImageColumn = ({ product }: { product: { images?: string[] } }) => {
+const ImageColumn = ({ product }: { product: { id: string; images?: string[] } }) => {
    return (
       <div className="relative col-span-3 min-h-[50vh] w-full overflow-hidden rounded-2xl border bg-muted/20 p-2 lg:sticky lg:top-24 lg:self-start">
-         <ProductGallery images={product?.images ?? []} />
+         <ProductGallery productId={product.id} images={product?.images ?? []} />
       </div>
    )
 }

@@ -15,7 +15,8 @@ import { useAuthenticated } from '@/hooks/useAuthentication'
 import { getCountInCart, getLocalCart, writeLocalCart } from '@/lib/cart'
 import { useCartContext } from '@/state/Cart'
 import { MinusIcon, PlusIcon, X } from 'lucide-react'
-import Image from 'next/image'
+import { ProductImage } from '@/components/native/ProductImage'
+import { resolveProductImages } from '@/lib/catalog-images'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -230,27 +231,28 @@ export const Item = ({ cartItem }) => {
          <CardHeader className="p-0 md:hidden">
             <div className="relative h-32 w-full">
                <Link href={`/products/${product?.id}`}>
-                  <Image
-                     className="rounded-t-lg"
-                     src={product?.images[0]}
-                     alt="product image"
-                     fill
-                     sizes="(min-width: 1000px) 30vw, 50vw"
-                     style={{ objectFit: 'cover' }}
-                  />
+                  <div className="relative h-full w-full">
+                     <ProductImage
+                        productId={productId}
+                        src={resolveProductImages(productId, product?.images)[0]}
+                        alt="product image"
+                        sizes="(min-width: 1000px) 30vw, 50vw"
+                     />
+                  </div>
                </Link>
             </div>
          </CardHeader>
          <CardContent className="grid gap-4 p-3 md:grid-cols-6">
             <div className="relative w-full col-span-2 hidden md:inline-flex">
                <Link href={`/products/${product?.id}`}>
-                  <Image
-                     className="rounded-lg"
-                     src={product?.images[0]}
-                     alt="item image"
-                     fill
-                     style={{ objectFit: 'cover' }}
-                  />
+                  <div className="relative h-full w-full min-h-[120px]">
+                     <ProductImage
+                        productId={productId}
+                        src={resolveProductImages(productId, product?.images)[0]}
+                        alt="item image"
+                        sizes="120px"
+                     />
+                  </div>
                </Link>
             </div>
             <div className="block space-y-2 md:col-span-4">

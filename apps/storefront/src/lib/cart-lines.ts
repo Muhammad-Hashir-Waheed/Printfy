@@ -1,11 +1,24 @@
 import type { SelectedVariant } from '@/lib/catalog'
 
+export type CartLineProduct = {
+   id?: string
+   title?: string
+   price?: number
+   discount?: number
+   images?: string[]
+   description?: string
+}
+
 export type CartLineItem = {
    lineKey: string
    productId: string
-   product: unknown
+   product: CartLineProduct
    count: number
    selectedVariants?: SelectedVariant[]
+   customDesign?: {
+      designImage?: string
+      variants?: SelectedVariant[]
+   }
 }
 
 export function buildLineKey(

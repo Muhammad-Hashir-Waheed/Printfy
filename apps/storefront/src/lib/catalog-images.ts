@@ -1,4 +1,4 @@
-/** Verified Unsplash URLs (HEAD 200) — avoid broken photo IDs in catalog */
+/** Verified Unsplash URLs (HEAD 200) */
 
 const q = 'q=80&w=1200&auto=format&fit=crop'
 
@@ -25,25 +25,64 @@ export const CATALOG_IMAGES = {
    sticker: `https://images.unsplash.com/photo-1611162617474-5b21e879e113?${q}`,
 } as const
 
-export const DEFAULT_PRODUCT_IMAGE = CATALOG_IMAGES.teeWhite
+export const DEFAULT_PRODUCT_IMAGE = CATALOG_IMAGES.product
 
-export function sanitizeProductImages(images?: string[] | null): string[] {
-   if (!images?.length) return [DEFAULT_PRODUCT_IMAGE]
-   return images.map((url) => (isLikelyBrokenUnsplash(url) ? DEFAULT_PRODUCT_IMAGE : url))
+/** Per-product canonical images (stable ids) */
+export const PRODUCT_IMAGES_BY_ID: Record<string, string[]> = {
+   'classic-crew-tee': [CATALOG_IMAGES.teeWhite, CATALOG_IMAGES.teeStack, CATALOG_IMAGES.teeHanger],
+   'premium-tee': [CATALOG_IMAGES.teeFolded, CATALOG_IMAGES.teeStack],
+   'pullover-hoodie': [CATALOG_IMAGES.hoodie, CATALOG_IMAGES.sweatshirt],
+   'jogger-pants': [CATALOG_IMAGES.pants, CATALOG_IMAGES.leggings],
+   leggings: [CATALOG_IMAGES.leggings, CATALOG_IMAGES.pants],
+   'canvas-tote': [CATALOG_IMAGES.tote, CATALOG_IMAGES.bag],
+   'drawstring-bag': [CATALOG_IMAGES.backpack],
+   'mailer-box': [CATALOG_IMAGES.mailer, CATALOG_IMAGES.product],
+   'sticker-pack': [CATALOG_IMAGES.sticker, CATALOG_IMAGES.product],
+   'ceramic-mug': [CATALOG_IMAGES.mug, CATALOG_IMAGES.coffee],
+   'poster-print': [CATALOG_IMAGES.sticker, CATALOG_IMAGES.product],
+   'baseball-cap': [CATALOG_IMAGES.cap],
+   'tank-top': [CATALOG_IMAGES.tank],
+   'polo-shirt': [CATALOG_IMAGES.polo, CATALOG_IMAGES.teeFolded],
+   sweatpants: [CATALOG_IMAGES.sweatshirt, CATALOG_IMAGES.pants],
 }
 
-/** Known 404 IDs from earlier catalog seed */
-function isLikelyBrokenUnsplash(url: string) {
-   const broken = [
-      'photo-1618354691373-d851fcf5c3b0',
-      'photo-1620799140408-f9f8e7b7ecb1',
-      'photo-1622445265470-35b2494dd58e',
-      'photo-1544966503-7cc5ac882d5f',
-      'photo-1506629082955-511b05f03b55',
-      'photo-1586075010923-aa2a337b7c52',
-      'photo-1514228742587-6b1558fcca3e',
-      'photo-1513475382585-d06e58bcb0e6',
-      'photo-1588850561407-ed78c282e68b',
-   ]
-   return broken.some((id) => url.includes(id))
+const BROKEN_UNSPLASH_IDS = [
+   'photo-1618354691373-d851fcf5c3b0',
+   'photo-1620799140408-f9f8e7b7ecb1',
+   'photo-1622445265470-35b2494dd58e',
+   'photo-1544966503-7cc5ac882d5f',
+   'photo-1506629082955-511b05f03b55',
+   'photo-1586075010923-aa2a337b7c52',
+   'photo-1514228742587-6b1558fcca3e',
+   'photo-1513475382585-d06e58bcb0e6',
+   'photo-1588850561407-ed78c282e68b',
+]
+
+export function isLikelyBrokenUnsplash(url: string) {
+   return BROKEN_UNSPLASH_IDS.some((id) => url.includes(id))
+}
+
+export function getProductFallbackImage(productId?: string) {
+   const canonical = productId ? PRODUCT_IMAGES_BY_ID[productId] : undefined
+   return canonical?.[0] ?? DEFAULT_PRODUCT_IMAGE
+}
+
+export function resolveProductImages(
+   productId: string,
+   images?: string[] | null
+): string[] {
+   const canonical = PRODUCT_IMAGES_BY_ID[productId] ?? [DEFAULT_PRODUCT_IMAGE]
+
+   if (!images?.length) {
+      return canonical
+   }
+
+   const valid = images.filter(
+      (url) =>
+         typeof url === 'string' &&
+         url.startsWith('http') &&
+         !isLikelyBrokenUnsplash(url)
+   )
+
+   return valid.length > 0 ? valid : canonical
 }
