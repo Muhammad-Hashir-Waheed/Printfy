@@ -73,13 +73,38 @@ export function isCustomizable(product: CatalogProduct) {
    return meta?.isCustomizable !== false
 }
 
+/** Strip Dates / Prisma types so server → client components do not 500 on Vercel */
+function toSerializableCatalogProduct(product: CatalogProduct): CatalogProduct {
+   return JSON.parse(
+      JSON.stringify(product, (_key, value) => {
+         if (value instanceof Date) {
+            return value.toISOString()
+         }
+         return value
+      })
+   ) as CatalogProduct
+}
+
 function normalizeProduct(product: CatalogProduct): CatalogProduct {
-   return {
+   const normalized: CatalogProduct = {
       ...product,
+      price: Number(product.price),
+      discount: Number(product.discount),
+      stock: Number(product.stock),
       images: resolveProductImages(product.id, product.images),
-      variants: product.variants ?? [],
+      variants: (product.variants ?? []).map((variant) => ({
+         ...variant,
+         priceModifier: Number(variant.priceModifier),
+      })),
       keywords: Array.isArray(product.keywords) ? product.keywords : [],
    }
+
+   return toSerializableCatalogProduct(normalized)
+}
+
+/** Catalog without touching the database (homepage / API fallback) */
+export function getOfflineCatalogProducts(): CatalogProduct[] {
+   return DUMMY_PRODUCTS.map((dummy) => normalizeProduct(dummy))
 }
 
 function mergeMetadata(
@@ -155,23 +180,28 @@ function overlayDbOnDummy(
  * Production stays usable even when Prisma/DB is down or partially seeded.
  */
 export async function listAllCatalogProducts(): Promise<CatalogProduct[]> {
-   const dbProducts = await fetchDbProducts()
-   const dbById = new Map(
-      dbProducts.map((p) => [p.id, p as CatalogProduct])
-   )
+   try {
+      const dbProducts = await fetchDbProducts()
+      const dbById = new Map(
+         dbProducts.map((p) => [p.id, p as CatalogProduct])
+      )
 
-   const catalog = DUMMY_PRODUCTS.map((dummy) =>
-      overlayDbOnDummy(dummy, dbById.get(dummy.id))
-   )
+      const catalog = DUMMY_PRODUCTS.map((dummy) =>
+         overlayDbOnDummy(dummy, dbById.get(dummy.id))
+      )
 
-   for (const db of dbProducts) {
-      if (!CATALOG_ID_SET.has(db.id)) {
-         const safe = safeCatalogProduct(db as CatalogProduct)
-         if (safe) catalog.push(safe)
+      for (const db of dbProducts) {
+         if (!CATALOG_ID_SET.has(db.id)) {
+            const safe = safeCatalogProduct(db as CatalogProduct)
+            if (safe) catalog.push(safe)
+         }
       }
-   }
 
-   return catalog
+      return catalog
+   } catch (error) {
+      console.error('[CATALOG_LIST]', error)
+      return getOfflineCatalogProducts()
+   }
 }
 
 function filterProducts(
@@ -281,30 +311,49 @@ export async function fetchDbProducts() {
 }
 
 export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
-   const dbProducts = await fetchDbProducts()
-   const useDummy = dbProducts.length === 0
+   try {
+      const dbProducts = await fetchDbProducts()
+      const useDummy = dbProducts.length === 0
 
-   const allProducts = await listAllCatalogProducts()
-   const brands = useDummy
-      ? DUMMY_BRANDS
-      : await prisma.brand.findMany().catch(() => DUMMY_BRANDS)
-   const categories = useDummy
-      ? DUMMY_CATEGORIES
-      : await prisma.category.findMany().catch(() => DUMMY_CATEGORIES)
+      const allProducts = await listAllCatalogProducts()
+      const brands = useDummy
+         ? DUMMY_BRANDS
+         : await prisma.brand.findMany().catch(() => DUMMY_BRANDS)
+      const categories = useDummy
+         ? DUMMY_CATEGORIES
+         : await prisma.category.findMany().catch(() => DUMMY_CATEGORIES)
 
-   const filtered = filterProducts(allProducts, params)
-   const sorted = sortProducts(filtered, params.sort)
-   const page = Math.max(1, Number(params.page) || 1)
-   const pageSize = 12
-   const products = sorted.slice((page - 1) * pageSize, page * pageSize)
+      const filtered = filterProducts(allProducts, params)
+      const sorted = sortProducts(filtered, params.sort)
+      const page = Math.max(1, Number(params.page) || 1)
+      const pageSize = 12
+      const products = sorted.slice((page - 1) * pageSize, page * pageSize)
 
-   return {
-      products,
-      total: sorted.length,
-      brands,
-      categories,
-      productTypes: DUMMY_PRODUCT_TYPES,
-      useDummy,
+      return {
+         products,
+         total: sorted.length,
+         brands,
+         categories,
+         productTypes: DUMMY_PRODUCT_TYPES,
+         useDummy,
+      }
+   } catch (error) {
+      console.error('[CATALOG_SNAPSHOT]', error)
+      const allProducts = getOfflineCatalogProducts()
+      const filtered = filterProducts(allProducts, params)
+      const sorted = sortProducts(filtered, params.sort)
+      const page = Math.max(1, Number(params.page) || 1)
+      const pageSize = 12
+      const products = sorted.slice((page - 1) * pageSize, page * pageSize)
+
+      return {
+         products,
+         total: sorted.length,
+         brands: DUMMY_BRANDS,
+         categories: DUMMY_CATEGORIES,
+         productTypes: DUMMY_PRODUCT_TYPES,
+         useDummy: true,
+      }
    }
 }
 

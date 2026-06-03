@@ -14,7 +14,7 @@ import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { Heading } from '@/components/native/heading'
 import { Separator } from '@/components/native/separator'
 import { RevealOnScroll } from '@/components/ui/reveal-on-scroll'
-import { listAllCatalogProducts } from '@/lib/catalog'
+import { getOfflineCatalogProducts, listAllCatalogProducts } from '@/lib/catalog'
 import prisma from '@/lib/prisma'
 import { isVariableValid } from '@/lib/utils'
 
@@ -184,15 +184,25 @@ export default async function Index() {
       })
 
       banners = await prisma.banner.findMany()
-   } catch {
-      // Allow storefront to run without a configured database.
+   } catch (error) {
+      console.error('[HOME_PAGE]', error)
+   }
+
+   if (!catalogProducts.length) {
+      catalogProducts = getOfflineCatalogProducts()
    }
 
    const featured = catalogProducts.filter((p) => p.isFeatured)
    const safeProducts = (
       featured.length > 0 ? featured : catalogProducts.length > 0 ? catalogProducts : dummyProducts
    ).slice(0, 8)
-   const safeBlogs = blogs.length > 0 ? blogs : dummyBlogs
+   const safeBlogs = (blogs.length > 0 ? blogs : dummyBlogs).map((post) => ({
+      ...post,
+      createdAt:
+         post.createdAt instanceof Date
+            ? post.createdAt.toISOString()
+            : post.createdAt,
+   }))
    const safeBanners = banners.length > 0 ? banners : dummyBanners
 
    return (
