@@ -24,7 +24,9 @@ export const Item = ({ cartItem }) => {
    const { loading, cart, refreshCart, dispatchCart } = useCartContext()
    const [fetchingCart, setFetchingCart] = useState(false)
 
-   const { product, productId, count } = cartItem
+   const { product, productId } = cartItem
+   const lineKey = (cartItem as any)?.lineKey ?? productId
+   const selectedVariants = (cartItem as any)?.selectedVariants
    const customDesign = (cartItem as any)?.customDesign
 
    function findLocalCartIndexById(array, productId) {
@@ -166,7 +168,7 @@ export const Item = ({ cartItem }) => {
    function CartButton() {
       const count = getCountInCart({
          cartItems: cart?.items,
-         productId,
+         lineKey,
       })
 
       if (fetchingCart)
@@ -255,9 +257,16 @@ export const Item = ({ cartItem }) => {
                <Link href={`/products/${product?.id}`}>
                   <h2>{product?.title}</h2>
                </Link>
-               <p className="text-xs text-muted-foreground text-justify">
+               <p className="text-xs text-muted-foreground text-justify line-clamp-2">
                   {product?.description}
                </p>
+               {selectedVariants?.length ? (
+                  <p className="text-xs text-muted-foreground">
+                     {(selectedVariants as Array<{ name: string; value: string }>)
+                        .map((v) => `${v.name}: ${v.value}`)
+                        .join(' · ')}
+                  </p>
+               ) : null}
                {customDesign?.designImage ? (
                   <div className="rounded-2xl border border-primary/30 bg-primary/5 p-2">
                      <img

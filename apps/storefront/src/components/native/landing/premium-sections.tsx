@@ -10,54 +10,64 @@ import Link from 'next/link'
 const productTiles = [
    {
       title: 'T-shirts',
+      href: '/products?productType=t-shirts',
       image:
          'https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop',
       imageClassName: 'object-top',
    },
    {
       title: 'Bags',
+      href: '/products?productType=bags',
       image:
          'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1200&auto=format&fit=crop',
       imageClassName: 'object-top',
    },
    {
       title: 'Coffee mugs',
+      href: '/products?productType=drinkware',
       image:
          'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Embroidered shirts',
+      href: '/products?productType=t-shirts',
       image:
          'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Phone cases',
+      href: '/products?productType=accessories',
       image:
          'https://images.unsplash.com/photo-1601593346740-925612772716?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Leggings',
+      href: '/products?productType=pants',
       image:
          'https://images.pexels.com/photos/4210866/pexels-photo-4210866.jpeg?auto=compress&cs=tinysrgb&w=1200',
    },
    {
       title: 'Hoodies',
+      href: '/products?productType=hoodies',
       image:
          'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1200&auto=format&fit=crop',
    },
    {
       title: 'Flags',
+      href: '/products?productType=accessories',
       image:
          'https://images.pexels.com/photos/4386429/pexels-photo-4386429.jpeg?auto=compress&cs=tinysrgb&w=1200',
       imageClassName: 'object-center',
    },
    {
       title: 'Pants',
+      href: '/products?productType=pants',
       image:
          'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=900&auto=format&fit=crop',
    },
    {
       title: 'Sweatshirts',
+      href: '/products?productType=hoodies',
       image:
          'https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=900&auto=format&fit=crop',
    },
@@ -159,22 +169,21 @@ export function ProductShowcaseSection() {
             </Card>
 
             {productTiles.map((tile) => (
-               <Card
-                  key={tile.title}
-                  className="group overflow-hidden rounded-lg border bg-white shadow-sm"
-               >
-                  <CardContent className="relative h-[178px] p-0">
-                     <img
-                        src={tile.image}
-                        alt={tile.title}
-                        loading="lazy"
-                        className={`h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] ${tile.imageClassName ?? ''}`}
-                     />
-                     <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900">
-                        {tile.title}
-                     </span>
-                  </CardContent>
-               </Card>
+               <Link key={tile.title} href={(tile as { href?: string }).href ?? '/products'}>
+                  <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md">
+                     <CardContent className="relative h-[178px] p-0">
+                        <img
+                           src={tile.image}
+                           alt={tile.title}
+                           loading="lazy"
+                           className={`h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] ${tile.imageClassName ?? ''}`}
+                        />
+                        <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900">
+                           {tile.title}
+                        </span>
+                     </CardContent>
+                  </Card>
+               </Link>
             ))}
             </div>
          </div>

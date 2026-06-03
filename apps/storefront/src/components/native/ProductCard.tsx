@@ -12,7 +12,10 @@ export function ProductCard({ product }: { product: ProductWithIncludes }) {
    return (
       <Card className="group h-full overflow-hidden rounded-2xl border transition duration-200 hover:-translate-y-1 hover:shadow-md">
          <CardHeader className="p-0">
-            <div className="relative aspect-square w-full overflow-hidden bg-muted/20">
+            <Link
+               href={`/products/${product.id}`}
+               className="relative block aspect-square w-full overflow-hidden bg-muted/20"
+            >
                <Image
                   src={product.images?.[0] ?? '/placeholder.jpg'}
                   alt={product.title}
@@ -26,12 +29,19 @@ export function ProductCard({ product }: { product: ProductWithIncludes }) {
                      </Link>
                   </div>
                ) : null}
-            </div>
+            </Link>
          </CardHeader>
          <CardContent className="space-y-2 p-4">
-            <Badge variant="outline" className="rounded-2xl text-xs">
-               {product.categories?.[0]?.title ?? 'General'}
-            </Badge>
+            <div className="flex flex-wrap gap-1">
+               <Badge variant="outline" className="rounded-2xl text-xs">
+                  {(product as any)?.metadata?.productType ??
+                     product.categories?.[0]?.title ??
+                     'General'}
+               </Badge>
+               {customizable ? (
+                  <Badge className="rounded-2xl text-xs">Customizable</Badge>
+               ) : null}
+            </div>
             <Link href={`/products/${product.id}`}>
                <h3 className="line-clamp-1 font-semibold">{product.title}</h3>
             </Link>

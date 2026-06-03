@@ -1,149 +1,102 @@
 import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { Heading } from '@/components/native/heading'
-import { Separator } from '@/components/native/separator'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import prisma from '@/lib/prisma'
+import { getCatalogSnapshot, type CatalogSearchParams } from '@/lib/catalog'
 import { isVariableValid } from '@/lib/utils'
+import Link from 'next/link'
 
-import {
-   AvailableToggle,
-   BrandCombobox,
-   CategoriesCombobox,
-   SortBy,
-} from './components/options'
+import { CatalogFiltersPanel } from './components/catalog-filters'
 
-export default async function Products({ searchParams }) {
-   const { sort, isAvailable, brand, category, q, page = 1 } = searchParams ?? null
+export default async function Products({
+   searchParams,
+}: {
+   searchParams: CatalogSearchParams
+}) {
+   const params = searchParams ?? {}
+   const { products, total, brands, categories, useDummy } =
+      await getCatalogSnapshot(params)
 
-   const orderBy = getOrderBy(sort)
-   let brands = []
-   let categories = []
-   let products = []
-
-   try {
-      brands = await prisma.brand.findMany()
-      categories = await prisma.category.findMany()
-      products = await prisma.product.findMany({
-         where: {
-            isAvailable: isAvailable == 'true' || sort ? true : undefined,
-            title: {
-               contains: q,
-               mode: 'insensitive',
-            },
-            brand: {
-               title: {
-                  contains: brand,
-                  mode: 'insensitive',
-               },
-            },
-            categories: {
-               some: {
-                  title: {
-                     contains: category,
-                     mode: 'insensitive',
-                  },
-               },
-            },
-         },
-         orderBy,
-         skip: (page - 1) * 12,
-         take: 12,
-         include: {
-            brand: true,
-            categories: true,
-         },
-      })
-   } catch {
-      // Keep products page usable when database is not configured.
+   const filterParams: Record<string, string | undefined> = {
+      q: params.q,
+      sort: params.sort,
+      category: params.category,
+      brand: params.brand,
+      productType: params.productType,
+      minPrice: params.minPrice,
+      maxPrice: params.maxPrice,
+      isAvailable: params.isAvailable,
+      customizable: params.customizable,
    }
 
    return (
       <>
-         <Heading
-            title="Products"
-            description="Below is a list of products you have in your cart."
-         />
-         <div className="mb-4 block md:hidden">
+         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <Heading
+               title="Product catalog"
+               description="Browse apparel, bags, packaging, and more — filter like a print shop and customize any item."
+            />
+            {useDummy ? (
+               <Badge variant="secondary" className="w-fit rounded-2xl">
+                  Demo catalog
+               </Badge>
+            ) : null}
+         </div>
+
+         <div className="mb-4 block lg:hidden">
             <Sheet>
                <SheetTrigger asChild>
-                  <Button variant="secondary" className="w-full">
-                     Filters
+                  <Button variant="secondary" className="w-full rounded-2xl">
+                     Filters & search
                   </Button>
                </SheetTrigger>
-               <SheetContent side="bottom" className="h-[70vh] overflow-y-auto rounded-t-2xl p-4">
-                  <SheetTitle className="mb-4">Product Filters</SheetTitle>
-                  <div className="grid grid-cols-1 gap-3">
-                     <SortBy initialData={sort} />
-                     <CategoriesCombobox
-                        initialCategory={category}
-                        categories={categories}
-                     />
-                     <BrandCombobox initialBrand={brand} brands={brands} />
-                     <AvailableToggle initialData={isAvailable} />
-                  </div>
+               <SheetContent
+                  side="left"
+                  className="h-full w-[min(100%,320px)] overflow-y-auto p-4"
+               >
+                  <SheetTitle className="mb-4">Product filters</SheetTitle>
+                  <CatalogFiltersPanel
+                     categories={categories}
+                     brands={brands}
+                     searchParams={filterParams}
+                  />
                </SheetContent>
             </Sheet>
          </div>
-         <div className="mb-6 hidden grid-cols-2 gap-3 md:grid md:grid-cols-3 lg:grid-cols-4">
-            <SortBy initialData={sort} />
-            <CategoriesCombobox
-               initialCategory={category}
+
+         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+            <CatalogFiltersPanel
+               className="hidden lg:block lg:sticky lg:top-24 lg:self-start"
                categories={categories}
+               brands={brands}
+               searchParams={filterParams}
             />
-            <BrandCombobox initialBrand={brand} brands={brands} />
-            <AvailableToggle initialData={isAvailable} />
+
+            <div>
+               <p className="mb-4 text-sm text-muted-foreground">
+                  {total} product{total === 1 ? '' : 's'} found
+               </p>
+               {isVariableValid(products) && products.length > 0 ? (
+                  <ProductGrid products={products as any} />
+               ) : isVariableValid(products) && products.length === 0 ? (
+                  <Card className="rounded-2xl border shadow-sm">
+                     <CardContent className="p-8 text-center">
+                        <h3 className="text-lg font-semibold">No products found</h3>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                           Try another category, product type, or search term.
+                        </p>
+                        <Button asChild className="mt-4 rounded-2xl">
+                           <Link href="/products">Clear filters</Link>
+                        </Button>
+                     </CardContent>
+                  </Card>
+               ) : (
+                  <ProductSkeletonGrid />
+               )}
+            </div>
          </div>
-         <Separator className="mb-6" />
-         {isVariableValid(products) && products.length > 0 ? (
-            <ProductGrid products={products} />
-         ) : isVariableValid(products) && products.length === 0 ? (
-            <Card className="rounded-2xl border shadow-sm">
-               <CardContent className="p-8 text-center">
-                  <h3 className="text-lg font-semibold">No products found</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                     Try adjusting filters or search query.
-                  </p>
-               </CardContent>
-            </Card>
-         ) : (
-            <ProductSkeletonGrid />
-         )}
       </>
    )
-}
-
-function getOrderBy(sort) {
-   let orderBy
-
-   switch (sort) {
-      case 'featured':
-         orderBy = {
-            orders: {
-               _count: 'desc',
-            },
-         }
-         break
-      case 'most_expensive':
-         orderBy = {
-            price: 'desc',
-         }
-         break
-      case 'least_expensive':
-         orderBy = {
-            price: 'asc',
-         }
-         break
-
-      default:
-         orderBy = {
-            orders: {
-               _count: 'desc',
-            },
-         }
-         break
-   }
-
-   return orderBy
 }

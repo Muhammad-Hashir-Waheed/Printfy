@@ -30,8 +30,11 @@ export const CartGrid = () => {
       <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-3">
          <div className="md:col-span-2">
             {isVariableValid(cart?.items)
-               ? cart?.items?.map((cartItem, index) => (
-                    <Item cartItem={cartItem} key={index} />
+               ? cart?.items?.map((cartItem) => (
+                    <Item
+                       cartItem={cartItem}
+                       key={(cartItem as any).lineKey ?? cartItem.productId}
+                    />
                  ))
                : [...Array(5)].map((cartItem, index) => (
                     <Skeleton key={index} />

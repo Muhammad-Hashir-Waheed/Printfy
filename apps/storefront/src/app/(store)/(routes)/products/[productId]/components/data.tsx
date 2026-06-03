@@ -1,79 +1,53 @@
 import { Separator } from '@/components/native/separator'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import type { ProductWithIncludes } from '@/types/prisma'
+import type { CatalogProduct } from '@/lib/catalog'
 import Link from 'next/link'
 
-import CartButton from './cart_button'
-import WishlistButton from './wishlist_button'
+import { ProductPurchase } from './product-purchase'
 
-export const DataSection = async ({
-   product,
-}: {
-   product: ProductWithIncludes
-}) => {
-   function Price() {
-      if (product?.discount > 0) {
-         const price = product?.price - product?.discount
-         const percentage = (product?.discount / product?.price) * 100
-         return (
-            <div className="flex gap-2 items-center">
-               <Badge className="flex gap-4" variant="destructive">
-                  <div className="line-through">${product?.price}</div>
-                  <div>%{percentage.toFixed(2)}</div>
-               </Badge>
-               <h2 className="">${price.toFixed(2)}</h2>
-            </div>
-         )
-      }
-
-      return <h2>${product?.price}</h2>
-   }
+export const DataSection = ({ product }: { product: CatalogProduct }) => {
+   const meta = product.metadata as Record<string, unknown> | null
+   const printAreas = Array.isArray(meta?.printAreas)
+      ? (meta.printAreas as string[])
+      : []
 
    return (
-      <div className="col-span-2 w-full rounded-2xl border bg-neutral-100 p-6 shadow-sm dark:bg-neutral-900">
-         <h3 className="mb-4 text-2xl font-semibold">{product.title}</h3>
+      <div className="col-span-2 w-full space-y-4 rounded-2xl border bg-neutral-100 p-6 shadow-sm dark:bg-neutral-900">
+         <div>
+            <h1 className="text-2xl font-semibold md:text-3xl">{product.title}</h1>
+            <p className="mt-2 text-sm text-muted-foreground">{product.description}</p>
+         </div>
+
          <Separator />
-         <div className="flex gap-2 mb-2 items-center">
-            <p className="text-sm">Brand:</p>
-            <Link href={`/products?brand=${product?.brand?.title}`}>
+
+         <div className="flex flex-wrap gap-2 items-center text-sm">
+            <span className="text-muted-foreground">Brand:</span>
+            <Link href={`/products?brand=${product?.brand?.title?.toLowerCase()}`}>
                <Badge variant="outline">{product?.brand?.title}</Badge>
             </Link>
          </div>
-         <div className="flex gap-2 items-center">
-            <p className="text-sm">Categories:</p>
-            {product.categories.map(({ title }, index) => (
-               <Link key={index} href={`/products?categories=${title}`}>
+
+         <div className="flex flex-wrap gap-2 items-center text-sm">
+            <span className="text-muted-foreground">Categories:</span>
+            {product.categories?.map(({ title }, index) => (
+               <Link key={index} href={`/products?category=${title.toLowerCase()}`}>
                   <Badge variant="outline">{title}</Badge>
                </Link>
             ))}
          </div>
-         {product.variants?.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-2">
-               {product.variants.map((variant) => (
-                  <Badge key={variant.id} variant="secondary">
-                     {variant.name}: {variant.value}
-                     {variant.priceModifier !== 0
-                        ? ` (${variant.priceModifier > 0 ? '+' : ''}$${variant.priceModifier.toFixed(2)})`
-                        : ''}
+
+         {printAreas.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+               <span className="text-sm text-muted-foreground">Print areas:</span>
+               {printAreas.map((area) => (
+                  <Badge key={area} variant="secondary">
+                     {area}
                   </Badge>
                ))}
             </div>
          ) : null}
-         <Separator />
-         <small>{product.description}</small>
 
-         <Separator />
-         <div className="block space-y-2">
-            <Price />
-            <div className="flex gap-2">
-               <CartButton product={product} />
-               <WishlistButton product={product} />
-            </div>
-            <Link href={`/customize/${product.id}`}>
-               <Button className="mt-2 w-full rounded-2xl">Customize Design</Button>
-            </Link>
-         </div>
+         <ProductPurchase product={product} />
       </div>
    )
 }
