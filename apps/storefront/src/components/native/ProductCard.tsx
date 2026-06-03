@@ -1,35 +1,44 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { ProductWithIncludes } from '@/types/prisma'
-import Image from 'next/image'
+import { ProductImage } from '@/components/native/ProductImage'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export function ProductCard({ product }: { product: ProductWithIncludes }) {
+   const router = useRouter()
    const customizable = (product as any)?.metadata?.isCustomizable ?? true
    const discountedPrice = product.discount > 0 ? product.price - product.discount : product.price
 
    return (
       <Card className="group h-full overflow-hidden rounded-2xl border transition duration-200 hover:-translate-y-1 hover:shadow-md">
          <CardHeader className="p-0">
-            <Link
-               href={`/products/${product.id}`}
-               className="relative block aspect-square w-full overflow-hidden bg-muted/20"
-            >
-               <Image
-                  src={product.images?.[0] ?? '/placeholder.jpg'}
-                  alt={product.title}
-                  fill
-                  className="object-cover transition duration-200 group-hover:scale-105"
-               />
+            <div className="relative aspect-square w-full overflow-hidden bg-muted/20">
+               <Link
+                  href={`/products/${product.id}`}
+                  className="relative block h-full w-full"
+               >
+                  <ProductImage
+                     src={product.images?.[0]}
+                     alt={product.title}
+                     className="transition duration-200 group-hover:scale-105"
+                  />
+               </Link>
                {customizable ? (
-                  <div className="absolute inset-x-3 bottom-3 opacity-0 transition duration-200 group-hover:opacity-100">
-                     <Link href={`/customize/${product.id}`}>
-                        <Button className="w-full rounded-2xl">Customize</Button>
-                     </Link>
+                  <div className="absolute inset-x-3 bottom-3 z-10 opacity-0 transition duration-200 group-hover:opacity-100">
+                     <Button
+                        type="button"
+                        className="w-full rounded-2xl"
+                        onClick={() => router.push(`/customize/${product.id}`)}
+                     >
+                        Customize
+                     </Button>
                   </div>
                ) : null}
-            </Link>
+            </div>
          </CardHeader>
          <CardContent className="space-y-2 p-4">
             <div className="flex flex-wrap gap-1">

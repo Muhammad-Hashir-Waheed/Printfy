@@ -1,3 +1,4 @@
+import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import type { ProductWithIncludes } from '@/types/prisma'
 
 export type CatalogProduct = ProductWithIncludes & {
@@ -24,9 +25,6 @@ export const DUMMY_CATEGORIES = [
    { id: 'cat-home', title: 'Home & Office', description: 'Posters and desk items' },
 ]
 
-const img = (id: string) =>
-   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=80`
-
 function variants(
    productId: string,
    groups: Record<string, { values: string[]; modifiers?: number[] }>
@@ -52,11 +50,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       title: 'Classic Crew T-Shirt',
       description:
          'Soft ring-spun cotton tee. Ideal for screen print, DTG, and heat transfer. Unisex fit with reinforced neckline.',
-      images: [
-         img('photo-1521572163474-6864f9cf17ab'),
-         img('photo-1583743814966-8936f5b7be1a'),
-         img('photo-1576566588028-4147f3842f27'),
-      ],
+      images: [CATALOG_IMAGES.teeWhite, CATALOG_IMAGES.teeStack, CATALOG_IMAGES.teeHanger],
       keywords: ['t-shirt', 'apparel', 'cotton', 'custom'],
       metadata: {
          productType: 'T-Shirts',
@@ -85,7 +79,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'premium-tee',
       title: 'Premium Soft Tee',
       description: 'Heavier fabric with retail-quality hand feel. Bestseller for brand merch and events.',
-      images: [img('photo-1618354691373-d851fcf5c3b0'), img('photo-1622445265470-35b2494dd58e')],
+      images: [CATALOG_IMAGES.teeFolded, CATALOG_IMAGES.teeStack],
       keywords: ['premium', 'tee'],
       metadata: { productType: 'T-Shirts', isCustomizable: true, material: 'Cotton blend', leadTimeDays: 4 },
       price: 19.99,
@@ -108,7 +102,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'pullover-hoodie',
       title: 'Pullover Hoodie',
       description: 'Mid-weight fleece hoodie with kangaroo pocket. Perfect for embroidery and large front prints.',
-      images: [img('photo-1556821840-3a63f95609a7'), img('photo-1620799140408-f9f8e7b7ecb1')],
+      images: [CATALOG_IMAGES.hoodie, CATALOG_IMAGES.sweatshirt],
       keywords: ['hoodie', 'fleece'],
       metadata: { productType: 'Hoodies', isCustomizable: true, material: 'Fleece', leadTimeDays: 5 },
       price: 34.99,
@@ -131,7 +125,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'jogger-pants',
       title: 'Unisex Jogger Pants',
       description: 'Tapered fit joggers with elastic cuffs. Comfortable everyday wear with full leg branding space.',
-      images: [img('photo-1544966503-7cc5ac882d5f'), img('photo-1506629082955-511b05f03b55')],
+      images: [CATALOG_IMAGES.pants, CATALOG_IMAGES.leggings],
       keywords: ['pants', 'joggers'],
       metadata: { productType: 'Pants', isCustomizable: true, material: 'Poly cotton', leadTimeDays: 5 },
       price: 29.99,
@@ -154,7 +148,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'leggings',
       title: 'All-Over Print Leggings',
       description: 'Stretch leggings for all-over sublimation. Bold patterns and brand storytelling.',
-      images: [img('photo-1506629082955-511b05f03b55'), img('photo-1544966503-7cc5ac882d5f')],
+      images: [CATALOG_IMAGES.leggings, CATALOG_IMAGES.pants],
       keywords: ['leggings', 'sublimation'],
       metadata: { productType: 'Pants', isCustomizable: true, leadTimeDays: 6 },
       price: 24.99,
@@ -176,7 +170,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'canvas-tote',
       title: 'Canvas Tote Bag',
       description: '12oz canvas tote with long handles. Eco-friendly merch and event giveaways.',
-      images: [img('photo-1590874103328-eac38a683ce7'), img('photo-1548036328-c9fa89d128fa')],
+      images: [CATALOG_IMAGES.tote, CATALOG_IMAGES.bag],
       keywords: ['tote', 'bag'],
       metadata: { productType: 'Bags', isCustomizable: true, leadTimeDays: 4 },
       price: 11.99,
@@ -198,7 +192,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'drawstring-bag',
       title: 'Drawstring Backpack',
       description: 'Lightweight polyester drawstring bag for gyms, schools, and promo drops.',
-      images: [img('photo-1553062407-98eeb64c6a62')],
+      images: [CATALOG_IMAGES.backpack],
       keywords: ['backpack', 'drawstring'],
       metadata: { productType: 'Bags', isCustomizable: true, leadTimeDays: 3 },
       price: 8.99,
@@ -220,7 +214,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'mailer-box',
       title: 'Branded Mailer Box',
       description: 'Rigid mailer for ecommerce unboxing. Full-color exterior print with custom sizing.',
-      images: [img('photo-1558618666-fcd25c85cd64')],
+      images: [CATALOG_IMAGES.mailer, CATALOG_IMAGES.product],
       keywords: ['packaging', 'mailer'],
       metadata: { productType: 'Packaging', isCustomizable: true, leadTimeDays: 7 },
       price: 2.49,
@@ -242,7 +236,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'sticker-pack',
       title: 'Die-Cut Sticker Sheet',
       description: 'Weather-resistant vinyl stickers. Sold per sheet with multiple shapes.',
-      images: [img('photo-1586075010923-aa2a337b7c52')],
+      images: [CATALOG_IMAGES.sticker, CATALOG_IMAGES.product],
       keywords: ['stickers', 'vinyl'],
       metadata: { productType: 'Packaging', isCustomizable: true, leadTimeDays: 2 },
       price: 4.99,
@@ -265,7 +259,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'ceramic-mug',
       title: 'Ceramic Mug 11oz',
       description: 'Dishwasher-safe mug with wrap or single-side print. Great for corporate gifts.',
-      images: [img('photo-1514228742587-6b1558fcca3e')],
+      images: [CATALOG_IMAGES.mug, CATALOG_IMAGES.coffee],
       keywords: ['mug', 'drinkware'],
       metadata: { productType: 'Drinkware', isCustomizable: true, leadTimeDays: 4 },
       price: 9.99,
@@ -287,7 +281,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'poster-print',
       title: 'Premium Poster Print',
       description: 'Museum-quality poster on premium paper. Available in standard frame sizes.',
-      images: [img('photo-1513475382585-d06e58bcb0e6')],
+      images: [CATALOG_IMAGES.sticker, CATALOG_IMAGES.product],
       keywords: ['poster', 'print'],
       metadata: { productType: 'Home & Office', isCustomizable: true, leadTimeDays: 3 },
       price: 12.99,
@@ -309,7 +303,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'baseball-cap',
       title: 'Structured Baseball Cap',
       description: 'Six-panel cap with embroidery-ready front panel and adjustable strap.',
-      images: [img('photo-1588850561407-ed78c282e68b')],
+      images: [CATALOG_IMAGES.cap],
       keywords: ['cap', 'hat'],
       metadata: { productType: 'Accessories', isCustomizable: true, leadTimeDays: 5 },
       price: 16.99,
@@ -331,7 +325,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'tank-top',
       title: 'Performance Tank Top',
       description: 'Moisture-wicking tank for gyms and sports brands. Lightweight and breathable.',
-      images: [img('photo-1571019613454-1cb2f99b2d8b')],
+      images: [CATALOG_IMAGES.tank],
       keywords: ['tank', 'sport'],
       metadata: { productType: 'T-Shirts', isCustomizable: true, leadTimeDays: 4 },
       price: 13.99,
@@ -354,7 +348,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'polo-shirt',
       title: 'Classic Polo Shirt',
       description: 'Business-ready polo with side seams. Embroidery-friendly collar and cuffs.',
-      images: [img('photo-1620799140408-f9f8e7b7ecb1')],
+      images: [CATALOG_IMAGES.polo, CATALOG_IMAGES.teeFolded],
       keywords: ['polo', 'corporate'],
       metadata: { productType: 'T-Shirts', isCustomizable: true, leadTimeDays: 5 },
       price: 22.99,
@@ -377,7 +371,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       id: 'sweatpants',
       title: 'Fleece Sweatpants',
       description: 'Relaxed fleece sweatpants with drawcord waist. Cozy merch staple.',
-      images: [img('photo-1544966503-7cc5ac882d5f')],
+      images: [CATALOG_IMAGES.sweatshirt, CATALOG_IMAGES.pants],
       keywords: ['sweatpants', 'fleece'],
       metadata: { productType: 'Pants', isCustomizable: true, leadTimeDays: 5 },
       price: 27.99,

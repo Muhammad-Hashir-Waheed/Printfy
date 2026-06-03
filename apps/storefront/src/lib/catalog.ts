@@ -1,3 +1,4 @@
+import { sanitizeProductImages } from '@/lib/catalog-images'
 import prisma from '@/lib/prisma'
 import { slugify } from '@persepolis/slugify'
 import {
@@ -66,6 +67,7 @@ export function isCustomizable(product: CatalogProduct) {
 function normalizeProduct(product: CatalogProduct): CatalogProduct {
    return {
       ...product,
+      images: sanitizeProductImages(product.images),
       variants: product.variants ?? [],
    }
 }
