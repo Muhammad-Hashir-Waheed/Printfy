@@ -10,14 +10,6 @@ const repoRoot = path.join(storefrontDir, '..', '..')
 const sourceDir = path.join(storefrontDir, '.next')
 const targetDir = path.join(repoRoot, '.next')
 
-/** Root Directory = apps/storefront: Next output stays here; skip monorepo sync */
-const buildingFromStorefrontRoot =
-   path.resolve(process.cwd()) === path.resolve(storefrontDir)
-
-if (buildingFromStorefrontRoot) {
-   process.exit(0)
-}
-
 if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
    process.exit(0)
 }
