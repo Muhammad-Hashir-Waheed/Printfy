@@ -2,12 +2,7 @@
 
 const path = require('path')
 
-const storefrontDir = __dirname
-/** Vercel "Root Directory" = apps/storefront → do not trace outside that folder */
-const buildingFromStorefrontRoot =
-   path.resolve(process.cwd()) === path.resolve(storefrontDir)
-
-const nextConfig = {
+module.exports = {
    eslint: {
       ignoreDuringBuilds: true,
    },
@@ -17,6 +12,9 @@ const nextConfig = {
       'domain-orders',
       'domain-pricing',
    ],
+   experimental: {
+      outputFileTracingRoot: path.join(__dirname, '../../'),
+   },
    webpack: (config) => {
       config.resolve.modules = [
          path.resolve(__dirname, 'node_modules'),
@@ -47,11 +45,3 @@ const nextConfig = {
       ]
    },
 }
-
-if (!buildingFromStorefrontRoot) {
-   nextConfig.experimental = {
-      outputFileTracingRoot: path.join(__dirname, '../../'),
-   }
-}
-
-module.exports = nextConfig
