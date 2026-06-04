@@ -14,6 +14,10 @@ module.exports = {
    ],
    experimental: {
       outputFileTracingRoot: path.join(__dirname, '../../'),
+      outputFileTracingIncludes: {
+         '/*': ['./node_modules/.prisma/client/**'],
+         '/api/**': ['./node_modules/.prisma/client/**'],
+      },
    },
    webpack: (config) => {
       config.resolve.modules = [

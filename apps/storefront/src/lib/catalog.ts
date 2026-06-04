@@ -1,4 +1,5 @@
 import { resolveProductImages } from '@/lib/catalog-images'
+import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import prisma from '@/lib/prisma'
 import { slugify } from '@persepolis/slugify'
 import {
@@ -102,10 +103,7 @@ function normalizeProduct(product: CatalogProduct): CatalogProduct {
    return toSerializableCatalogProduct(normalized)
 }
 
-/** Catalog without touching the database (homepage / API fallback) */
-export function getOfflineCatalogProducts(): CatalogProduct[] {
-   return DUMMY_PRODUCTS.map((dummy) => normalizeProduct(dummy))
-}
+export { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 
 function mergeMetadata(
    ...sources: Array<unknown>

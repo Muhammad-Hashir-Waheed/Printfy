@@ -14,8 +14,7 @@ import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { Heading } from '@/components/native/heading'
 import { Separator } from '@/components/native/separator'
 import { RevealOnScroll } from '@/components/ui/reveal-on-scroll'
-import { getOfflineCatalogProducts, listAllCatalogProducts } from '@/lib/catalog'
-import prisma from '@/lib/prisma'
+import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import { isVariableValid } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -175,21 +174,17 @@ export default async function Index() {
    let blogs: any[] = []
    let banners: any[] = []
 
-   try {
-      catalogProducts = await listAllCatalogProducts()
+   catalogProducts = getOfflineCatalogProducts()
 
+   try {
+      const { default: prisma } = await import('@/lib/prisma')
       blogs = await prisma.blog.findMany({
          include: { author: true },
          take: 3,
       })
-
       banners = await prisma.banner.findMany()
    } catch (error) {
       console.error('[HOME_PAGE]', error)
-   }
-
-   if (!catalogProducts.length) {
-      catalogProducts = getOfflineCatalogProducts()
    }
 
    const featured = catalogProducts.filter((p) => p.isFeatured)
