@@ -176,17 +176,6 @@ export default async function Index() {
 
    catalogProducts = getOfflineCatalogProducts()
 
-   try {
-      const { default: prisma } = await import('@/lib/prisma')
-      blogs = await prisma.blog.findMany({
-         include: { author: true },
-         take: 3,
-      })
-      banners = await prisma.banner.findMany()
-   } catch (error) {
-      console.error('[HOME_PAGE]', error)
-   }
-
    const featured = catalogProducts.filter((p) => p.isFeatured)
    const safeProducts = (
       featured.length > 0 ? featured : catalogProducts.length > 0 ? catalogProducts : dummyProducts
