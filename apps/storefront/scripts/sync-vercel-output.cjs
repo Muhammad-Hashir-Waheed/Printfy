@@ -10,6 +10,10 @@ const repoRoot = path.join(storefrontDir, '..', '..')
 const sourceDir = path.join(storefrontDir, '.next')
 const targetDir = path.join(repoRoot, '.next')
 
+const hasStorefrontVercelConfig = fs.existsSync(
+   path.join(storefrontDir, 'vercel.json')
+)
+
 if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
    process.exit(0)
 }
