@@ -1,6 +1,6 @@
 import { ImageSkeleton } from '@/components/native/icons'
 import { ProductCard } from '@/components/native/ProductCard'
-import { ProductWithIncludes } from '@/types/prisma'
+import type { ProductWithIncludes } from '@/types/prisma'
 import Link from 'next/link'
 
 export const ProductGrid = ({

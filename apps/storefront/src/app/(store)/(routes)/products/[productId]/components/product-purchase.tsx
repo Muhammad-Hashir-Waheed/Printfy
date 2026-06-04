@@ -14,7 +14,7 @@ import {
    isCustomizable,
    type CatalogProduct,
    type SelectedVariant,
-} from '@/lib/catalog'
+} from '@/lib/catalog-client'
 import { buildLineKey, getLineCount, upsertCartLine } from '@/lib/cart-lines'
 import { getLocalCart, writeLocalCart } from '@/lib/cart'
 import { CartContextProvider, useCartContext } from '@/state/Cart'

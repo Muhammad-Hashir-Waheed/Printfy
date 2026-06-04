@@ -1,6 +1,10 @@
+import { getProductType, isCustomizable } from '@/lib/catalog-client'
 import { resolveProductImages } from '@/lib/catalog-images'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
-import prisma from '@/lib/prisma'
+async function getPrisma() {
+   const { default: prisma } = await import('@/lib/prisma')
+   return prisma
+}
 import { slugify } from '@persepolis/slugify'
 import {
    DUMMY_BRANDS,
@@ -34,45 +38,8 @@ export type CatalogSearchParams = {
    page?: string
 }
 
-export type SelectedVariant = {
-   name: string
-   value: string
-   priceModifier: number
-}
-
-export function groupVariants(
-   variants: Array<{ name: string; value: string; priceModifier: number }>
-) {
-   const map = new Map<
-      string,
-      { name: string; options: Array<{ value: string; priceModifier: number }> }
-   >()
-
-   for (const variant of variants) {
-      if (!map.has(variant.name)) {
-         map.set(variant.name, { name: variant.name, options: [] })
-      }
-      const group = map.get(variant.name)!
-      if (!group.options.some((o) => o.value === variant.value)) {
-         group.options.push({
-            value: variant.value,
-            priceModifier: variant.priceModifier,
-         })
-      }
-   }
-
-   return Array.from(map.values())
-}
-
-export function getProductType(product: CatalogProduct) {
-   const meta = product.metadata as Record<string, unknown> | null
-   return typeof meta?.productType === 'string' ? meta.productType : 'General'
-}
-
-export function isCustomizable(product: CatalogProduct) {
-   const meta = product.metadata as Record<string, unknown> | null
-   return meta?.isCustomizable !== false
-}
+export type { SelectedVariant } from '@/lib/catalog-client'
+export { getProductType, groupVariants, isCustomizable } from '@/lib/catalog-client'
 
 /** Strip Dates / Prisma types so server → client components do not 500 on Vercel */
 function toSerializableCatalogProduct(product: CatalogProduct): CatalogProduct {
@@ -295,6 +262,7 @@ function sortProducts(products: CatalogProduct[], sort?: string) {
 
 export async function fetchDbProducts() {
    try {
+      const prisma = await getPrisma()
       const products = await prisma.product.findMany({
          include: {
             brand: true,
@@ -316,10 +284,10 @@ export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
       const allProducts = await listAllCatalogProducts()
       const brands = useDummy
          ? DUMMY_BRANDS
-         : await prisma.brand.findMany().catch(() => DUMMY_BRANDS)
+         : await (await getPrisma()).brand.findMany().catch(() => DUMMY_BRANDS)
       const categories = useDummy
          ? DUMMY_CATEGORIES
-         : await prisma.category.findMany().catch(() => DUMMY_CATEGORIES)
+         : await (await getPrisma()).category.findMany().catch(() => DUMMY_CATEGORIES)
 
       const filtered = filterProducts(allProducts, params)
       const sorted = sortProducts(filtered, params.sort)
@@ -362,7 +330,9 @@ export async function getCatalogProduct(
 
    if (dummy) {
       try {
-         const dbProduct = await prisma.product.findUnique({
+         const dbProduct = await (
+            await getPrisma()
+         ).product.findUnique({
             where: { id: productId },
             include: {
                brand: true,
@@ -381,7 +351,9 @@ export async function getCatalogProduct(
    }
 
    try {
-      const dbProduct = await prisma.product.findUnique({
+      const dbProduct = await (
+         await getPrisma()
+      ).product.findUnique({
          where: { id: productId },
          include: {
             brand: true,

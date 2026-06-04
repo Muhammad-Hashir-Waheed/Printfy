@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { ProductWithIncludes } from '@/types/prisma'
+import type { ProductWithIncludes } from '@/types/prisma'
 import { ProductImage } from '@/components/native/ProductImage'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
