@@ -4,7 +4,6 @@
    "cleanUrls": true,
    "installCommand": "cd ../.. && npm ci && npm ci --prefix apps/storefront",
    "buildCommand": "npm run vercel-build",
-   "outputDirectory": ".next",
    "headers": [
       {
          "source": "/fonts/Inter/Inter.woff2",

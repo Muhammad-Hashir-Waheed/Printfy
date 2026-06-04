@@ -10,9 +10,9 @@ const repoRoot = path.join(storefrontDir, '..', '..')
 const sourceDir = path.join(storefrontDir, '.next')
 const targetDir = path.join(repoRoot, '.next')
 
-const hasStorefrontVercelConfig = fs.existsSync(
-   path.join(storefrontDir, 'vercel.json')
-)
+/** Vercel project Root Directory = apps/storefront */
+const buildingFromStorefrontRoot =
+   path.resolve(process.cwd()) === path.resolve(storefrontDir)
 
 if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
    process.exit(0)
@@ -21,11 +21,6 @@ if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
 const storefrontNodeModules = path.join(storefrontDir, 'node_modules')
 const rootNodeModules = path.join(repoRoot, 'node_modules')
 
-/**
- * Monorepo root deploy: Next uses outputFileTracingRoot = repo root, so the
- * server trace expects deps under /vercel/path0/node_modules. They are
- * installed under apps/storefront/node_modules — merge them up after build.
- */
 function mergeStorefrontNodeModulesIntoRoot() {
    if (!fs.existsSync(storefrontNodeModules)) {
       return
@@ -52,13 +47,16 @@ function mergeStorefrontNodeModulesIntoRoot() {
 
 mergeStorefrontNodeModulesIntoRoot()
 
-if (hasStorefrontVercelConfig) {
+if (buildingFromStorefrontRoot) {
+   console.log('sync-vercel-output: keeping .next in apps/storefront')
    process.exit(0)
 }
 
 if (!fs.existsSync(sourceDir)) {
-   process.exit(0)
+   console.error('sync-vercel-output: missing apps/storefront/.next after build')
+   process.exit(1)
 }
 
 fs.rmSync(targetDir, { recursive: true, force: true })
 fs.cpSync(sourceDir, targetDir, { recursive: true })
+console.log('sync-vercel-output: copied apps/storefront/.next to repo root')
