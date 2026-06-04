@@ -1,4 +1,4 @@
-import { getCatalogProduct } from '@/lib/catalog'
+import { CATALOG_PRODUCT_IDS, getCatalogProduct } from '@/lib/catalog'
 import { isVariableValid } from '@/lib/utils'
 import { ChevronRightIcon } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -9,7 +9,9 @@ import { DataSection } from './components/data'
 import { ProductGallery } from './components/gallery'
 import { RelatedProducts } from './components/related-products'
 
-export const dynamic = 'force-dynamic'
+export function generateStaticParams() {
+   return CATALOG_PRODUCT_IDS.map((productId) => ({ productId }))
+}
 
 type Props = {
    params: { productId: string }

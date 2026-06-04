@@ -1,13 +1,10 @@
-import {
-   checkoutPayloadSchema,
-   DomainCheckoutError,
-   DomainOrderError,
-   executeCheckout,
-} from '@domain-checkout'
-import { ensureCatalogProductsInDb } from '@/lib/ensure-catalog-db'
-import prisma from '@/lib/prisma'
+import { checkoutPayloadSchema } from '@domain-checkout'
+import { calculatePrice, type PricingVariant } from '@domain-pricing'
+import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+
+const SHIPPING_FEE = 5
 
 const demoCheckoutSchema = checkoutPayloadSchema.extend({
    fullName: z.string().min(2),
@@ -17,65 +14,40 @@ const demoCheckoutSchema = checkoutPayloadSchema.extend({
 export async function POST(req: Request) {
    try {
       const payload = demoCheckoutSchema.parse(await req.json())
+      const catalog = getOfflineCatalogProducts()
+      const catalogById = new Map(catalog.map((p) => [p.id, p]))
 
-      await ensureCatalogProductsInDb(
-         prisma,
-         payload.items.map((item) => item.productId)
-      )
+      let subtotal = 0
 
-      const user = await prisma.user.upsert({
-         where: { phone: payload.phone },
-         create: {
-            phone: payload.phone,
-            name: payload.fullName,
-            isPhoneVerified: true,
-         },
-         update: {
-            name: payload.fullName,
-         },
-      })
+      for (const item of payload.items) {
+         const product = catalogById.get(item.productId)
+         if (!product) {
+            return new NextResponse('Cart contains invalid products', { status: 400 })
+         }
 
-      const { order, totals } = await executeCheckout({
-         prisma,
-         userId: user.id,
-         payload,
-      })
+         const variants = (item.selectedVariants ??
+            item.customDesign?.variants ??
+            []) as PricingVariant[]
 
-      const provider = await prisma.paymentProvider.upsert({
-         where: { title: 'MockGateway' },
-         create: {
-            title: 'MockGateway',
-            description: 'Demo payment provider',
-            isActive: true,
-         },
-         update: { isActive: true },
-      })
+         subtotal += calculatePrice({
+            basePrice: product.price,
+            quantity: item.count,
+            variants,
+            discount: product.discount,
+         }).total
+      }
 
-      const payment = await prisma.payment.create({
-         data: {
-            status: 'Paid',
-            refId: `DEMO-${Date.now()}`,
-            payable: totals.payable,
-            isSuccessful: true,
-            providerId: provider.id,
-            userId: user.id,
-            orderId: order.id,
-         },
-      })
-
-      await prisma.order.update({
-         where: { id: order.id },
-         data: { isPaid: true, status: 'Processing' },
-      })
-
+      const payable = subtotal + SHIPPING_FEE
+      const orderId = `demo-${Date.now()}`
+      const orderNumber = String(Math.floor(100000 + Math.random() * 899999))
       const baseUrl = new URL(req.url).origin
 
       return NextResponse.json({
-         orderId: order.id,
-         orderNumber: order.number,
-         paymentId: payment.id,
-         payable: totals.payable,
-         redirectUrl: `${baseUrl}/checkout/success?orderId=${order.id}&number=${order.number}`,
+         orderId,
+         orderNumber,
+         paymentId: `pay-${orderId}`,
+         payable,
+         redirectUrl: `${baseUrl}/checkout/success?orderId=${orderId}&number=${orderNumber}`,
       })
    } catch (error) {
       if (error instanceof z.ZodError) {
@@ -83,13 +55,6 @@ export async function POST(req: Request) {
             { message: 'Invalid checkout payload', issues: error.issues },
             { status: 400 }
          )
-      }
-
-      if (error instanceof DomainOrderError && error.code === 'INVALID_DISCOUNT_CODE') {
-         return new NextResponse('Invalid or expired discount code', { status: 400 })
-      }
-      if (error instanceof DomainCheckoutError && error.code === 'INVALID_PRODUCT') {
-         return new NextResponse('Cart contains invalid products', { status: 400 })
       }
 
       console.error('[CHECKOUT_DEMO_POST]', error)

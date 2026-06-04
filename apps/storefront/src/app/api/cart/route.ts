@@ -1,7 +1,11 @@
+import { staticApiDisabled } from '@/lib/static-api'
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {
+   const disabled = staticApiDisabled()
+   if (disabled) return disabled
+
    try {
       const userId = req.headers.get('X-USER-ID')
 
@@ -33,6 +37,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+   const disabled = staticApiDisabled()
+   if (disabled) return disabled
+
    try {
       const userId = req.headers.get('X-USER-ID')
 

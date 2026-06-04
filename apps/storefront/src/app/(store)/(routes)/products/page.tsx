@@ -18,7 +18,7 @@ export default async function Products({
    searchParams: CatalogSearchParams
 }) {
    const params = searchParams ?? {}
-   const { products, total, brands, categories, useDummy } =
+   const { products, total, brands, categories } =
       await getCatalogSnapshot(params)
 
    const filterParams: Record<string, string | undefined> = {
@@ -40,11 +40,9 @@ export default async function Products({
                title="Product catalog"
                description="Browse apparel, bags, packaging, and more — filter like a print shop and customize any item."
             />
-            {useDummy ? (
-               <Badge variant="secondary" className="w-fit rounded-2xl">
-                  Demo catalog
-               </Badge>
-            ) : null}
+            <Badge variant="secondary" className="w-fit rounded-2xl">
+               Demo catalog (no database)
+            </Badge>
          </div>
 
          <div className="mb-4 block lg:hidden">

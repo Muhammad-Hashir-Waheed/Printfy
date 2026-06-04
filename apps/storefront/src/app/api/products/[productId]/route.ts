@@ -1,8 +1,6 @@
 import { getCatalogProduct } from '@/lib/catalog'
 import { NextResponse } from 'next/server'
 
-export const dynamic = 'force-dynamic'
-
 export async function GET(
    _req: Request,
    { params }: { params: { productId: string } }

@@ -1,10 +1,6 @@
 import { getProductType, isCustomizable } from '@/lib/catalog-client'
 import { resolveProductImages } from '@/lib/catalog-images'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
-async function getPrisma() {
-   const { default: prisma } = await import('@/lib/prisma')
-   return prisma
-}
 import { slugify } from '@persepolis/slugify'
 import {
    DUMMY_BRANDS,
@@ -16,13 +12,10 @@ import {
 
 export type { CatalogProduct }
 
-/** Stable storefront product slugs (all PDP routes use these ids) */
 export const CATALOG_PRODUCT_IDS = DUMMY_PRODUCTS.map((p) => p.id)
 
-const CATALOG_ID_SET = new Set(CATALOG_PRODUCT_IDS)
-
 export function isCatalogProductId(productId: string) {
-   return CATALOG_ID_SET.has(productId)
+   return CATALOG_PRODUCT_IDS.includes(productId)
 }
 
 export type CatalogSearchParams = {
@@ -40,8 +33,8 @@ export type CatalogSearchParams = {
 
 export type { SelectedVariant } from '@/lib/catalog-client'
 export { getProductType, groupVariants, isCustomizable } from '@/lib/catalog-client'
+export { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 
-/** Strip Dates / Prisma types so server → client components do not 500 on Vercel */
 function toSerializableCatalogProduct(product: CatalogProduct): CatalogProduct {
    return JSON.parse(
       JSON.stringify(product, (_key, value) => {
@@ -70,8 +63,6 @@ function normalizeProduct(product: CatalogProduct): CatalogProduct {
    return toSerializableCatalogProduct(normalized)
 }
 
-export { getOfflineCatalogProducts } from '@/lib/catalog-offline'
-
 function mergeMetadata(
    ...sources: Array<unknown>
 ): CatalogProduct['metadata'] {
@@ -84,7 +75,6 @@ function mergeMetadata(
    return merged as CatalogProduct['metadata']
 }
 
-/** Keep DB rows in sync with catalog dummy (images, copy, variants) by stable product id */
 export function mergeWithCatalogDefaults(product: CatalogProduct): CatalogProduct {
    const dummy = DUMMY_PRODUCTS.find((entry) => entry.id === product.id)
    if (!dummy) {
@@ -107,66 +97,6 @@ export function mergeWithCatalogDefaults(product: CatalogProduct): CatalogProduc
    }
 
    return normalizeProduct(merged)
-}
-
-function safeCatalogProduct(product: CatalogProduct): CatalogProduct | null {
-   try {
-      return mergeWithCatalogDefaults(product)
-   } catch {
-      const dummy = DUMMY_PRODUCTS.find((entry) => entry.id === product.id)
-      return dummy ? normalizeProduct(dummy) : null
-   }
-}
-
-/** Dummy catalog row + optional DB overlay (price/stock/variants) */
-function overlayDbOnDummy(
-   dummy: CatalogProduct,
-   db: CatalogProduct | null | undefined
-): CatalogProduct {
-   if (!db) {
-      return normalizeProduct(dummy)
-   }
-
-   return (
-      safeCatalogProduct({
-         ...(dummy as CatalogProduct),
-         price: Number(db.price) || dummy.price,
-         discount: Number(db.discount) ?? dummy.discount,
-         stock: db.stock ?? dummy.stock,
-         isAvailable: db.isAvailable ?? dummy.isAvailable,
-         isFeatured: db.isFeatured ?? dummy.isFeatured,
-         variants: db.variants?.length ? db.variants : dummy.variants,
-      }) ?? normalizeProduct(dummy)
-   )
-}
-
-/**
- * Full POD catalog: always every dummy product, merged with DB when available.
- * Production stays usable even when Prisma/DB is down or partially seeded.
- */
-export async function listAllCatalogProducts(): Promise<CatalogProduct[]> {
-   try {
-      const dbProducts = await fetchDbProducts()
-      const dbById = new Map(
-         dbProducts.map((p) => [p.id, p as CatalogProduct])
-      )
-
-      const catalog = DUMMY_PRODUCTS.map((dummy) =>
-         overlayDbOnDummy(dummy, dbById.get(dummy.id))
-      )
-
-      for (const db of dbProducts) {
-         if (!CATALOG_ID_SET.has(db.id)) {
-            const safe = safeCatalogProduct(db as CatalogProduct)
-            if (safe) catalog.push(safe)
-         }
-      }
-
-      return catalog
-   } catch (error) {
-      console.error('[CATALOG_LIST]', error)
-      return getOfflineCatalogProducts()
-   }
 }
 
 function filterProducts(
@@ -260,66 +190,25 @@ function sortProducts(products: CatalogProduct[], sort?: string) {
    }
 }
 
-export async function fetchDbProducts() {
-   try {
-      const prisma = await getPrisma()
-      const products = await prisma.product.findMany({
-         include: {
-            brand: true,
-            categories: true,
-            variants: true,
-         },
-      })
-      return products as CatalogProduct[]
-   } catch {
-      return []
-   }
+export async function listAllCatalogProducts(): Promise<CatalogProduct[]> {
+   return getOfflineCatalogProducts()
 }
 
 export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
-   try {
-      const dbProducts = await fetchDbProducts()
-      const useDummy = dbProducts.length === 0
+   const allProducts = getOfflineCatalogProducts()
+   const filtered = filterProducts(allProducts, params)
+   const sorted = sortProducts(filtered, params.sort)
+   const page = Math.max(1, Number(params.page) || 1)
+   const pageSize = 12
+   const products = sorted.slice((page - 1) * pageSize, page * pageSize)
 
-      const allProducts = await listAllCatalogProducts()
-      const brands = useDummy
-         ? DUMMY_BRANDS
-         : await (await getPrisma()).brand.findMany().catch(() => DUMMY_BRANDS)
-      const categories = useDummy
-         ? DUMMY_CATEGORIES
-         : await (await getPrisma()).category.findMany().catch(() => DUMMY_CATEGORIES)
-
-      const filtered = filterProducts(allProducts, params)
-      const sorted = sortProducts(filtered, params.sort)
-      const page = Math.max(1, Number(params.page) || 1)
-      const pageSize = 12
-      const products = sorted.slice((page - 1) * pageSize, page * pageSize)
-
-      return {
-         products,
-         total: sorted.length,
-         brands,
-         categories,
-         productTypes: DUMMY_PRODUCT_TYPES,
-         useDummy,
-      }
-   } catch (error) {
-      console.error('[CATALOG_SNAPSHOT]', error)
-      const allProducts = getOfflineCatalogProducts()
-      const filtered = filterProducts(allProducts, params)
-      const sorted = sortProducts(filtered, params.sort)
-      const page = Math.max(1, Number(params.page) || 1)
-      const pageSize = 12
-      const products = sorted.slice((page - 1) * pageSize, page * pageSize)
-
-      return {
-         products,
-         total: sorted.length,
-         brands: DUMMY_BRANDS,
-         categories: DUMMY_CATEGORIES,
-         productTypes: DUMMY_PRODUCT_TYPES,
-         useDummy: true,
-      }
+   return {
+      products,
+      total: sorted.length,
+      brands: DUMMY_BRANDS,
+      categories: DUMMY_CATEGORIES,
+      productTypes: DUMMY_PRODUCT_TYPES,
+      useDummy: true,
    }
 }
 
@@ -327,48 +216,7 @@ export async function getCatalogProduct(
    productId: string
 ): Promise<CatalogProduct | null> {
    const dummy = DUMMY_PRODUCTS.find((p) => p.id === productId)
-
-   if (dummy) {
-      try {
-         const dbProduct = await (
-            await getPrisma()
-         ).product.findUnique({
-            where: { id: productId },
-            include: {
-               brand: true,
-               categories: true,
-               variants: true,
-            },
-         })
-         return overlayDbOnDummy(
-            dummy,
-            dbProduct ? (dbProduct as CatalogProduct) : null
-         )
-      } catch (error) {
-         console.error('[CATALOG_PRODUCT]', productId, error)
-         return normalizeProduct(dummy)
-      }
-   }
-
-   try {
-      const dbProduct = await (
-         await getPrisma()
-      ).product.findUnique({
-         where: { id: productId },
-         include: {
-            brand: true,
-            categories: true,
-            variants: true,
-         },
-      })
-      if (dbProduct) {
-         return safeCatalogProduct(dbProduct as CatalogProduct)
-      }
-   } catch (error) {
-      console.error('[CATALOG_PRODUCT]', productId, error)
-   }
-
-   return null
+   return dummy ? normalizeProduct(dummy) : null
 }
 
 export async function getRelatedProducts(
@@ -376,7 +224,7 @@ export async function getRelatedProducts(
    limit = 4
 ): Promise<CatalogProduct[]> {
    const categoryTitle = product.categories?.[0]?.title
-   const pool = await listAllCatalogProducts()
+   const pool = getOfflineCatalogProducts()
 
    return pool
       .filter(

@@ -15,9 +15,8 @@ import { Heading } from '@/components/native/heading'
 import { Separator } from '@/components/native/separator'
 import { RevealOnScroll } from '@/components/ui/reveal-on-scroll'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
+import { getStaticBlogs } from '@/lib/static-blogs'
 import { isVariableValid } from '@/lib/utils'
-
-export const dynamic = 'force-dynamic'
 
 const dummyBanners = [
    {
@@ -139,55 +138,14 @@ const dummyProducts: any[] = [
    },
 ]
 
-const dummyBlogs: any[] = [
-   {
-      slug: 'how-to-build-merch-brand',
-      title: 'How to build your merch brand in 7 days',
-      description: 'A practical launch checklist for creators.',
-      image:
-         'https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1200&auto=format&fit=crop',
-      author: { name: 'Fannify Team' },
-      createdAt: new Date(),
-   },
-   {
-      slug: 'best-products-for-first-store',
-      title: 'Best print products for your first store',
-      description: 'Simple, high-conversion catalog picks.',
-      image:
-         'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop',
-      author: { name: 'Fannify Team' },
-      createdAt: new Date(),
-   },
-   {
-      slug: 'how-to-design-for-print',
-      title: 'Design rules for crisp print quality',
-      description: 'Avoid blurry prints and improve outcomes.',
-      image:
-         'https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=1200&auto=format&fit=crop',
-      author: { name: 'Fannify Team' },
-      createdAt: new Date(),
-   },
-]
-
-export default async function Index() {
-   let catalogProducts: any[] = []
-   let blogs: any[] = []
-   let banners: any[] = []
-
-   catalogProducts = getOfflineCatalogProducts()
-
+export default function Index() {
+   const catalogProducts = getOfflineCatalogProducts()
    const featured = catalogProducts.filter((p) => p.isFeatured)
    const safeProducts = (
       featured.length > 0 ? featured : catalogProducts.length > 0 ? catalogProducts : dummyProducts
    ).slice(0, 8)
-   const safeBlogs = (blogs.length > 0 ? blogs : dummyBlogs).map((post) => ({
-      ...post,
-      createdAt:
-         post.createdAt instanceof Date
-            ? post.createdAt.toISOString()
-            : post.createdAt,
-   }))
-   const safeBanners = banners.length > 0 ? banners : dummyBanners
+   const safeBlogs = getStaticBlogs()
+   const safeBanners = dummyBanners
 
    return (
       <div className="flex flex-col border-neutral-200 dark:border-neutral-700">
