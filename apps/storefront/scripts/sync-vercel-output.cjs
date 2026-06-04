@@ -10,10 +10,6 @@ const repoRoot = path.join(storefrontDir, '..', '..')
 const sourceDir = path.join(storefrontDir, '.next')
 const targetDir = path.join(repoRoot, '.next')
 
-/** Vercel project Root Directory = apps/storefront */
-const buildingFromStorefrontRoot =
-   path.resolve(process.cwd()) === path.resolve(storefrontDir)
-
 if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
    process.exit(0)
 }
@@ -37,26 +33,25 @@ function mergeStorefrontNodeModulesIntoRoot() {
       const to = path.join(rootNodeModules, name)
 
       try {
-         fs.cpSync(from, to, { recursive: true })
+         fs.cpSync(from, to, { recursive: true, force: true })
       } catch (err) {
-         console.error(`sync-vercel-output: failed to copy ${name}:`, err.message)
-         process.exit(1)
+         console.warn(`sync-vercel-output: skip ${name}:`, err.message)
       }
    }
 }
 
 mergeStorefrontNodeModulesIntoRoot()
 
-if (buildingFromStorefrontRoot) {
-   console.log('sync-vercel-output: keeping .next in apps/storefront')
-   process.exit(0)
-}
-
-if (!fs.existsSync(sourceDir)) {
-   console.error('sync-vercel-output: missing apps/storefront/.next after build')
+if (!fs.existsSync(path.join(sourceDir, 'routes-manifest.json'))) {
+   console.error(
+      'sync-vercel-output: missing routes-manifest.json in apps/storefront/.next'
+   )
    process.exit(1)
 }
 
 fs.rmSync(targetDir, { recursive: true, force: true })
 fs.cpSync(sourceDir, targetDir, { recursive: true })
-console.log('sync-vercel-output: copied apps/storefront/.next to repo root')
+
+console.log(
+   'sync-vercel-output: copied apps/storefront/.next -> repo root .next (for Vercel path0)'
+)
