@@ -52,6 +52,10 @@ function mergeStorefrontNodeModulesIntoRoot() {
 
 mergeStorefrontNodeModulesIntoRoot()
 
+if (hasStorefrontVercelConfig) {
+   process.exit(0)
+}
+
 if (!fs.existsSync(sourceDir)) {
    process.exit(0)
 }
