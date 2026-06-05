@@ -1,6 +1,7 @@
 import { Separator } from '@/components/native/separator'
 import { Badge } from '@/components/ui/badge'
 import type { CatalogProduct } from '@/lib/catalog'
+import { buildCatalogHref } from '@/lib/catalog-navigation'
 import Link from 'next/link'
 
 import { ProductPurchase } from './product-purchase'
@@ -22,15 +23,22 @@ export const DataSection = ({ product }: { product: CatalogProduct }) => {
 
          <div className="flex flex-wrap gap-2 items-center text-sm">
             <span className="text-muted-foreground">Brand:</span>
-            <Link href={`/products?brand=${product?.brand?.title?.toLowerCase()}`}>
+            <Link
+               href={buildCatalogHref({
+                  brand: product?.brand?.title ?? '',
+               })}
+            >
                <Badge variant="outline">{product?.brand?.title}</Badge>
             </Link>
          </div>
 
          <div className="flex flex-wrap gap-2 items-center text-sm">
             <span className="text-muted-foreground">Categories:</span>
-            {product.categories?.map(({ title }, index) => (
-               <Link key={index} href={`/products?category=${title.toLowerCase()}`}>
+            {product.categories?.map(({ title }) => (
+               <Link
+                  key={title}
+                  href={buildCatalogHref({ category: title })}
+               >
                   <Badge variant="outline">{title}</Badge>
                </Link>
             ))}

@@ -1,6 +1,7 @@
 'use client'
 
 import { DUMMY_PRODUCT_TYPES } from '@/lib/catalog-dummy'
+import { productTypeFilterSlug } from '@/lib/catalog-navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -104,7 +105,7 @@ export function ProductTypeFilter({ initial }: { initial?: string }) {
          <SelectContent>
             <SelectItem value="all">All product types</SelectItem>
             {DUMMY_PRODUCT_TYPES.map((type) => (
-               <SelectItem key={type} value={type.toLowerCase()}>
+               <SelectItem key={type} value={productTypeFilterSlug(type)}>
                   {type}
                </SelectItem>
             ))}

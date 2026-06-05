@@ -1,4 +1,5 @@
-import { CATALOG_PRODUCT_IDS, getCatalogProduct } from '@/lib/catalog'
+import { CATALOG_PRODUCT_IDS, getCatalogProduct, getProductType } from '@/lib/catalog'
+import { buildCatalogHref } from '@/lib/catalog-navigation'
 import { isVariableValid } from '@/lib/utils'
 import { ChevronRightIcon } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -69,7 +70,17 @@ const ImageColumn = ({ product }: { product: { id: string; images?: string[] } }
    )
 }
 
-const Breadcrumbs = ({ product }: { product: { title?: string } }) => {
+const Breadcrumbs = ({
+   product,
+}: {
+   product: {
+      title?: string
+      categories?: Array<{ title: string }>
+   }
+}) => {
+   const category = product.categories?.[0]
+   const productType = getProductType(product as any)
+
    return (
       <nav className="flex text-muted-foreground" aria-label="Breadcrumb">
          <ol className="inline-flex flex-wrap items-center gap-2">
@@ -84,6 +95,28 @@ const Breadcrumbs = ({ product }: { product: { title?: string } }) => {
                   Products
                </Link>
             </li>
+            {category ? (
+               <li className="flex items-center gap-2">
+                  <ChevronRightIcon className="h-4 w-4" />
+                  <Link
+                     href={buildCatalogHref({ category: category.title })}
+                     className="text-sm font-medium hover:underline"
+                  >
+                     {category.title}
+                  </Link>
+               </li>
+            ) : null}
+            {productType ? (
+               <li className="flex items-center gap-2">
+                  <ChevronRightIcon className="h-4 w-4" />
+                  <Link
+                     href={buildCatalogHref({ productType })}
+                     className="text-sm font-medium hover:underline"
+                  >
+                     {productType}
+                  </Link>
+               </li>
+            ) : null}
             <li className="flex items-center gap-2" aria-current="page">
                <ChevronRightIcon className="h-4 w-4" />
                <span className="text-sm font-medium">{product?.title}</span>

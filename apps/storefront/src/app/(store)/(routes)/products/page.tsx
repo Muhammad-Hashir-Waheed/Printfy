@@ -7,10 +7,10 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/s
 import { getCatalogSnapshot, type CatalogSearchParams } from '@/lib/catalog'
 import { isVariableValid } from '@/lib/utils'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import { CatalogFiltersPanel } from './components/catalog-filters'
-
-export const dynamic = 'force-dynamic'
+import { CategoryBrowseBar } from './components/category-browse'
 
 export default async function Products({
    searchParams,
@@ -18,8 +18,21 @@ export default async function Products({
    searchParams: CatalogSearchParams
 }) {
    const params = searchParams ?? {}
-   const { products, total, brands, categories } =
-      await getCatalogSnapshot(params)
+
+   let snapshot = {
+      products: [] as Awaited<ReturnType<typeof getCatalogSnapshot>>['products'],
+      total: 0,
+      brands: [] as Awaited<ReturnType<typeof getCatalogSnapshot>>['brands'],
+      categories: [] as Awaited<ReturnType<typeof getCatalogSnapshot>>['categories'],
+   }
+
+   try {
+      snapshot = await getCatalogSnapshot(params)
+   } catch (error) {
+      console.error('[PRODUCTS_PAGE]', error)
+   }
+
+   const { products, total, brands, categories } = snapshot
 
    const filterParams: Record<string, string | undefined> = {
       q: params.q,
@@ -45,6 +58,11 @@ export default async function Products({
             </Badge>
          </div>
 
+         <CategoryBrowseBar
+            activeCategory={params.category}
+            activeProductType={params.productType}
+         />
+
          <div className="mb-4 block lg:hidden">
             <Sheet>
                <SheetTrigger asChild>
@@ -57,22 +75,30 @@ export default async function Products({
                   className="h-full w-[min(100%,320px)] overflow-y-auto p-4"
                >
                   <SheetTitle className="mb-4">Product filters</SheetTitle>
-                  <CatalogFiltersPanel
-                     categories={categories}
-                     brands={brands}
-                     searchParams={filterParams}
-                  />
+                  <Suspense fallback={<p className="text-sm text-muted-foreground">Loading filters…</p>}>
+                     <CatalogFiltersPanel
+                        categories={categories}
+                        brands={brands}
+                        searchParams={filterParams}
+                     />
+                  </Suspense>
                </SheetContent>
             </Sheet>
          </div>
 
          <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-            <CatalogFiltersPanel
-               className="hidden lg:block lg:sticky lg:top-24 lg:self-start"
-               categories={categories}
-               brands={brands}
-               searchParams={filterParams}
-            />
+            <Suspense
+               fallback={
+                  <aside className="hidden h-64 animate-pulse rounded-2xl border bg-muted/30 lg:block" />
+               }
+            >
+               <CatalogFiltersPanel
+                  className="hidden lg:block lg:sticky lg:top-24 lg:self-start"
+                  categories={categories}
+                  brands={brands}
+                  searchParams={filterParams}
+               />
+            </Suspense>
 
             <div>
                <p className="mb-4 text-sm text-muted-foreground">

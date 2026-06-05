@@ -225,7 +225,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       isFeatured: false,
       brandId: 'brand-studio',
       brand: DUMMY_BRANDS[1] as any,
-      categories: [DUMMY_CATEGORIES[2] as any],
+      categories: [DUMMY_CATEGORIES[3] as any],
       variants: variants('mailer-box', {
          Size: { values: ['Small', 'Medium', 'Large'], modifiers: [0, 1.5, 3] },
       }),
@@ -247,7 +247,7 @@ export const DUMMY_PRODUCTS: CatalogProduct[] = [
       isFeatured: true,
       brandId: 'brand-fannify',
       brand: DUMMY_BRANDS[0] as any,
-      categories: [DUMMY_CATEGORIES[2] as any],
+      categories: [DUMMY_CATEGORIES[3] as any],
       variants: variants('sticker-pack', {
          Finish: { values: ['Matte', 'Gloss'], modifiers: [0, 0.5] },
          Size: { values: ['3×3 in', '4×4 in'], modifiers: [0, 1] },

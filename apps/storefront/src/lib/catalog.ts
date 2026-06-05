@@ -142,9 +142,15 @@ function filterProducts(
    }
 
    if (productType) {
-      filtered = filtered.filter(
-         (p) => getProductType(p).toLowerCase() === productType
-      )
+      const wanted = decodeURIComponent(productType).trim().toLowerCase()
+      filtered = filtered.filter((p) => {
+         const type = getProductType(p)
+         return (
+            type.toLowerCase() === wanted ||
+            slugify(type) === wanted ||
+            type.toLowerCase().includes(wanted)
+         )
+      })
    }
 
    if (onlyAvailable) {
