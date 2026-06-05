@@ -1,7 +1,7 @@
 import { getProductType, isCustomizable } from '@/lib/catalog-client'
 import { resolveProductImages } from '@/lib/catalog-images'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
-import { slugify } from '@persepolis/slugify'
+import { slugifyText } from '@/lib/slug'
 import {
    DUMMY_BRANDS,
    DUMMY_CATEGORIES,
@@ -126,7 +126,7 @@ function filterProducts(
    if (brand) {
       filtered = filtered.filter(
          (p) =>
-            slugify(p.brand?.title ?? '') === brand ||
+            slugifyText(p.brand?.title ?? '') === brand ||
             p.brand?.title?.toLowerCase().includes(brand)
       )
    }
@@ -135,20 +135,28 @@ function filterProducts(
       filtered = filtered.filter((p) =>
          p.categories?.some(
             (c) =>
-               slugify(c.title) === category ||
+               slugifyText(c.title) === category ||
                c.title.toLowerCase().includes(category)
          )
       )
    }
 
    if (productType) {
-      const wanted = decodeURIComponent(productType).trim().toLowerCase()
+      let wanted = productType.trim().toLowerCase()
+      try {
+         wanted = decodeURIComponent(wanted).trim().toLowerCase()
+      } catch {
+         /* use raw param */
+      }
       filtered = filtered.filter((p) => {
          const type = getProductType(p)
+         const typeLower = type.toLowerCase()
+         const typeSlug = slugifyText(type)
          return (
-            type.toLowerCase() === wanted ||
-            slugify(type) === wanted ||
-            type.toLowerCase().includes(wanted)
+            typeLower === wanted ||
+            typeSlug === wanted ||
+            typeSlug === slugifyText(wanted) ||
+            typeLower.includes(wanted)
          )
       })
    }
@@ -205,7 +213,7 @@ export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
    const filtered = filterProducts(allProducts, params)
    const sorted = sortProducts(filtered, params.sort)
    const page = Math.max(1, Number(params.page) || 1)
-   const pageSize = 12
+   const pageSize = 48
    const products = sorted.slice((page - 1) * pageSize, page * pageSize)
 
    return {

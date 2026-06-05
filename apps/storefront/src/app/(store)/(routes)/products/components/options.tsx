@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { cn, isVariableValid } from '@/lib/utils'
-import { slugify } from '@persepolis/slugify'
+import { slugifyText } from '@/lib/slug'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -86,7 +86,7 @@ export function CategoriesCombobox({ categories, initialCategory }) {
 
    function getCategoryTitle() {
       for (const category of categories) {
-         if (slugify(category.title) === slugify(value)) return category.title
+         if (slugifyText(category.title) === slugifyText(value)) return category.title
       }
    }
 
@@ -168,7 +168,7 @@ export function BrandCombobox({ brands, initialBrand }) {
 
    function getBrandTitle() {
       for (const brand of brands) {
-         if (slugify(brand.title) === slugify(value)) return brand.title
+         if (slugifyText(brand.title) === slugifyText(value)) return brand.title
       }
    }
 

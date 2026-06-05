@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { cn, isVariableValid } from '@/lib/utils'
-import { slugify } from '@persepolis/slugify'
+import { slugifyText } from '@/lib/slug'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -134,7 +134,7 @@ export function CategoryFilter({
          <SelectContent>
             <SelectItem value="all">All categories</SelectItem>
             {categories.map((c) => (
-               <SelectItem key={c.title} value={slugify(c.title)}>
+               <SelectItem key={c.title} value={slugifyText(c.title)}>
                   {c.title}
                </SelectItem>
             ))}
@@ -163,7 +163,7 @@ export function BrandFilter({
          <SelectContent>
             <SelectItem value="all">All brands</SelectItem>
             {brands.map((b) => (
-               <SelectItem key={b.title} value={slugify(b.title)}>
+               <SelectItem key={b.title} value={slugifyText(b.title)}>
                   {b.title}
                </SelectItem>
             ))}

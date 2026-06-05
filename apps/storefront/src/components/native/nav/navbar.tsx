@@ -53,6 +53,12 @@ export function Navbar() {
             </form>
 
             <div className="ml-auto flex items-center gap-4">
+               <Link
+                  href="/products/gallery"
+                  className="hidden text-sm text-foreground/80 md:inline-block"
+               >
+                  Products
+               </Link>
                <Link href="/cart" className="hidden text-sm text-foreground/80 md:inline-block">
                   My cart
                </Link>
@@ -106,6 +112,12 @@ export function Navbar() {
                               </div>
                            </form>
                            <div className="space-y-2">
+                              <Link
+                                 href="/products/gallery"
+                                 className="block text-sm text-foreground/80"
+                              >
+                                 Products
+                              </Link>
                               <Link href="/cart" className="block text-sm text-foreground/80">
                                  My cart
                               </Link>

@@ -1,15 +1,14 @@
-import { slugify } from '@persepolis/slugify'
-
 import { DUMMY_CATEGORIES, DUMMY_PRODUCT_TYPES } from '@/lib/catalog-dummy'
+import { slugifyText } from '@/lib/slug'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import { getProductType } from '@/lib/catalog-client'
 
 export function categoryFilterSlug(title: string) {
-   return slugify(title)
+   return slugifyText(title)
 }
 
 export function brandFilterSlug(title: string) {
-   return slugify(title)
+   return slugifyText(title)
 }
 
 export function productTypeFilterSlug(type: string) {
