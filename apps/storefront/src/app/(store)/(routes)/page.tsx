@@ -5,11 +5,13 @@ import {
 import Carousel from '@/components/native/Carousel'
 import { HeroSection } from '@/components/native/landing/hero-section'
 import {
+   FastFoodPackagingSection,
    GlobalReachSection,
    IntegrationsSection,
    ProductShowcaseSection,
    ProfitEstimatorSection,
 } from '@/components/native/landing/premium-sections'
+import { getProductType } from '@/lib/catalog-client'
 import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { Heading } from '@/components/native/heading'
 import { Separator } from '@/components/native/separator'
@@ -140,9 +142,19 @@ const dummyProducts: any[] = [
 
 export default function Index() {
    const catalogProducts = getOfflineCatalogProducts()
+   const packaging = catalogProducts.filter(
+      (p) => getProductType(p) === 'Fast Food Packaging'
+   )
+   const apparel = catalogProducts.filter((p) =>
+      ['T-Shirts', 'Hoodies'].includes(getProductType(p))
+   )
    const featured = catalogProducts.filter((p) => p.isFeatured)
+   const mixed =
+      packaging.length > 0 || apparel.length > 0
+         ? [...packaging.slice(0, 4), ...apparel.slice(0, 4)]
+         : featured
    const safeProducts = (
-      featured.length > 0 ? featured : catalogProducts.length > 0 ? catalogProducts : dummyProducts
+      mixed.length > 0 ? mixed : catalogProducts.length > 0 ? catalogProducts : dummyProducts
    ).slice(0, 8)
    const safeBlogs = getStaticBlogs()
    const safeBanners = dummyBanners
@@ -155,6 +167,10 @@ export default function Index() {
 
          <RevealOnScroll>
             <Carousel images={safeBanners.map((obj) => obj.image)} />
+         </RevealOnScroll>
+
+         <RevealOnScroll>
+            <FastFoodPackagingSection />
          </RevealOnScroll>
 
          <RevealOnScroll>
@@ -177,7 +193,7 @@ export default function Index() {
             <Separator className="my-8" />
             <Heading
                title="Trending products"
-               description="Best-selling print products available for instant customization."
+               description="Custom fast food packaging and bestselling apparel — ready to customize."
             />
             {isVariableValid(safeProducts) ? (
                <ProductGrid products={safeProducts} />

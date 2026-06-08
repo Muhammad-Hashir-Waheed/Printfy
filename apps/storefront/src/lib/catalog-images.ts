@@ -23,6 +23,11 @@ export const CATALOG_IMAGES = {
    cap: `https://images.unsplash.com/photo-1560250097-0b93528c311a?${q}`,
    phone: `https://images.unsplash.com/photo-1601593346740-925612772716?${q}`,
    sticker: `https://images.unsplash.com/photo-1611162617474-5b21e879e113?${q}`,
+   customBoxLarge: `https://images.unsplash.com/photo-1604719312566-8912f0863e2c?${q}`,
+   customBoxMedium: `https://images.unsplash.com/photo-1563293902-0c8e82f4c4e8?${q}`,
+   customBoxSmall: `https://images.unsplash.com/photo-1610369848071-ba2689bb9225?${q}`,
+   customPaperBag: `https://images.unsplash.com/photo-1607083206869-4bb07c11dbb0?${q}`,
+   customPackagingHero: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?${q}`,
 } as const
 
 export const DEFAULT_PRODUCT_IMAGE = CATALOG_IMAGES.product
@@ -44,6 +49,12 @@ export const PRODUCT_IMAGES_BY_ID: Record<string, string[]> = {
    'tank-top': [CATALOG_IMAGES.tank],
    'polo-shirt': [CATALOG_IMAGES.polo, CATALOG_IMAGES.teeFolded],
    sweatpants: [CATALOG_IMAGES.sweatshirt, CATALOG_IMAGES.pants],
+   'custom-pizza-box': [CATALOG_IMAGES.customBoxLarge, CATALOG_IMAGES.customPackagingHero],
+   'burger-box': [CATALOG_IMAGES.customBoxMedium, CATALOG_IMAGES.customBoxLarge],
+   'fries-carton': [CATALOG_IMAGES.customBoxSmall, CATALOG_IMAGES.customBoxMedium],
+   'meal-tray-lid': [CATALOG_IMAGES.customPackagingHero, CATALOG_IMAGES.customBoxMedium],
+   'takeout-bag': [CATALOG_IMAGES.customPaperBag, CATALOG_IMAGES.mailer],
+   'cup-carrier': [CATALOG_IMAGES.customBoxSmall, CATALOG_IMAGES.customPaperBag],
 }
 
 const BROKEN_UNSPLASH_IDS = [

@@ -40,8 +40,50 @@ export function buildCatalogHref(filters: {
    return query ? `/products?${query}` : '/products'
 }
 
+/** Fast food packaging tiles (homepage hero grid) */
+const PKG = 'q=80&w=1200&auto=format&fit=crop'
+
+export const FAST_FOOD_SHOWCASE_TILES = [
+   {
+      title: 'Pizza boxes',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'pizza' }),
+      image: `https://images.unsplash.com/photo-1604719312566-8912f0863e2c?${PKG}`,
+   },
+   {
+      title: 'Burger boxes',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'burger' }),
+      image: `https://images.unsplash.com/photo-1563293902-0c8e82f4c4e8?${PKG}`,
+   },
+   {
+      title: 'Fries cartons',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'fries' }),
+      image: `https://images.unsplash.com/photo-1610369848071-ba2689bb9225?${PKG}`,
+   },
+   {
+      title: 'Takeout bags',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'takeout' }),
+      image: `https://images.unsplash.com/photo-1607083206869-4bb07c11dbb0?${PKG}`,
+   },
+] as const
+
 /** Homepage showcase tiles → filtered catalog (not random single PDPs) */
 export const SHOWCASE_TILES = [
+   {
+      title: 'Fast food packaging',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging' }),
+      image: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?${PKG}`,
+      imageClassName: 'object-center',
+   },
+   {
+      title: 'Pizza boxes',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'pizza' }),
+      image: `https://images.unsplash.com/photo-1604719312566-8912f0863e2c?${PKG}`,
+   },
+   {
+      title: 'Burger boxes',
+      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'burger' }),
+      image: `https://images.unsplash.com/photo-1563293902-0c8e82f4c4e8?${PKG}`,
+   },
    {
       title: 'T-shirts',
       href: buildCatalogHref({ productType: 'T-Shirts' }),

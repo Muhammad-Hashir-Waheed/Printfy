@@ -57,7 +57,7 @@ export function ProductsCatalogView({
          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <Heading
                title="Product gallery"
-               description="Browse every product in our print-on-demand catalog."
+               description="Fast food packaging, apparel, bags, drinkware — browse and filter the full catalog."
             />
             <div className="flex flex-wrap gap-2">
                <Button asChild variant="outline" className="rounded-2xl">

@@ -17,16 +17,21 @@ export function HeroSection() {
                   <ToggleSwitch active={mode} onChange={setMode} />
                </div>
                <h1 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-6xl">
-                  Where dreams meet reality
+                  Custom packaging for fast food & print apparel
                </h1>
                <p className="mx-auto max-w-md text-base text-slate-600 lg:mx-0 lg:text-lg">
-                  Launch premium custom products in minutes with reliable print quality,
-                  fast fulfillment, and an ecommerce workflow built for growth.
+                  Pizza boxes, burger boxes, fries cartons, takeout bags — plus t-shirts,
+                  hoodies, and merch. Design, customize, and order in minutes.
                </p>
                <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-start">
-                  <Link href="/products" className="w-full sm:w-auto">
+                  <Link href="/products?productType=fast%20food%20packaging" className="w-full sm:w-auto">
                      <Button className="h-12 w-full rounded-lg bg-red-500 px-6 text-white shadow-md transition duration-200 hover:scale-105 hover:bg-red-600 hover:shadow-md">
-                        Get started
+                        Shop packaging
+                     </Button>
+                  </Link>
+                  <Link href="/products?productType=t-shirts" className="w-full sm:w-auto">
+                     <Button variant="outline" className="h-12 w-full rounded-lg px-6">
+                        Shop apparel
                      </Button>
                   </Link>
                   <Link
@@ -43,8 +48,8 @@ export function HeroSection() {
             <div className="relative flex items-center justify-center">
                <div className="w-full max-w-xl overflow-hidden rounded-xl shadow-2xl ring-1 ring-slate-200/80 lg:translate-y-6">
                   <img
-                     src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1400&auto=format&fit=crop"
-                     alt="Lifestyle print-on-demand scene"
+                     src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1400&auto=format&fit=crop"
+                     alt="Custom branded packaging boxes"
                      className="h-[320px] w-full object-cover sm:h-[420px] md:h-[520px]"
                   />
                </div>

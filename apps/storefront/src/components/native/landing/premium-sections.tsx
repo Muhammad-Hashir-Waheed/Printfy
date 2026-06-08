@@ -5,7 +5,11 @@ import { Card, CardContent } from '@/components/ui/card'
 import {
    ArrowRightIcon,
 } from 'lucide-react'
-import { SHOWCASE_TILES } from '@/lib/catalog-navigation'
+import {
+   buildCatalogHref,
+   FAST_FOOD_SHOWCASE_TILES,
+   SHOWCASE_TILES,
+} from '@/lib/catalog-navigation'
 import Link from 'next/link'
 
 const integrations = [
@@ -84,6 +88,62 @@ const integrations = [
    },
 ]
 
+export function FastFoodPackagingSection() {
+   return (
+      <section className="my-10 rounded-xl bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 px-4 py-10 sm:px-8">
+         <div className="mx-auto max-w-6xl">
+            <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+               <div className="space-y-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-red-600">
+                     Custom fast food packaging
+                  </p>
+                  <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
+                     Brand every box, bag & carton your customers take home
+                  </h2>
+                  <p className="max-w-lg text-slate-600">
+                     Pizza boxes, burger clamshells, fries cartons, meal trays, and takeout
+                     bags — fully customizable for restaurants, cloud kitchens, and delivery
+                     brands. Plus apparel like tees and hoodies for your crew.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                     <Link href={buildCatalogHref({ productType: 'Fast Food Packaging' })}>
+                        <Button className="rounded-md bg-red-500 text-white hover:bg-red-600">
+                           Shop packaging
+                           <ArrowRightIcon className="ml-2 h-4 w-4" />
+                        </Button>
+                     </Link>
+                     <Link href={buildCatalogHref({ productType: 'T-Shirts' })}>
+                        <Button variant="outline" className="rounded-md">
+                           Shop apparel
+                        </Button>
+                     </Link>
+                  </div>
+               </div>
+               <div className="grid grid-cols-2 gap-3">
+                  {FAST_FOOD_SHOWCASE_TILES.map((tile) => (
+                     <Link key={tile.title} href={tile.href}>
+                        <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md">
+                           <CardContent className="relative h-[140px] p-0 sm:h-[160px]">
+                              <img
+                                 src={tile.image}
+                                 alt={tile.title}
+                                 loading="lazy"
+                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                              />
+                              <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900">
+                                 {tile.title}
+                              </span>
+                           </CardContent>
+                        </Card>
+                     </Link>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </section>
+   )
+}
+
 export function ProductShowcaseSection() {
    return (
       <section className="my-8">
@@ -91,10 +151,13 @@ export function ProductShowcaseSection() {
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="col-span-1 overflow-hidden rounded-lg border-0 bg-[#072b4a] text-white shadow-sm sm:col-span-2 lg:col-span-2">
                <CardContent className="flex h-full min-h-[178px] flex-col justify-between p-6">
-                  <h2 className="max-w-[320px] text-[38px] font-bold leading-[1.05] tracking-[-0.02em] md:text-[42px]">
-                     Choose from 496 beautiful custom products
+                  <h2 className="max-w-[360px] text-[34px] font-bold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
+                     Custom packaging & print-on-demand apparel
                   </h2>
-                  <Link href="/products">
+                  <p className="mt-2 max-w-sm text-sm text-white/80">
+                     Fast food boxes, takeout bags, t-shirts, hoodies, mugs & more.
+                  </p>
+                  <Link href="/products/gallery">
                      <Button className="mt-3 h-11 rounded-md bg-red-500 px-5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-red-600">
                         See all products
                         <ArrowRightIcon className="ml-2 h-4 w-4" />
