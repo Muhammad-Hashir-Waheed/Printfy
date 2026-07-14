@@ -2,6 +2,7 @@
 
 import { ToggleSwitch } from '@/components/native/landing/toggle-switch'
 import { Button } from '@/components/ui/button'
+import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import Link from 'next/link'
 import { ArrowRightIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -46,12 +47,27 @@ export function HeroSection() {
             </div>
 
             <div className="relative flex items-center justify-center">
-               <div className="w-full max-w-xl overflow-hidden rounded-xl shadow-2xl ring-1 ring-slate-200/80 lg:translate-y-6">
-                  <img
-                     src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=1400&auto=format&fit=crop"
-                     alt="Custom branded packaging boxes"
-                     className="h-[320px] w-full object-cover sm:h-[420px] md:h-[520px]"
-                  />
+               <div className="grid w-full max-w-xl grid-cols-2 gap-3 lg:translate-y-6">
+                  <div className="overflow-hidden rounded-xl shadow-2xl ring-1 ring-slate-200/80">
+                     <img
+                        src={CATALOG_IMAGES.customBoxLarge}
+                        alt="Custom printed pizza box packaging"
+                        className="h-[200px] w-full object-cover sm:h-[260px] md:h-[320px]"
+                     />
+                     <p className="bg-white px-3 py-2 text-center text-xs font-medium text-slate-700 sm:text-sm">
+                        Pizza boxes
+                     </p>
+                  </div>
+                  <div className="overflow-hidden rounded-xl shadow-2xl ring-1 ring-slate-200/80">
+                     <img
+                        src={CATALOG_IMAGES.customBoxMedium}
+                        alt="Custom printed burger box packaging"
+                        className="h-[200px] w-full object-cover sm:h-[260px] md:h-[320px]"
+                     />
+                     <p className="bg-white px-3 py-2 text-center text-xs font-medium text-slate-700 sm:text-sm">
+                        Burger boxes
+                     </p>
+                  </div>
                </div>
             </div>
          </div>

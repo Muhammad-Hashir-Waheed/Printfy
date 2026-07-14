@@ -1,6 +1,6 @@
 'use client'
 
-import { getProductFallbackImage } from '@/lib/catalog-images'
+import { DEFAULT_PRODUCT_IMAGE, getProductFallbackImage } from '@/lib/catalog-images'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -39,6 +39,10 @@ export function ProductImage({
          onError={() => {
             if (imageSrc !== fallback) {
                setImageSrc(fallback)
+               return
+            }
+            if (imageSrc !== DEFAULT_PRODUCT_IMAGE) {
+               setImageSrc(DEFAULT_PRODUCT_IMAGE)
             }
          }}
       />

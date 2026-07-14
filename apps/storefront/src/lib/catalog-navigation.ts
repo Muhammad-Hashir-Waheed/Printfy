@@ -1,4 +1,5 @@
 import { DUMMY_CATEGORIES, DUMMY_PRODUCT_TYPES } from '@/lib/catalog-dummy'
+import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import { slugifyText } from '@/lib/slug'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import { getProductType } from '@/lib/catalog-client'
@@ -41,28 +42,26 @@ export function buildCatalogHref(filters: {
 }
 
 /** Fast food packaging tiles (homepage hero grid) */
-const PKG = 'q=80&w=1200&auto=format&fit=crop'
-
 export const FAST_FOOD_SHOWCASE_TILES = [
    {
       title: 'Pizza boxes',
       href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'pizza' }),
-      image: `https://images.unsplash.com/photo-1604719312566-8912f0863e2c?${PKG}`,
+      image: CATALOG_IMAGES.customBoxLarge,
    },
    {
       title: 'Burger boxes',
       href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'burger' }),
-      image: `https://images.unsplash.com/photo-1563293902-0c8e82f4c4e8?${PKG}`,
+      image: CATALOG_IMAGES.customBoxMedium,
    },
    {
       title: 'Fries cartons',
       href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'fries' }),
-      image: `https://images.unsplash.com/photo-1610369848071-ba2689bb9225?${PKG}`,
+      image: CATALOG_IMAGES.customBoxSmall,
    },
    {
       title: 'Takeout bags',
       href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'takeout' }),
-      image: `https://images.unsplash.com/photo-1607083206869-4bb07c11dbb0?${PKG}`,
+      image: CATALOG_IMAGES.customPaperBag,
    },
 ] as const
 
@@ -71,50 +70,45 @@ export const SHOWCASE_TILES = [
    {
       title: 'Fast food packaging',
       href: buildCatalogHref({ productType: 'Fast Food Packaging' }),
-      image: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?${PKG}`,
+      image: CATALOG_IMAGES.customPackagingHero,
       imageClassName: 'object-center',
    },
    {
       title: 'Pizza boxes',
       href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'pizza' }),
-      image: `https://images.unsplash.com/photo-1604719312566-8912f0863e2c?${PKG}`,
+      image: CATALOG_IMAGES.customBoxLarge,
    },
    {
       title: 'Burger boxes',
       href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'burger' }),
-      image: `https://images.unsplash.com/photo-1563293902-0c8e82f4c4e8?${PKG}`,
+      image: CATALOG_IMAGES.customBoxMedium,
    },
    {
       title: 'T-shirts',
       href: buildCatalogHref({ productType: 'T-Shirts' }),
-      image:
-         'https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1200&auto=format&fit=crop',
+      image: CATALOG_IMAGES.teeFolded,
       imageClassName: 'object-top',
    },
    {
       title: 'Bags',
       href: buildCatalogHref({ productType: 'Bags' }),
-      image:
-         'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1200&auto=format&fit=crop',
+      image: CATALOG_IMAGES.bag,
       imageClassName: 'object-top',
    },
    {
       title: 'Coffee mugs',
       href: buildCatalogHref({ productType: 'Drinkware' }),
-      image:
-         'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=900&auto=format&fit=crop',
+      image: CATALOG_IMAGES.mug,
    },
    {
       title: 'Embroidered shirts',
       href: buildCatalogHref({ productType: 'T-Shirts' }),
-      image:
-         'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?q=80&w=900&auto=format&fit=crop',
+      image: CATALOG_IMAGES.polo,
    },
    {
       title: 'Stickers',
       href: buildCatalogHref({ productType: 'Packaging' }),
-      image:
-         'https://images.unsplash.com/photo-1601593346740-925612772716?q=80&w=900&auto=format&fit=crop',
+      image: CATALOG_IMAGES.phone,
    },
    {
       title: 'Leggings',
@@ -125,8 +119,7 @@ export const SHOWCASE_TILES = [
    {
       title: 'Hoodies',
       href: buildCatalogHref({ productType: 'Hoodies' }),
-      image:
-         'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1200&auto=format&fit=crop',
+      image: CATALOG_IMAGES.hoodie,
    },
    {
       title: 'Flags & posters',
@@ -138,14 +131,12 @@ export const SHOWCASE_TILES = [
    {
       title: 'Pants',
       href: buildCatalogHref({ productType: 'Pants' }),
-      image:
-         'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=900&auto=format&fit=crop',
+      image: CATALOG_IMAGES.pants,
    },
    {
       title: 'Accessories',
       href: buildCatalogHref({ productType: 'Accessories' }),
-      image:
-         'https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=900&auto=format&fit=crop',
+      image: CATALOG_IMAGES.sweatshirt,
    },
 ] as const
 

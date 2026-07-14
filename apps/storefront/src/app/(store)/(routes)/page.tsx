@@ -12,6 +12,7 @@ import {
    ProfitEstimatorSection,
 } from '@/components/native/landing/premium-sections'
 import { getProductType } from '@/lib/catalog-client'
+import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { Heading } from '@/components/native/heading'
 import { Separator } from '@/components/native/separator'
@@ -21,18 +22,11 @@ import { getStaticBlogs } from '@/lib/static-blogs'
 import { isVariableValid } from '@/lib/utils'
 
 const dummyBanners = [
-   {
-      image:
-         'https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?q=80&w=1400&auto=format&fit=crop',
-   },
-   {
-      image:
-         'https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=80&w=1400&auto=format&fit=crop',
-   },
-   {
-      image:
-         'https://images.unsplash.com/photo-1618354691438-25bc04584c23?q=80&w=1400&auto=format&fit=crop',
-   },
+   { image: CATALOG_IMAGES.customPackagingHero },
+   { image: CATALOG_IMAGES.customBoxLarge },
+   { image: CATALOG_IMAGES.customBoxMedium },
+   { image: CATALOG_IMAGES.customBoxSmall },
+   { image: CATALOG_IMAGES.customPaperBag },
 ]
 
 const dummyProducts: any[] = [

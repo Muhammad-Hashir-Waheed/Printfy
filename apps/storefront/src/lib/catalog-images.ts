@@ -16,18 +16,24 @@ export const CATALOG_IMAGES = {
    tote: `https://images.unsplash.com/photo-1590874103328-eac38a683ce7?${q}`,
    bag: `https://images.unsplash.com/photo-1584917865442-de89df76afd3?${q}`,
    backpack: `https://images.unsplash.com/photo-1553062407-98eeb64c6a62?${q}`,
-   mailer: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?${q}`,
+   mailer:
+      'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=1200',
    product: `https://images.unsplash.com/photo-1523275335684-37898b6baf30?${q}`,
    mug: `https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?${q}`,
    coffee: `https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?${q}`,
    cap: `https://images.unsplash.com/photo-1560250097-0b93528c311a?${q}`,
    phone: `https://images.unsplash.com/photo-1601593346740-925612772716?${q}`,
    sticker: `https://images.unsplash.com/photo-1611162617474-5b21e879e113?${q}`,
-   customBoxLarge: `https://images.unsplash.com/photo-1604719312566-8912f0863e2c?${q}`,
-   customBoxMedium: `https://images.unsplash.com/photo-1563293902-0c8e82f4c4e8?${q}`,
-   customBoxSmall: `https://images.unsplash.com/photo-1610369848071-ba2689bb9225?${q}`,
-   customPaperBag: `https://images.unsplash.com/photo-1607083206869-4bb07c11dbb0?${q}`,
-   customPackagingHero: `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?${q}`,
+   /** Empty custom packaging product shots (local — no food) */
+   customBoxLarge: '/packaging/pizza-box.jpg',
+   customBoxMedium: '/packaging/burger-box.jpg',
+   customBoxSmall: '/packaging/fries-carton.jpg',
+   customPaperBag: '/packaging/takeout-bag.jpg',
+   /** Pizza box + burger box side by side — homepage hero */
+   customPackagingHero: '/packaging/hero-duo.jpg',
+   /** Print-on-demand apparel */
+   customPrintApparel: `https://images.unsplash.com/photo-1503341504253-dff4815485f1?${q}`,
+   customPrintTees: `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?${q}`,
 } as const
 
 export const DEFAULT_PRODUCT_IMAGE = CATALOG_IMAGES.product
@@ -67,6 +73,11 @@ const BROKEN_UNSPLASH_IDS = [
    'photo-1514228742587-6b1558fcca3e',
    'photo-1513475382585-d06e58bcb0e6',
    'photo-1588850561407-ed78c282e68b',
+   'photo-1604719312566-8912f0863e2c',
+   'photo-1563293902-0c8e82f4c4e8',
+   'photo-1610369848071-ba2689bb9225',
+   'photo-1607083206869-4bb07c11dbb0',
+   'photo-1558618666-fcd25c85cd64',
 ]
 
 export function isLikelyBrokenUnsplash(url: string) {
