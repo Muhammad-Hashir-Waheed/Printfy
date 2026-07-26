@@ -10,7 +10,11 @@ import {
    FAST_FOOD_SHOWCASE_TILES,
    SHOWCASE_TILES,
 } from '@/lib/catalog-navigation'
+import amazonLogoAsset from '@/assets/amazon.svg'
 import Link from 'next/link'
+
+const amazonLogo =
+   typeof amazonLogoAsset === 'string' ? amazonLogoAsset : amazonLogoAsset.src
 
 const integrations = [
    {
@@ -22,8 +26,7 @@ const integrations = [
    {
       name: 'Amazon',
       description: 'Scale catalog fulfillment with marketplace automation.',
-      // Self-hosted: external CDNs / URLs containing "amazon" often fail (blockers, CDN quirks)
-      logo: '/icons/amazon.svg',
+      logo: amazonLogo,
       className: 'md:left-[74%] md:top-[10%]',
    },
    {

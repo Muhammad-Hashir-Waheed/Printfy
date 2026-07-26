@@ -9,6 +9,8 @@ const storefrontDir = path.join(__dirname, '..')
 const repoRoot = path.join(storefrontDir, '..', '..')
 const sourceDir = path.join(storefrontDir, '.next')
 const targetDir = path.join(repoRoot, '.next')
+const storefrontPublicDir = path.join(storefrontDir, 'public')
+const rootPublicDir = path.join(repoRoot, 'public')
 
 if (!fs.existsSync(path.join(repoRoot, 'vercel.json'))) {
    process.exit(0)
@@ -40,7 +42,21 @@ function mergeStorefrontNodeModulesIntoRoot() {
    }
 }
 
+function syncPublicAssetsToRoot() {
+   if (!fs.existsSync(storefrontPublicDir)) {
+      console.warn('sync-vercel-output: missing apps/storefront/public')
+      return
+   }
+
+   fs.mkdirSync(rootPublicDir, { recursive: true })
+   fs.cpSync(storefrontPublicDir, rootPublicDir, { recursive: true, force: true })
+   console.log(
+      'sync-vercel-output: copied apps/storefront/public -> repo root public'
+   )
+}
+
 mergeStorefrontNodeModulesIntoRoot()
+syncPublicAssetsToRoot()
 
 if (!fs.existsSync(path.join(sourceDir, 'routes-manifest.json'))) {
    console.error(

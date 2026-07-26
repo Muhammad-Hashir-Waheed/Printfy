@@ -32,6 +32,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Monorepo Vercel sync copies storefront public here at build time
+/public
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -27,6 +27,8 @@ module.exports = {
       return config
    },
    images: {
+      // Local /public assets must resolve on Vercel monorepo root deploys
+      // (apps/storefront/public is synced to repo-root /public at build time).
       remotePatterns: [
          {
             protocol: 'https',
@@ -43,7 +45,12 @@ module.exports = {
          },
          {
             source: '/favicon.ico',
-            destination: '/favicon.svg',
+            destination: '/icon.svg',
+            permanent: false,
+         },
+         {
+            source: '/favicon.svg',
+            destination: '/icon.svg',
             permanent: false,
          },
       ]

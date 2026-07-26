@@ -1,6 +1,15 @@
 /** Verified Unsplash URLs (HEAD 200) */
+import burgerBoxImg from '@/assets/packaging/burger-box.jpg'
+import friesCartonImg from '@/assets/packaging/fries-carton.jpg'
+import heroDuoImg from '@/assets/packaging/hero-duo.jpg'
+import pizzaBoxImg from '@/assets/packaging/pizza-box.jpg'
+import takeoutBagImg from '@/assets/packaging/takeout-bag.jpg'
 
 const q = 'q=80&w=1200&auto=format&fit=crop'
+
+function assetSrc(img: string | { src: string }) {
+   return typeof img === 'string' ? img : img.src
+}
 
 export const CATALOG_IMAGES = {
    teeWhite: `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?${q}`,
@@ -24,13 +33,13 @@ export const CATALOG_IMAGES = {
    cap: `https://images.unsplash.com/photo-1560250097-0b93528c311a?${q}`,
    phone: `https://images.unsplash.com/photo-1601593346740-925612772716?${q}`,
    sticker: `https://images.unsplash.com/photo-1611162617474-5b21e879e113?${q}`,
-   /** Empty custom packaging product shots (local — no food) */
-   customBoxLarge: '/packaging/pizza-box.jpg',
-   customBoxMedium: '/packaging/burger-box.jpg',
-   customBoxSmall: '/packaging/fries-carton.jpg',
-   customPaperBag: '/packaging/takeout-bag.jpg',
+   /** Bundled packaging shots — served from /_next/static (works on Vercel monorepo) */
+   customBoxLarge: assetSrc(pizzaBoxImg),
+   customBoxMedium: assetSrc(burgerBoxImg),
+   customBoxSmall: assetSrc(friesCartonImg),
+   customPaperBag: assetSrc(takeoutBagImg),
    /** Pizza box + burger box side by side — homepage hero */
-   customPackagingHero: '/packaging/hero-duo.jpg',
+   customPackagingHero: assetSrc(heroDuoImg),
    /** Print-on-demand apparel */
    customPrintApparel: `https://images.unsplash.com/photo-1503341504253-dff4815485f1?${q}`,
    customPrintTees: `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?${q}`,
