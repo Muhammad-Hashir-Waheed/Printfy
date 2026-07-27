@@ -53,7 +53,7 @@ export function CustomizerCanvas({
 
    return (
       <div className="flex h-full min-h-[560px] items-center justify-center rounded-2xl border bg-muted/30 p-8 shadow-sm">
-         <div className="relative h-[480px] w-full max-w-[520px] overflow-hidden rounded-2xl bg-white">
+         <div className="relative h-[480px] w-full max-w-[520px] overflow-hidden rounded-2xl bg-white dark:bg-neutral-900">
             <div
                className={cn(
                   'absolute inset-0 opacity-20 transition duration-200',

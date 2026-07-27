@@ -20,7 +20,7 @@ export function ProductGallery({
 
    return (
       <div className="space-y-3">
-         <div className="relative h-[460px] w-full overflow-hidden rounded-2xl bg-white">
+         <div className="relative h-[460px] w-full overflow-hidden rounded-2xl bg-white dark:bg-neutral-900">
             <ProductImage
                productId={productId}
                src={safeImages[active]}

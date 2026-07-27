@@ -11,12 +11,16 @@ import { FormEvent, useState } from 'react'
 
 export function Navbar() {
    const router = useRouter()
-   const { resolvedTheme, setTheme } = useTheme()
+   const { setTheme, resolvedTheme } = useTheme()
    const [query, setQuery] = useState('')
 
    function onSearch(event: FormEvent) {
       event.preventDefault()
       router.push(`/products?q=${encodeURIComponent(query)}`)
+   }
+
+   function toggleTheme() {
+      setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
    }
 
    return (
@@ -29,6 +33,7 @@ export function Navbar() {
                      viewBox="0 0 24 24"
                      fill="none"
                      className="h-5 w-5"
+                     aria-hidden="true"
                   >
                      <circle cx="12" cy="12" r="10" fill="currentColor" />
                      <path d="M8 7h8v2h-6v2h5v2h-5v4H8V7Z" fill="white" />
@@ -71,16 +76,12 @@ export function Navbar() {
                <Button
                   variant="outline"
                   size="icon"
-                  className="h-9 w-9 rounded-lg"
-                  onClick={() =>
-                     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-                  }
+                  className="relative h-9 w-9 rounded-lg"
+                  onClick={toggleTheme}
+                  aria-label="Toggle theme"
                >
-                  {resolvedTheme === 'dark' ? (
-                     <SunIcon className="h-4 w-4" />
-                  ) : (
-                     <MoonIcon className="h-4 w-4" />
-                  )}
+                  <SunIcon className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <MoonIcon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                </Button>
                <Link href="/login" className="hidden text-sm text-foreground/80 sm:inline-block">
                   Sign in

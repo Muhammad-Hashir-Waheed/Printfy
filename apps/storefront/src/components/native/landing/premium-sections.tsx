@@ -93,17 +93,17 @@ const integrations = [
 
 export function FastFoodPackagingSection() {
    return (
-      <section className="my-10 rounded-xl bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 px-4 py-10 sm:px-8">
+      <section className="my-10 rounded-xl bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 px-4 py-10 dark:from-neutral-900 dark:via-neutral-900 dark:to-red-950/40 sm:px-8">
          <div className="mx-auto max-w-6xl">
             <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
                <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-red-600">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
                      Custom fast food packaging
                   </p>
-                  <h2 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
+                  <h2 className="text-3xl font-bold leading-tight text-slate-900 dark:text-white md:text-4xl">
                      Brand every box, bag & carton your customers take home
                   </h2>
-                  <p className="max-w-lg text-slate-600">
+                  <p className="max-w-lg text-slate-600 dark:text-slate-300">
                      Pizza boxes, burger clamshells, fries cartons, meal trays, and takeout
                      bags — fully customizable for restaurants, cloud kitchens, and delivery
                      brands. Plus apparel like tees and hoodies for your crew.
@@ -116,7 +116,10 @@ export function FastFoodPackagingSection() {
                         </Button>
                      </Link>
                      <Link href={buildCatalogHref({ productType: 'T-Shirts' })}>
-                        <Button variant="outline" className="rounded-md">
+                        <Button
+                           variant="outline"
+                           className="rounded-md border-slate-300 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                        >
                            Shop apparel
                         </Button>
                      </Link>
@@ -125,7 +128,7 @@ export function FastFoodPackagingSection() {
                <div className="grid grid-cols-2 gap-3">
                   {FAST_FOOD_SHOWCASE_TILES.map((tile) => (
                      <Link key={tile.title} href={tile.href}>
-                        <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md">
+                        <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900">
                            <CardContent className="relative h-[140px] p-0 sm:h-[160px]">
                               <img
                                  src={tile.image}
@@ -133,7 +136,7 @@ export function FastFoodPackagingSection() {
                                  loading="lazy"
                                  className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
                               />
-                              <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900">
+                              <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900 dark:bg-neutral-950/90 dark:text-white">
                                  {tile.title}
                               </span>
                            </CardContent>
@@ -171,7 +174,7 @@ export function ProductShowcaseSection() {
 
             {SHOWCASE_TILES.map((tile) => (
                <Link key={tile.title} href={tile.href}>
-                  <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md">
+                  <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900">
                      <CardContent className="relative h-[178px] p-0">
                         <img
                            src={tile.image}
@@ -179,7 +182,7 @@ export function ProductShowcaseSection() {
                            loading="lazy"
                            className={`h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] ${'imageClassName' in tile ? tile.imageClassName : ''}`}
                         />
-                        <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900">
+                        <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900 dark:bg-neutral-950/90 dark:text-white">
                            {tile.title}
                         </span>
                      </CardContent>
@@ -200,7 +203,7 @@ export function ProfitEstimatorSection() {
                <h2 className="text-3xl font-bold">Your passion really can pay</h2>
                <p className="text-white/85">See how much you could make</p>
             </div>
-            <div className="grid gap-5 rounded-xl bg-white p-4 text-slate-900 md:grid-cols-2 md:p-6">
+            <div className="grid gap-5 rounded-xl bg-white p-4 text-slate-900 dark:bg-neutral-900 dark:text-white md:grid-cols-2 md:p-6">
                <div className="space-y-3">
                   <p className="text-lg font-semibold">T-Shirts</p>
                   <img
@@ -214,11 +217,11 @@ export function ProfitEstimatorSection() {
                      <p className="text-muted-foreground">You buy for</p>
                      <p className="text-right font-medium">$9.25</p>
                      <p className="text-muted-foreground">You sell for</p>
-                     <p className="text-right font-medium text-green-600">$23.55</p>
+                     <p className="text-right font-medium text-green-600 dark:text-green-400">$23.55</p>
                      <p className="text-muted-foreground">Sales per day</p>
                      <p className="text-right font-medium">5</p>
                   </div>
-                  <div className="rounded-lg bg-slate-50 p-3 text-center">
+                  <div className="rounded-lg bg-slate-50 p-3 text-center dark:bg-neutral-800">
                      <p className="text-sm text-muted-foreground">Your approximate annual profit</p>
                      <p className="text-3xl font-bold">$26,097.50</p>
                   </div>
@@ -306,12 +309,15 @@ export function GlobalReachSection() {
 
 export function IntegrationsSection() {
    return (
-      <section className="my-10 rounded-xl border bg-[#f4f4f5] px-4 py-14 sm:px-8">
+      <section className="my-10 rounded-xl border bg-[#f4f4f5] px-4 py-14 dark:border-neutral-800 dark:bg-neutral-900 sm:px-8">
          <div className="mx-auto max-w-6xl">
             <div className="mt-10 grid grid-cols-4 gap-3 md:hidden">
                {integrations.slice(0, 8).map((integration) => {
                   return (
-                     <div key={integration.name} className="rounded-2xl border bg-white p-3 shadow-sm">
+                     <div
+                        key={integration.name}
+                        className="rounded-2xl border bg-white p-3 shadow-sm dark:border-neutral-700 dark:bg-neutral-950"
+                     >
                         <img
                            src={integration.logo}
                            alt={integration.name}
@@ -322,8 +328,8 @@ export function IntegrationsSection() {
                })}
             </div>
             <div className="relative hidden h-[430px] md:block">
-               <div className="absolute left-1/2 top-1/2 z-20 flex w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-2xl bg-[#f4f4f5]/95 px-6 py-5 text-center backdrop-blur-sm">
-                  <h2 className="text-4xl font-bold leading-tight text-slate-900">
+               <div className="absolute left-1/2 top-1/2 z-20 flex w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-2xl bg-[#f4f4f5]/95 px-6 py-5 text-center backdrop-blur-sm dark:bg-neutral-900/95">
+                  <h2 className="text-4xl font-bold leading-tight text-slate-900 dark:text-white">
                      Seamlessly connect to
                      <br />
                      any eCommerce site
@@ -342,7 +348,7 @@ export function IntegrationsSection() {
                      >
                         <button
                            type="button"
-                           className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:scale-110 hover:shadow-md"
+                           className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:scale-110 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-950"
                            aria-label={integration.name}
                         >
                            <img
