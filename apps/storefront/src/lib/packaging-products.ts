@@ -1,6 +1,32 @@
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
-import { PACKAGING_CATEGORIES } from '@/lib/packaging-categories'
-import type { CatalogProduct } from '@/lib/catalog-dummy'
+import { slugifyText } from '@/lib/slug'
+
+type CatalogProduct = {
+   id: string
+   title: string
+   description: string
+   images: string[]
+   keywords: string[]
+   metadata: Record<string, unknown>
+   price: number
+   discount: number
+   stock: number
+   isPhysical: boolean
+   isAvailable: boolean
+   isFeatured: boolean
+   brandId: string
+   brand: unknown
+   categories: unknown[]
+   variants?: Array<{
+      id: string
+      name: string
+      value: string
+      priceModifier: number
+      productId: string
+   }>
+   createdAt: Date
+   updatedAt: Date
+}
 
 const brand = {
    id: 'brand-fannify',
@@ -29,11 +55,10 @@ function variants(
 }
 
 function cat(title: string) {
-   const found = PACKAGING_CATEGORIES.find((c) => c.title === title)
    return {
-      id: found?.id ?? `cat-${title.toLowerCase().replace(/\s+/g, '-')}`,
+      id: `cat-${slugifyText(title)}`,
       title,
-      description: found?.description ?? title,
+      description: title,
    } as any
 }
 

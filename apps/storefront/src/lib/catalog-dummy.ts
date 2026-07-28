@@ -32,4 +32,4 @@ export const DUMMY_PRODUCT_TYPES = [
 ] as const
 
 /** Full packaging catalog — 2–3 products per category */
-export const DUMMY_PRODUCTS: CatalogProduct[] = PACKAGING_PRODUCTS
+export const DUMMY_PRODUCTS: CatalogProduct[] = PACKAGING_PRODUCTS as CatalogProduct[]
