@@ -9,7 +9,7 @@ export const ProductGrid = ({
    products: ProductWithIncludes[]
 }) => {
    return (
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      <div className="mb-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
          {products.map((product) => (
             <ProductCard product={product} key={product.id} />
          ))}

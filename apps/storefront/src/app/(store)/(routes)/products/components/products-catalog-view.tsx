@@ -56,12 +56,12 @@ export function ProductsCatalogView({
       <>
          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <Heading
-               title="Product gallery"
-               description="Fast food packaging, apparel, bags, drinkware — browse and filter the full catalog."
+               title="Packaging gallery"
+               description="Browse custom packaging — food boxes, bags, mailers, stickers & labels."
             />
             <div className="flex flex-wrap gap-2">
                <Button asChild variant="outline" className="rounded-2xl">
-                  <Link href="/products/gallery">Full gallery</Link>
+                  <Link href="/products/gallery">Full packaging gallery</Link>
                </Button>
                <Badge variant="secondary" className="rounded-2xl">
                   {total} items
@@ -78,7 +78,7 @@ export function ProductsCatalogView({
             <p className="mb-4 text-sm text-muted-foreground">
                Filtered view ·{' '}
                <Link href="/products" className="font-medium underline">
-                  show all products
+                  show all packaging
                </Link>
             </p>
          ) : null}
@@ -94,7 +94,7 @@ export function ProductsCatalogView({
                   side="left"
                   className="h-full w-[min(100%,320px)] overflow-y-auto p-4"
                >
-                  <SheetTitle className="mb-4">Product filters</SheetTitle>
+                  <SheetTitle className="mb-4">Packaging filters</SheetTitle>
                   <FiltersShell
                      categories={categories}
                      brands={brands}
@@ -104,7 +104,7 @@ export function ProductsCatalogView({
             </Sheet>
          </div>
 
-         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+         <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
             <FiltersShell
                className="hidden lg:block lg:sticky lg:top-24 lg:self-start"
                categories={categories}
@@ -112,7 +112,9 @@ export function ProductsCatalogView({
                searchParams={filterParams}
             />
 
-            <ProductGallery products={products} total={total} />
+            <div className="min-w-0">
+               <ProductGallery products={products} total={total} />
+            </div>
          </div>
       </>
    )

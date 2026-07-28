@@ -106,21 +106,21 @@ export function FastFoodPackagingSection() {
                   <p className="max-w-lg text-slate-600 dark:text-slate-300">
                      Pizza boxes, burger clamshells, fries cartons, meal trays, and takeout
                      bags — fully customizable for restaurants, cloud kitchens, and delivery
-                     brands. Plus apparel like tees and hoodies for your crew.
+                     brands.
                   </p>
                   <div className="flex flex-wrap gap-2">
-                     <Link href={buildCatalogHref({ productType: 'Fast Food Packaging' })}>
+                     <Link href={buildCatalogHref({ productType: 'Food Packaging' })}>
                         <Button className="rounded-md bg-red-500 text-white hover:bg-red-600">
                            Shop packaging
                            <ArrowRightIcon className="ml-2 h-4 w-4" />
                         </Button>
                      </Link>
-                     <Link href={buildCatalogHref({ productType: 'T-Shirts' })}>
+                     <Link href={buildCatalogHref({ productType: 'Retail Packaging' })}>
                         <Button
                            variant="outline"
                            className="rounded-md border-slate-300 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
                         >
-                           Shop apparel
+                           Shop bags
                         </Button>
                      </Link>
                   </div>
@@ -158,14 +158,14 @@ export function ProductShowcaseSection() {
             <Card className="col-span-1 overflow-hidden rounded-lg border-0 bg-[#072b4a] text-white shadow-sm sm:col-span-2 lg:col-span-2">
                <CardContent className="flex h-full min-h-[178px] flex-col justify-between p-6">
                   <h2 className="max-w-[360px] text-[34px] font-bold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
-                     Custom packaging & print-on-demand apparel
+                     Custom packaging for every brand
                   </h2>
                   <p className="mt-2 max-w-sm text-sm text-white/80">
-                     Fast food boxes, takeout bags, t-shirts, hoodies, mugs & more.
+                     Pizza boxes, burger boxes, takeout bags, mailers & more.
                   </p>
-                  <Link href="/products/gallery">
+                  <Link href={buildCatalogHref({ productType: 'Food Packaging' })}>
                      <Button className="mt-3 h-11 rounded-md bg-red-500 px-5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-red-600">
-                        See all products
+                        See all packaging
                         <ArrowRightIcon className="ml-2 h-4 w-4" />
                      </Button>
                   </Link>

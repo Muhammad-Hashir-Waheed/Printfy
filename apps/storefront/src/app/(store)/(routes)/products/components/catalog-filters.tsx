@@ -1,7 +1,6 @@
 'use client'
 
-import { DUMMY_PRODUCT_TYPES } from '@/lib/catalog-dummy'
-import { productTypeFilterSlug } from '@/lib/catalog-navigation'
+import { PACKAGING_PRODUCT_TYPES, productTypeFilterSlug } from '@/lib/catalog-navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -58,7 +57,7 @@ export function ProductSearch({ initialQ }: { initialQ?: string }) {
          <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search t-shirts, hoodies, bags..."
+            placeholder="Search pizza boxes, bags, mailers..."
             className="rounded-2xl"
          />
          <Button type="submit" className="rounded-2xl shrink-0">
@@ -103,8 +102,8 @@ export function ProductTypeFilter({ initial }: { initial?: string }) {
             <SelectValue placeholder="Product type" />
          </SelectTrigger>
          <SelectContent>
-            <SelectItem value="all">All product types</SelectItem>
-            {DUMMY_PRODUCT_TYPES.map((type) => (
+            <SelectItem value="all">All packaging types</SelectItem>
+            {PACKAGING_PRODUCT_TYPES.map((type) => (
                <SelectItem key={type} value={productTypeFilterSlug(type)}>
                   {type}
                </SelectItem>

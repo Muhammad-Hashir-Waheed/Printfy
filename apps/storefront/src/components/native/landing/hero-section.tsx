@@ -18,24 +18,24 @@ export function HeroSection() {
                   <ToggleSwitch active={mode} onChange={setMode} />
                </div>
                <h1 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-6xl">
-                  Custom packaging for fast food & print apparel
+                  Custom packaging for fast food brands
                </h1>
                <p className="mx-auto max-w-md text-base text-slate-600 dark:text-slate-300 lg:mx-0 lg:text-lg">
-                  Pizza boxes, burger boxes, fries cartons, takeout bags — plus t-shirts,
-                  hoodies, and merch. Design, customize, and order in minutes.
+                  Pizza boxes, burger boxes, fries cartons, takeout bags, mailers & more.
+                  Design, customize, and order in minutes.
                </p>
                <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-start">
-                  <Link href="/products?productType=fast%20food%20packaging" className="w-full sm:w-auto">
+                  <Link href="/products?productType=food%20packaging" className="w-full sm:w-auto">
                      <Button className="h-12 w-full rounded-lg bg-red-500 px-6 text-white shadow-md transition duration-200 hover:scale-105 hover:bg-red-600 hover:shadow-md">
                         Shop packaging
                      </Button>
                   </Link>
-                  <Link href="/products?productType=t-shirts" className="w-full sm:w-auto">
+                  <Link href="/products?productType=shipping%20packaging" className="w-full sm:w-auto">
                      <Button
                         variant="outline"
                         className="h-12 w-full rounded-lg border-slate-300 bg-white px-6 text-slate-900 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white"
                      >
-                        Shop apparel
+                        Shop mailers & boxes
                      </Button>
                   </Link>
                   <Link

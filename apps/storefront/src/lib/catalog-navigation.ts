@@ -41,104 +41,98 @@ export function buildCatalogHref(filters: {
    return query ? `/products?${query}` : '/products'
 }
 
-/** Fast food packaging tiles (homepage hero grid) */
+/** Food packaging tiles (homepage hero grid) */
 export const FAST_FOOD_SHOWCASE_TILES = [
    {
       title: 'Pizza boxes',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'pizza' }),
+      href: buildCatalogHref({ productType: 'Food Packaging', q: 'pizza' }),
       image: CATALOG_IMAGES.customBoxLarge,
    },
    {
       title: 'Burger boxes',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'burger' }),
+      href: buildCatalogHref({ productType: 'Food Packaging', q: 'burger' }),
       image: CATALOG_IMAGES.customBoxMedium,
    },
    {
       title: 'Fries cartons',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'fries' }),
+      href: buildCatalogHref({ productType: 'Food Packaging', q: 'fries' }),
       image: CATALOG_IMAGES.customBoxSmall,
    },
    {
       title: 'Takeout bags',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'takeout' }),
+      href: buildCatalogHref({ productType: 'Food Packaging', q: 'takeout' }),
       image: CATALOG_IMAGES.customPaperBag,
    },
 ] as const
 
-/** Homepage showcase tiles → filtered catalog (not random single PDPs) */
+/** Compact homepage showcase — key packaging entry points */
 export const SHOWCASE_TILES = [
    {
-      title: 'Fast food packaging',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging' }),
+      title: 'Food packaging',
+      href: buildCatalogHref({ productType: 'Food Packaging' }),
       image: CATALOG_IMAGES.customPackagingHero,
       imageClassName: 'object-center',
    },
    {
       title: 'Pizza boxes',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'pizza' }),
+      href: buildCatalogHref({ category: 'Pizza Boxes' }),
       image: CATALOG_IMAGES.customBoxLarge,
    },
    {
       title: 'Burger boxes',
-      href: buildCatalogHref({ productType: 'Fast Food Packaging', q: 'burger' }),
+      href: buildCatalogHref({ category: 'Burger Boxes' }),
       image: CATALOG_IMAGES.customBoxMedium,
    },
    {
-      title: 'T-shirts',
-      href: buildCatalogHref({ productType: 'T-Shirts' }),
-      image: CATALOG_IMAGES.teeFolded,
-      imageClassName: 'object-top',
+      title: 'Fries cartons',
+      href: buildCatalogHref({ category: 'Fries Cartons' }),
+      image: CATALOG_IMAGES.customBoxSmall,
    },
    {
-      title: 'Bags',
-      href: buildCatalogHref({ productType: 'Bags' }),
-      image: CATALOG_IMAGES.bag,
-      imageClassName: 'object-top',
+      title: 'To go bags',
+      href: buildCatalogHref({ category: 'To Go Bags' }),
+      image: CATALOG_IMAGES.customPaperBag,
    },
    {
-      title: 'Coffee mugs',
-      href: buildCatalogHref({ productType: 'Drinkware' }),
-      image: CATALOG_IMAGES.mug,
+      title: 'Mailer boxes',
+      href: buildCatalogHref({ category: 'Mailer Boxes' }),
+      image: CATALOG_IMAGES.mailer,
    },
    {
-      title: 'Embroidered shirts',
-      href: buildCatalogHref({ productType: 'T-Shirts' }),
-      image: CATALOG_IMAGES.polo,
+      title: 'Shopping bags',
+      href: buildCatalogHref({ category: 'Shopping Bags' }),
+      image: CATALOG_IMAGES.tote,
    },
    {
-      title: 'Stickers',
-      href: buildCatalogHref({ productType: 'Packaging' }),
-      image: CATALOG_IMAGES.phone,
+      title: 'Stickers & labels',
+      href: buildCatalogHref({ category: 'Stickers & Labels' }),
+      image: CATALOG_IMAGES.sticker,
    },
    {
-      title: 'Leggings',
-      href: buildCatalogHref({ productType: 'Pants' }),
-      image:
-         'https://images.pexels.com/photos/4210866/pexels-photo-4210866.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      title: 'Bakery boxes',
+      href: buildCatalogHref({ category: 'Bakery Boxes' }),
+      image: CATALOG_IMAGES.customBoxLarge,
    },
    {
-      title: 'Hoodies',
-      href: buildCatalogHref({ productType: 'Hoodies' }),
-      image: CATALOG_IMAGES.hoodie,
+      title: 'Gift boxes',
+      href: buildCatalogHref({ category: 'Gift Boxes' }),
+      image: CATALOG_IMAGES.mailer,
    },
    {
-      title: 'Flags & posters',
-      href: buildCatalogHref({ productType: 'Home & Office' }),
-      image:
-         'https://images.pexels.com/photos/4386429/pexels-photo-4386429.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      imageClassName: 'object-center',
+      title: 'Rigid boxes',
+      href: buildCatalogHref({ category: 'Rigid Boxes' }),
+      image: CATALOG_IMAGES.product,
    },
    {
-      title: 'Pants',
-      href: buildCatalogHref({ productType: 'Pants' }),
-      image: CATALOG_IMAGES.pants,
-   },
-   {
-      title: 'Accessories',
-      href: buildCatalogHref({ productType: 'Accessories' }),
-      image: CATALOG_IMAGES.sweatshirt,
+      title: 'Food containers',
+      href: buildCatalogHref({ category: 'Food Containers' }),
+      image: CATALOG_IMAGES.customBoxMedium,
    },
 ] as const
+
+export const PACKAGING_PRODUCT_TYPES = DUMMY_PRODUCT_TYPES
+
+export const PACKAGING_CATEGORY_TITLES = DUMMY_CATEGORIES.map((c) => c.title)
 
 export function getCatalogBrowseCounts() {
    const products = getOfflineCatalogProducts()

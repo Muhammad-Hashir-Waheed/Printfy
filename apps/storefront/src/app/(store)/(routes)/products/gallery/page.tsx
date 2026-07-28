@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 import { CategoryBrowseBar } from '../components/category-browse'
 
-/** Full product gallery — static list, no query params (stable on Vercel) */
+/** Full packaging gallery — static list, no query params (stable on Vercel) */
 export default function ProductsGalleryPage() {
    const products = getOfflineCatalogProducts()
 
@@ -15,8 +15,8 @@ export default function ProductsGalleryPage() {
       <>
          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <Heading
-               title="All products"
-               description="Complete gallery of every item available to customize and order."
+               title="All packaging"
+               description="Complete gallery of packaging products ready to customize and order."
             />
             <div className="flex flex-wrap gap-2">
                <Badge variant="secondary" className="rounded-2xl">
@@ -31,10 +31,12 @@ export default function ProductsGalleryPage() {
          <CategoryBrowseBar />
 
          <p className="mb-4 text-sm text-muted-foreground">
-            Tap a category above to filter, or browse the full grid below.
+            Tap a packaging category above to filter, or browse the full grid below.
          </p>
 
-         <ProductGrid products={products as any} />
+         <div className="min-w-0">
+            <ProductGrid products={products as any} />
+         </div>
       </>
    )
 }

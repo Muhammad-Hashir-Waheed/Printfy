@@ -111,7 +111,7 @@ export function resolveProductImages(
    const valid = images.filter(
       (url) =>
          typeof url === 'string' &&
-         url.startsWith('http') &&
+         (url.startsWith('http') || url.startsWith('/')) &&
          !isLikelyBrokenUnsplash(url)
    )
 
