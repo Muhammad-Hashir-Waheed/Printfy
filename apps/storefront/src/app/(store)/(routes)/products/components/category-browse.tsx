@@ -16,64 +16,79 @@ type Props = {
    activeProductType?: string
 }
 
+/** Category gallery browser — used on /products (not the landing page) */
 export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) {
    const { byCategory, byProductType } = getCatalogBrowseCounts()
    const activeCategorySlug = activeCategory?.trim().toLowerCase()
    const activeTypeSlug = activeProductType?.trim().toLowerCase()
 
    return (
-      <div className="mb-6 space-y-5">
+      <section className="mb-8 space-y-6">
          <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-               Shop by packaging category
+            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+               Shop packaging by category
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+               Click any category to open its gallery — each includes multiple related products
+               and images.
             </p>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-               <Link
-                  href="/products"
-                  className={`overflow-hidden rounded-xl border transition hover:shadow-md ${
-                     !activeCategorySlug && !activeTypeSlug
-                        ? 'border-red-600 ring-1 ring-red-600'
-                        : 'hover:border-foreground/30'
-                  }`}
-               >
-                  <div className="flex aspect-[3/1] items-center justify-center bg-muted text-sm font-semibold">
-                     All packaging
-                  </div>
-               </Link>
-               {PACKAGING_CATEGORIES.map((category) => {
-                  const slug = categoryFilterSlug(category.title)
-                  const active = activeCategorySlug === slug
-                  return (
-                     <Link
-                        key={category.id}
-                        href={category.href}
-                        className={`group overflow-hidden rounded-xl border bg-card transition hover:-translate-y-0.5 hover:shadow-md ${
-                           active ? 'border-red-600 ring-1 ring-red-600' : ''
-                        }`}
-                     >
-                        <div className="grid grid-cols-3 gap-px bg-muted">
-                           {category.images.map((src, i) => (
+         </div>
+
+         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Link
+               href="/products"
+               className={`flex min-h-[140px] flex-col items-center justify-center overflow-hidden rounded-xl border bg-muted/40 text-center transition hover:shadow-md ${
+                  !activeCategorySlug && !activeTypeSlug
+                     ? 'border-red-600 ring-1 ring-red-600'
+                     : 'hover:border-foreground/30'
+               }`}
+            >
+               <span className="text-sm font-semibold">All packaging</span>
+               <span className="mt-1 text-xs text-muted-foreground">View full catalog</span>
+            </Link>
+
+            {PACKAGING_CATEGORIES.map((category) => {
+               const slug = categoryFilterSlug(category.title)
+               const active = activeCategorySlug === slug
+               return (
+                  <Link
+                     key={category.id}
+                     href={category.href}
+                     className={`group overflow-hidden rounded-xl border bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                        active ? 'border-red-600 ring-1 ring-red-600' : ''
+                     }`}
+                  >
+                     <div className="grid grid-cols-3 gap-0.5 bg-muted p-0.5">
+                        {category.images.map((src, i) => (
+                           <div
+                              key={`${category.id}-${i}`}
+                              className="relative aspect-square overflow-hidden"
+                           >
                               <img
-                                 key={`${category.id}-${i}`}
                                  src={src}
-                                 alt={`${category.title} ${i + 1}`}
-                                 className="aspect-square w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                                 alt={`${category.title} example ${i + 1}`}
+                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
                                  loading="lazy"
                               />
-                           ))}
-                        </div>
-                        <div className="flex items-center justify-between gap-2 px-2.5 py-2">
-                           <span className="text-xs font-semibold text-foreground group-hover:text-red-600">
+                           </div>
+                        ))}
+                     </div>
+                     <div className="space-y-1 p-3">
+                        <div className="flex items-center justify-between gap-2">
+                           <p className="text-sm font-semibold text-foreground group-hover:text-red-600">
                               {category.title}
-                           </span>
+                           </p>
                            <span className="text-[10px] text-muted-foreground">
                               {byCategory[category.title] ?? 0}
                            </span>
                         </div>
-                     </Link>
-                  )
-               })}
-            </div>
+                        <p className="line-clamp-2 text-xs text-muted-foreground">
+                           {category.description}
+                        </p>
+                     </div>
+                  </Link>
+               )
+            })}
          </div>
 
          <div>
@@ -95,7 +110,7 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
                })}
             </div>
          </div>
-      </div>
+      </section>
    )
 }
 

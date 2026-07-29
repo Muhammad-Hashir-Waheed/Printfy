@@ -1,7 +1,3 @@
-import {
-   BlogPostGrid,
-   BlogPostSkeletonGrid,
-} from '@/components/native/BlogCard'
 import Carousel from '@/components/native/Carousel'
 import { HeroSection } from '@/components/native/landing/hero-section'
 import {
@@ -10,14 +6,12 @@ import {
    IntegrationsSection,
    ProductShowcaseSection,
 } from '@/components/native/landing/premium-sections'
-import { PackagingCategoriesSection } from '@/components/native/landing/packaging-categories-section'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { Heading } from '@/components/native/heading'
 import { Separator } from '@/components/native/separator'
 import { RevealOnScroll } from '@/components/ui/reveal-on-scroll'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
-import { getStaticBlogs } from '@/lib/static-blogs'
 import { isVariableValid } from '@/lib/utils'
 
 const dummyBanners = [
@@ -31,7 +25,6 @@ const dummyBanners = [
 export default function Index() {
    const catalogProducts = getOfflineCatalogProducts()
    const safeProducts = catalogProducts.slice(0, 8)
-   const safeBlogs = getStaticBlogs()
    const safeBanners = dummyBanners
 
    return (
@@ -50,10 +43,6 @@ export default function Index() {
 
          <RevealOnScroll>
             <ProductShowcaseSection />
-         </RevealOnScroll>
-
-         <RevealOnScroll>
-            <PackagingCategoriesSection />
          </RevealOnScroll>
 
          <RevealOnScroll>
@@ -76,18 +65,6 @@ export default function Index() {
                <ProductSkeletonGrid />
             )}
             <Separator className="my-8" />
-         </RevealOnScroll>
-
-         <RevealOnScroll>
-            <Heading
-               title="Learn & grow"
-               description="Tips to improve conversion and packaging quality."
-            />
-            {isVariableValid(safeBlogs) ? (
-               <BlogPostGrid blogs={safeBlogs} />
-            ) : (
-               <BlogPostSkeletonGrid />
-            )}
          </RevealOnScroll>
       </div>
    )

@@ -31,20 +31,15 @@ const img = {
    takeout: CATALOG_IMAGES.customPaperBag,
    hero: CATALOG_IMAGES.customPackagingHero,
    mailer: CATALOG_IMAGES.mailer,
-   tote: CATALOG_IMAGES.tote,
-   bag: CATALOG_IMAGES.bag,
+   shipping: CATALOG_IMAGES.shippingBoxes,
+   tote: CATALOG_IMAGES.shoppingBag,
+   bag: CATALOG_IMAGES.retailBag,
    sticker: CATALOG_IMAGES.sticker,
-   backpack: CATALOG_IMAGES.backpack,
-   kraft: 'https://images.pexels.com/photos/5624983/pexels-photo-5624983.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   boxes: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1200&auto=format&fit=crop',
-   stack: 'https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?q=80&w=1200&auto=format&fit=crop',
-   cups: 'https://images.pexels.com/photos/4553125/pexels-photo-4553125.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   foodpack: 'https://images.pexels.com/photos/6941019/pexels-photo-6941019.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   takeoutFood: 'https://images.pexels.com/photos/4393668/pexels-photo-4393668.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   packaging: 'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   kraftBag: 'https://images.pexels.com/photos/5625116/pexels-photo-5625116.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   retailBag: 'https://images.pexels.com/photos/5625121/pexels-photo-5625121.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   tissue: 'https://images.pexels.com/photos/6169668/pexels-photo-6169668.jpeg?auto=compress&cs=tinysrgb&w=1200',
+   bakery: CATALOG_IMAGES.bakeryBox,
+   gift: CATALOG_IMAGES.giftBox,
+   giftKraft: CATALOG_IMAGES.giftBoxesKraft,
+   rigid: CATALOG_IMAGES.rigidBox,
+   foodContainer: CATALOG_IMAGES.foodContainer,
 }
 
 /** Vistaprint-style packaging leaf categories — every entry is clickable */
@@ -55,7 +50,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Custom printed corrugated pizza boxes',
       productType: 'Food Packaging',
       q: 'pizza',
-      images: [img.pizza, img.hero, img.foodpack],
+      images: [img.pizza, img.hero, img.burger],
       href: packagingHref({ productType: 'Food Packaging', q: 'pizza' }),
    },
    {
@@ -64,7 +59,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Clamshell burger & sandwich boxes',
       productType: 'Food Packaging',
       q: 'burger',
-      images: [img.burger, img.pizza, img.foodpack],
+      images: [img.burger, img.foodContainer, img.pizza],
       href: packagingHref({ productType: 'Food Packaging', q: 'burger' }),
    },
    {
@@ -73,7 +68,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Open-top fries & sides cartons',
       productType: 'Food Packaging',
       q: 'fries',
-      images: [img.fries, img.burger, img.cups],
+      images: [img.fries, img.burger, img.takeout],
       href: packagingHref({ productType: 'Food Packaging', q: 'fries' }),
    },
    {
@@ -82,7 +77,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Grease-resistant takeout paper bags',
       productType: 'Food Packaging',
       q: 'takeout',
-      images: [img.takeout, img.kraftBag, img.takeoutFood],
+      images: [img.takeout, img.tote, img.bag],
       href: packagingHref({ productType: 'Food Packaging', q: 'takeout' }),
    },
    {
@@ -91,7 +86,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Branded hot & cold paper cups',
       productType: 'Food Packaging',
       q: 'cup',
-      images: [img.cups, img.fries, img.takeoutFood],
+      images: [img.fries, img.takeout, img.foodContainer],
       href: packagingHref({ productType: 'Food Packaging', q: 'cup' }),
    },
    {
@@ -100,7 +95,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Compartment trays with lids',
       productType: 'Food Packaging',
       q: 'tray',
-      images: [img.hero, img.foodpack, img.burger],
+      images: [img.foodContainer, img.hero, img.burger],
       href: packagingHref({ productType: 'Food Packaging', q: 'tray' }),
    },
    {
@@ -109,7 +104,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: '2-cup and 4-cup drink carriers',
       productType: 'Food Packaging',
       q: 'carrier',
-      images: [img.cups, img.takeout, img.fries],
+      images: [img.fries, img.takeout, img.foodContainer],
       href: packagingHref({ productType: 'Food Packaging', q: 'carrier' }),
    },
    {
@@ -118,7 +113,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'E-commerce mailer boxes with branding',
       productType: 'Shipping Packaging',
       q: 'mailer',
-      images: [img.mailer, img.packaging, img.boxes],
+      images: [img.mailer, img.shipping, img.rigid],
       href: packagingHref({ productType: 'Shipping Packaging', q: 'mailer' }),
    },
    {
@@ -127,7 +122,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Corrugated shipping cartons',
       productType: 'Shipping Packaging',
       q: 'shipping',
-      images: [img.boxes, img.stack, img.mailer],
+      images: [img.shipping, img.mailer, img.rigid],
       href: packagingHref({ productType: 'Shipping Packaging', q: 'shipping' }),
    },
    {
@@ -136,7 +131,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Poly & kraft shipping mailers',
       productType: 'Shipping Packaging',
       q: 'poly',
-      images: [img.kraft, img.packaging, img.stack],
+      images: [img.mailer, img.shipping, img.tote],
       href: packagingHref({ productType: 'Shipping Packaging', q: 'poly' }),
    },
    {
@@ -145,7 +140,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Custom retail shopping bags',
       productType: 'Retail Packaging',
       q: 'shopping',
-      images: [img.tote, img.bag, img.retailBag],
+      images: [img.tote, img.bag, img.takeout],
       href: packagingHref({ productType: 'Retail Packaging', q: 'shopping' }),
    },
    {
@@ -154,7 +149,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Product sleeves, cartons & wraps',
       productType: 'Retail Packaging',
       q: 'product',
-      images: [img.packaging, img.boxes, img.stack],
+      images: [img.rigid, img.giftKraft, img.mailer],
       href: packagingHref({ productType: 'Retail Packaging', q: 'product' }),
    },
    {
@@ -163,7 +158,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Hang tags for retail apparel & gifts',
       productType: 'Retail Packaging',
       q: 'tag',
-      images: [img.sticker, img.tissue, img.kraft],
+      images: [img.sticker, img.gift, img.bag],
       href: packagingHref({ productType: 'Retail Packaging', q: 'tag' }),
    },
    {
@@ -172,7 +167,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Branding stickers and packaging labels',
       productType: 'Packaging Accessories',
       q: 'sticker',
-      images: [img.sticker, img.kraft, img.tissue],
+      images: [img.sticker, img.gift, img.bag],
       href: packagingHref({ productType: 'Packaging Accessories', q: 'sticker' }),
    },
    {
@@ -181,7 +176,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Custom printed tissue for unboxing',
       productType: 'Packaging Accessories',
       q: 'tissue',
-      images: [img.tissue, img.kraftBag, img.retailBag],
+      images: [img.giftKraft, img.gift, img.tote],
       href: packagingHref({ productType: 'Packaging Accessories', q: 'tissue' }),
    },
    {
@@ -190,7 +185,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Insert cards, thank-you notes & cards',
       productType: 'Packaging Accessories',
       q: 'insert',
-      images: [img.sticker, img.packaging, img.tissue],
+      images: [img.sticker, img.mailer, img.gift],
       href: packagingHref({ productType: 'Packaging Accessories', q: 'insert' }),
    },
    {
@@ -199,7 +194,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Window bakery & pastry boxes',
       productType: 'Food Packaging',
       q: 'bakery',
-      images: [img.foodpack, img.pizza, img.boxes],
+      images: [img.bakery, img.giftKraft, img.pizza],
       href: packagingHref({ productType: 'Food Packaging', q: 'bakery' }),
    },
    {
@@ -208,7 +203,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Clamshells & hinged food containers',
       productType: 'Food Packaging',
       q: 'container',
-      images: [img.burger, img.takeoutFood, img.foodpack],
+      images: [img.foodContainer, img.burger, img.takeout],
       href: packagingHref({ productType: 'Food Packaging', q: 'container' }),
    },
    {
@@ -217,7 +212,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Branded gift & presentation boxes',
       productType: 'Retail Packaging',
       q: 'gift',
-      images: [img.boxes, img.packaging, img.tissue],
+      images: [img.gift, img.giftKraft, img.rigid],
       href: packagingHref({ productType: 'Retail Packaging', q: 'gift' }),
    },
    {
@@ -226,7 +221,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Premium rigid & magnetic closure boxes',
       productType: 'Retail Packaging',
       q: 'rigid',
-      images: [img.packaging, img.boxes, img.stack],
+      images: [img.rigid, img.gift, img.mailer],
       href: packagingHref({ productType: 'Retail Packaging', q: 'rigid' }),
    },
    {
@@ -235,7 +230,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Custom printed wrapping paper rolls',
       productType: 'Packaging Accessories',
       q: 'wrap',
-      images: [img.tissue, img.kraftBag, img.retailBag],
+      images: [img.giftKraft, img.gift, img.sticker],
       href: packagingHref({ productType: 'Packaging Accessories', q: 'wrap' }),
    },
    {
@@ -244,7 +239,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       description: 'Cardboard bottle & jar carriers',
       productType: 'Food Packaging',
       q: 'bottle',
-      images: [img.cups, img.fries, img.takeout],
+      images: [img.fries, img.takeout, img.foodContainer],
       href: packagingHref({ productType: 'Food Packaging', q: 'bottle' }),
    },
 ]

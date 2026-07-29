@@ -1,75 +1,78 @@
-/** Verified Unsplash URLs (HEAD 200) */
+/** Packaging catalog images — local assets preferred (reliable on Vercel) */
+import bakeryBoxImg from '@/assets/packaging/bakery-box.jpg'
 import burgerBoxImg from '@/assets/packaging/burger-box.jpg'
+import foodContainersImg from '@/assets/packaging/food-containers.jpg'
 import friesCartonImg from '@/assets/packaging/fries-carton.jpg'
+import giftBoxImg from '@/assets/packaging/gift-box.jpg'
+import giftBoxesKraftImg from '@/assets/packaging/gift-boxes-kraft.jpg'
 import heroDuoImg from '@/assets/packaging/hero-duo.jpg'
+import mailerBoxImg from '@/assets/packaging/mailer-box.jpg'
 import pizzaBoxImg from '@/assets/packaging/pizza-box.jpg'
+import retailShoppingBagImg from '@/assets/packaging/retail-shopping-bag.jpg'
+import rigidBoxImg from '@/assets/packaging/rigid-box.jpg'
+import shippingBoxesImg from '@/assets/packaging/shipping-boxes.jpg'
+import shoppingBagsImg from '@/assets/packaging/shopping-bags.jpg'
+import stickersLabelsImg from '@/assets/packaging/stickers-labels.jpg'
 import takeoutBagImg from '@/assets/packaging/takeout-bag.jpg'
-
-const q = 'q=80&w=1200&auto=format&fit=crop'
 
 function assetSrc(img: string | { src: string }) {
    return typeof img === 'string' ? img : img.src
 }
 
 export const CATALOG_IMAGES = {
-   teeWhite: `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?${q}`,
-   teeFolded: `https://images.unsplash.com/photo-1503341504253-dff4815485f1?${q}`,
-   teeStack: `https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?${q}`,
-   teeHanger: `https://images.unsplash.com/photo-1576566588028-4147f3842f27?${q}`,
-   polo: `https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?${q}`,
-   tank: `https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?${q}`,
-   hoodie: `https://images.unsplash.com/photo-1556821840-3a63f95609a7?${q}`,
-   sweatshirt: `https://images.unsplash.com/photo-1516826957135-700dedea698c?${q}`,
-   pants: `https://images.unsplash.com/photo-1473966968600-fa801b869a1a?${q}`,
-   leggings: `https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?${q}`,
-   tote: `https://images.unsplash.com/photo-1590874103328-eac38a683ce7?${q}`,
-   bag: `https://images.unsplash.com/photo-1584917865442-de89df76afd3?${q}`,
-   backpack: `https://images.unsplash.com/photo-1553062407-98eeb64c6a62?${q}`,
-   mailer:
-      'https://images.pexels.com/photos/4391470/pexels-photo-4391470.jpeg?auto=compress&cs=tinysrgb&w=1200',
-   product: `https://images.unsplash.com/photo-1523275335684-37898b6baf30?${q}`,
-   mug: `https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?${q}`,
-   coffee: `https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?${q}`,
-   cap: `https://images.unsplash.com/photo-1560250097-0b93528c311a?${q}`,
-   phone: `https://images.unsplash.com/photo-1601593346740-925612772716?${q}`,
-   sticker: `https://images.unsplash.com/photo-1611162617474-5b21e879e113?${q}`,
-   /** Bundled packaging shots — served from /_next/static (works on Vercel monorepo) */
+   /** Bundled packaging shots — served from /_next/static */
    customBoxLarge: assetSrc(pizzaBoxImg),
    customBoxMedium: assetSrc(burgerBoxImg),
    customBoxSmall: assetSrc(friesCartonImg),
    customPaperBag: assetSrc(takeoutBagImg),
-   /** Pizza box + burger box side by side — homepage hero */
    customPackagingHero: assetSrc(heroDuoImg),
-   /** Print-on-demand apparel */
-   customPrintApparel: `https://images.unsplash.com/photo-1503341504253-dff4815485f1?${q}`,
-   customPrintTees: `https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?${q}`,
+   shoppingBag: assetSrc(shoppingBagsImg),
+   retailBag: assetSrc(retailShoppingBagImg),
+   mailer: assetSrc(mailerBoxImg),
+   shippingBoxes: assetSrc(shippingBoxesImg),
+   sticker: assetSrc(stickersLabelsImg),
+   bakeryBox: assetSrc(bakeryBoxImg),
+   giftBox: assetSrc(giftBoxImg),
+   giftBoxesKraft: assetSrc(giftBoxesKraftImg),
+   rigidBox: assetSrc(rigidBoxImg),
+   foodContainer: assetSrc(foodContainersImg),
+   /** Aliases used by older product records */
+   tote: assetSrc(shoppingBagsImg),
+   bag: assetSrc(retailShoppingBagImg),
+   backpack: assetSrc(mailerBoxImg),
+   product: assetSrc(rigidBoxImg),
+   mug: assetSrc(friesCartonImg),
+   coffee: assetSrc(takeoutBagImg),
+   phone: assetSrc(stickersLabelsImg),
+   cap: assetSrc(shoppingBagsImg),
+   /** Legacy apparel keys kept for type safety (point at packaging) */
+   teeWhite: assetSrc(pizzaBoxImg),
+   teeFolded: assetSrc(burgerBoxImg),
+   teeStack: assetSrc(friesCartonImg),
+   teeHanger: assetSrc(takeoutBagImg),
+   polo: assetSrc(mailerBoxImg),
+   tank: assetSrc(shoppingBagsImg),
+   hoodie: assetSrc(shippingBoxesImg),
+   sweatshirt: assetSrc(giftBoxImg),
+   pants: assetSrc(rigidBoxImg),
+   leggings: assetSrc(bakeryBoxImg),
+   customPrintApparel: assetSrc(heroDuoImg),
+   customPrintTees: assetSrc(pizzaBoxImg),
 } as const
 
-export const DEFAULT_PRODUCT_IMAGE = CATALOG_IMAGES.product
+export const DEFAULT_PRODUCT_IMAGE = CATALOG_IMAGES.customPackagingHero
 
 /** Per-product canonical images (stable ids) */
 export const PRODUCT_IMAGES_BY_ID: Record<string, string[]> = {
-   'classic-crew-tee': [CATALOG_IMAGES.teeWhite, CATALOG_IMAGES.teeStack, CATALOG_IMAGES.teeHanger],
-   'premium-tee': [CATALOG_IMAGES.teeFolded, CATALOG_IMAGES.teeStack],
-   'pullover-hoodie': [CATALOG_IMAGES.hoodie, CATALOG_IMAGES.sweatshirt],
-   'jogger-pants': [CATALOG_IMAGES.pants, CATALOG_IMAGES.leggings],
-   leggings: [CATALOG_IMAGES.leggings, CATALOG_IMAGES.pants],
-   'canvas-tote': [CATALOG_IMAGES.tote, CATALOG_IMAGES.bag],
-   'drawstring-bag': [CATALOG_IMAGES.backpack],
-   'mailer-box': [CATALOG_IMAGES.mailer, CATALOG_IMAGES.product],
-   'sticker-pack': [CATALOG_IMAGES.sticker, CATALOG_IMAGES.product],
-   'ceramic-mug': [CATALOG_IMAGES.mug, CATALOG_IMAGES.coffee],
-   'poster-print': [CATALOG_IMAGES.sticker, CATALOG_IMAGES.product],
-   'baseball-cap': [CATALOG_IMAGES.cap],
-   'tank-top': [CATALOG_IMAGES.tank],
-   'polo-shirt': [CATALOG_IMAGES.polo, CATALOG_IMAGES.teeFolded],
-   sweatpants: [CATALOG_IMAGES.sweatshirt, CATALOG_IMAGES.pants],
    'custom-pizza-box': [CATALOG_IMAGES.customBoxLarge, CATALOG_IMAGES.customPackagingHero],
    'burger-box': [CATALOG_IMAGES.customBoxMedium, CATALOG_IMAGES.customBoxLarge],
    'fries-carton': [CATALOG_IMAGES.customBoxSmall, CATALOG_IMAGES.customBoxMedium],
-   'meal-tray-lid': [CATALOG_IMAGES.customPackagingHero, CATALOG_IMAGES.customBoxMedium],
-   'takeout-bag': [CATALOG_IMAGES.customPaperBag, CATALOG_IMAGES.mailer],
+   'meal-tray-lid': [CATALOG_IMAGES.customPackagingHero, CATALOG_IMAGES.foodContainer],
+   'takeout-bag': [CATALOG_IMAGES.customPaperBag, CATALOG_IMAGES.shoppingBag],
    'cup-carrier': [CATALOG_IMAGES.customBoxSmall, CATALOG_IMAGES.customPaperBag],
+   'mailer-box': [CATALOG_IMAGES.mailer, CATALOG_IMAGES.shippingBoxes],
+   'sticker-pack': [CATALOG_IMAGES.sticker, CATALOG_IMAGES.giftBox],
+   'canvas-tote': [CATALOG_IMAGES.shoppingBag, CATALOG_IMAGES.retailBag],
 }
 
 const BROKEN_UNSPLASH_IDS = [

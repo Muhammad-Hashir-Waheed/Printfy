@@ -101,7 +101,7 @@ export const SHOWCASE_TILES = [
    {
       title: 'Shopping bags',
       href: buildCatalogHref({ category: 'Shopping Bags' }),
-      image: CATALOG_IMAGES.tote,
+      image: CATALOG_IMAGES.shoppingBag,
    },
    {
       title: 'Stickers & labels',
@@ -111,22 +111,22 @@ export const SHOWCASE_TILES = [
    {
       title: 'Bakery boxes',
       href: buildCatalogHref({ category: 'Bakery Boxes' }),
-      image: CATALOG_IMAGES.customBoxLarge,
+      image: CATALOG_IMAGES.bakeryBox,
    },
    {
       title: 'Gift boxes',
       href: buildCatalogHref({ category: 'Gift Boxes' }),
-      image: CATALOG_IMAGES.mailer,
+      image: CATALOG_IMAGES.giftBox,
    },
    {
       title: 'Rigid boxes',
       href: buildCatalogHref({ category: 'Rigid Boxes' }),
-      image: CATALOG_IMAGES.product,
+      image: CATALOG_IMAGES.rigidBox,
    },
    {
       title: 'Food containers',
       href: buildCatalogHref({ category: 'Food Containers' }),
-      image: CATALOG_IMAGES.customBoxMedium,
+      image: CATALOG_IMAGES.foodContainer,
    },
 ] as const
 
