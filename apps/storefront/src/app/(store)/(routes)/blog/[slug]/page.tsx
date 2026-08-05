@@ -5,7 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
+export function generateStaticParams() {
+   return getStaticBlogs().map((post) => ({ slug: post.slug }))
+}
+
+/** Posts come from a fixed static set, so unknown slugs should be a real 404. */
+export const dynamicParams = false
 
 export default async function BlogPostPage({
    params,

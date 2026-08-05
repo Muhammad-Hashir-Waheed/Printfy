@@ -14,6 +14,9 @@ export function generateStaticParams() {
    return CATALOG_PRODUCT_IDS.map((productId) => ({ productId }))
 }
 
+/** The catalog is a fixed set, so unknown ids should be a real 404 rather than a rendered miss. */
+export const dynamicParams = false
+
 type Props = {
    params: { productId: string }
 }

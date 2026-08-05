@@ -1,19 +1,33 @@
 /** Packaging catalog images — local assets preferred (reliable on Vercel) */
 import bakeryBoxImg from '@/assets/packaging/bakery-box.jpg'
+import bottleCarrierImg from '@/assets/packaging/bottle-carrier.jpg'
 import burgerBoxImg from '@/assets/packaging/burger-box.jpg'
+import cupCarrierImg from '@/assets/packaging/cup-carrier.jpg'
 import foodContainersImg from '@/assets/packaging/food-containers.jpg'
 import friesCartonImg from '@/assets/packaging/fries-carton.jpg'
 import giftBoxImg from '@/assets/packaging/gift-box.jpg'
 import giftBoxesKraftImg from '@/assets/packaging/gift-boxes-kraft.jpg'
+import hangTagsImg from '@/assets/packaging/hang-tags.jpg'
 import heroDuoImg from '@/assets/packaging/hero-duo.jpg'
 import mailerBoxImg from '@/assets/packaging/mailer-box.jpg'
+import mealTrayImg from '@/assets/packaging/meal-tray.jpg'
+import packagingInsertImg from '@/assets/packaging/packaging-insert.jpg'
+import paperCupsImg from '@/assets/packaging/paper-cups.jpg'
 import pizzaBoxImg from '@/assets/packaging/pizza-box.jpg'
+import polyMailerImg from '@/assets/packaging/poly-mailer.jpg'
+import productCartonImg from '@/assets/packaging/product-carton.jpg'
 import retailShoppingBagImg from '@/assets/packaging/retail-shopping-bag.jpg'
 import rigidBoxImg from '@/assets/packaging/rigid-box.jpg'
 import shippingBoxesImg from '@/assets/packaging/shipping-boxes.jpg'
+import shippingTapeBoxImg from '@/assets/packaging/shipping-tape-box.jpg'
 import shoppingBagsImg from '@/assets/packaging/shopping-bags.jpg'
 import stickersLabelsImg from '@/assets/packaging/stickers-labels.jpg'
 import takeoutBagImg from '@/assets/packaging/takeout-bag.jpg'
+import tissuePaperImg from '@/assets/packaging/tissue-paper.jpg'
+import wrappingPaperImg from '@/assets/packaging/wrapping-paper.jpg'
+import neonSignImg from '@/assets/packaging/neon-sign.jpg'
+import ledSignImg from '@/assets/packaging/led-sign.jpg'
+import neonShopImg from '@/assets/packaging/neon-shop.jpg'
 
 function assetSrc(img: string | { src: string }) {
    return typeof img === 'string' ? img : img.src
@@ -30,20 +44,34 @@ export const CATALOG_IMAGES = {
    retailBag: assetSrc(retailShoppingBagImg),
    mailer: assetSrc(mailerBoxImg),
    shippingBoxes: assetSrc(shippingBoxesImg),
+   shippingTapeBox: assetSrc(shippingTapeBoxImg),
    sticker: assetSrc(stickersLabelsImg),
    bakeryBox: assetSrc(bakeryBoxImg),
    giftBox: assetSrc(giftBoxImg),
    giftBoxesKraft: assetSrc(giftBoxesKraftImg),
    rigidBox: assetSrc(rigidBoxImg),
    foodContainer: assetSrc(foodContainersImg),
-   /** Aliases used by older product records */
+   paperCups: assetSrc(paperCupsImg),
+   cupCarrier: assetSrc(cupCarrierImg),
+   polyMailer: assetSrc(polyMailerImg),
+   hangTags: assetSrc(hangTagsImg),
+   tissuePaper: assetSrc(tissuePaperImg),
+   packagingInsert: assetSrc(packagingInsertImg),
+   wrappingPaper: assetSrc(wrappingPaperImg),
+   bottleCarrier: assetSrc(bottleCarrierImg),
+   mealTray: assetSrc(mealTrayImg),
+   productCarton: assetSrc(productCartonImg),
+   neonSign: assetSrc(neonSignImg),
+   ledSign: assetSrc(ledSignImg),
+   neonShop: assetSrc(neonShopImg),
+   /** Aliases used by older product records — point at matching category art */
    tote: assetSrc(shoppingBagsImg),
    bag: assetSrc(retailShoppingBagImg),
-   backpack: assetSrc(mailerBoxImg),
-   product: assetSrc(rigidBoxImg),
-   mug: assetSrc(friesCartonImg),
-   coffee: assetSrc(takeoutBagImg),
-   phone: assetSrc(stickersLabelsImg),
+   backpack: assetSrc(polyMailerImg),
+   product: assetSrc(productCartonImg),
+   mug: assetSrc(paperCupsImg),
+   coffee: assetSrc(cupCarrierImg),
+   phone: assetSrc(hangTagsImg),
    cap: assetSrc(shoppingBagsImg),
    /** Legacy apparel keys kept for type safety (point at packaging) */
    teeWhite: assetSrc(pizzaBoxImg),
@@ -67,12 +95,23 @@ export const PRODUCT_IMAGES_BY_ID: Record<string, string[]> = {
    'custom-pizza-box': [CATALOG_IMAGES.customBoxLarge, CATALOG_IMAGES.customPackagingHero],
    'burger-box': [CATALOG_IMAGES.customBoxMedium, CATALOG_IMAGES.customBoxLarge],
    'fries-carton': [CATALOG_IMAGES.customBoxSmall, CATALOG_IMAGES.customBoxMedium],
-   'meal-tray-lid': [CATALOG_IMAGES.customPackagingHero, CATALOG_IMAGES.foodContainer],
+   'meal-tray-lid': [CATALOG_IMAGES.mealTray, CATALOG_IMAGES.foodContainer],
    'takeout-bag': [CATALOG_IMAGES.customPaperBag, CATALOG_IMAGES.shoppingBag],
-   'cup-carrier': [CATALOG_IMAGES.customBoxSmall, CATALOG_IMAGES.customPaperBag],
+   'cup-carrier': [CATALOG_IMAGES.cupCarrier, CATALOG_IMAGES.paperCups],
+   'hot-paper-cup': [CATALOG_IMAGES.paperCups, CATALOG_IMAGES.cupCarrier],
    'mailer-box': [CATALOG_IMAGES.mailer, CATALOG_IMAGES.shippingBoxes],
+   'poly-mailer': [CATALOG_IMAGES.polyMailer, CATALOG_IMAGES.mailer],
    'sticker-pack': [CATALOG_IMAGES.sticker, CATALOG_IMAGES.giftBox],
    'canvas-tote': [CATALOG_IMAGES.shoppingBag, CATALOG_IMAGES.retailBag],
+   'hang-tag-set': [CATALOG_IMAGES.hangTags, CATALOG_IMAGES.sticker],
+   'printed-tissue': [CATALOG_IMAGES.tissuePaper, CATALOG_IMAGES.giftBox],
+   'thank-you-insert': [CATALOG_IMAGES.packagingInsert, CATALOG_IMAGES.sticker],
+   'custom-wrapping-paper': [CATALOG_IMAGES.wrappingPaper, CATALOG_IMAGES.giftBoxesKraft],
+   '4-bottle-carrier': [CATALOG_IMAGES.bottleCarrier, CATALOG_IMAGES.customBoxSmall],
+   'product-sleeve': [CATALOG_IMAGES.productCarton, CATALOG_IMAGES.rigidBox],
+   'custom-neon-sign': [CATALOG_IMAGES.neonSign, CATALOG_IMAGES.neonShop],
+   'led-channel-letter': [CATALOG_IMAGES.ledSign, CATALOG_IMAGES.neonSign],
+   'shop-open-neon': [CATALOG_IMAGES.neonShop, CATALOG_IMAGES.neonSign],
 }
 
 const BROKEN_UNSPLASH_IDS = [

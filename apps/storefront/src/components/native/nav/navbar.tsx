@@ -7,17 +7,44 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { UserNav } from '@/components/native/nav/user'
+import { useAuthenticated } from '@/hooks/useAuthentication'
 import { MenuIcon, MoonIcon, SearchIcon, SunIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
+
+const MOBILE_ACCOUNT_LINKS = [
+   { label: 'My cart', href: '/cart' },
+   { label: 'Wishlist', href: '/wishlist' },
+   { label: 'Blog', href: '/blog' },
+   { label: 'FAQ', href: '/faq' },
+   { label: 'Contact', href: '/contact' },
+]
+
+const SIGNED_IN_MOBILE_LINKS = [
+   { label: 'Orders', href: '/profile/orders' },
+   { label: 'Payments', href: '/profile/payments' },
+   { label: 'Addresses', href: '/profile/addresses' },
+   { label: 'Saved designs', href: '/profile/designs' },
+   { label: 'Edit profile', href: '/profile/edit' },
+]
 
 export function Navbar() {
    const router = useRouter()
    const { setTheme, resolvedTheme } = useTheme()
+   const { authenticated } = useAuthenticated()
    const [query, setQuery] = useState('')
    const [mobileOpen, setMobileOpen] = useState(false)
+   /** The auth cookie is only readable after mount, so render guest links until then. */
+   const [mounted, setMounted] = useState(false)
+
+   useEffect(() => {
+      setMounted(true)
+   }, [])
+
+   const signedIn = mounted && authenticated
 
    function onSearch(event: FormEvent) {
       event.preventDefault()
@@ -68,10 +95,10 @@ export function Navbar() {
                      My cart
                   </Link>
                   <Link
-                     href="/profile/edit"
+                     href="/wishlist"
                      className="hidden text-sm text-foreground/80 md:inline-block"
                   >
-                     Preferences
+                     Wishlist
                   </Link>
                   <Button
                      variant="outline"
@@ -83,14 +110,23 @@ export function Navbar() {
                      <SunIcon className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                      <MoonIcon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                   </Button>
-                  <Link href="/login" className="hidden text-sm text-foreground/80 sm:inline-block">
-                     Sign in
-                  </Link>
-                  <Link href="/login" className="hidden sm:inline-block">
-                     <Button className="rounded-lg bg-red-500 px-4 text-white shadow-md transition duration-200 hover:scale-105 hover:bg-red-600">
-                        Sign up
-                     </Button>
-                  </Link>
+                  {signedIn ? (
+                     <UserNav />
+                  ) : (
+                     <>
+                        <Link
+                           href="/login"
+                           className="hidden text-sm text-foreground/80 sm:inline-block"
+                        >
+                           Sign in
+                        </Link>
+                        <Link href="/login" className="hidden sm:inline-block">
+                           <Button className="rounded-lg bg-red-500 px-4 text-white shadow-md transition duration-200 hover:scale-105 hover:bg-red-600">
+                              Sign up
+                           </Button>
+                        </Link>
+                     </>
+                  )}
 
                   <div className="sm:hidden">
                      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -116,33 +152,36 @@ export function Navbar() {
                               <PackagingMobileLinks onNavigate={() => setMobileOpen(false)} />
 
                               <div className="space-y-2 border-t pt-4">
-                                 <Link
-                                    href="/cart"
-                                    className="block text-sm text-foreground/80"
-                                    onClick={() => setMobileOpen(false)}
-                                 >
-                                    My cart
-                                 </Link>
-                                 <Link
-                                    href="/profile/edit"
-                                    className="block text-sm text-foreground/80"
-                                    onClick={() => setMobileOpen(false)}
-                                 >
-                                    Preferences
-                                 </Link>
-                                 <Link
-                                    href="/login"
-                                    className="block text-sm text-foreground/80"
-                                    onClick={() => setMobileOpen(false)}
-                                 >
-                                    Sign in
-                                 </Link>
+                                 {MOBILE_ACCOUNT_LINKS.map((link) => (
+                                    <Link
+                                       key={link.href}
+                                       href={link.href}
+                                       className="block text-sm text-foreground/80"
+                                       onClick={() => setMobileOpen(false)}
+                                    >
+                                       {link.label}
+                                    </Link>
+                                 ))}
+                                 {signedIn
+                                    ? SIGNED_IN_MOBILE_LINKS.map((link) => (
+                                         <Link
+                                            key={link.href}
+                                            href={link.href}
+                                            className="block text-sm text-foreground/80"
+                                            onClick={() => setMobileOpen(false)}
+                                         >
+                                            {link.label}
+                                         </Link>
+                                      ))
+                                    : null}
                               </div>
-                              <Link href="/login" onClick={() => setMobileOpen(false)}>
-                                 <Button className="w-full rounded-lg bg-red-500 text-white shadow-md">
-                                    Sign up
-                                 </Button>
-                              </Link>
+                              {signedIn ? null : (
+                                 <Link href="/login" onClick={() => setMobileOpen(false)}>
+                                    <Button className="w-full rounded-lg bg-red-500 text-white shadow-md">
+                                       Sign in or sign up
+                                    </Button>
+                                 </Link>
+                              )}
                            </div>
                         </SheetContent>
                      </Sheet>

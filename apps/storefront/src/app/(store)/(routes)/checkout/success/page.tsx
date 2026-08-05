@@ -7,6 +7,10 @@ export default function CheckoutSuccessPage({
 }: {
    searchParams: { orderId?: string; number?: string }
 }) {
+   /** Demo checkouts are not persisted, so there is no order detail page to link to. */
+   const hasTrackableOrder =
+      !!searchParams.orderId && !searchParams.orderId.startsWith('demo-')
+
    return (
       <div className="mx-auto max-w-lg py-12">
          <Card className="rounded-2xl border shadow-sm">
@@ -22,13 +26,17 @@ export default function CheckoutSuccessPage({
                   <Button asChild className="rounded-2xl">
                      <Link href="/products">Continue shopping</Link>
                   </Button>
-                  {searchParams.orderId ? (
+                  {hasTrackableOrder ? (
                      <Button asChild variant="outline" className="rounded-2xl">
                         <Link href={`/profile/orders/${searchParams.orderId}`}>
                            View order
                         </Link>
                      </Button>
-                  ) : null}
+                  ) : (
+                     <Button asChild variant="outline" className="rounded-2xl">
+                        <Link href="/products/gallery">Browse gallery</Link>
+                     </Button>
+                  )}
                </div>
             </CardContent>
          </Card>

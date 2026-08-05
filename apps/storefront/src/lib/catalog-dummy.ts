@@ -29,6 +29,7 @@ export const DUMMY_PRODUCT_TYPES = [
    'Shipping Packaging',
    'Retail Packaging',
    'Packaging Accessories',
+   'LED & Neon Signs',
 ] as const
 
 /** Full packaging catalog — 2–3 products per category */

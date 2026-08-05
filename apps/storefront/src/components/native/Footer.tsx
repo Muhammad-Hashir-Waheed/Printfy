@@ -5,6 +5,31 @@ import Link from 'next/link'
 
 const data = [
    {
+      label: 'SHOP',
+      links: [
+         {
+            label: 'All Packaging',
+            url: '/products',
+         },
+         {
+            label: 'Packaging Gallery',
+            url: '/products/gallery',
+         },
+         {
+            label: 'Food Packaging',
+            url: '/products?productType=food%20packaging',
+         },
+         {
+            label: 'LED & Neon Signs',
+            url: '/products?productType=led%20%26%20neon%20signs',
+         },
+         {
+            label: 'Shipping Packaging',
+            url: '/products?productType=shipping%20packaging',
+         },
+      ],
+   },
+   {
       label: 'LEGAL',
       links: [
          {
@@ -65,7 +90,7 @@ export default function Footer() {
 
 function Links() {
    return (
-      <div className="grid grid-cols-2 justify-evenly gap-8 text-left sm:grid-cols-3 sm:gap-6 lg:text-end">
+      <div className="grid grid-cols-2 justify-evenly gap-8 text-left sm:grid-cols-4 sm:gap-6 lg:text-end">
          {data.map(({ label, links }) => (
             <div key={label}>
                <h2 className="mb-3 text-sm uppercase">{label}</h2>

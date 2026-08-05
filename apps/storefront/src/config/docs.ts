@@ -8,10 +8,13 @@ interface DocsConfig {
 export const docsConfig: DocsConfig = {
    mainNav: [
       {
-         title: 'Documentation',
-         href: '/docs',
+         title: 'Packaging',
+         href: '/products',
       },
-
+      {
+         title: 'FAQ',
+         href: '/faq',
+      },
       {
          title: 'GitHub',
          href: 'https://github.com/sesto-dev',
@@ -22,6 +25,10 @@ export const docsConfig: DocsConfig = {
       {
          title: 'Products',
          href: '/products',
+      },
+      {
+         title: 'Gallery',
+         href: '/products/gallery',
       },
       {
          title: 'Blog',

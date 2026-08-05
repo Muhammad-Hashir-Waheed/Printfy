@@ -1,11 +1,13 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
    Card,
    CardContent,
 } from '@/components/ui/card'
 import { Loader } from '@/components/ui/loader'
 import { useAuthenticated } from '@/hooks/useAuthentication'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -14,9 +16,12 @@ import { UserCombobox } from '../../components/switcher'
 const ProductPage = ({ params }: { params: { orderId: string } }) => {
    const { authenticated } = useAuthenticated()
    const [order, setOrder] = useState(null)
+   const [unavailable, setUnavailable] = useState(false)
    const pathname = usePathname()
 
    useEffect(() => {
+      if (!authenticated) return
+
       async function getOrder() {
          try {
             const response = await fetch(`/api/orders/${params.orderId}`, {
@@ -24,18 +29,24 @@ const ProductPage = ({ params }: { params: { orderId: string } }) => {
                cache: 'no-store',
             })
 
+            if (!response.ok) {
+               setUnavailable(true)
+               return
+            }
+
             const json = await response.json()
             setOrder(json)
          } catch (error) {
             console.error({ error })
+            setUnavailable(true)
          }
       }
 
-      if (authenticated) getOrder()
+      getOrder()
    }, [authenticated, params])
 
    useEffect(() => {
-      if (!authenticated) return
+      if (!authenticated || unavailable) return
 
       const interval = setInterval(async () => {
          try {
@@ -53,7 +64,7 @@ const ProductPage = ({ params }: { params: { orderId: string } }) => {
       }, 5000)
 
       return () => clearInterval(interval)
-   }, [authenticated, params.orderId])
+   }, [authenticated, unavailable, params.orderId])
 
    function EditOrderCard() {
       const fulfillmentSteps = ['pending', 'printing', 'packed', 'shipped', 'delivered']
@@ -218,6 +229,23 @@ const ProductPage = ({ params }: { params: { orderId: string } }) => {
                            </div>
                         </div>
                      ) : null}
+                  </div>
+               ) : unavailable ? (
+                  <div className="space-y-3 py-8 text-center">
+                     <h3 className="text-lg font-semibold">Order not available</h3>
+                     <p className="text-sm text-muted-foreground">
+                        We could not find this order on your account. Demo
+                        checkouts are not stored, so they have no order detail
+                        page.
+                     </p>
+                     <div className="flex flex-col justify-center gap-2 pt-2 sm:flex-row">
+                        <Button asChild className="rounded-2xl">
+                           <Link href="/profile/orders">All orders</Link>
+                        </Button>
+                        <Button asChild variant="outline" className="rounded-2xl">
+                           <Link href="/products">Browse packaging</Link>
+                        </Button>
+                     </div>
                   </div>
                ) : (
                   <div className="h-[20vh]">

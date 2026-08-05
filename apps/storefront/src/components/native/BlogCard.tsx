@@ -23,8 +23,8 @@ export function BlogPostGrid({ blogs }) {
 export function BlogPostSkeletonGrid() {
    return (
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-         {[...Array(3)].map(() => (
-            <BlogPostSkeleton key={Math.random()} />
+         {[...Array(3)].map((_, index) => (
+            <BlogPostSkeleton key={index} />
          ))}
       </div>
    )
@@ -63,7 +63,7 @@ export function BlogPostCard({ post }) {
 
 export const BlogPostSkeleton = () => {
    return (
-      <Link href="#">
+      <div aria-hidden="true">
          <div className="animate-pulse rounded-lg border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800">
             <div className="relative h-full w-full">
                <div className="flex h-40 w-full items-center justify-center rounded bg-neutral-300 dark:bg-neutral-700 ">
@@ -81,6 +81,6 @@ export const BlogPostSkeleton = () => {
                </div>
             </div>
          </div>
-      </Link>
+      </div>
    )
 }

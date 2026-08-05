@@ -62,11 +62,19 @@ export const AddressForm: React.FC<AddressFormProps> = ({ initialData }) => {
       try {
          setLoading(true)
 
-         await fetch(`/api/addresses`, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            cache: 'no-store',
-         })
+         const response = initialData
+            ? await fetch(`/api/addresses/${params.addressId}`, {
+                 method: 'PATCH',
+                 body: JSON.stringify(data),
+                 cache: 'no-store',
+              })
+            : await fetch(`/api/addresses`, {
+                 method: 'POST',
+                 body: JSON.stringify(data),
+                 cache: 'no-store',
+              })
+
+         if (!response.ok) throw new Error('Request failed')
 
          router.refresh()
          router.push(`/profile/addresses`)
@@ -82,13 +90,15 @@ export const AddressForm: React.FC<AddressFormProps> = ({ initialData }) => {
       try {
          setLoading(true)
 
-         await fetch(`/api/address/${params.addressId}`, {
+         const response = await fetch(`/api/addresses/${params.addressId}`, {
             method: 'DELETE',
             cache: 'no-store',
          })
 
+         if (!response.ok) throw new Error('Request failed')
+
          router.refresh()
-         router.push(`/addresses`)
+         router.push(`/profile/addresses`)
          toast.success('Address deleted.')
       } catch (error: any) {
          toast.error(

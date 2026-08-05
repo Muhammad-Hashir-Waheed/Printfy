@@ -1,7 +1,6 @@
 import { ImageSkeleton } from '@/components/native/icons'
 import { ProductCard } from '@/components/native/ProductCard'
 import type { ProductWithIncludes } from '@/types/prisma'
-import Link from 'next/link'
 
 export const ProductGrid = ({
    products,
@@ -20,8 +19,8 @@ export const ProductGrid = ({
 export const ProductSkeletonGrid = () => {
    return (
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-         {[...Array(12)].map(() => (
-            <ProductSkeleton key={Math.random()} />
+         {[...Array(12)].map((_, index) => (
+            <ProductSkeleton key={index} />
          ))}
       </div>
    )
@@ -29,7 +28,7 @@ export const ProductSkeletonGrid = () => {
 
 export function ProductSkeleton() {
    return (
-      <Link href="#">
+      <div aria-hidden="true">
          <div className="animate-pulse rounded-lg border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800">
             <div className="relative h-full w-full">
                <div className="flex h-40 w-full items-center justify-center rounded bg-neutral-300 dark:bg-neutral-700 ">
@@ -47,6 +46,6 @@ export function ProductSkeleton() {
                </div>
             </div>
          </div>
-      </Link>
+      </div>
    )
 }

@@ -33,7 +33,7 @@ export const VercelInviteUserEmail = ({
    id = 'My Project',
 }: VercelInviteUserEmailProps) => {
    const previewText = `Order #${orderNum} was created was created with a value of $${payable}.`
-   const orderLink = process.env.NEXT_PUBLIC_URL + `/orders/${id}`
+   const orderLink = process.env.NEXT_PUBLIC_URL + `/profile/orders/${id}`
    return (
       <Html>
          <Head />
