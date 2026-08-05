@@ -109,35 +109,43 @@ export const PACKAGING_FEATURED_CARDS: PackagingFeaturedCard[] = [
    },
 ]
 
-export const PACKAGING_NAV_ITEMS: PackagingMenuLink[] = [
+export const PACKAGING_NAV_ITEMS: Array<
+   PackagingMenuLink & { columnTitle?: string }
+> = [
    {
       label: 'All Packaging',
       href: '/products',
       image: CATALOG_IMAGES.customPackagingHero,
+      columnTitle: 'Food Packaging',
    },
    {
       label: 'Food Packaging',
       href: buildCatalogHref({ productType: 'Food Packaging' }),
       image: CATALOG_IMAGES.customBoxLarge,
+      columnTitle: 'Food Packaging',
    },
    {
       label: 'Shipping',
       href: buildCatalogHref({ productType: 'Shipping Packaging' }),
       image: CATALOG_IMAGES.mailer,
+      columnTitle: 'Shipping',
    },
    {
       label: 'Retail',
       href: buildCatalogHref({ productType: 'Retail Packaging' }),
       image: CATALOG_IMAGES.shoppingBag,
+      columnTitle: 'Retail',
    },
    {
       label: 'Accessories',
       href: buildCatalogHref({ productType: 'Packaging Accessories' }),
       image: CATALOG_IMAGES.sticker,
+      columnTitle: 'Accessories',
    },
    {
       label: 'LED & Neon',
       href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
       image: CATALOG_IMAGES.neonSign,
+      columnTitle: 'LED & Neon',
    },
 ]

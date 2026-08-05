@@ -13,49 +13,80 @@ import { ArrowRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
+const DEFAULT_COLUMN = PACKAGING_MENU_COLUMNS[0].title
+
 export function PackagingMegaMenu() {
    const [open, setOpen] = useState(false)
-   const [activeColumn, setActiveColumn] = useState(PACKAGING_MENU_COLUMNS[0].title)
+   const [activeColumn, setActiveColumn] = useState(DEFAULT_COLUMN)
+   const [activeNav, setActiveNav] = useState<string | null>(null)
 
    const active =
       PACKAGING_MENU_COLUMNS.find((column) => column.title === activeColumn) ??
       PACKAGING_MENU_COLUMNS[0]
 
+   function openWithColumn(columnTitle?: string, navLabel?: string) {
+      if (columnTitle) setActiveColumn(columnTitle)
+      if (navLabel) setActiveNav(navLabel)
+      setOpen(true)
+   }
+
+   function closeMenu() {
+      setOpen(false)
+      setActiveNav(null)
+   }
+
    return (
       <div
          className="relative hidden w-full border-b bg-background md:block"
-         onMouseEnter={() => setOpen(true)}
-         onMouseLeave={() => setOpen(false)}
+         onMouseLeave={closeMenu}
       >
          <nav className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-6 lg:px-12">
             <button
                type="button"
                className={cn(
                   'relative whitespace-nowrap px-3 py-3 text-sm font-semibold transition-colors',
-                  open
+                  open && !activeNav
                      ? 'text-red-600 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-red-600'
                      : 'text-foreground/80 hover:text-foreground'
                )}
-               onClick={() => setOpen((v) => !v)}
+               onMouseEnter={() => openWithColumn(DEFAULT_COLUMN)}
+               onFocus={() => openWithColumn(DEFAULT_COLUMN)}
+               onClick={() =>
+                  open ? closeMenu() : openWithColumn(DEFAULT_COLUMN)
+               }
                aria-expanded={open}
             >
                Packaging
             </button>
-            {PACKAGING_NAV_ITEMS.map((item) => (
-               <Link
-                  key={item.label}
-                  href={item.href}
-                  className="whitespace-nowrap px-3 py-3 text-sm text-foreground/80 transition-colors hover:text-foreground"
-               >
-                  {item.label}
-               </Link>
-            ))}
+            {PACKAGING_NAV_ITEMS.map((item) => {
+               const isActive = open && activeNav === item.label
+               return (
+                  <Link
+                     key={item.label}
+                     href={item.href}
+                     onMouseEnter={() =>
+                        openWithColumn(item.columnTitle, item.label)
+                     }
+                     onFocus={() => openWithColumn(item.columnTitle, item.label)}
+                     className={cn(
+                        'relative whitespace-nowrap px-3 py-3 text-sm transition-colors',
+                        isActive
+                           ? 'font-semibold text-red-600 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-red-600'
+                           : 'text-foreground/80 hover:text-foreground'
+                     )}
+                  >
+                     {item.label}
+                  </Link>
+               )
+            })}
          </nav>
 
          {open ? (
-            <div className="absolute inset-x-0 top-full z-50 border-b bg-background/95 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-background/90">
+            <div
+               className="absolute inset-x-0 top-full z-50 border-b bg-background/95 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-background/90"
+               onMouseEnter={() => setOpen(true)}
+            >
                <div className="mx-auto grid max-w-7xl gap-0 lg:grid-cols-[220px_minmax(0,1fr)_280px]">
-                  {/* Category rail */}
                   <aside className="border-r bg-muted/40 p-4">
                      <p className="mb-3 px-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                         Shop by category
@@ -67,7 +98,13 @@ export function PackagingMegaMenu() {
                               <button
                                  key={column.title}
                                  type="button"
-                                 onMouseEnter={() => setActiveColumn(column.title)}
+                                 onMouseEnter={() => {
+                                    setActiveColumn(column.title)
+                                    const match = PACKAGING_NAV_ITEMS.find(
+                                       (item) => item.columnTitle === column.title
+                                    )
+                                    setActiveNav(match?.label ?? null)
+                                 }}
                                  onFocus={() => setActiveColumn(column.title)}
                                  onClick={() => setActiveColumn(column.title)}
                                  className={cn(
@@ -97,7 +134,7 @@ export function PackagingMegaMenu() {
                      </div>
                      <Link
                         href="/products"
-                        onClick={() => setOpen(false)}
+                        onClick={closeMenu}
                         className="mt-4 inline-flex items-center gap-1 px-3 text-sm font-medium text-red-600 hover:underline"
                      >
                         Browse all packaging
@@ -105,7 +142,6 @@ export function PackagingMegaMenu() {
                      </Link>
                   </aside>
 
-                  {/* Active category options */}
                   <div className="p-6">
                      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
                         <div>
@@ -121,7 +157,7 @@ export function PackagingMegaMenu() {
                         </div>
                         <Link
                            href={active.href}
-                           onClick={() => setOpen(false)}
+                           onClick={closeMenu}
                            className="inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition hover:border-red-200 hover:text-red-600"
                         >
                            View all {active.title}
@@ -134,7 +170,7 @@ export function PackagingMegaMenu() {
                            <CategoryCard
                               key={link.label}
                               link={link}
-                              onNavigate={() => setOpen(false)}
+                              onNavigate={closeMenu}
                            />
                         ))}
                      </div>
@@ -148,7 +184,7 @@ export function PackagingMegaMenu() {
                               <Link
                                  key={pick.label}
                                  href={pick.href}
-                                 onClick={() => setOpen(false)}
+                                 onClick={closeMenu}
                                  className="inline-flex items-center gap-2 rounded-full border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground/80 transition hover:border-red-200 hover:text-red-600"
                               >
                                  <img
@@ -163,7 +199,6 @@ export function PackagingMegaMenu() {
                      </div>
                   </div>
 
-                  {/* Featured aside */}
                   <aside className="space-y-3 border-l bg-muted/20 p-4">
                      <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                         Featured
@@ -172,7 +207,7 @@ export function PackagingMegaMenu() {
                         <Link
                            key={card.title}
                            href={card.href}
-                           onClick={() => setOpen(false)}
+                           onClick={closeMenu}
                            className="group block overflow-hidden rounded-2xl border bg-background shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                         >
                            <div className="relative aspect-[16/10] overflow-hidden">
