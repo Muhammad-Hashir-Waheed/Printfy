@@ -2,91 +2,86 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-   ArrowRightIcon,
-} from 'lucide-react'
+import { ArrowRightIcon } from 'lucide-react'
 import {
    buildCatalogHref,
    FAST_FOOD_SHOWCASE_TILES,
    SHOWCASE_TILES,
 } from '@/lib/catalog-navigation'
-import amazonLogoAsset from '@/assets/amazon.svg'
+import { INTEGRATION_LOGOS } from '@/lib/integration-logos'
 import Link from 'next/link'
-
-const amazonLogo =
-   typeof amazonLogoAsset === 'string' ? amazonLogoAsset : amazonLogoAsset.src
 
 const integrations = [
    {
       name: 'Shopify',
       description: 'Instant sync for products, variants, and orders.',
-      logo: 'https://cdn.simpleicons.org/shopify/95BF47',
+      logo: INTEGRATION_LOGOS.shopify,
       className: 'md:left-[12%] md:top-[10%]',
    },
    {
       name: 'Amazon',
       description: 'Scale catalog fulfillment with marketplace automation.',
-      logo: amazonLogo,
+      logo: INTEGRATION_LOGOS.amazon,
       className: 'md:left-[74%] md:top-[10%]',
    },
    {
       name: 'Etsy',
       description: 'Connect handmade storefronts with production workflows.',
-      logo: 'https://cdn.simpleicons.org/etsy/F1641E',
+      logo: INTEGRATION_LOGOS.etsy,
       className: 'md:left-[42%] md:top-[6%]',
    },
    {
       name: 'WooCommerce',
       description: 'WordPress-native order sync and shipping updates.',
-      logo: 'https://cdn.simpleicons.org/woocommerce/96588A',
+      logo: INTEGRATION_LOGOS.woocommerce,
       className: 'md:left-[16%] md:top-[40%]',
    },
    {
       name: 'Wix',
       description: 'Fast setup for branded stores and custom products.',
-      logo: 'https://cdn.simpleicons.org/wix/000000',
+      logo: INTEGRATION_LOGOS.wix,
       className: 'md:left-[82%] md:top-[30%]',
    },
    {
       name: 'Squarespace',
       description: 'Premium storefront themes with POD fulfillment.',
-      logo: 'https://cdn.simpleicons.org/squarespace/000000',
+      logo: INTEGRATION_LOGOS.squarespace,
       className: 'md:left-[86%] md:top-[50%]',
    },
    {
       name: 'Square',
       description: 'Unified online and POS inventory operations.',
-      logo: 'https://cdn.simpleicons.org/square/000000',
+      logo: INTEGRATION_LOGOS.square,
       className: 'md:left-[24%] md:top-[74%]',
    },
    {
       name: 'BigCommerce',
       description: 'Enterprise-grade catalog and checkout integrations.',
-      logo: 'https://cdn.simpleicons.org/bigcommerce/121118',
+      logo: INTEGRATION_LOGOS.bigcommerce,
       className: 'md:left-[80%] md:top-[74%]',
    },
    {
       name: 'Webflow',
       description: 'Visual storefront publishing with robust commerce sync.',
-      logo: 'https://cdn.simpleicons.org/webflow/4353FF',
+      logo: INTEGRATION_LOGOS.webflow,
       className: 'md:left-[4%] md:top-[20%]',
    },
    {
       name: 'Stripe',
       description: 'Cross-platform listing and order orchestration.',
-      logo: 'https://cdn.simpleicons.org/stripe/635BFF',
+      logo: INTEGRATION_LOGOS.stripe,
       className: 'md:left-[62%] md:top-[76%]',
    },
    {
       name: 'PayPal',
       description: 'Brand identity and catalog sync automation.',
-      logo: 'https://cdn.simpleicons.org/paypal/00457C',
+      logo: INTEGRATION_LOGOS.paypal,
       className: 'md:left-[50%] md:top-[84%]',
    },
    {
       name: 'Shopware',
       description: 'Conversion-focused apps and subscriptions tooling.',
-      logo: 'https://cdn.simpleicons.org/shopware/189EFF',
+      logo: INTEGRATION_LOGOS.shopware,
       className: 'md:left-[6%] md:top-[62%]',
    },
 ]
