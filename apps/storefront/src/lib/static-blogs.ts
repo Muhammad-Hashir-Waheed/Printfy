@@ -16,7 +16,7 @@ export const STATIC_BLOGS: StaticBlogPost[] = [
       description: 'Pizza boxes, burger boxes, fries cartons, and bags that protect food and show your brand.',
       image:
          'https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1200&auto=format&fit=crop',
-      author: { name: 'Store Team' },
+      author: { name: 'Printfy Team' },
       createdAt: '2025-01-10T00:00:00.000Z',
       updatedAt: '2025-01-10T00:00:00.000Z',
       content: `## Start with the menu
@@ -42,7 +42,7 @@ List your top SKUs and order 2–3 sizes max at first. Reorder based on what sel
       description: 'Turn shipping into a brand moment with mailers, tissue, and inserts.',
       image:
          'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop',
-      author: { name: 'Store Team' },
+      author: { name: 'Printfy Team' },
       createdAt: '2025-01-15T00:00:00.000Z',
       updatedAt: '2025-01-15T00:00:00.000Z',
       content: `## Build an unboxing kit
@@ -62,7 +62,7 @@ Use rigid or magnetic boxes for premium products. Keep shipping boxes sturdy for
       description: 'File specs, color tips, and safe areas for boxes, bags, and labels.',
       image:
          'https://images.unsplash.com/photo-1542744094-24638eff58bb?q=80&w=1200&auto=format&fit=crop',
-      author: { name: 'Store Team' },
+      author: { name: 'Printfy Team' },
       createdAt: '2025-02-01T00:00:00.000Z',
       updatedAt: '2025-02-01T00:00:00.000Z',
       content: `## Resolution

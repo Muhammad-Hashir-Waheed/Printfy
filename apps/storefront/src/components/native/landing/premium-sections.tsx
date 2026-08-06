@@ -9,7 +9,7 @@ import {
    SHOWCASE_TILES,
 } from '@/lib/catalog-navigation'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
-import amazonLogoAsset from '@/assets/amazon.svg'
+import { INTEGRATION_LOGOS } from '@/lib/integration-logos'
 import Link from 'next/link'
 
 const integrations = [

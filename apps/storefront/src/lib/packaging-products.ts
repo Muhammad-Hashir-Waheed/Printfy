@@ -29,8 +29,8 @@ type CatalogProduct = {
 }
 
 const brand = {
-   id: 'brand-fannify',
-   title: 'Fannify',
+   id: 'brand-printfy',
+   title: 'Printfy',
    description: 'House brand',
    logo: null,
 } as any

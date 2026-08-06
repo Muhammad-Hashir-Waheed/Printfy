@@ -74,7 +74,7 @@ export function Navbar() {
                      </svg>
                   </span>
                   <span className="text-lg font-semibold tracking-tight text-foreground">
-                     Fannify
+                     Printfy
                   </span>
                </Link>
 

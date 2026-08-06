@@ -1,32 +1,18 @@
-import amazonLogo from '@/assets/amazon.svg'
-import bigcommerceLogo from '@/assets/integrations/bigcommerce.svg'
-import etsyLogo from '@/assets/integrations/etsy.svg'
-import paypalLogo from '@/assets/integrations/paypal.svg'
-import shopifyLogo from '@/assets/integrations/shopify.svg'
-import shopwareLogo from '@/assets/integrations/shopware.svg'
-import squareLogo from '@/assets/integrations/square.svg'
-import squarespaceLogo from '@/assets/integrations/squarespace.svg'
-import stripeLogo from '@/assets/integrations/stripe.svg'
-import webflowLogo from '@/assets/integrations/webflow.svg'
-import wixLogo from '@/assets/integrations/wix.svg'
-import woocommerceLogo from '@/assets/integrations/woocommerce.svg'
-
-function assetSrc(img: string | { src: string }) {
-   return typeof img === 'string' ? img : img.src
-}
-
-/** Locally bundled logos — never rely on CDN (breaks on Vercel / blocked networks) */
+/**
+ * Local public icons — served from /icons (also bundled under public/icons).
+ * Avoids CDN breakage and keeps SSR/client imports simple.
+ */
 export const INTEGRATION_LOGOS = {
-   shopify: assetSrc(shopifyLogo),
-   amazon: assetSrc(amazonLogo),
-   etsy: assetSrc(etsyLogo),
-   woocommerce: assetSrc(woocommerceLogo),
-   wix: assetSrc(wixLogo),
-   squarespace: assetSrc(squarespaceLogo),
-   square: assetSrc(squareLogo),
-   bigcommerce: assetSrc(bigcommerceLogo),
-   webflow: assetSrc(webflowLogo),
-   stripe: assetSrc(stripeLogo),
-   paypal: assetSrc(paypalLogo),
-   shopware: assetSrc(shopwareLogo),
+   shopify: '/icons/shopify.svg',
+   amazon: '/icons/amazon.svg',
+   etsy: '/icons/etsy.svg',
+   woocommerce: '/icons/woocommerce.svg',
+   wix: '/icons/wix.svg',
+   squarespace: '/icons/squarespace.svg',
+   square: '/icons/square.svg',
+   bigcommerce: '/icons/bigcommerce.svg',
+   webflow: '/icons/webflow.svg',
+   stripe: '/icons/stripe.svg',
+   paypal: '/icons/paypal.svg',
+   shopware: '/icons/shopware.svg',
 } as const

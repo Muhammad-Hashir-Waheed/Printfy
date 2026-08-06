@@ -350,7 +350,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                               <div className="space-y-1 leading-none">
                                  <FormLabel>Customizable</FormLabel>
                                  <FormDescription>
-                                    Enable product personalization in Fannify customizer.
+                                    Enable product personalization in Printfy customizer.
                                  </FormDescription>
                               </div>
                               <FormControl>

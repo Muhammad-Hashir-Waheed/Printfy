@@ -13,7 +13,7 @@ export type CatalogProduct = ProductWithIncludes & {
 }
 
 export const DUMMY_BRANDS = [
-   { id: 'brand-fannify', title: 'Fannify', description: 'House brand', logo: null },
+   { id: 'brand-printfy', title: 'Printfy', description: 'House brand', logo: null },
    { id: 'brand-studio', title: 'Studio Print', description: 'Premium blanks', logo: null },
 ]
 

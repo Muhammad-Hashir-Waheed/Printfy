@@ -8,12 +8,12 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-   title: 'Store',
-   description: 'E-Commerce Store',
-   keywords: ['E-Commerce', 'Store', 'Shop'],
-   authors: [{ name: 'Sesto', url: 'https://github.com/sesto-dev' }],
-   creator: 'Sesto',
-   publisher: 'Sesto',
+   title: 'Printfy',
+   description: 'Custom packaging for food, retail, and shipping.',
+   keywords: ['Printfy', 'Packaging', 'Custom Print', 'E-Commerce'],
+   authors: [{ name: 'Printfy', url: 'https://github.com/sesto-dev' }],
+   creator: 'Printfy',
+   publisher: 'Printfy',
    icons: {
       icon: '/favicon.svg',
    },

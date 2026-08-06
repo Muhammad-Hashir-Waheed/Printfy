@@ -26,7 +26,7 @@ export default function TelegramPage() {
          <h2>Join the channel</h2>
          <p>
             Tap the button below to open Telegram. If the invite link is not configured yet, email{' '}
-            <a href="mailto:support@store.com">support@store.com</a> and we will add you.
+            <a href="mailto:support@printfy.com">support@printfy.com</a> and we will add you.
          </p>
 
          <div className="flex flex-wrap gap-3 pt-2">
