@@ -128,6 +128,17 @@ export const SHOWCASE_TILES = [
       href: buildCatalogHref({ category: 'Food Containers' }),
       image: CATALOG_IMAGES.foodContainer,
    },
+   {
+      title: 'LED & Neon signs',
+      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      image: CATALOG_IMAGES.neonSign,
+      imageClassName: 'object-center',
+   },
+   {
+      title: 'Custom neon',
+      href: buildCatalogHref({ category: 'Neon Signs' }),
+      image: CATALOG_IMAGES.neonShop,
+   },
 ] as const
 
 export const PACKAGING_PRODUCT_TYPES = DUMMY_PRODUCT_TYPES

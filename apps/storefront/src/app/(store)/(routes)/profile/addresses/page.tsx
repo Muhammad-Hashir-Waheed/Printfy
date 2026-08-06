@@ -15,24 +15,35 @@ import { AddressTable } from './components/table'
 
 export default function AddressesPage() {
    const { authenticated } = useAuthenticated()
-   const [addresses, setAddresses] = useState(null)
+   const [addresses, setAddresses] = useState<any[] | null>(null)
+   const [error, setError] = useState<string | null>(null)
    const pathname = usePathname()
 
    useEffect(() => {
-      async function getOrder() {
+      if (!authenticated) return
+
+      async function getAddresses() {
          try {
             const response = await fetch(`/api/addresses`, {
                cache: 'no-store',
             })
 
+            if (!response.ok) {
+               setError('We could not load your addresses right now.')
+               setAddresses([])
+               return
+            }
+
             const json = await response.json()
-            setAddresses(json)
+            setAddresses(Array.isArray(json) ? json : [])
          } catch (error) {
             console.error({ error })
+            setError('We could not load your addresses right now.')
+            setAddresses([])
          }
       }
 
-      if (authenticated) getOrder()
+      getAddresses()
    }, [authenticated])
 
    return (
@@ -46,9 +57,7 @@ export default function AddressesPage() {
                   </Button>
                </Link>
             </div>
-            {addresses ? (
-               <AddressSection addresses={addresses} />
-            ) : (
+            {addresses === null ? (
                <Card className="my-2">
                   <CardContent>
                      <div className="h-[20vh]">
@@ -58,6 +67,21 @@ export default function AddressesPage() {
                      </div>
                   </CardContent>
                </Card>
+            ) : addresses.length === 0 ? (
+               <Card className="my-4 rounded-2xl border shadow-sm">
+                  <CardContent className="space-y-3 p-8 text-center">
+                     <h3 className="text-lg font-semibold">No addresses saved</h3>
+                     <p className="text-sm text-muted-foreground">
+                        {error ??
+                           'Add a delivery address so checkout can be completed faster.'}
+                     </p>
+                     <Button asChild className="mt-2 rounded-2xl">
+                        <Link href="/profile/addresses/new">Add an address</Link>
+                     </Button>
+                  </CardContent>
+               </Card>
+            ) : (
+               <AddressSection addresses={addresses} />
             )}
          </div>
       </div>

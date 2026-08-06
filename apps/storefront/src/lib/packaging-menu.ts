@@ -5,14 +5,17 @@ import { CATALOG_IMAGES } from '@/lib/catalog-images'
 export type PackagingMenuLink = {
    label: string
    href: string
-   /** Up to 3 related category images */
-   images?: string[]
-   image?: string
+   /** Single primary image for the menu row */
+   image: string
+   description?: string
 }
 
 export type PackagingMenuColumn = {
    title: string
    href: string
+   /** Short blurb under the column title */
+   blurb: string
+   accent: string
    links: PackagingMenuLink[]
 }
 
@@ -20,16 +23,16 @@ export type PackagingFeaturedCard = {
    title: string
    href: string
    image: string
-   images: string[]
-   alt: string
+   badge?: string
+   description: string
 }
 
-function linksForType(productType: string) {
+function linksForType(productType: string): PackagingMenuLink[] {
    return PACKAGING_CATEGORIES.filter((c) => c.productType === productType).map((c) => ({
       label: c.title,
       href: c.href,
-      images: [...c.images],
       image: c.images[0],
+      description: c.description,
    }))
 }
 
@@ -38,101 +41,111 @@ function linkForCategory(title: string): PackagingMenuLink {
    return {
       label: title,
       href: c?.href ?? buildCatalogHref({ category: title }),
-      images: c ? [...c.images] : undefined,
-      image: c?.images[0],
+      image: c?.images[0] ?? CATALOG_IMAGES.customPackagingHero,
+      description: c?.description,
    }
 }
 
-/** Vistaprint-style packaging mega menu — every title & link is clickable */
+/** Clear category columns — each option maps to its own product family */
 export const PACKAGING_MENU_COLUMNS: PackagingMenuColumn[] = [
    {
       title: 'Food Packaging',
       href: buildCatalogHref({ productType: 'Food Packaging' }),
+      blurb: 'Boxes, bags & trays for restaurants',
+      accent: 'bg-orange-500',
       links: linksForType('Food Packaging'),
    },
    {
-      title: 'Shipping Packaging',
+      title: 'Shipping',
       href: buildCatalogHref({ productType: 'Shipping Packaging' }),
+      blurb: 'Mailers & cartons for e-commerce',
+      accent: 'bg-sky-500',
       links: linksForType('Shipping Packaging'),
    },
    {
-      title: 'Retail Packaging',
+      title: 'Retail',
       href: buildCatalogHref({ productType: 'Retail Packaging' }),
+      blurb: 'Bags, tags & gift packaging',
+      accent: 'bg-violet-500',
       links: linksForType('Retail Packaging'),
    },
    {
-      title: 'Packaging Accessories',
+      title: 'Accessories',
       href: buildCatalogHref({ productType: 'Packaging Accessories' }),
+      blurb: 'Stickers, tissue & inserts',
+      accent: 'bg-emerald-500',
       links: linksForType('Packaging Accessories'),
    },
+   {
+      title: 'LED & Neon',
+      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      blurb: 'Custom neon & LED storefront signs',
+      accent: 'bg-fuchsia-500',
+      links: linksForType('LED & Neon Signs'),
+   },
 ]
 
-export const PACKAGING_SIDE_COLUMNS: PackagingMenuColumn[] = [
+export const PACKAGING_QUICK_PICKS: PackagingMenuLink[] = [
+   linkForCategory('Pizza Boxes'),
+   linkForCategory('Mailer Boxes'),
+   linkForCategory('Shopping Bags'),
+   linkForCategory('Neon Signs'),
+]
+
+/** Featured spotlight cards in the mega menu aside */
+export const PACKAGING_FEATURED_CARDS: PackagingFeaturedCard[] = [
    {
-      title: 'Best sellers',
-      href: buildCatalogHref({ productType: 'Food Packaging', q: 'pizza' }),
-      links: [
-         linkForCategory('Pizza Boxes'),
-         linkForCategory('Mailer Boxes'),
-         linkForCategory('Shopping Bags'),
-         linkForCategory('Paper Cups'),
-      ],
+      title: 'LED & Neon Signs',
+      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      image: CATALOG_IMAGES.neonSign,
+      badge: 'New',
+      description: 'Custom neon, LED letters & light boxes for your storefront.',
    },
    {
-      title: 'New Arrivals',
+      title: 'Food Packaging',
       href: buildCatalogHref({ productType: 'Food Packaging' }),
-      links: [
-         linkForCategory('Bakery Boxes'),
-         linkForCategory('Gift Boxes'),
-         linkForCategory('Rigid Boxes'),
-         linkForCategory('Bottle Carriers'),
-      ],
+      image: CATALOG_IMAGES.customPackagingHero,
+      description: 'Pizza boxes, burger boxes, fries cartons & takeout bags.',
+   },
+]
+
+export const PACKAGING_NAV_ITEMS: Array<
+   PackagingMenuLink & { columnTitle?: string }
+> = [
+   {
+      label: 'All Packaging',
+      href: '/products',
+      image: CATALOG_IMAGES.customPackagingHero,
+      columnTitle: 'Food Packaging',
    },
    {
-      title: 'Shop By Industry',
+      label: 'Food Packaging',
       href: buildCatalogHref({ productType: 'Food Packaging' }),
-      links: [
-         {
-            label: 'Food & Beverage',
-            href: buildCatalogHref({ productType: 'Food Packaging' }),
-            image: CATALOG_IMAGES.customPackagingHero,
-            images: [
-               CATALOG_IMAGES.customBoxLarge,
-               CATALOG_IMAGES.customBoxMedium,
-               CATALOG_IMAGES.customPaperBag,
-            ],
-         },
-         {
-            label: 'Retail & E-commerce',
-            href: buildCatalogHref({ productType: 'Shipping Packaging' }),
-            image: CATALOG_IMAGES.mailer,
-            images: [CATALOG_IMAGES.mailer, CATALOG_IMAGES.tote, CATALOG_IMAGES.bag],
-         },
-         {
-            label: 'Beauty & Gift',
-            href: buildCatalogHref({ productType: 'Retail Packaging' }),
-            image: CATALOG_IMAGES.product,
-            images: [CATALOG_IMAGES.product, CATALOG_IMAGES.sticker, CATALOG_IMAGES.tote],
-         },
-      ],
+      image: CATALOG_IMAGES.customBoxLarge,
+      columnTitle: 'Food Packaging',
+   },
+   {
+      label: 'Shipping',
+      href: buildCatalogHref({ productType: 'Shipping Packaging' }),
+      image: CATALOG_IMAGES.mailer,
+      columnTitle: 'Shipping',
+   },
+   {
+      label: 'Retail',
+      href: buildCatalogHref({ productType: 'Retail Packaging' }),
+      image: CATALOG_IMAGES.shoppingBag,
+      columnTitle: 'Retail',
+   },
+   {
+      label: 'Accessories',
+      href: buildCatalogHref({ productType: 'Packaging Accessories' }),
+      image: CATALOG_IMAGES.sticker,
+      columnTitle: 'Accessories',
+   },
+   {
+      label: 'LED & Neon',
+      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      image: CATALOG_IMAGES.neonSign,
+      columnTitle: 'LED & Neon',
    },
 ]
-
-export const PACKAGING_NAV_ITEMS: PackagingMenuLink[] = [
-   { label: 'All Packaging', href: '/products' },
-   { label: 'Food Packaging', href: buildCatalogHref({ productType: 'Food Packaging' }) },
-   { label: 'Shipping', href: buildCatalogHref({ productType: 'Shipping Packaging' }) },
-   { label: 'Retail', href: buildCatalogHref({ productType: 'Retail Packaging' }) },
-   { label: 'Accessories', href: buildCatalogHref({ productType: 'Packaging Accessories' }) },
-   { label: 'Best Sellers', href: buildCatalogHref({ category: 'Pizza Boxes' }) },
-]
-
-/** Featured image cards — click opens that category gallery */
-export const PACKAGING_FEATURED_CARDS: PackagingFeaturedCard[] =
-   PACKAGING_CATEGORIES.slice(0, 8).map((category) => ({
-      title: category.title,
-      href: category.href,
-      image: category.images[0],
-      images: [...category.images],
-      alt: category.description,
-   }))

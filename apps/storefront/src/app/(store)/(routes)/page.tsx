@@ -4,6 +4,7 @@ import {
    FastFoodPackagingSection,
    GlobalReachSection,
    IntegrationsSection,
+   NeonSignsSection,
    ProductShowcaseSection,
 } from '@/components/native/landing/premium-sections'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
@@ -17,8 +18,9 @@ import { isVariableValid } from '@/lib/utils'
 const dummyBanners = [
    { image: CATALOG_IMAGES.customPackagingHero },
    { image: CATALOG_IMAGES.customBoxLarge },
+   { image: CATALOG_IMAGES.neonSign },
    { image: CATALOG_IMAGES.customBoxMedium },
-   { image: CATALOG_IMAGES.customBoxSmall },
+   { image: CATALOG_IMAGES.neonShop },
    { image: CATALOG_IMAGES.customPaperBag },
 ]
 
@@ -39,6 +41,10 @@ export default function Index() {
 
          <RevealOnScroll>
             <FastFoodPackagingSection />
+         </RevealOnScroll>
+
+         <RevealOnScroll>
+            <NeonSignsSection />
          </RevealOnScroll>
 
          <RevealOnScroll>

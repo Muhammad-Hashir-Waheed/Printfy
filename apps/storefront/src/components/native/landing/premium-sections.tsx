@@ -8,7 +8,8 @@ import {
    FAST_FOOD_SHOWCASE_TILES,
    SHOWCASE_TILES,
 } from '@/lib/catalog-navigation'
-import { INTEGRATION_LOGOS } from '@/lib/integration-logos'
+import { CATALOG_IMAGES } from '@/lib/catalog-images'
+import amazonLogoAsset from '@/assets/amazon.svg'
 import Link from 'next/link'
 
 const integrations = [
@@ -132,6 +133,87 @@ export function FastFoodPackagingSection() {
                                  className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
                               />
                               <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900 dark:bg-neutral-950/90 dark:text-white">
+                                 {tile.title}
+                              </span>
+                           </CardContent>
+                        </Card>
+                     </Link>
+                  ))}
+               </div>
+            </div>
+         </div>
+      </section>
+   )
+}
+
+export function NeonSignsSection() {
+   const tiles = [
+      {
+         title: 'Custom neon',
+         href: buildCatalogHref({ category: 'Neon Signs' }),
+         image: CATALOG_IMAGES.neonSign,
+      },
+      {
+         title: 'LED letters',
+         href: buildCatalogHref({ category: 'LED Signs' }),
+         image: CATALOG_IMAGES.ledSign,
+      },
+      {
+         title: 'Open / Closed',
+         href: buildCatalogHref({ category: 'Light Box Signs' }),
+         image: CATALOG_IMAGES.neonShop,
+      },
+      {
+         title: 'All signage',
+         href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+         image: CATALOG_IMAGES.neonShop,
+      },
+   ]
+
+   return (
+      <section className="my-10 overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 via-fuchsia-950 to-indigo-950 px-4 py-10 text-white sm:px-8">
+         <div className="mx-auto max-w-6xl">
+            <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+               <div className="space-y-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-fuchsia-300">
+                     LC / LED & neon signs
+                  </p>
+                  <h2 className="text-3xl font-bold leading-tight md:text-4xl">
+                     Light up your storefront with custom neon & LED signs
+                  </h2>
+                  <p className="max-w-lg text-white/75">
+                     From script neon logos to LED channel letters and open/closed boards —
+                     designed for cafes, salons, retail shops, and event spaces.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                     <Link href={buildCatalogHref({ productType: 'LED & Neon Signs' })}>
+                        <Button className="rounded-md bg-fuchsia-500 text-white hover:bg-fuchsia-400">
+                           Shop LED & neon
+                           <ArrowRightIcon className="ml-2 h-4 w-4" />
+                        </Button>
+                     </Link>
+                     <Link href={buildCatalogHref({ category: 'Neon Signs' })}>
+                        <Button
+                           variant="outline"
+                           className="rounded-md border-white/30 bg-transparent text-white hover:bg-white/10"
+                        >
+                           Custom neon signs
+                        </Button>
+                     </Link>
+                  </div>
+               </div>
+               <div className="grid grid-cols-2 gap-3">
+                  {tiles.map((tile) => (
+                     <Link key={tile.title} href={tile.href}>
+                        <Card className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm backdrop-blur transition hover:bg-white/10">
+                           <CardContent className="relative h-[140px] p-0 sm:h-[160px]">
+                              <img
+                                 src={tile.image}
+                                 alt={tile.title}
+                                 loading="lazy"
+                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                              />
+                              <span className="absolute bottom-2 left-2 rounded-sm bg-black/70 px-2 py-1 text-[11px] font-medium text-white">
                                  {tile.title}
                               </span>
                            </CardContent>

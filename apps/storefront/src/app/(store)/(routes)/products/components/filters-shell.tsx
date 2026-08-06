@@ -1,19 +1,6 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-
-const CatalogFiltersPanel = dynamic(
-   () =>
-      import('./catalog-filters').then((mod) => ({
-         default: mod.CatalogFiltersPanel,
-      })),
-   {
-      ssr: false,
-      loading: () => (
-         <aside className="h-64 animate-pulse rounded-2xl border bg-muted/30" />
-      ),
-   }
-)
+import { CatalogFiltersPanel } from './catalog-filters'
 
 export function FiltersShell({
    categories,

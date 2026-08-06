@@ -19,13 +19,8 @@ export function UserCombobox({ initialValue }) {
 
    const categories = [
       {
-         title: 'Addresses',
-         description: 'Visit your addresses.',
-         value: '/profile/addresses',
-      },
-      {
          title: 'Edit Profile',
-         description: 'Visit your orders.',
+         description: 'Update your account details.',
          value: '/profile/edit',
       },
       {
@@ -33,12 +28,28 @@ export function UserCombobox({ initialValue }) {
          description: 'Visit your orders.',
          value: '/profile/orders',
       },
+      {
+         title: 'Payments',
+         description: 'Review your payment history.',
+         value: '/profile/payments',
+      },
+      {
+         title: 'Addresses',
+         description: 'Visit your addresses.',
+         value: '/profile/addresses',
+      },
+      {
+         title: 'Saved Designs',
+         description: 'Reuse your custom print layouts.',
+         value: '/profile/designs',
+      },
    ]
 
    function getCategoryTitle() {
       for (const category of categories) {
          if (value.includes(category.value)) return category.title
       }
+      return 'My Account'
    }
 
    useEffect(() => {

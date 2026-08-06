@@ -10,18 +10,18 @@ import {
    navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import config from '@/config/site'
+import { DUMMY_BRANDS } from '@/lib/catalog-dummy'
+import { buildCatalogHref } from '@/lib/catalog-navigation'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { forwardRef } from 'react'
 
-const components: { title: string; href: string; description: string }[] = [
-   {
-      title: 'Alert Dialog',
-      href: '/docs/primitives/alert-dialog',
-      description:
-         'A modal dialog that interrupts the user with important content and expects a response.',
-   },
-]
+const components: { title: string; href: string; description: string }[] =
+   DUMMY_BRANDS.map((brand) => ({
+      title: brand.title,
+      href: buildCatalogHref({ brand: brand.title }),
+      description: `Browse custom packaging from ${brand.title}.`,
+   }))
 
 export function MainNav() {
    return (
@@ -61,30 +61,37 @@ export function NavMenu() {
                         <NavigationMenuLink asChild>
                            <Link
                               className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                              href="/"
+                              href="/products/gallery"
                            >
                               <div className="mb-2 mt-4 text-lg font-medium">
-                                 shadcn/ui
+                                 Packaging gallery
                               </div>
                               <p className="text-sm leading-tight text-muted-foreground">
-                                 Beautifully designed components built with
-                                 Radix UI and Tailwind CSS.
+                                 Browse every custom packaging product in one
+                                 place.
                               </p>
                            </Link>
                         </NavigationMenuLink>
                      </li>
-                     <ListItem href="/docs" title="Introduction">
-                        Re-usable components built using Radix UI and Tailwind
-                        CSS.
-                     </ListItem>
-                     <ListItem href="/docs/installation" title="Installation">
-                        How to install dependencies and structure your app.
+                     <ListItem
+                        href={buildCatalogHref({ productType: 'Food Packaging' })}
+                        title="Food packaging"
+                     >
+                        Pizza boxes, burger boxes, fries cartons and cups.
                      </ListItem>
                      <ListItem
-                        href="/docs/primitives/typography"
-                        title="Typography"
+                        href={buildCatalogHref({
+                           productType: 'Shipping Packaging',
+                        })}
+                        title="Shipping packaging"
                      >
-                        Styles for headings, paragraphs, lists...etc
+                        Mailer boxes, shipping cartons and poly mailers.
+                     </ListItem>
+                     <ListItem
+                        href={buildCatalogHref({ productType: 'Retail Packaging' })}
+                        title="Retail packaging"
+                     >
+                        Shopping bags, gift boxes, rigid boxes and tags.
                      </ListItem>
                   </ul>
                </NavigationMenuContent>
