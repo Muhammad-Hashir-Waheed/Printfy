@@ -28,6 +28,7 @@ import wrappingPaperImg from '@/assets/packaging/wrapping-paper.jpg'
 import neonSignImg from '@/assets/packaging/neon-sign.jpg'
 import ledSignImg from '@/assets/packaging/led-sign.jpg'
 import neonShopImg from '@/assets/packaging/neon-shop.jpg'
+import neonBrandBrewImg from '@/assets/packaging/neon-brand-brew.jpg'
 
 function assetSrc(img: string | { src: string }) {
    return typeof img === 'string' ? img : img.src
@@ -64,6 +65,7 @@ export const CATALOG_IMAGES = {
    neonSign: assetSrc(neonSignImg),
    ledSign: assetSrc(ledSignImg),
    neonShop: assetSrc(neonShopImg),
+   neonBrandBrew: assetSrc(neonBrandBrewImg),
    /** Aliases used by older product records — point at matching category art */
    tote: assetSrc(shoppingBagsImg),
    bag: assetSrc(retailShoppingBagImg),

@@ -15,9 +15,9 @@ export function HeroSection() {
          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:gap-12 lg:px-12 lg:py-16">
             <div className="z-10 space-y-6 text-center lg:text-left">
                <p className="inline-flex items-center gap-2 rounded-full border border-red-200/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-red-600 shadow-sm dark:border-red-500/30 dark:bg-white/5 dark:text-[#5EEAD4]">
-                  Custom packaging
+                  Packaging
                   <span className="h-1 w-1 rounded-full bg-[#FF5A52]" />
-                  neon &amp; LED
+                  brand neon logos
                </p>
 
                <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-[3.25rem]">
@@ -25,8 +25,8 @@ export function HeroSection() {
                </h1>
 
                <p className="mx-auto max-w-lg text-base leading-relaxed text-slate-600 dark:text-slate-300 lg:mx-0 lg:text-lg">
-                  Upload your logo, customize pizza boxes, burger boxes, bags, mailers, and LED neon
-                  signs—preview instantly and order from one platform.
+                  Custom pizza &amp; burger boxes, bags, mailers—plus illuminated neon &amp; LED brand
+                  logo signs for your storefront. Upload your logo, preview, and order in one place.
                </p>
 
                <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-slate-500 dark:text-slate-400 lg:justify-start">
