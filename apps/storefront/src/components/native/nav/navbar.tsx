@@ -4,6 +4,7 @@ import {
    PackagingMegaMenu,
    PackagingMobileLinks,
 } from '@/components/native/nav/packaging-mega-menu'
+import { PrintfyLogo } from '@/components/native/printfy-logo'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -59,20 +60,8 @@ export function Navbar() {
       <header className="sticky top-0 z-50 mb-4 w-full border-b bg-background/95 backdrop-blur supports-backdrop-blur:bg-background/90">
          <div className="px-6 lg:px-12">
             <div className="mx-auto flex h-16 max-w-7xl items-center gap-4">
-               <Link href="/" className="flex min-w-fit items-center gap-2">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-red-500 text-white shadow-sm">
-                     <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="h-5 w-5"
-                        aria-hidden="true"
-                     >
-                        <circle cx="12" cy="12" r="10" fill="currentColor" />
-                        <path d="M8 7h8v2h-6v2h5v2h-5v4H8V7Z" fill="white" />
-                        <circle cx="16.5" cy="16.5" r="1.5" fill="white" />
-                     </svg>
-                  </span>
+               <Link href="/" className="flex min-w-fit items-center gap-2.5">
+                  <PrintfyLogo className="h-9 w-9 shrink-0 rounded-xl shadow-sm ring-1 ring-black/10 dark:ring-white/10" />
                   <span className="text-lg font-semibold tracking-tight text-foreground">
                      Printfy
                   </span>

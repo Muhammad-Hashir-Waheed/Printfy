@@ -45,12 +45,7 @@ module.exports = {
          },
          {
             source: '/favicon.ico',
-            destination: '/icon.svg',
-            permanent: false,
-         },
-         {
-            source: '/favicon.svg',
-            destination: '/icon.svg',
+            destination: '/favicon.svg',
             permanent: false,
          },
       ]

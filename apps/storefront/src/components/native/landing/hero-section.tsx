@@ -1,78 +1,65 @@
 'use client'
 
-import { ToggleSwitch } from '@/components/native/landing/toggle-switch'
+import { HeroCollage } from '@/components/native/landing/hero-collage'
 import { Button } from '@/components/ui/button'
-import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import Link from 'next/link'
-import { ArrowRightIcon } from 'lucide-react'
-import { useState } from 'react'
 
 export function HeroSection() {
-   const [mode, setMode] = useState<'selling' | 'personal'>('selling')
-
    return (
-      <section className="relative left-1/2 mb-8 min-h-[85vh] w-screen -translate-x-1/2 bg-gradient-to-r from-gray-50 to-blue-100 dark:from-neutral-950 dark:to-slate-900">
-         <div className="mx-auto grid min-h-[85vh] max-w-7xl items-center gap-10 px-6 py-10 lg:grid-cols-2 lg:gap-12 lg:px-12 lg:py-12">
-            <div className="space-y-6 text-center lg:text-left">
-               <div className="flex justify-center lg:justify-start">
-                  <ToggleSwitch active={mode} onChange={setMode} />
-               </div>
-               <h1 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-6xl">
-                  Custom packaging for fast food brands
-               </h1>
-               <p className="mx-auto max-w-md text-base text-slate-600 dark:text-slate-300 lg:mx-0 lg:text-lg">
-                  Pizza boxes, burger boxes, fries cartons, takeout bags, mailers & more.
-                  Design, customize, and order in minutes.
+      <section className="relative mb-10 overflow-hidden rounded-2xl border bg-gradient-to-br from-slate-50 via-white to-rose-50 dark:border-neutral-800 dark:from-neutral-950 dark:via-neutral-950 dark:to-red-950/30">
+         <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -left-16 top-8 h-56 w-56 rounded-full bg-[#FF5A52]/15 blur-[80px] dark:bg-[#FF5A52]/20" />
+            <div className="absolute bottom-0 right-0 h-64 w-64 rounded-full bg-[#7C5CFC]/10 blur-[90px] dark:bg-[#7C5CFC]/20" />
+         </div>
+
+         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:gap-12 lg:px-12 lg:py-16">
+            <div className="z-10 space-y-6 text-center lg:text-left">
+               <p className="inline-flex items-center gap-2 rounded-full border border-red-200/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-red-600 shadow-sm dark:border-red-500/30 dark:bg-white/5 dark:text-[#5EEAD4]">
+                  Custom packaging
+                  <span className="h-1 w-1 rounded-full bg-[#FF5A52]" />
+                  neon &amp; LED
                </p>
+
+               <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-[3.25rem]">
+                  Design Custom Food Packaging in Minutes
+               </h1>
+
+               <p className="mx-auto max-w-lg text-base leading-relaxed text-slate-600 dark:text-slate-300 lg:mx-0 lg:text-lg">
+                  Upload your logo, customize pizza boxes, burger boxes, bags, mailers, and LED neon
+                  signs—preview instantly and order from one platform.
+               </p>
+
+               <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-slate-500 dark:text-slate-400 lg:justify-start">
+                  {['Design', 'Preview', 'Customize', 'Order'].map((step, i) => (
+                     <span key={step} className="inline-flex items-center gap-3">
+                        {i > 0 ? <span className="text-slate-300 dark:text-white/20">•</span> : null}
+                        {step}
+                     </span>
+                  ))}
+               </div>
+
                <div className="flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-start">
-                  <Link href="/products?productType=food%20packaging" className="w-full sm:w-auto">
-                     <Button className="h-12 w-full rounded-lg bg-red-500 px-6 text-white shadow-md transition duration-200 hover:scale-105 hover:bg-red-600 hover:shadow-md">
-                        Shop packaging
+                  <Link href="/products" className="w-full sm:w-auto">
+                     <Button className="h-12 w-full rounded-xl bg-[#FF5A52] px-7 text-base font-semibold text-white shadow-md transition hover:scale-[1.02] hover:bg-[#ff6d66]">
+                        Start Designing
                      </Button>
                   </Link>
-                  <Link href="/products?productType=shipping%20packaging" className="w-full sm:w-auto">
+                  <Link href="/products/gallery" className="w-full sm:w-auto">
                      <Button
                         variant="outline"
-                        className="h-12 w-full rounded-lg border-slate-300 bg-white px-6 text-slate-900 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 dark:hover:text-white"
+                        className="h-12 w-full rounded-xl border-slate-300 bg-white px-7 text-base font-semibold text-slate-900 hover:bg-slate-50 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
                      >
-                        Shop mailers & boxes
+                        Browse Templates
                      </Button>
                   </Link>
-                  <Link
-                     href="/privacy"
-                     className="inline-flex w-full items-center justify-center gap-1 font-medium text-slate-700 transition duration-200 hover:scale-105 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white sm:w-auto"
-                  >
-                     Get enterprise support
-                     <ArrowRightIcon className="h-4 w-4" />
-                  </Link>
                </div>
-               <p className="text-sm text-slate-500/80 dark:text-slate-400">Featuring: loola Co.</p>
+
+               <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Trusted by 2000+ food brands
+               </p>
             </div>
 
-            <div className="relative flex items-center justify-center">
-               <div className="grid w-full max-w-xl grid-cols-2 gap-3 lg:translate-y-6">
-                  <div className="overflow-hidden rounded-xl bg-card shadow-2xl ring-1 ring-slate-200/80 dark:ring-slate-700">
-                     <img
-                        src={CATALOG_IMAGES.customBoxLarge}
-                        alt="Custom printed pizza box packaging"
-                        className="h-[200px] w-full object-cover sm:h-[260px] md:h-[320px]"
-                     />
-                     <p className="bg-white px-3 py-2 text-center text-xs font-medium text-slate-700 dark:bg-neutral-900 dark:text-slate-200 sm:text-sm">
-                        Pizza boxes
-                     </p>
-                  </div>
-                  <div className="overflow-hidden rounded-xl bg-card shadow-2xl ring-1 ring-slate-200/80 dark:ring-slate-700">
-                     <img
-                        src={CATALOG_IMAGES.customBoxMedium}
-                        alt="Custom printed burger box packaging"
-                        className="h-[200px] w-full object-cover sm:h-[260px] md:h-[320px]"
-                     />
-                     <p className="bg-white px-3 py-2 text-center text-xs font-medium text-slate-700 dark:bg-neutral-900 dark:text-slate-200 sm:text-sm">
-                        Burger boxes
-                     </p>
-                  </div>
-               </div>
-            </div>
+            <HeroCollage className="relative z-10 w-full" />
          </div>
       </section>
    )

@@ -9,6 +9,7 @@ import {
    NavigationMenuTrigger,
    navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+import { PrintfyLogo } from '@/components/native/printfy-logo'
 import config from '@/config/site'
 import { DUMMY_BRANDS } from '@/lib/catalog-dummy'
 import { buildCatalogHref } from '@/lib/catalog-navigation'
@@ -26,7 +27,8 @@ const components: { title: string; href: string; description: string }[] =
 export function MainNav() {
    return (
       <div className="hidden md:flex gap-4">
-         <Link href="/" className="flex items-center">
+         <Link href="/" className="flex items-center gap-2">
+            <PrintfyLogo className="h-8 w-8 shrink-0 rounded-lg" />
             <span className="hidden font-medium sm:inline-block">
                {config.name}
             </span>
