@@ -45,22 +45,22 @@ export function buildCatalogHref(filters: {
 export const FAST_FOOD_SHOWCASE_TILES = [
    {
       title: 'Pizza boxes',
-      href: buildCatalogHref({ productType: 'Food Packaging', q: 'pizza' }),
+      href: '/products/custom-pizza-box',
       image: CATALOG_IMAGES.customBoxLarge,
    },
    {
       title: 'Burger boxes',
-      href: buildCatalogHref({ productType: 'Food Packaging', q: 'burger' }),
+      href: '/products/burger-box',
       image: CATALOG_IMAGES.customBoxMedium,
    },
    {
       title: 'Fries cartons',
-      href: buildCatalogHref({ productType: 'Food Packaging', q: 'fries' }),
+      href: '/products/fries-carton',
       image: CATALOG_IMAGES.customBoxSmall,
    },
    {
       title: 'Takeout bags',
-      href: buildCatalogHref({ productType: 'Food Packaging', q: 'takeout' }),
+      href: '/products/takeout-bag',
       image: CATALOG_IMAGES.customPaperBag,
    },
 ] as const
@@ -136,7 +136,7 @@ export const SHOWCASE_TILES = [
    },
    {
       title: 'Custom neon',
-      href: buildCatalogHref({ category: 'Neon Signs' }),
+      href: '/products/custom-neon-sign',
       image: CATALOG_IMAGES.neonShop,
    },
 ] as const

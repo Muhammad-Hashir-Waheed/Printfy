@@ -14,16 +14,14 @@ type Piece = {
 }
 
 /**
- * Editorial masterclass collage — overlapping packaging + brand neon/LED logo signs.
- * Neon/LED = custom illuminated brand wordmarks (like boutique Nike/Adidas-style logo signs),
- * not abstract lights.
+ * Editorial collage — each piece links to a real product detail page.
  */
 const PIECES: Piece[] = [
    {
       src: CATALOG_IMAGES.customBoxLarge,
       alt: 'Custom printed pizza box',
       label: 'Pizza boxes',
-      href: '/products?q=pizza',
+      href: '/products/custom-pizza-box',
       frame:
          'left-[4%] top-[8%] z-20 h-[48%] w-[46%] -rotate-2 sm:left-[2%] sm:top-[6%] sm:h-[52%] sm:w-[44%]',
    },
@@ -31,7 +29,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.neonSign,
       alt: 'Custom neon brand logo sign',
       label: 'Brand neon',
-      href: '/products?q=neon',
+      href: '/products/custom-neon-sign',
       frame:
          'right-[2%] top-[2%] z-30 h-[28%] w-[42%] rotate-3 sm:right-[0%] sm:top-[0%] sm:h-[32%] sm:w-[40%]',
    },
@@ -39,7 +37,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.customBoxMedium,
       alt: 'Custom burger box packaging',
       label: 'Burger boxes',
-      href: '/products?q=burger',
+      href: '/products/burger-box',
       frame:
          'right-[6%] top-[30%] z-20 h-[34%] w-[36%] rotate-2 sm:right-[4%] sm:top-[28%] sm:h-[36%] sm:w-[34%]',
    },
@@ -47,7 +45,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.ledSign,
       alt: 'Custom LED brand channel letter logo sign',
       label: 'LED logos',
-      href: '/products?q=led',
+      href: '/products/led-channel-letter',
       frame:
          'left-[2%] bottom-[4%] z-30 h-[30%] w-[40%] rotate-[-3deg] sm:left-[0%] sm:bottom-[2%] sm:h-[32%] sm:w-[38%]',
    },
@@ -55,7 +53,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.customBoxSmall,
       alt: 'Custom fries carton',
       label: 'Fries',
-      href: '/products?q=fries',
+      href: '/products/fries-carton',
       frame:
          'left-[42%] top-[42%] z-40 h-[26%] w-[22%] rotate-[-6deg] sm:left-[40%] sm:top-[40%] sm:h-[28%] sm:w-[20%]',
    },
@@ -63,7 +61,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.neonShop,
       alt: 'Custom neon script brand logo sign',
       label: 'Script neon',
-      href: '/products?q=neon',
+      href: '/products/script-neon-sign',
       frame:
          'right-[28%] bottom-[8%] z-[25] h-[24%] w-[26%] rotate-6 sm:right-[30%] sm:bottom-[6%] sm:h-[26%] sm:w-[24%]',
    },
@@ -71,7 +69,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.neonBrandBrew,
       alt: 'Custom neon brand logo with icon',
       label: 'Logo neon',
-      href: '/products?q=neon',
+      href: '/products/shop-open-neon',
       frame:
          'right-[2%] bottom-[2%] z-20 h-[28%] w-[34%] rotate-[-2deg] sm:right-[0%] sm:bottom-[0%] sm:h-[30%] sm:w-[32%]',
    },
@@ -79,7 +77,7 @@ const PIECES: Piece[] = [
       src: CATALOG_IMAGES.customPaperBag,
       alt: 'Custom takeout bag',
       label: 'Bags',
-      href: '/products?q=takeout',
+      href: '/products/takeout-bag',
       frame:
          'left-[36%] top-[4%] z-10 h-[22%] w-[20%] rotate-[-8deg] sm:left-[38%] sm:top-[2%] sm:h-[24%] sm:w-[18%]',
       imgClass: 'object-center',
@@ -90,7 +88,6 @@ export function HeroCollage({ className }: { className?: string }) {
    return (
       <div className={className}>
          <div className="relative mx-auto aspect-[5/4] w-full max-w-xl lg:max-w-none">
-            {/* soft stage glow behind collage */}
             <div className="pointer-events-none absolute inset-[12%] rounded-full bg-[#FF5A52]/10 blur-3xl dark:bg-[#7C5CFC]/20" />
             <div className="pointer-events-none absolute bottom-[10%] right-[10%] h-40 w-40 rounded-full bg-[#5EEAD4]/15 blur-3xl" />
 

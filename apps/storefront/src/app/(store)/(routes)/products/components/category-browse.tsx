@@ -1,14 +1,12 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
 import { PACKAGING_CATEGORIES } from '@/lib/packaging-categories'
 import {
    buildCatalogHref,
    categoryFilterSlug,
    getCatalogBrowseCounts,
-   PACKAGING_PRODUCT_TYPES,
-   productTypeFilterSlug,
 } from '@/lib/catalog-navigation'
+import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
 type Props = {
@@ -16,126 +14,88 @@ type Props = {
    activeProductType?: string
 }
 
-/** Category gallery browser — used on /products (not the landing page) */
+/** Compact horizontal category strip — products stay above the fold */
 export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) {
-   const { byCategory, byProductType } = getCatalogBrowseCounts()
+   const { byCategory } = getCatalogBrowseCounts()
    const activeCategorySlug = activeCategory?.trim().toLowerCase()
-   const activeTypeSlug = activeProductType?.trim().toLowerCase()
+   const allActive = !activeCategorySlug && !activeProductType?.trim()
 
    return (
-      <section className="mb-8 space-y-6">
-         <div>
-            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
-               Shop packaging by category
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-               Click any category to open its gallery — each includes multiple related products
-               and images.
-            </p>
+      <section className="mb-6">
+         <div className="mb-3 flex items-end justify-between gap-3">
+            <div>
+               <h2 className="text-sm font-semibold tracking-tight text-foreground">
+                  Browse by category
+               </h2>
+               <p className="text-xs text-muted-foreground">
+                  Tap to filter — scroll for more
+               </p>
+            </div>
          </div>
 
-         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+         <div className="-mx-1 flex gap-2.5 overflow-x-auto px-1 pb-2 pt-0.5 [scrollbar-width:thin]">
             <Link
                href="/products"
-               className={`flex min-h-[140px] flex-col items-center justify-center overflow-hidden rounded-xl border bg-muted/40 text-center transition hover:shadow-md ${
-                  !activeCategorySlug && !activeTypeSlug
-                     ? 'border-red-600 ring-1 ring-red-600'
-                     : 'hover:border-foreground/30'
-               }`}
+               className={cn(
+                  'group flex w-[88px] shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
+                  allActive
+                     ? 'border-[#FF5A52] bg-[#FF5A52]/5 ring-1 ring-[#FF5A52]/40'
+                     : 'border-border/80 bg-card hover:border-foreground/25 hover:shadow-sm'
+               )}
             >
-               <span className="text-sm font-semibold">All packaging</span>
-               <span className="mt-1 text-xs text-muted-foreground">View full catalog</span>
+               <div className="flex aspect-square w-full items-center justify-center rounded-lg bg-muted/60 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+                  All
+               </div>
+               <span
+                  className={cn(
+                     'line-clamp-2 text-[11px] font-medium leading-tight',
+                     allActive ? 'text-[#FF5A52]' : 'text-foreground'
+                  )}
+               >
+                  All packaging
+               </span>
             </Link>
 
             {PACKAGING_CATEGORIES.map((category) => {
                const slug = categoryFilterSlug(category.title)
                const active = activeCategorySlug === slug
+               const count = byCategory[category.title] ?? 0
+               const thumb = category.images[0]
+
                return (
                   <Link
                      key={category.id}
-                     href={category.href}
-                     className={`group overflow-hidden rounded-xl border bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
-                        active ? 'border-red-600 ring-1 ring-red-600' : ''
-                     }`}
+                     href={buildCatalogHref({ category: category.title })}
+                     className={cn(
+                        'group flex w-[88px] shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
+                        active
+                           ? 'border-[#FF5A52] bg-[#FF5A52]/5 ring-1 ring-[#FF5A52]/40'
+                           : 'border-border/80 bg-card hover:border-foreground/25 hover:shadow-sm'
+                     )}
                   >
-                     <div className="grid grid-cols-3 gap-0.5 bg-muted p-0.5">
-                        {category.images.map((src, i) => (
-                           <div
-                              key={`${category.id}-${i}`}
-                              className="relative aspect-square overflow-hidden"
-                           >
-                              <img
-                                 src={src}
-                                 alt={`${category.title} example ${i + 1}`}
-                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
-                                 loading="lazy"
-                              />
-                           </div>
-                        ))}
+                     <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
+                        <img
+                           src={thumb}
+                           alt=""
+                           className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                           loading="lazy"
+                        />
                      </div>
-                     <div className="space-y-1 p-3">
-                        <div className="flex items-center justify-between gap-2">
-                           <p className="text-sm font-semibold text-foreground group-hover:text-red-600">
-                              {category.title}
-                           </p>
-                           <span className="text-[10px] text-muted-foreground">
-                              {byCategory[category.title] ?? 0}
-                           </span>
-                        </div>
-                        <p className="line-clamp-2 text-xs text-muted-foreground">
-                           {category.description}
-                        </p>
-                     </div>
+                     <span
+                        className={cn(
+                           'line-clamp-2 text-[11px] font-medium leading-tight',
+                           active ? 'text-[#FF5A52]' : 'text-foreground'
+                        )}
+                     >
+                        {category.title}
+                     </span>
+                     {count > 0 ? (
+                        <span className="sr-only">{count} products</span>
+                     ) : null}
                   </Link>
                )
             })}
          </div>
-
-         <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-               Packaging type
-            </p>
-            <div className="flex flex-wrap gap-2">
-               {PACKAGING_PRODUCT_TYPES.map((type) => {
-                  const slug = productTypeFilterSlug(type)
-                  return (
-                     <BrowseChip
-                        key={type}
-                        href={buildCatalogHref({ productType: type })}
-                        label={type}
-                        count={byProductType[type] ?? 0}
-                        active={activeTypeSlug === slug}
-                     />
-                  )
-               })}
-            </div>
-         </div>
       </section>
-   )
-}
-
-function BrowseChip({
-   href,
-   label,
-   count,
-   active,
-}: {
-   href: string
-   label: string
-   count?: number
-   active?: boolean
-}) {
-   return (
-      <Link href={href}>
-         <Badge
-            variant={active ? 'default' : 'outline'}
-            className="cursor-pointer rounded-2xl px-3 py-1.5 text-sm hover:bg-muted"
-         >
-            {label}
-            {typeof count === 'number' ? (
-               <span className="ml-1.5 text-xs opacity-80">({count})</span>
-            ) : null}
-         </Badge>
-      </Link>
    )
 }

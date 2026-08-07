@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 
 import { ProductsCatalogView } from './components/products-catalog-view'
 
-/** Static shell + client filters (same pattern as /products/gallery — stable on Vercel) */
+/** Static shell + client filters — stable on Vercel */
 export default function ProductsPage() {
    const allProducts = getOfflineCatalogProducts()
    const categories = DUMMY_CATEGORIES.filter((category) =>

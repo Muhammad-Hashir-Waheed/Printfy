@@ -34,7 +34,7 @@ export default function CheckoutSuccessPage({
                      </Button>
                   ) : (
                      <Button asChild variant="outline" className="rounded-2xl">
-                        <Link href="/products/gallery">Browse gallery</Link>
+                        <Link href="/products">Browse packaging</Link>
                      </Button>
                   )}
                </div>

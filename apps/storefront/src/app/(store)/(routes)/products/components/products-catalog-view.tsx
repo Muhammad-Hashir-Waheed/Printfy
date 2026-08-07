@@ -1,6 +1,5 @@
 'use client'
 
-import { Heading } from '@/components/native/heading'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
@@ -10,6 +9,7 @@ import {
    type CatalogProduct,
    type CatalogSearchParams,
 } from '@/lib/catalog-client'
+import { SlidersHorizontal } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
@@ -28,7 +28,6 @@ export function ProductsCatalogView({
    brands: Array<{ title: string }>
 }) {
    const searchParams = useSearchParams()
-
    const paramKey = searchParams.toString()
 
    const params: CatalogSearchParams = {
@@ -52,49 +51,67 @@ export function ProductsCatalogView({
    const filterParams: Record<string, string | undefined> = { ...params }
    const hasFilters = Object.values(filterParams).some(Boolean)
 
+   const activeLabel =
+      params.q?.trim() ||
+      params.category?.replace(/-/g, ' ') ||
+      params.productType ||
+      null
+
    return (
-      <>
-         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <Heading
-               title="Packaging gallery"
-               description="Browse custom packaging — food boxes, bags, mailers, stickers & labels."
-            />
-            <div className="flex flex-wrap gap-2">
-               <Button asChild variant="outline" className="rounded-2xl">
-                  <Link href="/products/gallery">Full packaging gallery</Link>
-               </Button>
-               <Badge variant="secondary" className="rounded-2xl">
-                  {total} items
+      <div className="space-y-5 pb-10">
+         {/* Header — compact, products-first mindset */}
+         <header className="flex flex-col gap-3 border-b border-border/60 pb-5 sm:flex-row sm:items-end sm:justify-between">
+            <div className="space-y-1">
+               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#FF5A52]">
+                  Catalog
+               </p>
+               <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  Shop packaging
+               </h1>
+               <p className="max-w-xl text-sm text-muted-foreground">
+                  Food boxes, bags, mailers, stickers &amp; brand neon signs — filter and customize.
+               </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+               {hasFilters ? (
+                  <Button asChild variant="ghost" size="sm" className="rounded-xl">
+                     <Link href="/products">Clear filters</Link>
+                  </Button>
+               ) : null}
+               <Badge
+                  variant="secondary"
+                  className="rounded-xl px-3 py-1 text-sm font-medium tabular-nums"
+               >
+                  {total} {total === 1 ? 'product' : 'products'}
                </Badge>
             </div>
-         </div>
+         </header>
 
          <CategoryBrowseBar
             activeCategory={params.category}
             activeProductType={params.productType}
          />
 
-         {hasFilters ? (
-            <p className="mb-4 text-sm text-muted-foreground">
-               Filtered view ·{' '}
-               <Link href="/products" className="font-medium underline">
-                  show all packaging
-               </Link>
+         {hasFilters && activeLabel ? (
+            <p className="text-sm text-muted-foreground">
+               Showing results for{' '}
+               <span className="font-medium text-foreground">{activeLabel}</span>
             </p>
          ) : null}
 
-         <div className="mb-4 block lg:hidden">
+         <div className="block lg:hidden">
             <Sheet>
                <SheetTrigger asChild>
-                  <Button variant="secondary" className="w-full rounded-2xl">
-                     Filters & search
+                  <Button variant="outline" className="w-full rounded-xl gap-2">
+                     <SlidersHorizontal className="h-4 w-4" />
+                     Filters &amp; search
                   </Button>
                </SheetTrigger>
                <SheetContent
                   side="left"
                   className="h-full w-[min(100%,320px)] overflow-y-auto p-4"
                >
-                  <SheetTitle className="mb-4">Packaging filters</SheetTitle>
+                  <SheetTitle className="mb-4">Filters</SheetTitle>
                   <FiltersShell
                      categories={categories}
                      brands={brands}
@@ -104,18 +121,17 @@ export function ProductsCatalogView({
             </Sheet>
          </div>
 
-         <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+         <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
             <FiltersShell
                className="hidden lg:block lg:sticky lg:top-24 lg:self-start"
                categories={categories}
                brands={brands}
                searchParams={filterParams}
             />
-
             <div className="min-w-0">
                <ProductGallery products={products} total={total} />
             </div>
          </div>
-      </>
+      </div>
    )
 }

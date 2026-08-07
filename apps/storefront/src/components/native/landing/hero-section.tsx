@@ -44,12 +44,12 @@ export function HeroSection() {
                         Start Designing
                      </Button>
                   </Link>
-                  <Link href="/products/gallery" className="w-full sm:w-auto">
+                  <Link href="/products?productType=led%20%26%20neon%20signs" className="w-full sm:w-auto">
                      <Button
                         variant="outline"
                         className="h-12 w-full rounded-xl border-slate-300 bg-white px-7 text-base font-semibold text-slate-900 hover:bg-slate-50 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
                      >
-                        Browse Templates
+                        Neon &amp; LED signs
                      </Button>
                   </Link>
                </div>

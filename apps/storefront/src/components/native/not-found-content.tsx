@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const PRIMARY_LINKS = [
    { label: 'All packaging', href: '/products' },
-   { label: 'Packaging gallery', href: '/products/gallery' },
+   { label: 'Shop packaging', href: '/products' },
    { label: 'Blog', href: '/blog' },
    { label: 'Contact us', href: '/contact' },
 ]

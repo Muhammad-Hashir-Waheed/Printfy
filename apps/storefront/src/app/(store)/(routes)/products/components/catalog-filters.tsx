@@ -269,25 +269,37 @@ export function CatalogFiltersPanel({
    return (
       <aside
          className={cn(
-            'space-y-4 rounded-2xl border bg-card p-4 shadow-sm',
+            'space-y-4 rounded-2xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-sm',
             className
          )}
       >
          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                Filters
             </h2>
             {hasFilters ? (
                <Button variant="ghost" size="sm" className="h-8 rounded-xl" onClick={clearAll}>
-                  Clear all
+                  Clear
                </Button>
             ) : null}
          </div>
          <ProductSearch initialQ={searchParams.q} />
-         <SortByFilter initialData={searchParams.sort} />
-         <ProductTypeFilter initial={searchParams.productType} />
-         <CategoryFilter categories={categories} initial={searchParams.category} />
-         <BrandFilter brands={brands} initial={searchParams.brand} />
+         <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Sort</Label>
+            <SortByFilter initialData={searchParams.sort} />
+         </div>
+         <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Type</Label>
+            <ProductTypeFilter initial={searchParams.productType} />
+         </div>
+         <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Category</Label>
+            <CategoryFilter categories={categories} initial={searchParams.category} />
+         </div>
+         <div className="space-y-1.5">
+            <Label className="text-xs text-muted-foreground">Brand</Label>
+            <BrandFilter brands={brands} initial={searchParams.brand} />
+         </div>
          <PriceRangeFilter
             initialMin={searchParams.minPrice}
             initialMax={searchParams.maxPrice}

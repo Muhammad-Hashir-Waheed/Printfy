@@ -27,8 +27,8 @@ export const docsConfig: DocsConfig = {
          href: '/products',
       },
       {
-         title: 'Gallery',
-         href: '/products/gallery',
+         title: 'Shop',
+         href: '/products',
       },
       {
          title: 'Blog',

@@ -13,13 +13,13 @@ export function ProductGallery({
 }) {
    if (!products.length) {
       return (
-         <Card className="rounded-2xl border shadow-sm">
-            <CardContent className="p-8 text-center">
+         <Card className="rounded-2xl border border-dashed shadow-none">
+            <CardContent className="flex flex-col items-center p-10 text-center">
                <h3 className="text-lg font-semibold">No products found</h3>
-               <p className="mt-2 text-sm text-muted-foreground">
+               <p className="mt-2 max-w-sm text-sm text-muted-foreground">
                   Try another category, product type, or search term.
                </p>
-               <Button asChild className="mt-4 rounded-2xl">
+               <Button asChild className="mt-5 rounded-xl bg-[#FF5A52] hover:bg-[#ff6d66]">
                   <Link href="/products">View all products</Link>
                </Button>
             </CardContent>
@@ -29,9 +29,12 @@ export function ProductGallery({
 
    return (
       <>
-         <p className="mb-4 text-sm text-muted-foreground">
-            {total} product{total === 1 ? '' : 's'} found
-         </p>
+         <div className="mb-4 flex items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">
+               <span className="font-medium text-foreground tabular-nums">{total}</span>
+               {total === 1 ? ' product' : ' products'}
+            </p>
+         </div>
          <ProductGrid products={products as any} />
       </>
    )

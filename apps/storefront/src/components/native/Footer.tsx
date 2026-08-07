@@ -12,10 +12,6 @@ const data = [
             url: '/products',
          },
          {
-            label: 'Packaging Gallery',
-            url: '/products/gallery',
-         },
-         {
             label: 'Food Packaging',
             url: '/products?productType=food%20packaging',
          },

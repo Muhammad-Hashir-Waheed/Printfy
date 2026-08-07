@@ -100,7 +100,7 @@ export default function WishlistPage() {
                         <Link href="/products">Browse packaging</Link>
                      </Button>
                      <Button asChild variant="outline" className="rounded-2xl">
-                        <Link href="/products/gallery">Full gallery</Link>
+                        <Link href="/products">Browse packaging</Link>
                      </Button>
                   </div>
                </CardContent>

@@ -37,7 +37,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'pizza',
       images: [I.customBoxLarge, I.customPackagingHero, I.bakeryBox],
-      href: packagingHref({ productType: 'Food Packaging', q: 'pizza' }),
+      href: packagingHref({ category: 'Pizza Boxes' }),
    },
    {
       id: 'cat-burger-boxes',
@@ -46,7 +46,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'burger',
       images: [I.customBoxMedium, I.foodContainer, I.customBoxSmall],
-      href: packagingHref({ productType: 'Food Packaging', q: 'burger' }),
+      href: packagingHref({ category: 'Burger Boxes' }),
    },
    {
       id: 'cat-fries-cartons',
@@ -55,7 +55,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'fries',
       images: [I.customBoxSmall, I.customBoxMedium, I.customPaperBag],
-      href: packagingHref({ productType: 'Food Packaging', q: 'fries' }),
+      href: packagingHref({ category: 'Fries Cartons' }),
    },
    {
       id: 'cat-takeout-bags',
@@ -64,7 +64,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'takeout',
       images: [I.customPaperBag, I.shoppingBag, I.retailBag],
-      href: packagingHref({ productType: 'Food Packaging', q: 'takeout' }),
+      href: packagingHref({ category: 'To Go Bags' }),
    },
    {
       id: 'cat-paper-cups',
@@ -73,7 +73,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'cup',
       images: [I.paperCups, I.cupCarrier, I.customBoxSmall],
-      href: packagingHref({ productType: 'Food Packaging', q: 'cup' }),
+      href: packagingHref({ category: 'Paper Cups' }),
    },
    {
       id: 'cat-meal-trays',
@@ -82,7 +82,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'tray',
       images: [I.mealTray, I.foodContainer, I.customPackagingHero],
-      href: packagingHref({ productType: 'Food Packaging', q: 'tray' }),
+      href: packagingHref({ category: 'Meal Trays' }),
    },
    {
       id: 'cat-cup-carriers',
@@ -91,7 +91,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'carrier',
       images: [I.cupCarrier, I.paperCups, I.customPaperBag],
-      href: packagingHref({ productType: 'Food Packaging', q: 'carrier' }),
+      href: packagingHref({ category: 'Cup Carriers' }),
    },
    {
       id: 'cat-mailer-boxes',
@@ -100,7 +100,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Shipping Packaging',
       q: 'mailer',
       images: [I.mailer, I.shippingBoxes, I.shippingTapeBox],
-      href: packagingHref({ productType: 'Shipping Packaging', q: 'mailer' }),
+      href: packagingHref({ category: 'Mailer Boxes' }),
    },
    {
       id: 'cat-shipping-boxes',
@@ -109,7 +109,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Shipping Packaging',
       q: 'shipping',
       images: [I.shippingBoxes, I.shippingTapeBox, I.mailer],
-      href: packagingHref({ productType: 'Shipping Packaging', q: 'shipping' }),
+      href: packagingHref({ category: 'Shipping Boxes' }),
    },
    {
       id: 'cat-poly-mailers',
@@ -118,7 +118,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Shipping Packaging',
       q: 'poly',
       images: [I.polyMailer, I.mailer, I.shippingTapeBox],
-      href: packagingHref({ productType: 'Shipping Packaging', q: 'poly' }),
+      href: packagingHref({ category: 'Shipping Mailers' }),
    },
    {
       id: 'cat-shopping-bags',
@@ -127,7 +127,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Retail Packaging',
       q: 'shopping',
       images: [I.shoppingBag, I.retailBag, I.customPaperBag],
-      href: packagingHref({ productType: 'Retail Packaging', q: 'shopping' }),
+      href: packagingHref({ category: 'Shopping Bags' }),
    },
    {
       id: 'cat-product-packaging',
@@ -136,7 +136,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Retail Packaging',
       q: 'product',
       images: [I.productCarton, I.rigidBox, I.giftBoxesKraft],
-      href: packagingHref({ productType: 'Retail Packaging', q: 'product' }),
+      href: packagingHref({ category: 'Product Packaging' }),
    },
    {
       id: 'cat-hang-tags',
@@ -145,7 +145,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Retail Packaging',
       q: 'tag',
       images: [I.hangTags, I.sticker, I.retailBag],
-      href: packagingHref({ productType: 'Retail Packaging', q: 'tag' }),
+      href: packagingHref({ category: 'Custom Tags' }),
    },
    {
       id: 'cat-stickers',
@@ -154,7 +154,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Packaging Accessories',
       q: 'sticker',
       images: [I.sticker, I.hangTags, I.packagingInsert],
-      href: packagingHref({ productType: 'Packaging Accessories', q: 'sticker' }),
+      href: packagingHref({ category: 'Stickers & Labels' }),
    },
    {
       id: 'cat-tissue',
@@ -163,7 +163,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Packaging Accessories',
       q: 'tissue',
       images: [I.tissuePaper, I.giftBoxesKraft, I.giftBox],
-      href: packagingHref({ productType: 'Packaging Accessories', q: 'tissue' }),
+      href: packagingHref({ category: 'Tissue Paper' }),
    },
    {
       id: 'cat-inserts',
@@ -172,7 +172,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Packaging Accessories',
       q: 'insert',
       images: [I.packagingInsert, I.sticker, I.hangTags],
-      href: packagingHref({ productType: 'Packaging Accessories', q: 'insert' }),
+      href: packagingHref({ category: 'Packaging Inserts' }),
    },
    {
       id: 'cat-bakery-boxes',
@@ -181,7 +181,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'bakery',
       images: [I.bakeryBox, I.giftBoxesKraft, I.customBoxLarge],
-      href: packagingHref({ productType: 'Food Packaging', q: 'bakery' }),
+      href: packagingHref({ category: 'Bakery Boxes' }),
    },
    {
       id: 'cat-food-containers',
@@ -190,7 +190,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'container',
       images: [I.foodContainer, I.mealTray, I.customBoxMedium],
-      href: packagingHref({ productType: 'Food Packaging', q: 'container' }),
+      href: packagingHref({ category: 'Food Containers' }),
    },
    {
       id: 'cat-gift-boxes',
@@ -199,7 +199,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Retail Packaging',
       q: 'gift',
       images: [I.giftBox, I.giftBoxesKraft, I.wrappingPaper],
-      href: packagingHref({ productType: 'Retail Packaging', q: 'gift' }),
+      href: packagingHref({ category: 'Gift Boxes' }),
    },
    {
       id: 'cat-rigid-boxes',
@@ -208,7 +208,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Retail Packaging',
       q: 'rigid',
       images: [I.rigidBox, I.productCarton, I.mailer],
-      href: packagingHref({ productType: 'Retail Packaging', q: 'rigid' }),
+      href: packagingHref({ category: 'Rigid Boxes' }),
    },
    {
       id: 'cat-wrapping-paper',
@@ -217,7 +217,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Packaging Accessories',
       q: 'wrap',
       images: [I.wrappingPaper, I.tissuePaper, I.giftBox],
-      href: packagingHref({ productType: 'Packaging Accessories', q: 'wrap' }),
+      href: packagingHref({ category: 'Wrapping Paper' }),
    },
    {
       id: 'cat-bottle-carriers',
@@ -226,7 +226,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'Food Packaging',
       q: 'bottle',
       images: [I.bottleCarrier, I.customBoxSmall, I.cupCarrier],
-      href: packagingHref({ productType: 'Food Packaging', q: 'bottle' }),
+      href: packagingHref({ category: 'Bottle Carriers' }),
    },
    {
       id: 'cat-neon-signs',
@@ -235,7 +235,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'LED & Neon Signs',
       q: 'neon',
       images: [I.neonSign, I.neonShop, I.ledSign],
-      href: packagingHref({ productType: 'LED & Neon Signs', q: 'neon' }),
+      href: packagingHref({ category: 'Neon Signs' }),
    },
    {
       id: 'cat-led-signs',
@@ -244,7 +244,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'LED & Neon Signs',
       q: 'led',
       images: [I.ledSign, I.neonSign, I.neonShop],
-      href: packagingHref({ productType: 'LED & Neon Signs', q: 'led' }),
+      href: packagingHref({ category: 'LED Signs' }),
    },
    {
       id: 'cat-lightbox-signs',
@@ -253,7 +253,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       productType: 'LED & Neon Signs',
       q: 'lightbox',
       images: [I.neonShop, I.ledSign, I.neonSign],
-      href: packagingHref({ productType: 'LED & Neon Signs', q: 'lightbox' }),
+      href: packagingHref({ category: 'Light Box Signs' }),
    },
 ]
 
