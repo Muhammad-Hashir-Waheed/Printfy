@@ -15,19 +15,54 @@ import { RevealOnScroll } from '@/components/ui/reveal-on-scroll'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import { isVariableValid } from '@/lib/utils'
 
-const dummyBanners = [
-   { image: CATALOG_IMAGES.customPackagingHero },
-   { image: CATALOG_IMAGES.customBoxLarge },
-   { image: CATALOG_IMAGES.neonSign },
-   { image: CATALOG_IMAGES.customBoxMedium },
-   { image: CATALOG_IMAGES.neonShop },
-   { image: CATALOG_IMAGES.customPaperBag },
+const showcaseSlides = [
+   {
+      image: CATALOG_IMAGES.customPackagingHero,
+      eyebrow: 'Featured',
+      title: 'Custom packaging that sells your brand',
+      subtitle: 'Pizza boxes, burger boxes, bags & more — printed with your logo.',
+      href: '/products?productType=food%20packaging',
+   },
+   {
+      image: CATALOG_IMAGES.customBoxLarge,
+      eyebrow: 'Food packaging',
+      title: 'Pizza boxes that look like a billboard',
+      subtitle: 'Full-color lids, grease-resistant stock, ready for delivery.',
+      href: '/products?q=pizza',
+   },
+   {
+      image: CATALOG_IMAGES.neonSign,
+      eyebrow: 'Brand neon',
+      title: 'Neon logo signs for your storefront',
+      subtitle: 'Custom illuminated brand wordmarks — glow that customers remember.',
+      href: '/products?q=neon',
+   },
+   {
+      image: CATALOG_IMAGES.customBoxMedium,
+      eyebrow: 'Food packaging',
+      title: 'Burger boxes built for takeout',
+      subtitle: 'Clamshells and combo boxes with crisp logo print.',
+      href: '/products?q=burger',
+   },
+   {
+      image: CATALOG_IMAGES.neonShop,
+      eyebrow: 'LED & neon',
+      title: 'Script neon brand logos',
+      subtitle: 'Boutique-style glowing name signs for cafés and restaurants.',
+      href: '/products?q=neon',
+   },
+   {
+      image: CATALOG_IMAGES.customPaperBag,
+      eyebrow: 'Retail',
+      title: 'Branded bags for every order',
+      subtitle: 'Kraft to-go bags that finish the unboxing experience.',
+      href: '/products?q=takeout',
+   },
 ]
 
 export default function Index() {
    const catalogProducts = getOfflineCatalogProducts()
    const safeProducts = catalogProducts.slice(0, 8)
-   const safeBanners = dummyBanners
 
    return (
       <div className="flex flex-col border-neutral-200 dark:border-neutral-700">
@@ -36,7 +71,7 @@ export default function Index() {
          </RevealOnScroll>
 
          <RevealOnScroll>
-            <Carousel images={safeBanners.map((obj) => obj.image)} />
+            <Carousel slides={showcaseSlides} />
          </RevealOnScroll>
 
          <RevealOnScroll>
