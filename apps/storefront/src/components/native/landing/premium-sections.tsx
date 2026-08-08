@@ -1,223 +1,84 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { ArrowRightIcon } from 'lucide-react'
 import {
    buildCatalogHref,
-   FAST_FOOD_SHOWCASE_TILES,
-   SHOWCASE_TILES,
+   HOMEPAGE_CATEGORY_TILES,
 } from '@/lib/catalog-navigation'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
-import { INTEGRATION_LOGOS } from '@/lib/integration-logos'
+import { ArrowRightIcon } from 'lucide-react'
 import Link from 'next/link'
 
-const integrations = [
-   {
-      name: 'Shopify',
-      description: 'Instant sync for products, variants, and orders.',
-      logo: INTEGRATION_LOGOS.shopify,
-      className: 'md:left-[12%] md:top-[10%]',
-   },
-   {
-      name: 'Amazon',
-      description: 'Scale catalog fulfillment with marketplace automation.',
-      logo: INTEGRATION_LOGOS.amazon,
-      className: 'md:left-[74%] md:top-[10%]',
-   },
-   {
-      name: 'Etsy',
-      description: 'Connect handmade storefronts with production workflows.',
-      logo: INTEGRATION_LOGOS.etsy,
-      className: 'md:left-[42%] md:top-[6%]',
-   },
-   {
-      name: 'WooCommerce',
-      description: 'WordPress-native order sync and shipping updates.',
-      logo: INTEGRATION_LOGOS.woocommerce,
-      className: 'md:left-[16%] md:top-[40%]',
-   },
-   {
-      name: 'Wix',
-      description: 'Fast setup for branded stores and custom products.',
-      logo: INTEGRATION_LOGOS.wix,
-      className: 'md:left-[82%] md:top-[30%]',
-   },
-   {
-      name: 'Squarespace',
-      description: 'Premium storefront themes with POD fulfillment.',
-      logo: INTEGRATION_LOGOS.squarespace,
-      className: 'md:left-[86%] md:top-[50%]',
-   },
-   {
-      name: 'Square',
-      description: 'Unified online and POS inventory operations.',
-      logo: INTEGRATION_LOGOS.square,
-      className: 'md:left-[24%] md:top-[74%]',
-   },
-   {
-      name: 'BigCommerce',
-      description: 'Enterprise-grade catalog and checkout integrations.',
-      logo: INTEGRATION_LOGOS.bigcommerce,
-      className: 'md:left-[80%] md:top-[74%]',
-   },
-   {
-      name: 'Webflow',
-      description: 'Visual storefront publishing with robust commerce sync.',
-      logo: INTEGRATION_LOGOS.webflow,
-      className: 'md:left-[4%] md:top-[20%]',
-   },
-   {
-      name: 'Stripe',
-      description: 'Cross-platform listing and order orchestration.',
-      logo: INTEGRATION_LOGOS.stripe,
-      className: 'md:left-[62%] md:top-[76%]',
-   },
-   {
-      name: 'PayPal',
-      description: 'Brand identity and catalog sync automation.',
-      logo: INTEGRATION_LOGOS.paypal,
-      className: 'md:left-[50%] md:top-[84%]',
-   },
-   {
-      name: 'Shopware',
-      description: 'Conversion-focused apps and subscriptions tooling.',
-      logo: INTEGRATION_LOGOS.shopware,
-      className: 'md:left-[6%] md:top-[62%]',
-   },
-]
-
-export function FastFoodPackagingSection() {
-   return (
-      <section className="my-10 rounded-xl bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 px-4 py-10 dark:from-neutral-900 dark:via-neutral-900 dark:to-red-950/40 sm:px-8">
-         <div className="mx-auto max-w-6xl">
-            <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
-               <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-red-600 dark:text-red-400">
-                     Custom fast food packaging
-                  </p>
-                  <h2 className="text-3xl font-bold leading-tight text-slate-900 dark:text-white md:text-4xl">
-                     Brand every box, bag & carton your customers take home
-                  </h2>
-                  <p className="max-w-lg text-slate-600 dark:text-slate-300">
-                     Pizza boxes, burger clamshells, fries cartons, meal trays, and takeout
-                     bags — fully customizable for restaurants, cloud kitchens, and delivery
-                     brands.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                     <Link href={buildCatalogHref({ productType: 'Food Packaging' })}>
-                        <Button className="rounded-md bg-red-500 text-white hover:bg-red-600">
-                           Shop packaging
-                           <ArrowRightIcon className="ml-2 h-4 w-4" />
-                        </Button>
-                     </Link>
-                     <Link href={buildCatalogHref({ productType: 'Retail Packaging' })}>
-                        <Button
-                           variant="outline"
-                           className="rounded-md border-slate-300 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-                        >
-                           Shop bags
-                        </Button>
-                     </Link>
-                  </div>
-               </div>
-               <div className="grid grid-cols-2 gap-3">
-                  {FAST_FOOD_SHOWCASE_TILES.map((tile) => (
-                     <Link key={tile.title} href={tile.href}>
-                        <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900">
-                           <CardContent className="relative h-[140px] p-0 sm:h-[160px]">
-                              <img
-                                 src={tile.image}
-                                 alt={tile.title}
-                                 loading="lazy"
-                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                              />
-                              <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900 dark:bg-neutral-950/90 dark:text-white">
-                                 {tile.title}
-                              </span>
-                           </CardContent>
-                        </Card>
-                     </Link>
-                  ))}
-               </div>
-            </div>
-         </div>
-      </section>
-   )
-}
-
+/** Neon spotlight — one dark beat after products */
 export function NeonSignsSection() {
    const tiles = [
       {
          title: 'Custom neon',
-         href: buildCatalogHref({ category: 'Neon Signs' }),
+         href: '/products/custom-neon-sign',
          image: CATALOG_IMAGES.neonSign,
       },
       {
          title: 'LED letters',
-         href: buildCatalogHref({ category: 'LED Signs' }),
+         href: '/products/led-channel-letter',
          image: CATALOG_IMAGES.ledSign,
       },
       {
-         title: 'Open / Closed',
-         href: buildCatalogHref({ category: 'Light Box Signs' }),
+         title: 'Script neon',
+         href: '/products/script-neon-sign',
          image: CATALOG_IMAGES.neonShop,
       },
       {
-         title: 'All signage',
-         href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
-         image: CATALOG_IMAGES.neonShop,
+         title: 'Light boxes',
+         href: '/products/backlit-lightbox',
+         image: CATALOG_IMAGES.neonBrandBrew,
       },
    ]
 
    return (
-      <section className="my-10 overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 via-fuchsia-950 to-indigo-950 px-4 py-10 text-white sm:px-8">
-         <div className="mx-auto max-w-6xl">
-            <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-neutral-950 via-[#1a0b2e] to-[#0c1a2e] px-5 py-10 text-white sm:px-8 sm:py-12">
+         <div className="pointer-events-none absolute -left-20 top-0 h-56 w-56 rounded-full bg-[#FF5A52]/20 blur-[90px]" />
+         <div className="pointer-events-none absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-[#7C5CFC]/25 blur-[100px]" />
+
+         <div className="relative mx-auto max-w-6xl">
+            <div className="grid gap-8 lg:grid-cols-[1.05fr_1fr] lg:items-center">
                <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-fuchsia-300">
-                     LC / LED & neon signs
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]">
+                     Brand neon &amp; LED
                   </p>
-                  <h2 className="text-3xl font-bold leading-tight md:text-4xl">
-                     Light up your storefront with custom neon & LED signs
+                  <h2 className="text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl">
+                     Light up your storefront
                   </h2>
-                  <p className="max-w-lg text-white/75">
-                     From script neon logos to LED channel letters and open/closed boards —
-                     designed for cafes, salons, retail shops, and event spaces.
+                  <p className="max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
+                     Illuminated logo signs — neon script, LED channel letters, and light
+                     boxes that make your brand glow after dark.
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                     <Link href={buildCatalogHref({ productType: 'LED & Neon Signs' })}>
-                        <Button className="rounded-md bg-fuchsia-500 text-white hover:bg-fuchsia-400">
-                           Shop LED & neon
-                           <ArrowRightIcon className="ml-2 h-4 w-4" />
-                        </Button>
-                     </Link>
-                     <Link href={buildCatalogHref({ category: 'Neon Signs' })}>
-                        <Button
-                           variant="outline"
-                           className="rounded-md border-white/30 bg-transparent text-white hover:bg-white/10"
-                        >
-                           Custom neon signs
-                        </Button>
-                     </Link>
-                  </div>
+                  <Link href={buildCatalogHref({ productType: 'LED & Neon Signs' })}>
+                     <Button className="mt-1 h-11 rounded-xl bg-[#FF5A52] px-5 font-semibold text-white hover:bg-[#ff6d66]">
+                        Shop neon &amp; LED
+                        <ArrowRightIcon className="ml-2 h-4 w-4" />
+                     </Button>
+                  </Link>
                </div>
-               <div className="grid grid-cols-2 gap-3">
+
+               <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                   {tiles.map((tile) => (
-                     <Link key={tile.title} href={tile.href}>
-                        <Card className="group overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm backdrop-blur transition hover:bg-white/10">
-                           <CardContent className="relative h-[140px] p-0 sm:h-[160px]">
-                              <img
-                                 src={tile.image}
-                                 alt={tile.title}
-                                 loading="lazy"
-                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                              />
-                              <span className="absolute bottom-2 left-2 rounded-sm bg-black/70 px-2 py-1 text-[11px] font-medium text-white">
-                                 {tile.title}
-                              </span>
-                           </CardContent>
-                        </Card>
+                     <Link
+                        key={tile.title}
+                        href={tile.href}
+                        className="group relative overflow-hidden rounded-xl ring-1 ring-white/10 transition hover:ring-[#5EEAD4]/40"
+                     >
+                        <div className="relative aspect-[4/3]">
+                           <img
+                              src={tile.image}
+                              alt={tile.title}
+                              loading="lazy"
+                              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                           />
+                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                           <span className="absolute bottom-2.5 left-2.5 text-xs font-semibold text-white">
+                              {tile.title}
+                           </span>
+                        </div>
                      </Link>
                   ))}
                </div>
@@ -227,223 +88,101 @@ export function NeonSignsSection() {
    )
 }
 
+/** Compact category mosaic — no duplicate pizza/burger hero tiles */
 export function ProductShowcaseSection() {
    return (
-      <section className="my-8">
-         <div className="mx-auto w-full max-w-6xl px-1 sm:px-2 lg:px-0">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="col-span-1 overflow-hidden rounded-lg border-0 bg-[#072b4a] text-white shadow-sm sm:col-span-2 lg:col-span-2">
-               <CardContent className="flex h-full min-h-[178px] flex-col justify-between p-6">
-                  <h2 className="max-w-[360px] text-[34px] font-bold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
-                     Custom packaging for every brand
-                  </h2>
-                  <p className="mt-2 max-w-sm text-sm text-white/80">
-                     Pizza boxes, burger boxes, takeout bags, mailers & more.
-                  </p>
-                  <Link href={buildCatalogHref({ productType: 'Food Packaging' })}>
-                     <Button className="mt-3 h-11 rounded-md bg-red-500 px-5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-red-600">
-                        See all packaging
-                        <ArrowRightIcon className="ml-2 h-4 w-4" />
-                     </Button>
-                  </Link>
-               </CardContent>
-            </Card>
+      <section className="space-y-5">
+         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#FF5A52]">
+                  Browse
+               </p>
+               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  Shop by category
+               </h2>
+               <p className="mt-1 text-sm text-muted-foreground">
+                  From takeout to shipping — pick a lane and customize.
+               </p>
+            </div>
+            <Link
+               href="/products"
+               className="inline-flex items-center gap-1 text-sm font-semibold text-[#FF5A52] hover:underline"
+            >
+               View all packaging
+               <ArrowRightIcon className="h-4 w-4" />
+            </Link>
+         </div>
 
-            {SHOWCASE_TILES.map((tile) => (
-               <Link key={tile.title} href={tile.href}>
-                  <Card className="group overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900">
-                     <CardContent className="relative h-[178px] p-0">
+         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4 lg:gap-3">
+            {HOMEPAGE_CATEGORY_TILES.map((tile, i) => {
+               const featured = i === 0
+               return (
+                  <Link
+                     key={tile.title}
+                     href={tile.href}
+                     className={`group relative overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                        featured ? 'col-span-2 row-span-1 sm:col-span-2' : ''
+                     }`}
+                  >
+                     <div
+                        className={`relative ${featured ? 'aspect-[21/9] sm:aspect-[2.4/1]' : 'aspect-[4/3]'}`}
+                     >
                         <img
                            src={tile.image}
                            alt={tile.title}
                            loading="lazy"
-                           className={`h-full w-full object-cover transition duration-300 group-hover:scale-[1.02] ${'imageClassName' in tile ? tile.imageClassName : ''}`}
+                           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
                         />
-                        <span className="absolute bottom-2 left-2 rounded-sm bg-white/95 px-2 py-1 text-[11px] font-medium text-slate-900 dark:bg-neutral-950/90 dark:text-white">
-                           {tile.title}
-                        </span>
-                     </CardContent>
-                  </Card>
-               </Link>
-            ))}
-            </div>
-         </div>
-      </section>
-   )
-}
-
-export function ProfitEstimatorSection() {
-   return (
-      <section className="my-10 rounded-xl bg-[#072b4a] px-4 py-10 text-white sm:px-8">
-         <div className="mx-auto max-w-5xl space-y-6">
-            <div className="text-center">
-               <h2 className="text-3xl font-bold">Your passion really can pay</h2>
-               <p className="text-white/85">See how much you could make</p>
-            </div>
-            <div className="grid gap-5 rounded-xl bg-white p-4 text-slate-900 dark:bg-neutral-900 dark:text-white md:grid-cols-2 md:p-6">
-               <div className="space-y-3">
-                  <p className="text-lg font-semibold">T-Shirts</p>
-                  <img
-                     src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop"
-                     alt="Profit preview"
-                     className="h-48 w-full rounded-lg object-cover"
-                  />
-               </div>
-               <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                     <p className="text-muted-foreground">You buy for</p>
-                     <p className="text-right font-medium">$9.25</p>
-                     <p className="text-muted-foreground">You sell for</p>
-                     <p className="text-right font-medium text-green-600 dark:text-green-400">$23.55</p>
-                     <p className="text-muted-foreground">Sales per day</p>
-                     <p className="text-right font-medium">5</p>
-                  </div>
-                  <div className="rounded-lg bg-slate-50 p-3 text-center dark:bg-neutral-800">
-                     <p className="text-sm text-muted-foreground">Your approximate annual profit</p>
-                     <p className="text-3xl font-bold">$26,097.50</p>
-                  </div>
-                  <Button className="w-full rounded-md bg-red-500 text-white hover:bg-red-600">
-                     Start selling
-                  </Button>
-               </div>
-            </div>
-         </div>
-      </section>
-   )
-}
-
-export function GlobalReachSection() {
-   return (
-      <section className="my-10 rounded-xl bg-[#01303a] px-4 py-10 text-white sm:px-8">
-         <div className="mx-auto max-w-5xl text-center">
-            <h2 className="text-3xl font-bold">No inventory, no upfront investment, no hassles</h2>
-            <p className="mb-6 text-white/80">...just worldwide sales</p>
-            <div className="relative mx-auto mb-6 max-w-4xl">
-               <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
-                  alt="Worldwide map"
-                  className="mx-auto max-h-[340px] w-full object-contain opacity-85"
-               />
-               <svg
-                  className="pointer-events-none absolute inset-0 h-full w-full"
-                  viewBox="0 0 1000 420"
-                  preserveAspectRatio="none"
-               >
-                  <defs>
-                     <linearGradient id="routeGlow" x1="0%" x2="100%" y1="0%" y2="0%">
-                        <stop offset="0%" stopColor="rgba(34,211,238,0.06)" />
-                        <stop offset="50%" stopColor="rgba(34,211,238,0.65)" />
-                        <stop offset="100%" stopColor="rgba(34,211,238,0.06)" />
-                     </linearGradient>
-                  </defs>
-                  <path
-                     d="M190 195 C 300 130, 420 120, 490 145"
-                     stroke="url(#routeGlow)"
-                     strokeWidth="2"
-                     fill="none"
-                     strokeDasharray="7 8"
-                     className="animate-[route-dash_2.6s_linear_infinite]"
-                  />
-                  <path
-                     d="M490 145 C 610 150, 700 175, 780 205"
-                     stroke="url(#routeGlow)"
-                     strokeWidth="2"
-                     fill="none"
-                     strokeDasharray="7 8"
-                     className="animate-[route-dash_2.8s_linear_infinite]"
-                  />
-                  <path
-                     d="M780 205 C 700 250, 560 290, 245 330"
-                     stroke="url(#routeGlow)"
-                     strokeWidth="2"
-                     fill="none"
-                     strokeDasharray="7 8"
-                     className="animate-[route-dash_3s_linear_infinite]"
-                  />
-               </svg>
-
-               <span className="absolute left-[20%] top-[43%] inline-flex h-3.5 w-3.5 animate-[glow-pulse_2.1s_ease-in-out_infinite] rounded-full bg-cyan-300 shadow-[0_0_0_10px_rgba(34,211,238,0.2)]" />
-               <span className="absolute left-[48%] top-[31%] inline-flex h-3.5 w-3.5 animate-[glow-pulse_1.9s_ease-in-out_infinite] rounded-full bg-cyan-300 shadow-[0_0_0_10px_rgba(34,211,238,0.2)]" />
-               <span className="absolute left-[74%] top-[47%] inline-flex h-3.5 w-3.5 animate-[glow-pulse_2.3s_ease-in-out_infinite] rounded-full bg-cyan-300 shadow-[0_0_0_10px_rgba(34,211,238,0.2)]" />
-            </div>
-            <div className="grid grid-cols-2 gap-4 text-center md:grid-cols-4">
-               {[
-                  ['496', 'products to customize'],
-                  ['1000000', 'items fulfilled each month'],
-                  ['22', 'integration partners'],
-                  ['132M', 'items trusted to deliver'],
-               ].map(([value, label]) => (
-                  <div key={label}>
-                     <p className="text-3xl font-bold">{value}</p>
-                     <p className="text-sm text-white/80">{label}</p>
-                  </div>
-               ))}
-            </div>
-         </div>
-      </section>
-   )
-}
-
-export function IntegrationsSection() {
-   return (
-      <section className="my-10 rounded-xl border bg-[#f4f4f5] px-4 py-14 dark:border-neutral-800 dark:bg-neutral-900 sm:px-8">
-         <div className="mx-auto max-w-6xl">
-            <div className="mt-10 grid grid-cols-4 gap-3 md:hidden">
-               {integrations.slice(0, 8).map((integration) => {
-                  return (
-                     <div
-                        key={integration.name}
-                        className="rounded-2xl border bg-white p-3 shadow-sm dark:border-neutral-700 dark:bg-neutral-950"
-                     >
-                        <img
-                           src={integration.logo}
-                           alt={integration.name}
-                           className="mx-auto h-5 w-5 object-contain"
-                        />
-                     </div>
-                  )
-               })}
-            </div>
-            <div className="relative hidden h-[430px] md:block">
-               <div className="absolute left-1/2 top-1/2 z-20 flex w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-2xl bg-[#f4f4f5]/95 px-6 py-5 text-center backdrop-blur-sm dark:bg-neutral-900/95">
-                  <h2 className="text-4xl font-bold leading-tight text-slate-900 dark:text-white">
-                     Seamlessly connect to
-                     <br />
-                     any eCommerce site
-                  </h2>
-                  <Button className="mt-6 rounded-md bg-red-500 text-white hover:bg-red-600">
-                     See all integrations
-                     <ArrowRightIcon className="ml-2 h-4 w-4" />
-                  </Button>
-               </div>
-               {integrations.map((integration, index) => {
-                  return (
-                     <div
-                        key={integration.name}
-                        className={`group absolute z-10 ${integration.className} animate-[float_5s_ease-in-out_infinite]`}
-                        style={{ animationDelay: `${index * 120}ms` }}
-                     >
-                        <button
-                           type="button"
-                           className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:scale-110 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-950"
-                           aria-label={integration.name}
-                        >
-                           <img
-                              src={integration.logo}
-                              alt={integration.name}
-                              className="h-7 w-7 object-contain"
-                           />
-                        </button>
-                        <div className="pointer-events-none absolute -top-20 left-1/2 w-56 -translate-x-1/2 rounded-lg border bg-slate-900/95 p-3 text-left text-white opacity-0 shadow-lg transition duration-200 group-hover:opacity-100">
-                           <p className="text-sm font-semibold">{integration.name}</p>
-                           <p className="mt-1 text-xs text-white/80">
-                              {integration.description}
-                           </p>
-                           <span className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-slate-900/95" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
+                        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 sm:p-3.5">
+                           <span className="text-sm font-semibold text-white sm:text-[15px]">
+                              {tile.title}
+                           </span>
+                           <span className="hidden rounded-lg bg-white/15 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm sm:inline">
+                              Shop
+                           </span>
                         </div>
                      </div>
-                  )
-               })}
+                  </Link>
+               )
+            })}
+         </div>
+      </section>
+   )
+}
+
+/** Honest trust strip — no inflated vanity metrics */
+export function TrustStripSection() {
+   const points = [
+      { title: 'No inventory', body: 'Order what you need — no stock to hold.' },
+      { title: 'Logo-ready', body: 'Upload once, preview on every product.' },
+      { title: 'Food + neon', body: 'Packaging and storefront signs in one place.' },
+      { title: 'Fast checkout', body: 'Customize, approve, and order in minutes.' },
+   ]
+
+   return (
+      <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-slate-50 via-white to-rose-50/60 px-5 py-8 dark:border-neutral-800 dark:from-neutral-950 dark:via-neutral-950 dark:to-red-950/20 sm:px-8">
+         <div className="mx-auto max-w-6xl">
+            <div className="mb-6 max-w-xl">
+               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#FF5A52]">
+                  Why Printfy
+               </p>
+               <h2 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+                  Built for brands that ship every day
+               </h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+               {points.map((p) => (
+                  <div
+                     key={p.title}
+                     className="rounded-xl border border-border/60 bg-white/70 p-4 dark:border-neutral-800 dark:bg-neutral-900/60"
+                  >
+                     <p className="text-sm font-semibold tracking-tight">{p.title}</p>
+                     <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                        {p.body}
+                     </p>
+                  </div>
+               ))}
             </div>
          </div>
       </section>

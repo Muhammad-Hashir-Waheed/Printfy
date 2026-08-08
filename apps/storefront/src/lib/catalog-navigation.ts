@@ -65,6 +65,50 @@ export const FAST_FOOD_SHOWCASE_TILES = [
    },
 ] as const
 
+/** Compact homepage category mosaic — curated, avoids repeating hero pizza/burger */
+export const HOMEPAGE_CATEGORY_TILES = [
+   {
+      title: 'Food packaging',
+      href: buildCatalogHref({ productType: 'Food Packaging' }),
+      image: CATALOG_IMAGES.customPackagingHero,
+   },
+   {
+      title: 'Mailer boxes',
+      href: buildCatalogHref({ category: 'Mailer Boxes' }),
+      image: CATALOG_IMAGES.mailer,
+   },
+   {
+      title: 'Shopping bags',
+      href: buildCatalogHref({ category: 'Shopping Bags' }),
+      image: CATALOG_IMAGES.shoppingBag,
+   },
+   {
+      title: 'Stickers & labels',
+      href: buildCatalogHref({ category: 'Stickers & Labels' }),
+      image: CATALOG_IMAGES.sticker,
+   },
+   {
+      title: 'Bakery boxes',
+      href: buildCatalogHref({ category: 'Bakery Boxes' }),
+      image: CATALOG_IMAGES.bakeryBox,
+   },
+   {
+      title: 'Gift boxes',
+      href: buildCatalogHref({ category: 'Gift Boxes' }),
+      image: CATALOG_IMAGES.giftBox,
+   },
+   {
+      title: 'Shipping',
+      href: buildCatalogHref({ productType: 'Shipping Packaging' }),
+      image: CATALOG_IMAGES.shippingBoxes,
+   },
+   {
+      title: 'Neon & LED',
+      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      image: CATALOG_IMAGES.neonSign,
+   },
+] as const
+
 /** Compact homepage showcase — key packaging entry points */
 export const SHOWCASE_TILES = [
    {
