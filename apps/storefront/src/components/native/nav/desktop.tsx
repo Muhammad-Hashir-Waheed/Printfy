@@ -66,34 +66,34 @@ export function NavMenu() {
                               href="/products"
                            >
                               <div className="mb-2 mt-4 text-lg font-medium">
-                                 Shop packaging
+                                 Shop Joji Arts
                               </div>
                               <p className="text-sm leading-tight text-muted-foreground">
-                                 Browse every custom packaging product in one
-                                 place.
+                                 Cosmetics, hotels, perfume boxes, luxury rigid boxes,
+                                 corrugated cartons, and 3D branding.
                               </p>
                            </Link>
                         </NavigationMenuLink>
                      </li>
                      <ListItem
-                        href={buildCatalogHref({ productType: 'Food Packaging' })}
-                        title="Food packaging"
+                        href={buildCatalogHref({ productType: 'Hotel & Food' })}
+                        title="Hotel & Food"
                      >
-                        Pizza boxes, burger boxes, fries cartons and cups.
+                        Pizza boxes, burger boxes, cups, trays, and takeout bags.
                      </ListItem>
                      <ListItem
                         href={buildCatalogHref({
-                           productType: 'Shipping Packaging',
+                           productType: 'Corrugated Boxes',
                         })}
-                        title="Shipping packaging"
+                        title="Corrugated boxes"
                      >
-                        Mailer boxes, shipping cartons and poly mailers.
+                        Mailer boxes, shipping cartons, and poly mailers.
                      </ListItem>
                      <ListItem
-                        href={buildCatalogHref({ productType: 'Retail Packaging' })}
-                        title="Retail packaging"
+                        href={buildCatalogHref({ productType: 'Rigid Luxury Boxes' })}
+                        title="Rigid luxury boxes"
                      >
-                        Shopping bags, gift boxes, rigid boxes and tags.
+                        Magnetic, drawer, and presentation gift boxes.
                      </ListItem>
                   </ul>
                </NavigationMenuContent>

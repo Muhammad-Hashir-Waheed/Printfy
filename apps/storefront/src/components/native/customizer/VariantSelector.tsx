@@ -32,7 +32,7 @@ export function VariantSelector({
                         key={`${variant.name}-${item.value}`}
                         onClick={() => onVariantChange(variant.name, item)}
                         className={cn(
-                           'rounded-2xl border px-3 py-1 text-sm transition',
+                           'rounded-xl border px-3 py-1.5 typo-body transition',
                            selected[variant.name]?.value === item.value
                               ? 'border-primary bg-primary text-primary-foreground'
                               : 'hover:bg-accent'

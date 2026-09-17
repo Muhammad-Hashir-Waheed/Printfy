@@ -11,9 +11,9 @@ export default function BlogIndexPage() {
    const blogs = getStaticBlogs()
 
    return (
-      <div className="mx-auto max-w-6xl px-1 py-6 sm:px-2 lg:px-0">
+      <div className="py-2">
          <header className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">Blog</h1>
+            <h1 className="typo-h1">Blog</h1>
             <p className="mt-2 text-muted-foreground">
                Tips on food packaging, mailers, artwork, and unboxing experiences.
             </p>

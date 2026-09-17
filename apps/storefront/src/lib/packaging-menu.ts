@@ -1,11 +1,10 @@
-import { PACKAGING_CATEGORIES } from '@/lib/packaging-categories'
+import { PACKAGING_CATEGORIES, JOJI_PRODUCT_TYPES } from '@/lib/packaging-categories'
 import { buildCatalogHref } from '@/lib/catalog-navigation'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
 
 export type PackagingMenuLink = {
    label: string
    href: string
-   /** Single primary image for the menu row */
    image: string
    description?: string
 }
@@ -13,7 +12,6 @@ export type PackagingMenuLink = {
 export type PackagingMenuColumn = {
    title: string
    href: string
-   /** Short blurb under the column title */
    blurb: string
    accent: string
    links: PackagingMenuLink[]
@@ -25,6 +23,36 @@ export type PackagingFeaturedCard = {
    image: string
    badge?: string
    description: string
+}
+
+const COLUMN_META: Record<
+   (typeof JOJI_PRODUCT_TYPES)[number],
+   { blurb: string; accent: string }
+> = {
+   Cosmetics: {
+      blurb: 'Cartons, bags, tags & unboxing extras',
+      accent: 'bg-rose-500',
+   },
+   'Hotel & Food': {
+      blurb: 'Boxes, bags & trays for kitchens',
+      accent: 'bg-orange-500',
+   },
+   'Perfume & Makeup Boxes': {
+      blurb: 'Fragrance sleeves & makeup kits',
+      accent: 'bg-fuchsia-500',
+   },
+   'Rigid Luxury Boxes': {
+      blurb: 'Magnetic, drawer & gift boxes',
+      accent: 'bg-amber-500',
+   },
+   'Corrugated Boxes': {
+      blurb: 'Mailers, cartons & shipping',
+      accent: 'bg-sky-500',
+   },
+   'Branding & 3D Boards': {
+      blurb: 'Neon, LED & dimensional signs',
+      accent: 'bg-violet-500',
+   },
 }
 
 function linksForType(productType: string): PackagingMenuLink[] {
@@ -46,106 +74,58 @@ function linkForCategory(title: string): PackagingMenuLink {
    }
 }
 
-/** Clear category columns — each option maps to its own product family */
-export const PACKAGING_MENU_COLUMNS: PackagingMenuColumn[] = [
-   {
-      title: 'Food Packaging',
-      href: buildCatalogHref({ productType: 'Food Packaging' }),
-      blurb: 'Boxes, bags & trays for restaurants',
-      accent: 'bg-orange-500',
-      links: linksForType('Food Packaging'),
-   },
-   {
-      title: 'Shipping',
-      href: buildCatalogHref({ productType: 'Shipping Packaging' }),
-      blurb: 'Mailers & cartons for e-commerce',
-      accent: 'bg-sky-500',
-      links: linksForType('Shipping Packaging'),
-   },
-   {
-      title: 'Retail',
-      href: buildCatalogHref({ productType: 'Retail Packaging' }),
-      blurb: 'Bags, tags & gift packaging',
-      accent: 'bg-violet-500',
-      links: linksForType('Retail Packaging'),
-   },
-   {
-      title: 'Accessories',
-      href: buildCatalogHref({ productType: 'Packaging Accessories' }),
-      blurb: 'Stickers, tissue & inserts',
-      accent: 'bg-emerald-500',
-      links: linksForType('Packaging Accessories'),
-   },
-   {
-      title: 'LED & Neon',
-      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
-      blurb: 'Custom neon & LED storefront signs',
-      accent: 'bg-fuchsia-500',
-      links: linksForType('LED & Neon Signs'),
-   },
-]
+export const PACKAGING_MENU_COLUMNS: PackagingMenuColumn[] = JOJI_PRODUCT_TYPES.map((title) => ({
+   title,
+   href: buildCatalogHref({ productType: title }),
+   blurb: COLUMN_META[title].blurb,
+   accent: COLUMN_META[title].accent,
+   links: linksForType(title),
+}))
 
 export const PACKAGING_QUICK_PICKS: PackagingMenuLink[] = [
+   linkForCategory('Cosmetic Cartons'),
    linkForCategory('Pizza Boxes'),
+   linkForCategory('Perfume Boxes'),
+   linkForCategory('Rigid Boxes'),
    linkForCategory('Mailer Boxes'),
-   linkForCategory('Shopping Bags'),
-   linkForCategory('Neon Signs'),
+   linkForCategory('3D Boards'),
 ]
 
-/** Featured spotlight cards in the mega menu aside */
 export const PACKAGING_FEATURED_CARDS: PackagingFeaturedCard[] = [
    {
-      title: 'LED & Neon Signs',
-      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
-      image: CATALOG_IMAGES.neonSign,
+      title: 'Perfume & Makeup Boxes',
+      href: buildCatalogHref({ productType: 'Perfume & Makeup Boxes' }),
+      image: CATALOG_IMAGES.rigidBox,
       badge: 'New',
-      description: 'Custom neon, LED letters & light boxes for your storefront.',
+      description: 'Luxury fragrance sleeves and magnetic makeup kits.',
    },
    {
-      title: 'Food Packaging',
-      href: buildCatalogHref({ productType: 'Food Packaging' }),
-      image: CATALOG_IMAGES.customPackagingHero,
-      description: 'Pizza boxes, burger boxes, fries cartons & takeout bags.',
+      title: 'Branding & 3D Boards',
+      href: buildCatalogHref({ productType: 'Branding & 3D Boards' }),
+      image: CATALOG_IMAGES.neonSign,
+      description: 'Neon, LED letters, light boxes, and 3D logo boards.',
    },
 ]
+
+const NAV_SHORT_LABEL: Record<(typeof JOJI_PRODUCT_TYPES)[number], string> = {
+   Cosmetics: 'Cosmetics',
+   'Hotel & Food': 'Hotel & Food',
+   'Perfume & Makeup Boxes': 'Perfume',
+   'Rigid Luxury Boxes': 'Rigid Boxes',
+   'Corrugated Boxes': 'Corrugated',
+   'Branding & 3D Boards': 'Branding',
+}
 
 export const PACKAGING_NAV_ITEMS: Array<
    PackagingMenuLink & { columnTitle?: string }
-> = [
-   {
-      label: 'All Packaging',
-      href: '/products',
-      image: CATALOG_IMAGES.customPackagingHero,
-      columnTitle: 'Food Packaging',
-   },
-   {
-      label: 'Food Packaging',
-      href: buildCatalogHref({ productType: 'Food Packaging' }),
-      image: CATALOG_IMAGES.customBoxLarge,
-      columnTitle: 'Food Packaging',
-   },
-   {
-      label: 'Shipping',
-      href: buildCatalogHref({ productType: 'Shipping Packaging' }),
-      image: CATALOG_IMAGES.mailer,
-      columnTitle: 'Shipping',
-   },
-   {
-      label: 'Retail',
-      href: buildCatalogHref({ productType: 'Retail Packaging' }),
-      image: CATALOG_IMAGES.shoppingBag,
-      columnTitle: 'Retail',
-   },
-   {
-      label: 'Accessories',
-      href: buildCatalogHref({ productType: 'Packaging Accessories' }),
-      image: CATALOG_IMAGES.sticker,
-      columnTitle: 'Accessories',
-   },
-   {
-      label: 'LED & Neon',
-      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
-      image: CATALOG_IMAGES.neonSign,
-      columnTitle: 'LED & Neon',
-   },
-]
+> = JOJI_PRODUCT_TYPES.map((title) => {
+   const column = PACKAGING_MENU_COLUMNS.find((c) => c.title === title)!
+   const first = column.links[0]
+   return {
+      label: NAV_SHORT_LABEL[title],
+      href: column.href,
+      image: first?.image ?? CATALOG_IMAGES.customPackagingHero,
+      columnTitle: title,
+      description: column.blurb,
+   }
+})

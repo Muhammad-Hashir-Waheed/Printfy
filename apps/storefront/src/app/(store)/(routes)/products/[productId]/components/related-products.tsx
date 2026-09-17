@@ -17,8 +17,8 @@ export async function RelatedProducts({ product }: { product: CatalogProduct }) 
    return (
       <section className="mt-12">
          <Separator className="mb-6" />
-         <h2 className="mb-2 text-2xl font-semibold">You may also like</h2>
-         <p className="mb-6 text-sm text-muted-foreground">
+         <h2 className="typo-h2 mb-2">You may also like</h2>
+         <p className="mb-6 typo-body text-muted-foreground">
             Similar items from the same category.
          </p>
          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

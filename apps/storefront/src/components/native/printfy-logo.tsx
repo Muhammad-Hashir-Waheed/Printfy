@@ -1,4 +1,4 @@
-/** Printfy brand mark — inline so it never 404s via redirects */
+/** Joji Arts brand mark — inline so it never 404s via redirects */
 export function PrintfyLogo({ className }: { className?: string }) {
    return (
       <svg
@@ -7,7 +7,7 @@ export function PrintfyLogo({ className }: { className?: string }) {
          fill="none"
          className={className}
          role="img"
-         aria-label="Printfy"
+         aria-label="Joji Arts"
       >
          <defs>
             <linearGradient id="printfyLogoBg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">

@@ -65,46 +65,36 @@ export const FAST_FOOD_SHOWCASE_TILES = [
    },
 ] as const
 
-/** Compact homepage category mosaic — curated, avoids repeating hero pizza/burger */
+/** VistaPrint-style homepage category mosaic — one tile per Joji line */
 export const HOMEPAGE_CATEGORY_TILES = [
    {
-      title: 'Food packaging',
-      href: buildCatalogHref({ productType: 'Food Packaging' }),
+      title: 'Cosmetics',
+      href: buildCatalogHref({ productType: 'Cosmetics' }),
+      image: CATALOG_IMAGES.productCarton,
+   },
+   {
+      title: 'Hotel & Food',
+      href: buildCatalogHref({ productType: 'Hotel & Food' }),
       image: CATALOG_IMAGES.customPackagingHero,
    },
    {
-      title: 'Mailer boxes',
-      href: buildCatalogHref({ category: 'Mailer Boxes' }),
-      image: CATALOG_IMAGES.mailer,
+      title: 'Perfume',
+      href: buildCatalogHref({ productType: 'Perfume & Makeup Boxes' }),
+      image: CATALOG_IMAGES.rigidBox,
    },
    {
-      title: 'Shopping bags',
-      href: buildCatalogHref({ category: 'Shopping Bags' }),
-      image: CATALOG_IMAGES.shoppingBag,
-   },
-   {
-      title: 'Stickers & labels',
-      href: buildCatalogHref({ category: 'Stickers & Labels' }),
-      image: CATALOG_IMAGES.sticker,
-   },
-   {
-      title: 'Bakery boxes',
-      href: buildCatalogHref({ category: 'Bakery Boxes' }),
-      image: CATALOG_IMAGES.bakeryBox,
-   },
-   {
-      title: 'Gift boxes',
-      href: buildCatalogHref({ category: 'Gift Boxes' }),
+      title: 'Rigid Boxes',
+      href: buildCatalogHref({ productType: 'Rigid Luxury Boxes' }),
       image: CATALOG_IMAGES.giftBox,
    },
    {
-      title: 'Shipping',
-      href: buildCatalogHref({ productType: 'Shipping Packaging' }),
+      title: 'Corrugated',
+      href: buildCatalogHref({ productType: 'Corrugated Boxes' }),
       image: CATALOG_IMAGES.shippingBoxes,
    },
    {
-      title: 'Neon & LED',
-      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      title: 'Branding',
+      href: buildCatalogHref({ productType: 'Branding & 3D Boards' }),
       image: CATALOG_IMAGES.neonSign,
    },
 ] as const
@@ -112,8 +102,8 @@ export const HOMEPAGE_CATEGORY_TILES = [
 /** Compact homepage showcase — key packaging entry points */
 export const SHOWCASE_TILES = [
    {
-      title: 'Food packaging',
-      href: buildCatalogHref({ productType: 'Food Packaging' }),
+      title: 'Hotel & Food',
+      href: buildCatalogHref({ productType: 'Hotel & Food' }),
       image: CATALOG_IMAGES.customPackagingHero,
       imageClassName: 'object-center',
    },
@@ -173,8 +163,8 @@ export const SHOWCASE_TILES = [
       image: CATALOG_IMAGES.foodContainer,
    },
    {
-      title: 'LED & Neon signs',
-      href: buildCatalogHref({ productType: 'LED & Neon Signs' }),
+      title: 'Branding & 3D Boards',
+      href: buildCatalogHref({ productType: 'Branding & 3D Boards' }),
       image: CATALOG_IMAGES.neonSign,
       imageClassName: 'object-center',
    },

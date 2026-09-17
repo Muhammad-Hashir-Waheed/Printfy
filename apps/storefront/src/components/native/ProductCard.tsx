@@ -51,11 +51,9 @@ export function ProductCard({ product }: { product: ProductWithIncludes }) {
             </div>
          </CardHeader>
          <CardContent className="space-y-1.5 p-3.5 pb-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-               {typeLabel}
-            </p>
+            <p className="typo-eyebrow truncate text-muted-foreground">{typeLabel}</p>
             <Link href={`/products/${product.id}`}>
-               <h3 className="line-clamp-1 text-[15px] font-semibold tracking-tight transition group-hover:text-[#FF5A52]">
+               <h3 className="typo-card-title line-clamp-1 transition group-hover:text-[#FF5A52]">
                   {product.title}
                </h3>
             </Link>
@@ -69,10 +67,10 @@ export function ProductCard({ product }: { product: ProductWithIncludes }) {
                   <span className="text-xs text-muted-foreground line-through">
                      ${product.price.toFixed(2)}
                   </span>
-                  <span className="text-sm font-semibold">${discountedPrice.toFixed(2)}</span>
+                  <span className="typo-price">${discountedPrice.toFixed(2)}</span>
                </div>
             ) : (
-               <span className="text-sm font-semibold">${product.price.toFixed(2)}</span>
+               <span className="typo-price">${product.price.toFixed(2)}</span>
             )}
             {!product.isAvailable ? (
                <Badge variant="secondary" className="rounded-lg text-[10px]">

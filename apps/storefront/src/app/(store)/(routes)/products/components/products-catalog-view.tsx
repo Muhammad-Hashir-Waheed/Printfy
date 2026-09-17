@@ -62,14 +62,11 @@ export function ProductsCatalogView({
          {/* Header — compact, products-first mindset */}
          <header className="flex flex-col gap-3 border-b border-border/60 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-1">
-               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#FF5A52]">
-                  Catalog
-               </p>
-               <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                  Shop packaging
-               </h1>
-               <p className="max-w-xl text-sm text-muted-foreground">
-                  Food boxes, bags, mailers, stickers &amp; brand neon signs — filter and customize.
+               <p className="typo-eyebrow text-[#FF5A52]">Catalog</p>
+               <h1 className="typo-h1">Shop Joji Arts</h1>
+               <p className="max-w-xl typo-body text-muted-foreground">
+                  Cosmetics, hotel &amp; food, perfume boxes, luxury rigid boxes, corrugated
+                  cartons, and 3D branding.
                </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">

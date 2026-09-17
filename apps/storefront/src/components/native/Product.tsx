@@ -29,7 +29,7 @@ export const ProductSkeletonGrid = () => {
 export function ProductSkeleton() {
    return (
       <div aria-hidden="true">
-         <div className="animate-pulse rounded-lg border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800">
+         <div className="animate-pulse overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800">
             <div className="relative h-full w-full">
                <div className="flex h-40 w-full items-center justify-center rounded bg-neutral-300 dark:bg-neutral-700 ">
                   <ImageSkeleton />

@@ -5,6 +5,7 @@ import {
    buildCatalogHref,
    categoryFilterSlug,
    getCatalogBrowseCounts,
+   productTypeFilterSlug,
 } from '@/lib/catalog-navigation'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -18,15 +19,20 @@ type Props = {
 export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) {
    const { byCategory } = getCatalogBrowseCounts()
    const activeCategorySlug = activeCategory?.trim().toLowerCase()
-   const allActive = !activeCategorySlug && !activeProductType?.trim()
+   const typeSlug = activeProductType?.trim().toLowerCase()
+   const allActive = !activeCategorySlug && !typeSlug
+
+   const chips = typeSlug
+      ? PACKAGING_CATEGORIES.filter(
+           (category) => productTypeFilterSlug(category.productType) === typeSlug
+        )
+      : PACKAGING_CATEGORIES
 
    return (
       <section className="mb-6">
          <div className="mb-3 flex items-end justify-between gap-3">
             <div>
-               <h2 className="text-sm font-semibold tracking-tight text-foreground">
-                  Browse by category
-               </h2>
+               <h2 className="typo-card-title">Browse by category</h2>
                <p className="text-xs text-muted-foreground">
                   Tap to filter — scroll for more
                </p>
@@ -35,28 +41,30 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
 
          <div className="-mx-1 flex gap-2.5 overflow-x-auto px-1 pb-2 pt-0.5 [scrollbar-width:thin]">
             <Link
-               href="/products"
+               href={typeSlug ? buildCatalogHref({ productType: activeProductType }) : '/products'}
                className={cn(
-                  'group flex w-[88px] shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
-                  allActive
+                  'group flex w-24 shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
+                  allActive || (typeSlug && !activeCategorySlug)
                      ? 'border-[#FF5A52] bg-[#FF5A52]/5 ring-1 ring-[#FF5A52]/40'
                      : 'border-border/80 bg-card hover:border-foreground/25 hover:shadow-sm'
                )}
             >
-               <div className="flex aspect-square w-full items-center justify-center rounded-lg bg-muted/60 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+               <div className="flex aspect-square w-full items-center justify-center rounded-xl bg-muted/60 typo-eyebrow text-muted-foreground">
                   All
                </div>
                <span
                   className={cn(
-                     'line-clamp-2 text-[11px] font-medium leading-tight',
-                     allActive ? 'text-[#FF5A52]' : 'text-foreground'
+                     'w-full truncate text-xs font-medium',
+                     allActive || (typeSlug && !activeCategorySlug)
+                        ? 'text-[#FF5A52]'
+                        : 'text-foreground'
                   )}
                >
-                  All packaging
+                  All products
                </span>
             </Link>
 
-            {PACKAGING_CATEGORIES.map((category) => {
+            {chips.map((category) => {
                const slug = categoryFilterSlug(category.title)
                const active = activeCategorySlug === slug
                const count = byCategory[category.title] ?? 0
@@ -65,15 +73,18 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
                return (
                   <Link
                      key={category.id}
-                     href={buildCatalogHref({ category: category.title })}
+                     href={buildCatalogHref({
+                        category: category.title,
+                        productType: typeSlug ? category.productType : undefined,
+                     })}
                      className={cn(
-                        'group flex w-[88px] shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
+                        'group flex w-24 shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
                         active
                            ? 'border-[#FF5A52] bg-[#FF5A52]/5 ring-1 ring-[#FF5A52]/40'
                            : 'border-border/80 bg-card hover:border-foreground/25 hover:shadow-sm'
                      )}
                   >
-                     <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
+                     <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
                         <img
                            src={thumb}
                            alt=""
@@ -83,7 +94,7 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
                      </div>
                      <span
                         className={cn(
-                           'line-clamp-2 text-[11px] font-medium leading-tight',
+                           'w-full truncate text-xs font-medium',
                            active ? 'text-[#FF5A52]' : 'text-foreground'
                         )}
                      >

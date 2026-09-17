@@ -8,12 +8,22 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-   title: 'Printfy',
-   description: 'Custom packaging for food, retail, and shipping.',
-   keywords: ['Printfy', 'Packaging', 'Custom Print', 'E-Commerce'],
-   authors: [{ name: 'Printfy', url: 'https://github.com/sesto-dev' }],
-   creator: 'Printfy',
-   publisher: 'Printfy',
+   title: 'Joji Arts',
+   description:
+      'Custom packaging for cosmetics, hotels, perfume, luxury boxes, corrugated cartons, and 3D branding.',
+   keywords: [
+      'Joji Arts',
+      'Custom Packaging',
+      'Cosmetics',
+      'Hotel Packaging',
+      'Perfume Boxes',
+      'Rigid Boxes',
+      'Corrugated Boxes',
+      '3D Boards',
+   ],
+   authors: [{ name: 'Joji Arts' }],
+   creator: 'Joji Arts',
+   publisher: 'Joji Arts',
    icons: {
       icon: '/favicon.svg',
    },

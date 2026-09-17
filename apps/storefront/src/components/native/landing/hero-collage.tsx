@@ -8,79 +8,58 @@ type Piece = {
    alt: string
    label: string
    href: string
-   /** Tailwind absolute placement + size + rotation */
    frame: string
    imgClass?: string
 }
 
-/**
- * Editorial collage — each piece links to a real product detail page.
- */
 const PIECES: Piece[] = [
    {
-      src: CATALOG_IMAGES.customBoxLarge,
-      alt: 'Custom printed pizza box',
-      label: 'Pizza boxes',
-      href: '/products/custom-pizza-box',
+      src: CATALOG_IMAGES.productCarton,
+      alt: 'Cosmetic packaging carton',
+      label: 'Cosmetics',
+      href: '/products?productType=cosmetics',
       frame:
          'left-[4%] top-[8%] z-20 h-[48%] w-[46%] -rotate-2 sm:left-[2%] sm:top-[6%] sm:h-[52%] sm:w-[44%]',
    },
    {
-      src: CATALOG_IMAGES.neonSign,
-      alt: 'Custom neon brand logo sign',
-      label: 'Brand neon',
-      href: '/products/custom-neon-sign',
+      src: CATALOG_IMAGES.rigidBox,
+      alt: 'Perfume and makeup luxury box',
+      label: 'Perfume boxes',
+      href: '/products?productType=perfume+%26+makeup+boxes',
       frame:
          'right-[2%] top-[2%] z-30 h-[28%] w-[42%] rotate-3 sm:right-[0%] sm:top-[0%] sm:h-[32%] sm:w-[40%]',
    },
    {
-      src: CATALOG_IMAGES.customBoxMedium,
-      alt: 'Custom burger box packaging',
-      label: 'Burger boxes',
-      href: '/products/burger-box',
+      src: CATALOG_IMAGES.giftBox,
+      alt: 'Rigid luxury gift box',
+      label: 'Rigid boxes',
+      href: '/products?productType=rigid+luxury+boxes',
       frame:
          'right-[6%] top-[30%] z-20 h-[34%] w-[36%] rotate-2 sm:right-[4%] sm:top-[28%] sm:h-[36%] sm:w-[34%]',
    },
    {
-      src: CATALOG_IMAGES.ledSign,
-      alt: 'Custom LED brand channel letter logo sign',
-      label: 'LED logos',
-      href: '/products/led-channel-letter',
+      src: CATALOG_IMAGES.customPackagingHero,
+      alt: 'Hotel and food packaging',
+      label: 'Hotel & food',
+      href: '/products?productType=hotel+%26+food',
       frame:
          'left-[2%] bottom-[4%] z-30 h-[30%] w-[40%] rotate-[-3deg] sm:left-[0%] sm:bottom-[2%] sm:h-[32%] sm:w-[38%]',
    },
    {
-      src: CATALOG_IMAGES.customBoxSmall,
-      alt: 'Custom fries carton',
-      label: 'Fries',
-      href: '/products/fries-carton',
+      src: CATALOG_IMAGES.shippingBoxes,
+      alt: 'Corrugated shipping boxes',
+      label: 'Corrugated',
+      href: '/products?productType=corrugated+boxes',
       frame:
          'left-[42%] top-[42%] z-40 h-[26%] w-[22%] rotate-[-6deg] sm:left-[40%] sm:top-[40%] sm:h-[28%] sm:w-[20%]',
    },
    {
-      src: CATALOG_IMAGES.neonShop,
-      alt: 'Custom neon script brand logo sign',
-      label: 'Script neon',
-      href: '/products/script-neon-sign',
-      frame:
-         'right-[28%] bottom-[8%] z-[25] h-[24%] w-[26%] rotate-6 sm:right-[30%] sm:bottom-[6%] sm:h-[26%] sm:w-[24%]',
-   },
-   {
-      src: CATALOG_IMAGES.neonBrandBrew,
-      alt: 'Custom neon brand logo with icon',
-      label: 'Logo neon',
-      href: '/products/shop-open-neon',
+      src: CATALOG_IMAGES.neonSign,
+      alt: '3D branding neon board',
+      label: '3D boards',
+      href: '/products?productType=branding+%26+3d+boards',
       frame:
          'right-[2%] bottom-[2%] z-20 h-[28%] w-[34%] rotate-[-2deg] sm:right-[0%] sm:bottom-[0%] sm:h-[30%] sm:w-[32%]',
-   },
-   {
-      src: CATALOG_IMAGES.customPaperBag,
-      alt: 'Custom takeout bag',
-      label: 'Bags',
-      href: '/products/takeout-bag',
-      frame:
-         'left-[36%] top-[4%] z-10 h-[22%] w-[20%] rotate-[-8deg] sm:left-[38%] sm:top-[2%] sm:h-[24%] sm:w-[18%]',
-      imgClass: 'object-center',
    },
 ]
 
@@ -89,7 +68,6 @@ export function HeroCollage({ className }: { className?: string }) {
       <div className={className}>
          <div className="relative mx-auto aspect-[5/4] w-full max-w-xl lg:max-w-none">
             <div className="pointer-events-none absolute inset-[12%] rounded-full bg-[#FF5A52]/10 blur-3xl dark:bg-[#7C5CFC]/20" />
-            <div className="pointer-events-none absolute bottom-[10%] right-[10%] h-40 w-40 rounded-full bg-[#5EEAD4]/15 blur-3xl" />
 
             {PIECES.map((piece) => (
                <Link
@@ -104,7 +82,7 @@ export function HeroCollage({ className }: { className?: string }) {
                      loading="eager"
                   />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent px-2.5 pb-2 pt-10">
-                     <span className="text-[10px] font-semibold tracking-wide text-white sm:text-xs">
+                     <span className="text-xs font-semibold tracking-wide text-white">
                         {piece.label}
                      </span>
                   </div>

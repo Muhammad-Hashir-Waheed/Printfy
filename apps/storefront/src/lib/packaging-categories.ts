@@ -11,30 +11,96 @@ function packagingHref(filters: { productType?: string; category?: string; q?: s
    return query ? `/products?${query}` : '/products'
 }
 
+export const JOJI_PRODUCT_TYPES = [
+   'Cosmetics',
+   'Hotel & Food',
+   'Perfume & Makeup Boxes',
+   'Rigid Luxury Boxes',
+   'Corrugated Boxes',
+   'Branding & 3D Boards',
+] as const
+
+export type JojiProductType = (typeof JOJI_PRODUCT_TYPES)[number]
+
 export type PackagingCategory = {
    id: string
    title: string
    description: string
-   /** Broad type used in productType filters */
-   productType: string
-   /** Search query for gallery filtering */
+   productType: JojiProductType
    q: string
-   /** Exactly 3 related images for this category — primary first, unique per category */
    images: [string, string, string]
    href: string
 }
 
-/**
- * Each category gets a unique primary image (index 0).
- * Secondary thumbs stay in the same product family so the mega-menu doesn't repeat
- * the same 3-image strip across unrelated rows.
- */
 export const PACKAGING_CATEGORIES: PackagingCategory[] = [
+   {
+      id: 'cat-cosmetic-cartons',
+      title: 'Cosmetic Cartons',
+      description: 'Folding cartons for creams, serums, and beauty sets',
+      productType: 'Cosmetics',
+      q: 'cosmetic',
+      images: [I.productCarton, I.hangTags, I.rigidBox],
+      href: packagingHref({ category: 'Cosmetic Cartons' }),
+   },
+   {
+      id: 'cat-shopping-bags',
+      title: 'Shopping Bags',
+      description: 'Retail and salon shopping bags',
+      productType: 'Cosmetics',
+      q: 'shopping',
+      images: [I.shoppingBag, I.retailBag, I.customPaperBag],
+      href: packagingHref({ category: 'Shopping Bags' }),
+   },
+   {
+      id: 'cat-hang-tags',
+      title: 'Custom Tags',
+      description: 'Hang tags for beauty and gift lines',
+      productType: 'Cosmetics',
+      q: 'tag',
+      images: [I.hangTags, I.sticker, I.retailBag],
+      href: packagingHref({ category: 'Custom Tags' }),
+   },
+   {
+      id: 'cat-stickers',
+      title: 'Stickers & Labels',
+      description: 'Product labels, seals, and branding stickers',
+      productType: 'Cosmetics',
+      q: 'sticker',
+      images: [I.sticker, I.hangTags, I.packagingInsert],
+      href: packagingHref({ category: 'Stickers & Labels' }),
+   },
+   {
+      id: 'cat-tissue',
+      title: 'Tissue Paper',
+      description: 'Printed tissue for unboxing',
+      productType: 'Cosmetics',
+      q: 'tissue',
+      images: [I.tissuePaper, I.giftBoxesKraft, I.giftBox],
+      href: packagingHref({ category: 'Tissue Paper' }),
+   },
+   {
+      id: 'cat-inserts',
+      title: 'Packaging Inserts',
+      description: 'Care cards, thank-you notes, and promo inserts',
+      productType: 'Cosmetics',
+      q: 'insert',
+      images: [I.packagingInsert, I.sticker, I.hangTags],
+      href: packagingHref({ category: 'Packaging Inserts' }),
+   },
+   {
+      id: 'cat-wrapping-paper',
+      title: 'Wrapping Paper',
+      description: 'Custom wrapping paper for beauty gifts',
+      productType: 'Cosmetics',
+      q: 'wrap',
+      images: [I.wrappingPaper, I.tissuePaper, I.giftBox],
+      href: packagingHref({ category: 'Wrapping Paper' }),
+   },
    {
       id: 'cat-pizza-boxes',
       title: 'Pizza Boxes',
       description: 'Custom printed corrugated pizza boxes',
-      productType: 'Food Packaging',
+      productType: 'Hotel & Food',
       q: 'pizza',
       images: [I.customBoxLarge, I.customPackagingHero, I.bakeryBox],
       href: packagingHref({ category: 'Pizza Boxes' }),
@@ -42,8 +108,8 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-burger-boxes',
       title: 'Burger Boxes',
-      description: 'Clamshell burger & sandwich boxes',
-      productType: 'Food Packaging',
+      description: 'Clamshell burger and sandwich boxes',
+      productType: 'Hotel & Food',
       q: 'burger',
       images: [I.customBoxMedium, I.foodContainer, I.customBoxSmall],
       href: packagingHref({ category: 'Burger Boxes' }),
@@ -51,8 +117,8 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-fries-cartons',
       title: 'Fries Cartons',
-      description: 'Open-top fries & sides cartons',
-      productType: 'Food Packaging',
+      description: 'Open-top fries and sides cartons',
+      productType: 'Hotel & Food',
       q: 'fries',
       images: [I.customBoxSmall, I.customBoxMedium, I.customPaperBag],
       href: packagingHref({ category: 'Fries Cartons' }),
@@ -60,8 +126,8 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-takeout-bags',
       title: 'To Go Bags',
-      description: 'Grease-resistant takeout paper bags',
-      productType: 'Food Packaging',
+      description: 'Hotel and restaurant takeout bags',
+      productType: 'Hotel & Food',
       q: 'takeout',
       images: [I.customPaperBag, I.shoppingBag, I.retailBag],
       href: packagingHref({ category: 'To Go Bags' }),
@@ -69,8 +135,8 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-paper-cups',
       title: 'Paper Cups',
-      description: 'Branded hot & cold paper cups',
-      productType: 'Food Packaging',
+      description: 'Branded hot and cold paper cups',
+      productType: 'Hotel & Food',
       q: 'cup',
       images: [I.paperCups, I.cupCarrier, I.customBoxSmall],
       href: packagingHref({ category: 'Paper Cups' }),
@@ -79,7 +145,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       id: 'cat-meal-trays',
       title: 'Meal Trays',
       description: 'Compartment trays with lids',
-      productType: 'Food Packaging',
+      productType: 'Hotel & Food',
       q: 'tray',
       images: [I.mealTray, I.foodContainer, I.customPackagingHero],
       href: packagingHref({ category: 'Meal Trays' }),
@@ -88,16 +154,79 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       id: 'cat-cup-carriers',
       title: 'Cup Carriers',
       description: '2-cup and 4-cup drink carriers',
-      productType: 'Food Packaging',
+      productType: 'Hotel & Food',
       q: 'carrier',
       images: [I.cupCarrier, I.paperCups, I.customPaperBag],
       href: packagingHref({ category: 'Cup Carriers' }),
    },
    {
+      id: 'cat-bakery-boxes',
+      title: 'Bakery Boxes',
+      description: 'Window bakery and pastry boxes',
+      productType: 'Hotel & Food',
+      q: 'bakery',
+      images: [I.bakeryBox, I.giftBoxesKraft, I.customBoxLarge],
+      href: packagingHref({ category: 'Bakery Boxes' }),
+   },
+   {
+      id: 'cat-food-containers',
+      title: 'Food Containers',
+      description: 'Clamshells and hinged food containers',
+      productType: 'Hotel & Food',
+      q: 'container',
+      images: [I.foodContainer, I.mealTray, I.customBoxMedium],
+      href: packagingHref({ category: 'Food Containers' }),
+   },
+   {
+      id: 'cat-bottle-carriers',
+      title: 'Bottle Carriers',
+      description: 'Cardboard bottle and jar carriers',
+      productType: 'Hotel & Food',
+      q: 'bottle',
+      images: [I.bottleCarrier, I.customBoxSmall, I.cupCarrier],
+      href: packagingHref({ category: 'Bottle Carriers' }),
+   },
+   {
+      id: 'cat-perfume-boxes',
+      title: 'Perfume Boxes',
+      description: 'Tall cartons and sleeves for fragrance bottles',
+      productType: 'Perfume & Makeup Boxes',
+      q: 'perfume',
+      images: [I.productCarton, I.rigidBox, I.giftBox],
+      href: packagingHref({ category: 'Perfume Boxes' }),
+   },
+   {
+      id: 'cat-makeup-boxes',
+      title: 'Makeup Boxes',
+      description: 'Compact cartons for palettes, kits, and makeup sets',
+      productType: 'Perfume & Makeup Boxes',
+      q: 'makeup',
+      images: [I.giftBox, I.productCarton, I.rigidBox],
+      href: packagingHref({ category: 'Makeup Boxes' }),
+   },
+   {
+      id: 'cat-gift-boxes',
+      title: 'Gift Boxes',
+      description: 'Branded gift and presentation boxes',
+      productType: 'Rigid Luxury Boxes',
+      q: 'gift',
+      images: [I.giftBox, I.giftBoxesKraft, I.wrappingPaper],
+      href: packagingHref({ category: 'Gift Boxes' }),
+   },
+   {
+      id: 'cat-rigid-boxes',
+      title: 'Rigid Boxes',
+      description: 'Magnetic and drawer luxury rigid boxes',
+      productType: 'Rigid Luxury Boxes',
+      q: 'rigid',
+      images: [I.rigidBox, I.productCarton, I.mailer],
+      href: packagingHref({ category: 'Rigid Boxes' }),
+   },
+   {
       id: 'cat-mailer-boxes',
       title: 'Mailer Boxes',
       description: 'E-commerce mailer boxes with branding',
-      productType: 'Shipping Packaging',
+      productType: 'Corrugated Boxes',
       q: 'mailer',
       images: [I.mailer, I.shippingBoxes, I.shippingTapeBox],
       href: packagingHref({ category: 'Mailer Boxes' }),
@@ -106,7 +235,7 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
       id: 'cat-shipping-boxes',
       title: 'Shipping Boxes',
       description: 'Corrugated shipping cartons',
-      productType: 'Shipping Packaging',
+      productType: 'Corrugated Boxes',
       q: 'shipping',
       images: [I.shippingBoxes, I.shippingTapeBox, I.mailer],
       href: packagingHref({ category: 'Shipping Boxes' }),
@@ -114,125 +243,17 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-poly-mailers',
       title: 'Shipping Mailers',
-      description: 'Poly & kraft shipping mailers',
-      productType: 'Shipping Packaging',
+      description: 'Poly and kraft shipping mailers',
+      productType: 'Corrugated Boxes',
       q: 'poly',
       images: [I.polyMailer, I.mailer, I.shippingTapeBox],
       href: packagingHref({ category: 'Shipping Mailers' }),
    },
    {
-      id: 'cat-shopping-bags',
-      title: 'Shopping Bags',
-      description: 'Custom retail shopping bags',
-      productType: 'Retail Packaging',
-      q: 'shopping',
-      images: [I.shoppingBag, I.retailBag, I.customPaperBag],
-      href: packagingHref({ category: 'Shopping Bags' }),
-   },
-   {
-      id: 'cat-product-packaging',
-      title: 'Product Packaging',
-      description: 'Product sleeves, cartons & wraps',
-      productType: 'Retail Packaging',
-      q: 'product',
-      images: [I.productCarton, I.rigidBox, I.giftBoxesKraft],
-      href: packagingHref({ category: 'Product Packaging' }),
-   },
-   {
-      id: 'cat-hang-tags',
-      title: 'Custom Tags',
-      description: 'Hang tags for retail apparel & gifts',
-      productType: 'Retail Packaging',
-      q: 'tag',
-      images: [I.hangTags, I.sticker, I.retailBag],
-      href: packagingHref({ category: 'Custom Tags' }),
-   },
-   {
-      id: 'cat-stickers',
-      title: 'Stickers & Labels',
-      description: 'Branding stickers and packaging labels',
-      productType: 'Packaging Accessories',
-      q: 'sticker',
-      images: [I.sticker, I.hangTags, I.packagingInsert],
-      href: packagingHref({ category: 'Stickers & Labels' }),
-   },
-   {
-      id: 'cat-tissue',
-      title: 'Tissue Paper',
-      description: 'Custom printed tissue for unboxing',
-      productType: 'Packaging Accessories',
-      q: 'tissue',
-      images: [I.tissuePaper, I.giftBoxesKraft, I.giftBox],
-      href: packagingHref({ category: 'Tissue Paper' }),
-   },
-   {
-      id: 'cat-inserts',
-      title: 'Packaging Inserts',
-      description: 'Insert cards, thank-you notes & cards',
-      productType: 'Packaging Accessories',
-      q: 'insert',
-      images: [I.packagingInsert, I.sticker, I.hangTags],
-      href: packagingHref({ category: 'Packaging Inserts' }),
-   },
-   {
-      id: 'cat-bakery-boxes',
-      title: 'Bakery Boxes',
-      description: 'Window bakery & pastry boxes',
-      productType: 'Food Packaging',
-      q: 'bakery',
-      images: [I.bakeryBox, I.giftBoxesKraft, I.customBoxLarge],
-      href: packagingHref({ category: 'Bakery Boxes' }),
-   },
-   {
-      id: 'cat-food-containers',
-      title: 'Food Containers',
-      description: 'Clamshells & hinged food containers',
-      productType: 'Food Packaging',
-      q: 'container',
-      images: [I.foodContainer, I.mealTray, I.customBoxMedium],
-      href: packagingHref({ category: 'Food Containers' }),
-   },
-   {
-      id: 'cat-gift-boxes',
-      title: 'Gift Boxes',
-      description: 'Branded gift & presentation boxes',
-      productType: 'Retail Packaging',
-      q: 'gift',
-      images: [I.giftBox, I.giftBoxesKraft, I.wrappingPaper],
-      href: packagingHref({ category: 'Gift Boxes' }),
-   },
-   {
-      id: 'cat-rigid-boxes',
-      title: 'Rigid Boxes',
-      description: 'Premium rigid & magnetic closure boxes',
-      productType: 'Retail Packaging',
-      q: 'rigid',
-      images: [I.rigidBox, I.productCarton, I.mailer],
-      href: packagingHref({ category: 'Rigid Boxes' }),
-   },
-   {
-      id: 'cat-wrapping-paper',
-      title: 'Wrapping Paper',
-      description: 'Custom printed wrapping paper rolls',
-      productType: 'Packaging Accessories',
-      q: 'wrap',
-      images: [I.wrappingPaper, I.tissuePaper, I.giftBox],
-      href: packagingHref({ category: 'Wrapping Paper' }),
-   },
-   {
-      id: 'cat-bottle-carriers',
-      title: 'Bottle Carriers',
-      description: 'Cardboard bottle & jar carriers',
-      productType: 'Food Packaging',
-      q: 'bottle',
-      images: [I.bottleCarrier, I.customBoxSmall, I.cupCarrier],
-      href: packagingHref({ category: 'Bottle Carriers' }),
-   },
-   {
       id: 'cat-neon-signs',
       title: 'Neon Signs',
-      description: 'Custom neon & LED neon-style signs for shops and events',
-      productType: 'LED & Neon Signs',
+      description: 'Custom neon signs for shops and events',
+      productType: 'Branding & 3D Boards',
       q: 'neon',
       images: [I.neonSign, I.neonShop, I.ledSign],
       href: packagingHref({ category: 'Neon Signs' }),
@@ -240,8 +261,8 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-led-signs',
       title: 'LED Signs',
-      description: 'Bright LED channel letters and storefront LED boards',
-      productType: 'LED & Neon Signs',
+      description: 'LED channel letters and storefront boards',
+      productType: 'Branding & 3D Boards',
       q: 'led',
       images: [I.ledSign, I.neonSign, I.neonShop],
       href: packagingHref({ category: 'LED Signs' }),
@@ -249,21 +270,28 @@ export const PACKAGING_CATEGORIES: PackagingCategory[] = [
    {
       id: 'cat-lightbox-signs',
       title: 'Light Box Signs',
-      description: 'Backlit light boxes and open / closed neon boards',
-      productType: 'LED & Neon Signs',
+      description: 'Backlit light boxes and open / closed boards',
+      productType: 'Branding & 3D Boards',
       q: 'lightbox',
       images: [I.neonShop, I.ledSign, I.neonSign],
       href: packagingHref({ category: 'Light Box Signs' }),
    },
+   {
+      id: 'cat-3d-boards',
+      title: '3D Boards',
+      description: 'Dimensional acrylic and 3D logo boards',
+      productType: 'Branding & 3D Boards',
+      q: '3d',
+      images: [I.ledSign, I.neonBrandBrew, I.neonShop],
+      href: packagingHref({ category: '3D Boards' }),
+   },
 ]
 
-export const PACKAGING_PRODUCT_TYPE_LIST = [
-   'Food Packaging',
-   'Shipping Packaging',
-   'Retail Packaging',
-   'Packaging Accessories',
-   'LED & Neon Signs',
-] as const
+export const PACKAGING_PRODUCT_TYPE_LIST = JOJI_PRODUCT_TYPES
+
+export const TYPE_BY_CATEGORY: Record<string, JojiProductType> = Object.fromEntries(
+   PACKAGING_CATEGORIES.map((category) => [category.title, category.productType])
+) as Record<string, JojiProductType>
 
 export function getPackagingCategoryByTitle(title: string) {
    return PACKAGING_CATEGORIES.find(

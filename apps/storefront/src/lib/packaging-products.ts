@@ -1,3 +1,4 @@
+import { TYPE_BY_CATEGORY } from '@/lib/packaging-categories'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
 import { slugifyText } from '@/lib/slug'
 
@@ -29,8 +30,8 @@ type CatalogProduct = {
 }
 
 const brand = {
-   id: 'brand-printfy',
-   title: 'Printfy',
+   id: 'brand-joji-arts',
+   title: 'Joji Arts',
    description: 'House brand',
    logo: null,
 } as any
@@ -81,7 +82,7 @@ function product(input: {
       images: input.images,
       keywords: input.keywords,
       metadata: {
-         productType: input.productType,
+         productType: TYPE_BY_CATEGORY[input.categoryTitle] ?? input.productType,
          packagingCategory: input.categoryTitle,
          isCustomizable: true,
          leadTimeDays: 4,
@@ -466,36 +467,69 @@ export const PACKAGING_PRODUCTS: CatalogProduct[] = [
       price: 1.2,
    }),
 
-   // Product Packaging
+   // Perfume & Makeup Boxes
    product({
       id: 'product-sleeve',
-      title: 'Product Sleeve Carton',
-      description: 'Slip sleeve packaging for bottles and jars.',
+      title: 'Perfume Sleeve Carton',
+      description: 'Tall slip sleeve for fragrance bottles and atomizers.',
       images: [I.productCarton, I.rigidBox, I.mailer],
-      keywords: ['product', 'sleeve', 'carton'],
-      productType: 'Retail Packaging',
-      categoryTitle: 'Product Packaging',
+      keywords: ['perfume', 'fragrance', 'sleeve', 'carton'],
+      productType: 'Perfume & Makeup Boxes',
+      categoryTitle: 'Perfume Boxes',
       price: 0.72,
    }),
    product({
+      id: 'luxury-perfume-box',
+      title: 'Luxury Perfume Box',
+      description: 'Rigid perfume presentation box with foil-ready panels.',
+      images: [I.rigidBox, I.productCarton, I.giftBox],
+      keywords: ['perfume', 'fragrance', 'luxury box'],
+      productType: 'Perfume & Makeup Boxes',
+      categoryTitle: 'Perfume Boxes',
+      price: 2.15,
+      featured: true,
+   }),
+   product({
       id: 'folding-carton',
-      title: 'Folding Product Carton',
-      description: 'Retail folding carton with tuck top.',
+      title: 'Makeup Folding Carton',
+      description: 'Tuck-top carton for palettes, kits, and makeup sets.',
       images: [I.productCarton, I.giftBoxesKraft, I.rigidBox],
-      keywords: ['product', 'folding carton', 'retail box'],
-      productType: 'Retail Packaging',
-      categoryTitle: 'Product Packaging',
+      keywords: ['makeup', 'palette', 'folding carton'],
+      productType: 'Perfume & Makeup Boxes',
+      categoryTitle: 'Makeup Boxes',
       price: 0.88,
    }),
    product({
       id: 'window-product-box',
-      title: 'Window Product Box',
-      description: 'Display carton with clear product window.',
+      title: 'Window Makeup Box',
+      description: 'Display carton with a clear window for makeup kits.',
       images: [I.productCarton, I.bakeryBox, I.rigidBox],
-      keywords: ['product', 'window box', 'display'],
-      productType: 'Retail Packaging',
-      categoryTitle: 'Product Packaging',
+      keywords: ['makeup', 'window box', 'display'],
+      productType: 'Perfume & Makeup Boxes',
+      categoryTitle: 'Makeup Boxes',
       price: 1.05,
+   }),
+   product({
+      id: 'magnetic-makeup-box',
+      title: 'Magnetic Makeup Box',
+      description: 'Magnetic-lid box for premium makeup collections.',
+      images: [I.giftBox, I.rigidBox, I.productCarton],
+      keywords: ['makeup', 'magnetic', 'beauty box'],
+      productType: 'Perfume & Makeup Boxes',
+      categoryTitle: 'Makeup Boxes',
+      price: 2.35,
+      featured: true,
+   }),
+   product({
+      id: 'cosmetic-set-box',
+      title: 'Cosmetic Set Carton',
+      description: 'Folding carton for creams, serums, and beauty gift sets.',
+      images: [I.productCarton, I.hangTags, I.tissuePaper],
+      keywords: ['cosmetic', 'beauty', 'carton', 'skincare'],
+      productType: 'Cosmetics',
+      categoryTitle: 'Cosmetic Cartons',
+      price: 0.95,
+      featured: true,
    }),
 
    // Custom Tags
@@ -883,5 +917,26 @@ export const PACKAGING_PRODUCTS: CatalogProduct[] = [
       productType: 'LED & Neon Signs',
       categoryTitle: 'Light Box Signs',
       price: 99.0,
+   }),
+   product({
+      id: '3d-acrylic-board',
+      title: '3D Acrylic Brand Board',
+      description: 'Dimensional acrylic logo board for receptions and storefronts.',
+      images: [I.ledSign, I.neonBrandBrew, I.neonShop],
+      keywords: ['3d', 'acrylic', 'board', 'branding'],
+      productType: 'Branding & 3D Boards',
+      categoryTitle: '3D Boards',
+      price: 129.0,
+      featured: true,
+   }),
+   product({
+      id: '3d-logo-board',
+      title: '3D Logo Board',
+      description: 'Raised letter 3D branding board for hotels and salons.',
+      images: [I.neonBrandBrew, I.ledSign, I.neonSign],
+      keywords: ['3d', 'logo', 'board', 'signage'],
+      productType: 'Branding & 3D Boards',
+      categoryTitle: '3D Boards',
+      price: 159.0,
    }),
 ]

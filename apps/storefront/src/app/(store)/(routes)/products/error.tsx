@@ -20,7 +20,7 @@ export default function ProductsError({
                Retry
             </Button>
             <Button asChild variant="outline" className="rounded-2xl">
-               <Link href="/products">Shop packaging</Link>
+               <Link href="/products">Shop products</Link>
             </Button>
             <Button asChild variant="outline" className="rounded-2xl">
                <Link href="/">Home</Link>

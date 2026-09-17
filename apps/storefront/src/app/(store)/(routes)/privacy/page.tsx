@@ -54,7 +54,7 @@ export default function PrivacyPolicyPage() {
          <h2>6. Your Choices</h2>
          <p>
             You may request access, correction, or deletion of your personal data by emailing{' '}
-            <a href="mailto:support@printfy.com">support@printfy.com</a>. You can also unsubscribe from
+            <a href="mailto:support@jojiarts.com">support@jojiarts.com</a>. You can also unsubscribe from
             marketing emails at any time.
          </p>
 
@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
          <p>
             Questions about this Privacy Policy? Visit our{' '}
             <a href="/contact">Contact</a> page or email{' '}
-            <a href="mailto:support@printfy.com">support@printfy.com</a>.
+            <a href="mailto:support@jojiarts.com">support@jojiarts.com</a>.
          </p>
       </ContentPage>
    )

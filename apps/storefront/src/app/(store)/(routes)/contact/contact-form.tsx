@@ -17,7 +17,7 @@ export function ContactForm() {
          <h2>Email & response time</h2>
          <p>
             Email{' '}
-            <a href="mailto:support@printfy.com">support@printfy.com</a>. We typically reply within 1
+            <a href="mailto:support@jojiarts.com">support@jojiarts.com</a>. We typically reply within 1
             business day. For faster updates on an existing order, include your order number.
          </p>
 

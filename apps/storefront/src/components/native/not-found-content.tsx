@@ -4,9 +4,7 @@ import { SHOWCASE_TILES } from '@/lib/catalog-navigation'
 import Link from 'next/link'
 
 const PRIMARY_LINKS = [
-   { label: 'All packaging', href: '/products' },
-   { label: 'Shop packaging', href: '/products' },
-   { label: 'Blog', href: '/blog' },
+   { label: 'All products', href: '/products' },
    { label: 'Contact us', href: '/contact' },
 ]
 
@@ -20,15 +18,13 @@ export function NotFoundContent({
    return (
       <div className="mx-auto max-w-3xl py-16">
          <div className="text-center">
-            <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-               404
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">{title}</h1>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">
+            <p className="typo-eyebrow text-muted-foreground">404</p>
+            <h1 className="typo-h1 mt-2">{title}</h1>
+            <p className="mx-auto mt-3 max-w-xl typo-body text-muted-foreground">
                {description}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
-               <Button asChild className="rounded-2xl">
+               <Button asChild>
                   <Link href="/">Go home</Link>
                </Button>
                {PRIMARY_LINKS.map((link) => (
@@ -36,7 +32,6 @@ export function NotFoundContent({
                      key={link.href}
                      asChild
                      variant="outline"
-                     className="rounded-2xl"
                   >
                      <Link href={link.href}>{link.label}</Link>
                   </Button>

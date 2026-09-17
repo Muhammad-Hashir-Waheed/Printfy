@@ -13,11 +13,11 @@ export type CatalogProduct = ProductWithIncludes & {
 }
 
 export const DUMMY_BRANDS = [
-   { id: 'brand-printfy', title: 'Printfy', description: 'House brand', logo: null },
+   { id: 'brand-joji-arts', title: 'Joji Arts', description: 'House brand', logo: null },
    { id: 'brand-studio', title: 'Studio Print', description: 'Premium blanks', logo: null },
 ]
 
-/** Packaging-only categories (Vistaprint-style leaf categories) */
+/** Packaging-only categories (VistaPrint-style leaf categories) */
 export const DUMMY_CATEGORIES = PACKAGING_CATEGORIES.map((category) => ({
    id: category.id,
    title: category.title,
@@ -25,11 +25,12 @@ export const DUMMY_CATEGORIES = PACKAGING_CATEGORIES.map((category) => ({
 }))
 
 export const DUMMY_PRODUCT_TYPES = [
-   'Food Packaging',
-   'Shipping Packaging',
-   'Retail Packaging',
-   'Packaging Accessories',
-   'LED & Neon Signs',
+   'Cosmetics',
+   'Hotel & Food',
+   'Perfume & Makeup Boxes',
+   'Rigid Luxury Boxes',
+   'Corrugated Boxes',
+   'Branding & 3D Boards',
 ] as const
 
 /** Full packaging catalog — 2–3 products per category */

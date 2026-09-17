@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const FAQS: Array<{ q: string; a: string }> = [
    {
       q: 'What packaging can I order?',
-      a: 'Food packaging (pizza boxes, burger boxes, fries cartons, cups, trays), shipping packaging (mailers, shipping boxes), retail packaging (shopping bags, gift boxes, rigid boxes), and accessories (stickers, labels, tissue, inserts).',
+      a: 'Cosmetics (cartons, bags, tags, tissue), hotel and food packaging, perfume and makeup boxes, rigid luxury boxes, corrugated mailers and cartons, plus 3D branding boards, neon, and LED signs.',
    },
    {
       q: 'Can I add my logo?',

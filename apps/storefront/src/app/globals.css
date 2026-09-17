@@ -130,6 +130,78 @@
    }
 }
 
+@layer components {
+   .page-shell {
+      @apply mx-auto w-full px-4 sm:px-5 lg:px-6;
+   }
+
+   .typo-eyebrow {
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+   }
+
+   .typo-body {
+      font-size: 0.875rem;
+      line-height: 1.375rem;
+   }
+
+   .typo-card-title {
+      font-size: 1rem;
+      line-height: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+   }
+
+   .typo-h2 {
+      font-size: 1.75rem;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+   }
+
+   .typo-product {
+      font-size: 1.5rem;
+      line-height: 1.25;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+   }
+
+   .typo-h1 {
+      font-size: 2rem;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+   }
+
+   .typo-hero {
+      font-size: 2.5rem;
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+   }
+
+   .typo-price {
+      font-size: 1rem;
+      line-height: 1.375rem;
+      font-weight: 600;
+   }
+
+   .typo-price-lg {
+      font-size: 1.125rem;
+      line-height: 1.375rem;
+      font-weight: 600;
+   }
+}
+
+@media (min-width: 1024px) {
+   .typo-hero {
+      font-size: 3rem;
+   }
+}
+
 @layer utilities {
    .step {
       counter-increment: step;

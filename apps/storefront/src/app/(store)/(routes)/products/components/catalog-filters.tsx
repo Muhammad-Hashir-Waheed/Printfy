@@ -57,7 +57,7 @@ export function ProductSearch({ initialQ }: { initialQ?: string }) {
          <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search pizza boxes, bags, mailers..."
+            placeholder="Search perfume boxes, mailers, neon..."
             className="rounded-2xl"
          />
          <Button type="submit" className="rounded-2xl shrink-0">
@@ -102,7 +102,7 @@ export function ProductTypeFilter({ initial }: { initial?: string }) {
             <SelectValue placeholder="Product type" />
          </SelectTrigger>
          <SelectContent>
-            <SelectItem value="all">All packaging types</SelectItem>
+            <SelectItem value="all">All product lines</SelectItem>
             {PACKAGING_PRODUCT_TYPES.map((type) => (
                <SelectItem key={type} value={productTypeFilterSlug(type)}>
                   {type}

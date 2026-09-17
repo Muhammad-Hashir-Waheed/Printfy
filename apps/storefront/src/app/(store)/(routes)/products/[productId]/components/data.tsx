@@ -15,8 +15,8 @@ export const DataSection = ({ product }: { product: CatalogProduct }) => {
    return (
       <div className="col-span-2 w-full space-y-4 rounded-2xl border bg-neutral-100 p-6 shadow-sm dark:bg-neutral-900">
          <div>
-            <h1 className="text-2xl font-semibold md:text-3xl">{product.title}</h1>
-            <p className="mt-2 text-sm text-muted-foreground">{product.description}</p>
+            <h1 className="typo-product">{product.title}</h1>
+            <p className="mt-2 typo-body text-muted-foreground">{product.description}</p>
          </div>
 
          <Separator />

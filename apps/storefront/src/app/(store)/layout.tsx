@@ -11,9 +11,7 @@ export default async function DashboardLayout({
       <>
          <ScrollProgress />
          <Header />
-         <div className="px-4 sm:px-6 lg:px-12">
-            {children}
-         </div>
+         <main className="page-shell py-5">{children}</main>
          <Footer />
       </>
    )

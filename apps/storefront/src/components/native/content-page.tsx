@@ -12,9 +12,9 @@ export function ContentPage({
    children: ReactNode
 }) {
    return (
-      <article className="mx-auto max-w-3xl px-1 py-6 sm:px-2 lg:px-0">
+      <article className="mx-auto max-w-3xl py-2">
          <header className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
+            <h1 className="typo-h1">{title}</h1>
             {description ? (
                <p className="mt-2 text-muted-foreground">{description}</p>
             ) : null}

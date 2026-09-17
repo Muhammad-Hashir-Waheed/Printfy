@@ -5,21 +5,21 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
    title: 'About',
-   description: `About ${config.name} — custom packaging for food, retail, and shipping.`,
+   description: `About ${config.name} — custom packaging for cosmetics, hotels, perfume, luxury boxes, corrugated cartons, and 3D branding.`,
 }
 
 export default function AboutPage() {
    return (
       <ContentPage
          title="About us"
-         description={`${config.name} helps brands package products with custom-printed boxes, bags, mailers, and labels.`}
+         description={`${config.name} prints packaging for beauty brands, hotels, fragrance houses, and storefronts.`}
       >
          <h2>What we do</h2>
          <p>
-            We specialize in packaging for restaurants, e-commerce brands, and retailers — from
-            pizza and burger boxes to mailer boxes, shopping bags, stickers, and gift packaging.
-            Upload your branding, choose sizes, and order production-ready packaging without
-            dealing with multiple suppliers.
+            We specialize in packaging across six lines: cosmetics, hotel and food service,
+            perfume and makeup boxes, rigid luxury boxes, corrugated shipping, and 3D branding
+            boards. Upload your branding, choose sizes, and order production-ready packaging
+            without juggling suppliers.
          </p>
 
          <h2>Why packaging matters</h2>
@@ -31,7 +31,7 @@ export default function AboutPage() {
 
          <h2>How ordering works</h2>
          <ul>
-            <li>Browse packaging categories in our gallery</li>
+            <li>Browse a packaging line in our gallery</li>
             <li>Pick a product, size, and quantity</li>
             <li>Add your logo or artwork</li>
             <li>Checkout and track production & shipping</li>

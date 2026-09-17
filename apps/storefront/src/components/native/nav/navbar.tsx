@@ -10,7 +10,16 @@ import { Input } from '@/components/ui/input'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { UserNav } from '@/components/native/nav/user'
 import { useAuthenticated } from '@/hooks/useAuthentication'
-import { MenuIcon, MoonIcon, SearchIcon, SunIcon } from 'lucide-react'
+import {
+   ArrowRightIcon,
+   HeartIcon,
+   MenuIcon,
+   MoonIcon,
+   SearchIcon,
+   ShoppingBagIcon,
+   SunIcon,
+   UserIcon,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
@@ -38,7 +47,6 @@ export function Navbar() {
    const { authenticated } = useAuthenticated()
    const [query, setQuery] = useState('')
    const [mobileOpen, setMobileOpen] = useState(false)
-   /** The auth cookie is only readable after mount, so render guest links until then. */
    const [mounted, setMounted] = useState(false)
 
    useEffect(() => {
@@ -57,124 +65,157 @@ export function Navbar() {
    }
 
    return (
-      <header className="sticky top-0 z-50 mb-4 w-full border-b bg-background/95 backdrop-blur supports-backdrop-blur:bg-background/90">
-         <div className="px-6 lg:px-12">
-            <div className="mx-auto flex h-16 max-w-7xl items-center gap-4">
-               <Link href="/" className="flex min-w-fit items-center gap-2.5">
-                  <PrintfyLogo className="h-9 w-9 shrink-0 rounded-xl shadow-sm ring-1 ring-black/10 dark:ring-white/10" />
-                  <span className="text-lg font-semibold tracking-tight text-foreground">
-                     Printfy
-                  </span>
+      <header className="sticky top-0 z-50 w-full border-b bg-background shadow-[0_1px_0_rgba(15,23,42,0.06)]">
+         <div className="bg-[#FF5A52] text-white">
+            <div className="page-shell flex h-9 items-center justify-between gap-4">
+               <p className="truncate text-[13px] font-medium tracking-wide">
+                  Free digital proof on every order
+                  <span className="mx-2 hidden opacity-70 sm:inline">·</span>
+                  <span className="hidden sm:inline">No setup fees · From 50 pieces</span>
+               </p>
+               <Link
+                  href="/products"
+                  className="inline-flex shrink-0 items-center gap-1 text-[13px] font-semibold underline-offset-4 hover:underline"
+               >
+                  Shop packaging
+                  <ArrowRightIcon className="h-3.5 w-3.5" />
                </Link>
+            </div>
+         </div>
 
-               <form onSubmit={onSearch} className="hidden flex-1 md:block">
+         <div className="page-shell flex h-[72px] items-center gap-5">
+            <Link href="/" className="flex min-w-fit items-center gap-3">
+               <PrintfyLogo className="h-11 w-11 shrink-0 rounded-xl shadow-sm ring-1 ring-black/10 dark:ring-white/10" />
+               <span className="leading-tight">
+                  <span className="block text-[17px] font-semibold tracking-tight text-foreground">
+                     Joji Arts
+                  </span>
+                  <span className="hidden text-xs text-muted-foreground sm:block">
+                     Custom packaging
+                  </span>
+               </span>
+            </Link>
+
+            <div className="hidden min-w-0 flex-1 md:block">
+               <form onSubmit={onSearch}>
                   <div className="relative">
-                     <SearchIcon className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                     <SearchIcon className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                      <Input
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
-                        className="h-11 rounded-full border-border bg-background pl-11 text-sm shadow-sm transition duration-200 focus-visible:ring-2 focus-visible:ring-red-200"
-                        placeholder="Search packaging"
+                        className="h-11 rounded-xl border-transparent bg-muted/80 pl-10 shadow-none placeholder:text-muted-foreground/80 focus-visible:border-border focus-visible:bg-background"
+                        placeholder="Search boxes, bags, signs, or a product"
                      />
                   </div>
                </form>
+            </div>
 
-               <div className="ml-auto flex items-center gap-4">
-                  <Link href="/cart" className="hidden text-sm text-foreground/80 md:inline-block">
-                     My cart
-                  </Link>
-                  <Link
-                     href="/wishlist"
-                     className="hidden text-sm text-foreground/80 md:inline-block"
-                  >
-                     Wishlist
-                  </Link>
-                  <Button
-                     variant="outline"
-                     size="icon"
-                     className="relative h-9 w-9 rounded-lg"
-                     onClick={toggleTheme}
-                     aria-label="Toggle theme"
-                  >
-                     <SunIcon className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                     <MoonIcon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  </Button>
-                  {signedIn ? (
-                     <UserNav />
-                  ) : (
-                     <>
-                        <Link
-                           href="/login"
-                           className="hidden text-sm text-foreground/80 sm:inline-block"
-                        >
-                           Sign in
-                        </Link>
-                        <Link href="/login" className="hidden sm:inline-block">
-                           <Button className="rounded-lg bg-red-500 px-4 text-white shadow-md transition duration-200 hover:scale-105 hover:bg-red-600">
-                              Sign up
-                           </Button>
-                        </Link>
-                     </>
-                  )}
+            <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1">
+               <Link
+                  href="/cart"
+                  aria-label="Cart"
+                  className="hidden h-11 items-center gap-2 rounded-xl px-2.5 text-foreground/80 transition hover:bg-muted hover:text-foreground md:inline-flex"
+               >
+                  <ShoppingBagIcon className="h-5 w-5" />
+                  <span className="typo-body hidden font-medium lg:inline">Cart</span>
+               </Link>
+               <Link
+                  href="/wishlist"
+                  aria-label="Wishlist"
+                  className="hidden h-11 items-center gap-2 rounded-xl px-2.5 text-foreground/80 transition hover:bg-muted hover:text-foreground md:inline-flex"
+               >
+                  <HeartIcon className="h-5 w-5" />
+                  <span className="typo-body hidden font-medium lg:inline">Wishlist</span>
+               </Link>
 
-                  <div className="sm:hidden">
-                     <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-                        <SheetTrigger asChild>
-                           <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg">
-                              <MenuIcon className="h-4 w-4" />
-                           </Button>
-                        </SheetTrigger>
-                        <SheetContent side="right" className="w-[320px] overflow-y-auto p-4">
-                           <div className="mt-6 space-y-4">
-                              <form onSubmit={onSearch}>
-                                 <div className="relative">
-                                    <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                    <Input
-                                       value={query}
-                                       onChange={(event) => setQuery(event.target.value)}
-                                       className="h-10 rounded-full pl-10"
-                                       placeholder="Search packaging"
-                                    />
-                                 </div>
-                              </form>
+               <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleTheme}
+                  aria-label="Toggle theme"
+                  className="text-foreground/70"
+               >
+                  <SunIcon className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                  <MoonIcon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+               </Button>
 
-                              <PackagingMobileLinks onNavigate={() => setMobileOpen(false)} />
+               {signedIn ? (
+                  <UserNav />
+               ) : (
+                  <>
+                     <Link
+                        href="/login"
+                        aria-label="Sign in"
+                        className="hidden h-11 items-center gap-2 rounded-xl px-2.5 text-foreground/80 transition hover:bg-muted hover:text-foreground sm:inline-flex"
+                     >
+                        <UserIcon className="h-5 w-5" />
+                        <span className="typo-body hidden font-medium lg:inline">Sign in</span>
+                     </Link>
+                     <Link href="/login" className="hidden sm:inline-flex">
+                        <Button className="h-11 bg-[#FF5A52] px-3.5 font-semibold text-white hover:bg-[#ff6d66] lg:px-4">
+                           Start a project
+                        </Button>
+                     </Link>
+                  </>
+               )}
 
-                              <div className="space-y-2 border-t pt-4">
-                                 {MOBILE_ACCOUNT_LINKS.map((link) => (
-                                    <Link
-                                       key={link.href}
-                                       href={link.href}
-                                       className="block text-sm text-foreground/80"
-                                       onClick={() => setMobileOpen(false)}
-                                    >
-                                       {link.label}
-                                    </Link>
-                                 ))}
-                                 {signedIn
-                                    ? SIGNED_IN_MOBILE_LINKS.map((link) => (
-                                         <Link
-                                            key={link.href}
-                                            href={link.href}
-                                            className="block text-sm text-foreground/80"
-                                            onClick={() => setMobileOpen(false)}
-                                         >
-                                            {link.label}
-                                         </Link>
-                                      ))
-                                    : null}
+               <div className="sm:hidden">
+                  <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                     <SheetTrigger asChild>
+                        <Button variant="outline" size="icon">
+                           <MenuIcon className="h-4 w-4" />
+                        </Button>
+                     </SheetTrigger>
+                     <SheetContent side="right" className="w-[320px] overflow-y-auto p-4">
+                        <div className="mt-6 space-y-4">
+                           <form onSubmit={onSearch}>
+                              <div className="relative">
+                                 <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                                 <Input
+                                    value={query}
+                                    onChange={(event) => setQuery(event.target.value)}
+                                    className="pl-10"
+                                    placeholder="Search boxes, bags, signs"
+                                 />
                               </div>
-                              {signedIn ? null : (
-                                 <Link href="/login" onClick={() => setMobileOpen(false)}>
-                                    <Button className="w-full rounded-lg bg-red-500 text-white shadow-md">
-                                       Sign in or sign up
-                                    </Button>
+                           </form>
+
+                           <PackagingMobileLinks onNavigate={() => setMobileOpen(false)} />
+
+                           <div className="space-y-2 border-t pt-4">
+                              {MOBILE_ACCOUNT_LINKS.map((link) => (
+                                 <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="typo-body block text-foreground/80"
+                                    onClick={() => setMobileOpen(false)}
+                                 >
+                                    {link.label}
                                  </Link>
-                              )}
+                              ))}
+                              {signedIn
+                                 ? SIGNED_IN_MOBILE_LINKS.map((link) => (
+                                      <Link
+                                         key={link.href}
+                                         href={link.href}
+                                         className="typo-body block text-foreground/80"
+                                         onClick={() => setMobileOpen(false)}
+                                      >
+                                         {link.label}
+                                      </Link>
+                                   ))
+                                 : null}
                            </div>
-                        </SheetContent>
-                     </Sheet>
-                  </div>
+                           {signedIn ? null : (
+                              <Link href="/login" onClick={() => setMobileOpen(false)}>
+                                 <Button className="w-full bg-[#FF5A52] text-white hover:bg-[#ff6d66]">
+                                    Sign in or start a project
+                                 </Button>
+                              </Link>
+                           )}
+                        </div>
+                     </SheetContent>
+                  </Sheet>
                </div>
             </div>
          </div>

@@ -67,7 +67,7 @@ export default async function ProductPage({ params }: Props) {
 
 const ImageColumn = ({ product }: { product: { id: string; images?: string[] } }) => {
    return (
-      <div className="relative col-span-3 min-h-[50vh] w-full overflow-hidden rounded-2xl border bg-muted/20 p-2 lg:sticky lg:top-24 lg:self-start">
+      <div className="relative col-span-3 w-full overflow-hidden rounded-2xl border bg-muted/20 p-2 lg:sticky lg:top-24 lg:self-start">
          <ProductGallery productId={product.id} images={product?.images ?? []} />
       </div>
    )
@@ -85,16 +85,16 @@ const Breadcrumbs = ({
    const productType = getProductType(product as any)
 
    return (
-      <nav className="flex text-muted-foreground" aria-label="Breadcrumb">
+      <nav className="mb-2 flex text-muted-foreground" aria-label="Breadcrumb">
          <ol className="inline-flex flex-wrap items-center gap-2">
             <li>
-               <Link href="/" className="text-sm font-medium hover:underline">
+               <Link href="/" className="typo-body font-medium hover:underline">
                   Home
                </Link>
             </li>
             <li className="flex items-center gap-2">
                <ChevronRightIcon className="h-4 w-4" />
-               <Link href="/products" className="text-sm font-medium hover:underline">
+               <Link href="/products" className="typo-body font-medium hover:underline">
                   Products
                </Link>
             </li>
@@ -103,7 +103,7 @@ const Breadcrumbs = ({
                   <ChevronRightIcon className="h-4 w-4" />
                   <Link
                      href={buildCatalogHref({ category: category.title })}
-                     className="text-sm font-medium hover:underline"
+                     className="typo-body font-medium hover:underline"
                   >
                      {category.title}
                   </Link>
@@ -114,7 +114,7 @@ const Breadcrumbs = ({
                   <ChevronRightIcon className="h-4 w-4" />
                   <Link
                      href={buildCatalogHref({ productType })}
-                     className="text-sm font-medium hover:underline"
+                     className="typo-body font-medium hover:underline"
                   >
                      {productType}
                   </Link>
@@ -122,7 +122,7 @@ const Breadcrumbs = ({
             ) : null}
             <li className="flex items-center gap-2" aria-current="page">
                <ChevronRightIcon className="h-4 w-4" />
-               <span className="text-sm font-medium">{product?.title}</span>
+               <span className="typo-body font-medium">{product?.title}</span>
             </li>
          </ol>
       </nav>

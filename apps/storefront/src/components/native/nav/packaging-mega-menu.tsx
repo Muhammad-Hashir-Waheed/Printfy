@@ -37,27 +37,10 @@ export function PackagingMegaMenu() {
 
    return (
       <div
-         className="relative hidden w-full border-b bg-background md:block"
+         className="relative hidden w-full border-t bg-muted/50 md:block"
          onMouseLeave={closeMenu}
       >
-         <nav className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-6 lg:px-12">
-            <button
-               type="button"
-               className={cn(
-                  'relative whitespace-nowrap px-3 py-3 text-sm font-semibold transition-colors',
-                  open && !activeNav
-                     ? 'text-red-600 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-red-600'
-                     : 'text-foreground/80 hover:text-foreground'
-               )}
-               onMouseEnter={() => openWithColumn(DEFAULT_COLUMN)}
-               onFocus={() => openWithColumn(DEFAULT_COLUMN)}
-               onClick={() =>
-                  open ? closeMenu() : openWithColumn(DEFAULT_COLUMN)
-               }
-               aria-expanded={open}
-            >
-               Packaging
-            </button>
+         <nav className="page-shell hidden grid-cols-6 md:grid">
             {PACKAGING_NAV_ITEMS.map((item) => {
                const isActive = open && activeNav === item.label
                return (
@@ -69,10 +52,10 @@ export function PackagingMegaMenu() {
                      }
                      onFocus={() => openWithColumn(item.columnTitle, item.label)}
                      className={cn(
-                        'relative whitespace-nowrap px-3 py-3 text-sm transition-colors',
+                        'relative py-3.5 text-center typo-body font-medium transition-colors',
                         isActive
-                           ? 'font-semibold text-red-600 after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-red-600'
-                           : 'text-foreground/80 hover:text-foreground'
+                           ? 'font-semibold text-[#FF5A52] after:absolute after:inset-x-4 after:bottom-0 after:h-0.5 after:bg-[#FF5A52]'
+                           : 'text-foreground/70 hover:text-foreground'
                      )}
                   >
                      {item.label}
@@ -86,9 +69,9 @@ export function PackagingMegaMenu() {
                className="absolute inset-x-0 top-full z-50 border-b bg-background/95 shadow-xl backdrop-blur supports-[backdrop-filter]:bg-background/90"
                onMouseEnter={() => setOpen(true)}
             >
-               <div className="mx-auto grid max-w-7xl gap-0 lg:grid-cols-[220px_minmax(0,1fr)_280px]">
+               <div className="page-shell grid gap-0 lg:grid-cols-[220px_minmax(0,1fr)_280px]">
                   <aside className="border-r bg-muted/40 p-4">
-                     <p className="mb-3 px-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                     <p className="typo-eyebrow mb-3 px-2 text-muted-foreground">
                         Shop by category
                      </p>
                      <div className="space-y-1">
@@ -135,9 +118,9 @@ export function PackagingMegaMenu() {
                      <Link
                         href="/products"
                         onClick={closeMenu}
-                        className="mt-4 inline-flex items-center gap-1 px-3 text-sm font-medium text-red-600 hover:underline"
+                        className="mt-4 inline-flex items-center gap-1 px-3 typo-body font-medium text-[#FF5A52] hover:underline"
                      >
-                        Browse all packaging
+                        Browse all products
                         <ArrowRightIcon className="h-3.5 w-3.5" />
                      </Link>
                   </aside>
@@ -158,7 +141,7 @@ export function PackagingMegaMenu() {
                         <Link
                            href={active.href}
                            onClick={closeMenu}
-                           className="inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold transition hover:border-red-200 hover:text-red-600"
+                           className="inline-flex items-center gap-1 rounded-xl border px-3 py-1.5 text-xs font-semibold transition hover:border-[#FF5A52]/40 hover:text-[#FF5A52]"
                         >
                            View all {active.title}
                            <ArrowRightIcon className="h-3.5 w-3.5" />
@@ -176,7 +159,7 @@ export function PackagingMegaMenu() {
                      </div>
 
                      <div className="mt-6 border-t pt-4">
-                        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                        <p className="typo-eyebrow mb-3 text-muted-foreground">
                            Popular picks
                         </p>
                         <div className="flex flex-wrap gap-2">
@@ -185,7 +168,7 @@ export function PackagingMegaMenu() {
                                  key={pick.label}
                                  href={pick.href}
                                  onClick={closeMenu}
-                                 className="inline-flex items-center gap-2 rounded-full border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground/80 transition hover:border-red-200 hover:text-red-600"
+                                 className="inline-flex items-center gap-2 rounded-xl border bg-background px-2.5 py-1.5 text-xs font-medium text-foreground/80 transition hover:border-[#FF5A52]/40 hover:text-[#FF5A52]"
                               >
                                  <img
                                     src={pick.image}
@@ -200,7 +183,7 @@ export function PackagingMegaMenu() {
                   </div>
 
                   <aside className="space-y-3 border-l bg-muted/20 p-4">
-                     <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                     <p className="typo-eyebrow px-1 text-muted-foreground">
                         Featured
                      </p>
                      {PACKAGING_FEATURED_CARDS.map((card) => (

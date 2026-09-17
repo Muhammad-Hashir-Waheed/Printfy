@@ -211,14 +211,12 @@ function PurchaseInner({ product }: { product: CatalogProduct }) {
 
             <div className="flex items-baseline justify-between border-t pt-3">
                <div>
-                  <p className="text-sm text-muted-foreground">Unit price</p>
-                  <p className="text-2xl font-semibold">
-                     ${unitPricing.unitPrice.toFixed(2)}
-                  </p>
+                  <p className="typo-body text-muted-foreground">Unit price</p>
+                  <p className="typo-price-lg">${unitPricing.unitPrice.toFixed(2)}</p>
                </div>
                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Line total</p>
-                  <p className="text-xl font-semibold">${lineTotal.total.toFixed(2)}</p>
+                  <p className="typo-body text-muted-foreground">Line total</p>
+                  <p className="typo-price-lg">${lineTotal.total.toFixed(2)}</p>
                </div>
             </div>
          </div>
@@ -227,12 +225,12 @@ function PurchaseInner({ product }: { product: CatalogProduct }) {
 
          <div className="flex flex-wrap gap-2">
             {fetching ? (
-               <Button disabled className="rounded-2xl">
+               <Button disabled className="h-11">
                   <Spinner />
                </Button>
             ) : cartCount === 0 ? (
                <Button
-                  className="flex gap-2 rounded-2xl"
+                  className="flex h-11 gap-2"
                   onClick={addToCart}
                   disabled={!canAdd}
                >
@@ -279,14 +277,14 @@ function PurchaseInner({ product }: { product: CatalogProduct }) {
 
          {isCustomizable(product) ? (
             <Link href={`/customize/${product.id}`}>
-               <Button variant="secondary" className="mt-2 w-full rounded-2xl">
+               <Button variant="secondary" className="mt-2 h-11 w-full">
                   Customize design
                </Button>
             </Link>
          ) : null}
 
          <Link href="/cart">
-            <Button variant="outline" className="w-full rounded-2xl">
+            <Button variant="outline" className="h-11 w-full">
                View cart & checkout
             </Button>
          </Link>
