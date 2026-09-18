@@ -24,7 +24,7 @@ export function ProductsCatalogView({
    brands,
 }: {
    allProducts: CatalogProduct[]
-   categories: Array<{ title: string }>
+   categories: Array<{ id?: string; title: string; description?: string | null; image?: string }>
    brands: Array<{ title: string }>
 }) {
    const searchParams = useSearchParams()
@@ -85,6 +85,7 @@ export function ProductsCatalogView({
          </header>
 
          <CategoryBrowseBar
+            categories={categories}
             activeCategory={params.category}
             activeProductType={params.productType}
          />

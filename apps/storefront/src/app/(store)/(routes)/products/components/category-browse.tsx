@@ -1,32 +1,33 @@
 'use client'
 
-import { PACKAGING_CATEGORIES } from '@/lib/packaging-categories'
 import {
    buildCatalogHref,
    categoryFilterSlug,
-   getCatalogBrowseCounts,
-   productTypeFilterSlug,
 } from '@/lib/catalog-navigation'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
+type CatalogCategory = {
+   id?: string
+   title: string
+   description?: string | null
+   image?: string
+}
+
 type Props = {
+   categories: CatalogCategory[]
    activeCategory?: string
    activeProductType?: string
 }
 
-/** Compact horizontal category strip — products stay above the fold */
-export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) {
-   const { byCategory } = getCatalogBrowseCounts()
+export function CategoryBrowseBar({
+   categories,
+   activeCategory,
+   activeProductType,
+}: Props) {
    const activeCategorySlug = activeCategory?.trim().toLowerCase()
    const typeSlug = activeProductType?.trim().toLowerCase()
    const allActive = !activeCategorySlug && !typeSlug
-
-   const chips = typeSlug
-      ? PACKAGING_CATEGORIES.filter(
-           (category) => productTypeFilterSlug(category.productType) === typeSlug
-        )
-      : PACKAGING_CATEGORIES
 
    return (
       <section className="mb-6">
@@ -64,18 +65,16 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
                </span>
             </Link>
 
-            {chips.map((category) => {
+            {categories.map((category) => {
                const slug = categoryFilterSlug(category.title)
                const active = activeCategorySlug === slug
-               const count = byCategory[category.title] ?? 0
-               const thumb = category.images[0]
 
                return (
                   <Link
-                     key={category.id}
+                     key={category.id ?? category.title}
                      href={buildCatalogHref({
                         category: category.title,
-                        productType: typeSlug ? category.productType : undefined,
+                        productType: typeSlug ? activeProductType : undefined,
                      })}
                      className={cn(
                         'group flex w-24 shrink-0 flex-col items-center gap-1.5 rounded-xl border p-1.5 text-center transition',
@@ -85,12 +84,18 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
                      )}
                   >
                      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
-                        <img
-                           src={thumb}
-                           alt=""
-                           className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                           loading="lazy"
-                        />
+                        {category.image ? (
+                           <img
+                              src={category.image}
+                              alt=""
+                              className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                              loading="lazy"
+                           />
+                        ) : (
+                           <div className="flex h-full w-full items-center justify-center px-1 text-[10px] text-muted-foreground">
+                              {category.title}
+                           </div>
+                        )}
                      </div>
                      <span
                         className={cn(
@@ -100,9 +105,6 @@ export function CategoryBrowseBar({ activeCategory, activeProductType }: Props) 
                      >
                         {category.title}
                      </span>
-                     {count > 0 ? (
-                        <span className="sr-only">{count} products</span>
-                     ) : null}
                   </Link>
                )
             })}

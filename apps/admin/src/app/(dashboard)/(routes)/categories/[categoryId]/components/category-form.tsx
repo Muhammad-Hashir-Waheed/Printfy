@@ -12,16 +12,9 @@ import {
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/heading'
 import { Input } from '@/components/ui/input'
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Banner, Category } from '@prisma/client'
+import { Category } from '@prisma/client'
 import { Trash } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -30,21 +23,17 @@ import { toast } from 'react-hot-toast'
 import * as z from 'zod'
 
 const formSchema = z.object({
-   title: z.string().min(2),
-   description: z.string().min(1),
+   title: z.string().min(2, 'Name is required'),
+   description: z.string().optional(),
 })
 
 type CategoryFormValues = z.infer<typeof formSchema>
 
 interface CategoryFormProps {
    initialData: Category | null
-   banners: Banner[]
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({
-   initialData,
-   banners,
-}) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
    const params = useParams()
    const router = useRouter()
 
@@ -52,38 +41,45 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
    const [loading, setLoading] = useState(false)
 
    const title = initialData ? 'Edit category' : 'Create category'
-   const description = initialData ? 'Edit a category.' : 'Add a new category'
+   const description = initialData
+      ? 'This name and description appear on the storefront catalog.'
+      : 'Add a category. Products assigned to it will show on the website.'
    const toastMessage = initialData ? 'Category updated.' : 'Category created.'
    const action = initialData ? 'Save changes' : 'Create'
 
    const form = useForm<CategoryFormValues>({
       resolver: zodResolver(formSchema),
-      defaultValues: initialData || {
-         title: '',
-         description: '',
+      defaultValues: {
+         title: initialData?.title ?? '',
+         description: initialData?.description ?? '',
       },
    })
 
    const onSubmit = async (data: CategoryFormValues) => {
       try {
          setLoading(true)
-         if (initialData) {
-            await fetch(`/api/categories/${params.categoryId}`, {
-               method: 'PATCH',
-               body: JSON.stringify(data),
-               cache: 'no-store',
-            })
-         } else {
-            await fetch(`/api/categories`, {
-               method: 'POST',
-               body: JSON.stringify(data),
-               cache: 'no-store',
-            })
+         const response = initialData
+            ? await fetch(`/api/categories/${params.categoryId}`, {
+                 method: 'PATCH',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(data),
+                 cache: 'no-store',
+              })
+            : await fetch(`/api/categories`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(data),
+                 cache: 'no-store',
+              })
+
+         if (!response.ok) {
+            throw new Error(await response.text())
          }
+
          router.refresh()
          router.push(`/categories`)
          toast.success(toastMessage)
-      } catch (error: any) {
+      } catch {
          toast.error('Something went wrong.')
       } finally {
          setLoading(false)
@@ -94,15 +90,19 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       try {
          setLoading(true)
 
-         await fetch(`/api/categories/${params.categoryId}`, {
+         const response = await fetch(`/api/categories/${params.categoryId}`, {
             method: 'DELETE',
             cache: 'no-store',
          })
 
+         if (!response.ok) {
+            throw new Error(await response.text())
+         }
+
          router.refresh()
          router.push(`/categories`)
          toast.success('Category deleted.')
-      } catch (error: any) {
+      } catch {
          toast.error(
             'Make sure you removed all products using this category first.'
          )
@@ -137,9 +137,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
          <Form {...form}>
             <form
                onSubmit={form.handleSubmit(onSubmit)}
-               className="space-y-8 w-full"
+               className="w-full space-y-8"
             >
-               <div className="md:grid md:grid-cols-3 gap-8">
+               <div className="gap-8 md:grid md:grid-cols-3">
                   <FormField
                      control={form.control}
                      name="title"
@@ -149,7 +149,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                            <FormControl>
                               <Input
                                  disabled={loading}
-                                 placeholder="Category name"
+                                 placeholder="e.g. Gift Boxes"
                                  {...field}
                               />
                            </FormControl>
@@ -161,33 +161,15 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                      control={form.control}
                      name="description"
                      render={({ field }) => (
-                        <FormItem>
-                           <FormLabel>Banner</FormLabel>
-                           <Select
-                              disabled={loading}
-                              onValueChange={field.onChange}
-                              value={field.value}
-                              defaultValue={field.value}
-                           >
-                              <FormControl>
-                                 <SelectTrigger>
-                                    <SelectValue
-                                       defaultValue={field.value}
-                                       placeholder="Select a banner"
-                                    />
-                                 </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                 {banners.map((banner) => (
-                                    <SelectItem
-                                       key={banner.id}
-                                       value={banner.id}
-                                    >
-                                       {banner.label}
-                                    </SelectItem>
-                                 ))}
-                              </SelectContent>
-                           </Select>
+                        <FormItem className="md:col-span-2">
+                           <FormLabel>Description</FormLabel>
+                           <FormControl>
+                              <Input
+                                 disabled={loading}
+                                 placeholder="Shown on the storefront catalog"
+                                 {...field}
+                              />
+                           </FormControl>
                            <FormMessage />
                         </FormItem>
                      )}

@@ -70,12 +70,29 @@ export async function PATCH(
 
       const body = await req.json()
       const payload = body.data ?? body
-      const { title, price, discount, stock, isFeatured, isAvailable, isCustomizable } =
-         payload
+      const {
+         title,
+         description,
+         images,
+         price,
+         discount,
+         stock,
+         categoryId,
+         brandId,
+         isFeatured,
+         isAvailable,
+         isCustomizable,
+      } = payload
 
       const existing = await prisma.product.findUnique({
          where: { id: params.productId },
       })
+
+      const normalizedImages = Array.isArray(images)
+         ? images.map((item: string | { url: string }) =>
+              typeof item === 'string' ? item : item.url
+           ).filter(Boolean)
+         : existing?.images ?? []
 
       const metadata = {
          ...((existing as any)?.metadata ?? {}),
@@ -88,12 +105,18 @@ export async function PATCH(
          },
          data: {
             title,
+            description,
+            images: normalizedImages,
             price,
             discount,
             stock,
             isFeatured,
             isAvailable,
             metadata,
+            ...(brandId ? { brand: { connect: { id: brandId } } } : {}),
+            ...(categoryId
+               ? { categories: { set: [{ id: categoryId }] } }
+               : {}),
          },
       })
 

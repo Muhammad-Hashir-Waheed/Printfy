@@ -6,9 +6,9 @@ import {
    TrustStripSection,
 } from '@/components/native/landing/premium-sections'
 import { CATALOG_IMAGES } from '@/lib/catalog-images'
+import { listAllCatalogProducts } from '@/lib/catalog'
 import { ProductGrid, ProductSkeletonGrid } from '@/components/native/Product'
 import { RevealOnScroll } from '@/components/ui/reveal-on-scroll'
-import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
 import { isVariableValid } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import Link from 'next/link'
@@ -55,10 +55,15 @@ const showcaseSlides = [
    },
 ]
 
-export default function Index() {
-   const catalogProducts = getOfflineCatalogProducts()
-   const byId = new Map(catalogProducts.map((p) => [p.id, p]))
-   const featured = FEATURED_IDS.map((id) => byId.get(id)).filter(Boolean)
+export default async function Index() {
+   const catalogProducts = await listAllCatalogProducts()
+   const featured = [
+      ...catalogProducts.filter((p) => p.isFeatured),
+      ...FEATURED_IDS.map((id) => catalogProducts.find((p) => p.id === id)),
+   ]
+      .filter(Boolean)
+      .filter((p, i, arr) => arr.findIndex((x) => x?.id === p?.id) === i)
+      .slice(0, 8)
 
    return (
       <div className="flex flex-col gap-12 pb-4">

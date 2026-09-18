@@ -2,6 +2,8 @@ import { staticApiDisabled } from '@/lib/static-api'
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: Request) {
    const disabled = staticApiDisabled()
    if (disabled) return disabled

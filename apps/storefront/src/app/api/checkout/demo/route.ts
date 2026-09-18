@@ -1,6 +1,6 @@
 import { checkoutPayloadSchema } from '@domain-checkout'
 import { calculatePrice, type PricingVariant } from '@domain-pricing'
-import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
+import { listAllCatalogProducts } from '@/lib/catalog'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -14,7 +14,7 @@ const demoCheckoutSchema = checkoutPayloadSchema.extend({
 export async function POST(req: Request) {
    try {
       const payload = demoCheckoutSchema.parse(await req.json())
-      const catalog = getOfflineCatalogProducts()
+      const catalog = await listAllCatalogProducts()
       const catalogById = new Map(catalog.map((p) => [p.id, p]))
 
       let subtotal = 0

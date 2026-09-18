@@ -1,7 +1,9 @@
 import { getProductType, isCustomizable } from '@/lib/catalog-client'
 import { resolveProductImages } from '@/lib/catalog-images'
 import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
+import prisma from '@/lib/prisma'
 import { slugifyText } from '@/lib/slug'
+import { USE_STATIC_STORE } from '@/lib/static-mode'
 import {
    DUMMY_BRANDS,
    DUMMY_CATEGORIES,
@@ -204,12 +206,118 @@ function sortProducts(products: CatalogProduct[], sort?: string) {
    }
 }
 
+const PRODUCT_INCLUDE = {
+   brand: true,
+   categories: true,
+   variants: true,
+} as const
+
+let catalogProductsCache: Promise<{
+   products: CatalogProduct[]
+   fromDb: boolean
+}> | null = null
+
+async function loadCatalogProductsUncached(): Promise<{
+   products: CatalogProduct[]
+   fromDb: boolean
+}> {
+   if (USE_STATIC_STORE) {
+      return { products: getOfflineCatalogProducts(), fromDb: false }
+   }
+
+   try {
+      const rows = await prisma.product.findMany({
+         where: { isAvailable: true },
+         include: PRODUCT_INCLUDE,
+      })
+      if (!rows.length) {
+         return { products: [], fromDb: true }
+      }
+      return {
+         products: rows.map((row) => mergeWithCatalogDefaults(row as CatalogProduct)),
+         fromDb: true,
+      }
+   } catch (error) {
+      console.error('[CATALOG_DB]', error)
+      return { products: getOfflineCatalogProducts(), fromDb: false }
+   }
+}
+
+async function loadCatalogProducts(): Promise<{
+   products: CatalogProduct[]
+   fromDb: boolean
+}> {
+   if (!catalogProductsCache) {
+      catalogProductsCache = loadCatalogProductsUncached()
+      if (process.env.NEXT_PHASE !== 'phase-production-build') {
+         catalogProductsCache.finally(() => {
+            catalogProductsCache = null
+         })
+      }
+   }
+   return catalogProductsCache
+}
+
 export async function listAllCatalogProducts(): Promise<CatalogProduct[]> {
-   return getOfflineCatalogProducts()
+   const { products } = await loadCatalogProducts()
+   return products
+}
+
+export async function listCatalogCategories() {
+   if (USE_STATIC_STORE) {
+      return DUMMY_CATEGORIES.map((category) => ({
+         id: category.id,
+         title: category.title,
+         description: category.description,
+         image: undefined as string | undefined,
+      }))
+   }
+
+   try {
+      const rows = await prisma.category.findMany({
+         orderBy: { title: 'asc' },
+         include: {
+            products: {
+               where: { isAvailable: true },
+               select: { images: true },
+               take: 1,
+            },
+         },
+      })
+
+      return rows.map((row) => ({
+         id: row.id,
+         title: row.title,
+         description: row.description,
+         image: row.products[0]?.images?.[0],
+      }))
+   } catch (error) {
+      console.error('[CATALOG_CATEGORIES]', error)
+      return DUMMY_CATEGORIES.map((category) => ({
+         id: category.id,
+         title: category.title,
+         description: category.description,
+         image: undefined as string | undefined,
+      }))
+   }
+}
+
+export async function listCatalogBrands() {
+   if (USE_STATIC_STORE) return DUMMY_BRANDS
+
+   try {
+      const rows = await prisma.brand.findMany({
+         orderBy: { title: 'asc' },
+      })
+      return rows.length ? rows : DUMMY_BRANDS
+   } catch (error) {
+      console.error('[CATALOG_BRANDS]', error)
+      return DUMMY_BRANDS
+   }
 }
 
 export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
-   const allProducts = getOfflineCatalogProducts()
+   const { products: allProducts, fromDb } = await loadCatalogProducts()
    const filtered = filterProducts(allProducts, params)
    const sorted = sortProducts(filtered, params.sort)
    const page = Math.max(1, Number(params.page) || 1)
@@ -219,16 +327,20 @@ export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
    return {
       products,
       total: sorted.length,
-      brands: DUMMY_BRANDS,
-      categories: DUMMY_CATEGORIES,
+      brands: await listCatalogBrands(),
+      categories: await listCatalogCategories(),
       productTypes: DUMMY_PRODUCT_TYPES,
-      useDummy: true,
+      useDummy: !fromDb,
    }
 }
 
 export async function getCatalogProduct(
    productId: string
 ): Promise<CatalogProduct | null> {
+   const { products } = await loadCatalogProducts()
+   const found = products.find((product) => product.id === productId)
+   if (found) return found
+
    const dummy = DUMMY_PRODUCTS.find((p) => p.id === productId)
    return dummy ? normalizeProduct(dummy) : null
 }
@@ -238,7 +350,7 @@ export async function getRelatedProducts(
    limit = 4
 ): Promise<CatalogProduct[]> {
    const categoryTitle = product.categories?.[0]?.title
-   const pool = getOfflineCatalogProducts()
+   const pool = await listAllCatalogProducts()
 
    return pool
       .filter(

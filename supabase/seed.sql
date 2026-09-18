@@ -1,0 +1,2 @@
+-- Local `supabase db reset` SQL seed is unused.
+-- Catalog data is loaded with: npm --prefix apps/storefront run db:seed

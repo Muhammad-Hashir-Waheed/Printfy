@@ -8,6 +8,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
+   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'http://localhost:7777'),
    title: 'Joji Arts',
    description:
       'Custom packaging for cosmetics, hotels, perfume, luxury boxes, corrugated cartons, and 3D branding.',

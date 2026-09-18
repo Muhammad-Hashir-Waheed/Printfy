@@ -26,7 +26,7 @@ export default async function ProductsPage() {
       title: product.title,
       price: formatter.format(product.price),
       discount: formatter.format(product.discount),
-      category: product.categories[0].title,
+      category: product.categories[0]?.title ?? 'Uncategorized',
       sales: product.orders.length,
       isAvailable: product.isAvailable,
       isCustomizable: Boolean((product as any)?.metadata?.isCustomizable),

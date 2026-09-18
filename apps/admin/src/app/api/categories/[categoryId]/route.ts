@@ -17,9 +17,7 @@ export async function GET(
       }
 
       const category = await prisma.category.findUnique({
-         where: {
-            id: params.categoryId,
-         },
+         where: { id: params.categoryId },
       })
 
       return NextResponse.json(category)
@@ -44,10 +42,16 @@ export async function DELETE(
          return new NextResponse('Category id is required', { status: 400 })
       }
 
-      const category = await prisma.category.delete({
-         where: {
-            id: params.categoryId,
+      await prisma.category.update({
+         where: { id: params.categoryId },
+         data: {
+            products: { set: [] },
+            banners: { set: [] },
          },
+      })
+
+      const category = await prisma.category.delete({
+         where: { id: params.categoryId },
       })
 
       return NextResponse.json(category)
@@ -69,12 +73,8 @@ export async function PATCH(
       }
 
       const body = await req.json()
-
-      const { title, description, bannerId } = body
-
-      if (!bannerId) {
-         return new NextResponse('Banner ID is required', { status: 400 })
-      }
+      const title = String(body.title ?? '').trim()
+      const description = String(body.description ?? '').trim() || null
 
       if (!title) {
          return new NextResponse('Name is required', { status: 400 })
@@ -85,18 +85,8 @@ export async function PATCH(
       }
 
       const updatedCategory = await prisma.category.update({
-         where: {
-            id: params.categoryId,
-         },
-         data: {
-            title,
-            description,
-            banners: {
-               connect: {
-                  id: bannerId,
-               },
-            },
-         },
+         where: { id: params.categoryId },
+         data: { title, description },
       })
 
       return NextResponse.json(updatedCategory)

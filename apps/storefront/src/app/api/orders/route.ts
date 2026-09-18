@@ -10,6 +10,8 @@ import { sendMail } from '@persepolis/mail'
 import { render } from '@react-email/render'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: Request) {
    try {
       const userId = req.headers.get('X-USER-ID')

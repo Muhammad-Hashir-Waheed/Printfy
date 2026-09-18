@@ -10,28 +10,15 @@ export async function POST(req: Request) {
       }
 
       const body = await req.json()
-
-      const { title, description, bannerId } = body
+      const title = String(body.title ?? '').trim()
+      const description = String(body.description ?? '').trim() || null
 
       if (!title) {
          return new NextResponse('Name is required', { status: 400 })
       }
 
-      if (!bannerId) {
-         return new NextResponse('Banner ID is required', { status: 400 })
-      }
-
-      // Create a new category
       const category = await prisma.category.create({
-         data: {
-            title,
-            description,
-            banners: {
-               connect: {
-                  id: bannerId,
-               },
-            },
-         },
+         data: { title, description },
       })
 
       return NextResponse.json(category)
@@ -41,10 +28,11 @@ export async function POST(req: Request) {
    }
 }
 
-export async function GET(req: Request) {
+export async function GET() {
    try {
-      // Find all categories
-      const categories = await prisma.category.findMany()
+      const categories = await prisma.category.findMany({
+         orderBy: { title: 'asc' },
+      })
 
       return NextResponse.json(categories)
    } catch (error) {

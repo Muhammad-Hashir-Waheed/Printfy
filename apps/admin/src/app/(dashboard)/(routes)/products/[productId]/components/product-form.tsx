@@ -13,7 +13,6 @@ import {
    FormMessage,
 } from '@/components/ui/form'
 import { Heading } from '@/components/ui/heading'
-import ImageUpload from '@/components/ui/image-upload'
 import { Input } from '@/components/ui/input'
 import {
    Select,
@@ -26,7 +25,7 @@ import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import type { ProductWithIncludes } from '@/types/prisma'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Category } from '@prisma/client'
+import { Brand, Category } from '@prisma/client'
 import { Trash } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -36,13 +35,16 @@ import * as z from 'zod'
 
 const formSchema = z.object({
    title: z.string().min(1),
+   description: z.string().optional(),
    images: z.string().array(),
-   price: z.coerce.number().min(1),
+   imageUrl: z.string().optional(),
+   price: z.coerce.number().min(0),
    discount: z.coerce.number().min(0),
    stock: z.coerce.number().min(0),
-   categoryId: z.string().min(1),
+   categoryId: z.string().min(1, 'Select a category'),
+   brandId: z.string().min(1, 'Select a brand'),
    isFeatured: z.boolean().default(false).optional(),
-   isAvailable: z.boolean().default(false).optional(),
+   isAvailable: z.boolean().default(true).optional(),
    isCustomizable: z.boolean().default(true).optional(),
 })
 
@@ -51,11 +53,13 @@ type ProductFormValues = z.infer<typeof formSchema>
 interface ProductFormProps {
    initialData: ProductWithIncludes | null
    categories: Category[]
+   brands: Brand[]
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({
    initialData,
    categories,
+   brands,
 }) => {
    const params = useParams()
    const router = useRouter()
@@ -64,57 +68,65 @@ export const ProductForm: React.FC<ProductFormProps> = ({
    const [loading, setLoading] = useState(false)
 
    const title = initialData ? 'Edit product' : 'Create product'
-   const description = initialData ? 'Edit a product.' : 'Add a new product'
+   const description = initialData
+      ? 'Changes appear on the storefront catalog.'
+      : 'Add a product. Assign a category so it shows on the website.'
    const toastMessage = initialData ? 'Product updated.' : 'Product created.'
    const action = initialData ? 'Save changes' : 'Create'
 
-   const defaultValues = initialData
-      ? {
-           ...initialData,
-           price: parseFloat(String(initialData?.price.toFixed(2))),
-           discount: parseFloat(String(initialData?.discount.toFixed(2))),
-           isCustomizable: Boolean((initialData as any)?.metadata?.isCustomizable),
-        }
-      : {
-           title: '---',
-           description: '---',
-           images: [],
-           price: 0,
-           discount: 0,
-           stock: 0,
-           categoryId: '---',
-           isFeatured: false,
-           isAvailable: false,
-           isCustomizable: true,
-        }
-
    const form = useForm<ProductFormValues>({
       resolver: zodResolver(formSchema),
-      defaultValues,
+      defaultValues: {
+         title: initialData?.title ?? '',
+         description: initialData?.description ?? '',
+         images: initialData?.images ?? [],
+         imageUrl: '',
+         price: initialData ? Number(initialData.price) : 0,
+         discount: initialData ? Number(initialData.discount) : 0,
+         stock: initialData ? Number(initialData.stock) : 0,
+         categoryId: initialData?.categories?.[0]?.id ?? '',
+         brandId: initialData?.brandId ?? brands[0]?.id ?? '',
+         isFeatured: initialData?.isFeatured ?? false,
+         isAvailable: initialData?.isAvailable ?? true,
+         isCustomizable: Boolean(
+            (initialData as { metadata?: { isCustomizable?: boolean } } | null)
+               ?.metadata?.isCustomizable ?? true
+         ),
+      },
    })
 
    const onSubmit = async (data: ProductFormValues) => {
       try {
          setLoading(true)
+         const payload = {
+            ...data,
+            images: data.imageUrl?.trim()
+               ? [...data.images, data.imageUrl.trim()]
+               : data.images,
+         }
 
-         if (initialData) {
-            await fetch(`/api/products/${params.productId}`, {
-               method: 'PATCH',
-               body: JSON.stringify(data),
-               cache: 'no-store',
-            })
-         } else {
-            await fetch(`/api/products`, {
-               method: 'POST',
-               body: JSON.stringify(data),
-               cache: 'no-store',
-            })
+         const response = initialData
+            ? await fetch(`/api/products/${params.productId}`, {
+                 method: 'PATCH',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(payload),
+                 cache: 'no-store',
+              })
+            : await fetch(`/api/products`, {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(payload),
+                 cache: 'no-store',
+              })
+
+         if (!response.ok) {
+            throw new Error(await response.text())
          }
 
          router.refresh()
          router.push(`/products`)
          toast.success(toastMessage)
-      } catch (error: any) {
+      } catch {
          toast.error('Something went wrong.')
       } finally {
          setLoading(false)
@@ -125,15 +137,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       try {
          setLoading(true)
 
-         await fetch(`/api/products/${params.productId}`, {
+         const response = await fetch(`/api/products/${params.productId}`, {
             method: 'DELETE',
             cache: 'no-store',
          })
 
+         if (!response.ok) {
+            throw new Error(await response.text())
+         }
+
          router.refresh()
          router.push(`/products`)
          toast.success('Product deleted.')
-      } catch (error: any) {
+      } catch {
          toast.error('Something went wrong.')
       } finally {
          setLoading(false)
@@ -166,7 +182,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
          <Form {...form}>
             <form
                onSubmit={form.handleSubmit(onSubmit)}
-               className="space-y-8 w-full"
+               className="w-full space-y-8"
             >
                <FormField
                   control={form.control}
@@ -174,27 +190,54 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   render={({ field }) => (
                      <FormItem>
                         <FormLabel>Images</FormLabel>
-                        <FormControl>
-                           <ImageUpload
-                              value={field.value.map((image) => image)}
-                              disabled={loading}
-                              onChange={(url) =>
-                                 field.onChange([...field.value, { url }])
-                              }
-                              onRemove={(url) =>
-                                 field.onChange([
-                                    ...field.value.filter(
-                                       (current) => current !== url
-                                    ),
-                                 ])
-                              }
-                           />
-                        </FormControl>
+                        <div className="mb-3 flex flex-wrap gap-3">
+                           {field.value.map((url) => (
+                              <div key={url} className="relative">
+                                 <img
+                                    src={url}
+                                    alt=""
+                                    className="h-24 w-24 rounded-md object-cover"
+                                 />
+                                 <Button
+                                    type="button"
+                                    size="icon"
+                                    variant="destructive"
+                                    className="absolute right-1 top-1 h-6 w-6"
+                                    onClick={() =>
+                                       field.onChange(
+                                          field.value.filter((item) => item !== url)
+                                       )
+                                    }
+                                 >
+                                    <Trash className="h-3 w-3" />
+                                 </Button>
+                              </div>
+                           ))}
+                        </div>
+                        <FormField
+                           control={form.control}
+                           name="imageUrl"
+                           render={({ field: urlField }) => (
+                              <FormItem>
+                                 <FormLabel>Add image URL</FormLabel>
+                                 <FormControl>
+                                    <Input
+                                       disabled={loading}
+                                       placeholder="https://..."
+                                       {...urlField}
+                                    />
+                                 </FormControl>
+                                 <FormDescription>
+                                    Paste an image URL. It is saved with the product.
+                                 </FormDescription>
+                              </FormItem>
+                           )}
+                        />
                         <FormMessage />
                      </FormItem>
                   )}
                />
-               <div className="md:grid md:grid-cols-3 gap-8">
+               <div className="gap-8 md:grid md:grid-cols-3">
                   <FormField
                      control={form.control}
                      name="title"
@@ -205,6 +248,23 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                               <Input
                                  disabled={loading}
                                  placeholder="Product title"
+                                 {...field}
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="description"
+                     render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                           <FormLabel>Description</FormLabel>
+                           <FormControl>
+                              <Input
+                                 disabled={loading}
+                                 placeholder="Shown on the product page"
                                  {...field}
                               />
                            </FormControl>
@@ -240,7 +300,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                               <Input
                                  type="number"
                                  disabled={loading}
-                                 placeholder="9.99"
+                                 placeholder="0"
                                  {...field}
                               />
                            </FormControl>
@@ -276,14 +336,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                               disabled={loading}
                               onValueChange={field.onChange}
                               value={field.value}
-                              defaultValue={field.value}
                            >
                               <FormControl>
                                  <SelectTrigger>
-                                    <SelectValue
-                                       defaultValue={field.value}
-                                       placeholder="Select a category"
-                                    />
+                                    <SelectValue placeholder="Select a category" />
                                  </SelectTrigger>
                               </FormControl>
                               <SelectContent>
@@ -293,6 +349,34 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                                        value={category.id}
                                     >
                                        {category.title}
+                                    </SelectItem>
+                                 ))}
+                              </SelectContent>
+                           </Select>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="brandId"
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>Brand</FormLabel>
+                           <Select
+                              disabled={loading}
+                              onValueChange={field.onChange}
+                              value={field.value}
+                           >
+                              <FormControl>
+                                 <SelectTrigger>
+                                    <SelectValue placeholder="Select a brand" />
+                                 </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                 {brands.map((brand) => (
+                                    <SelectItem key={brand.id} value={brand.id}>
+                                       {brand.title}
                                     </SelectItem>
                                  ))}
                               </SelectContent>
@@ -315,7 +399,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                            <div className="space-y-1 leading-none">
                               <FormLabel>Featured</FormLabel>
                               <FormDescription>
-                                 This product will appear on the home page
+                                 Show this product on the homepage
                               </FormDescription>
                            </div>
                         </FormItem>
@@ -335,7 +419,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                            <div className="space-y-1 leading-none">
                               <FormLabel>Available</FormLabel>
                               <FormDescription>
-                                 This product will appear in the store.
+                                 Show this product in the store catalog
                               </FormDescription>
                            </div>
                         </FormItem>
@@ -350,7 +434,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                               <div className="space-y-1 leading-none">
                                  <FormLabel>Customizable</FormLabel>
                                  <FormDescription>
-                                    Enable product personalization in Printfy customizer.
+                                    Enable product personalization.
                                  </FormDescription>
                               </div>
                               <FormControl>

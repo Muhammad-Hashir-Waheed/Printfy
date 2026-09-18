@@ -2,6 +2,8 @@ import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const designSchema = z.object({
    productId: z.string().min(1),
    designJson: z.any(),

@@ -54,7 +54,7 @@ export async function POST(req: Request) {
             discount: parsed.discount,
             stock: parsed.stock,
             isFeatured: parsed.isFeatured ?? false,
-            isAvailable: parsed.isAvailable ?? false,
+            isAvailable: parsed.isAvailable ?? true,
             brand: {
                connect: { id: brandId },
             },

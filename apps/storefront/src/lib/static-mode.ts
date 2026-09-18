@@ -1,6 +1,6 @@
-/**
- * Static storefront: no database required.
- * Set USE_STATIC_STORE=false and DATABASE_URL when you add Postgres.
- */
-export const USE_STATIC_STORE =
-   process.env.USE_STATIC_STORE !== 'false' && !process.env.DATABASE_URL
+function envValue(name: string) {
+   return (process.env[name] ?? '').trim()
+}
+
+/** Static catalog only when Supabase DATABASE_URL is missing. */
+export const USE_STATIC_STORE = !envValue('DATABASE_URL')

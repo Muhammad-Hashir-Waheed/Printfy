@@ -1,16 +1,14 @@
-import { DUMMY_BRANDS, DUMMY_CATEGORIES } from '@/lib/catalog-dummy'
-import { PACKAGING_CATEGORY_TITLES } from '@/lib/catalog-navigation'
-import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
+import { listAllCatalogProducts, listCatalogBrands, listCatalogCategories } from '@/lib/catalog'
 import { Suspense } from 'react'
 
 import { ProductsCatalogView } from './components/products-catalog-view'
 
-/** Static shell + client filters — stable on Vercel */
-export default function ProductsPage() {
-   const allProducts = getOfflineCatalogProducts()
-   const categories = DUMMY_CATEGORIES.filter((category) =>
-      (PACKAGING_CATEGORY_TITLES as readonly string[]).includes(category.title)
-   )
+export default async function ProductsPage() {
+   const [allProducts, categories, brands] = await Promise.all([
+      listAllCatalogProducts(),
+      listCatalogCategories(),
+      listCatalogBrands(),
+   ])
 
    return (
       <Suspense
@@ -21,7 +19,7 @@ export default function ProductsPage() {
          <ProductsCatalogView
             allProducts={allProducts}
             categories={categories}
-            brands={DUMMY_BRANDS}
+            brands={brands}
          />
       </Suspense>
    )

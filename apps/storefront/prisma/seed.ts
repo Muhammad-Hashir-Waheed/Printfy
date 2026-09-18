@@ -1,7 +1,13 @@
 import { PrismaClient } from '@prisma/client'
+import { readFileSync } from 'fs'
+import { join } from 'path'
 import { DUMMY_BRANDS, DUMMY_CATEGORIES, DUMMY_PRODUCTS } from '../src/lib/catalog-dummy'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+   datasources: {
+      db: { url: process.env.DIRECT_URL || process.env.DATABASE_URL },
+   },
+})
 
 async function main() {
    console.log('Seeding POD catalog...')
@@ -111,6 +117,18 @@ async function main() {
    }
 
    console.log(`Seeded ${DUMMY_PRODUCTS.length} products.`)
+
+   try {
+      const rlsSql = readFileSync(join(__dirname, 'rls.sql'), 'utf8')
+      const start = rlsSql.indexOf('DO $$')
+      await prisma.$executeRawUnsafe(start >= 0 ? rlsSql.slice(start) : rlsSql)
+      console.log('Enabled RLS on public tables (Prisma still bypasses as the postgres/prisma role).')
+   } catch (error) {
+      console.warn(
+         'RLS SQL skipped (run it as the table owner in Supabase):',
+         error instanceof Error ? error.message : error
+      )
+   }
 }
 
 main()

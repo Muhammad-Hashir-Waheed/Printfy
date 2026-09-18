@@ -11,7 +11,7 @@ import {
 import { cn } from '@/lib/utils'
 import { ArrowRightIcon } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const DEFAULT_COLUMN = PACKAGING_MENU_COLUMNS[0].title
 
@@ -19,6 +19,30 @@ export function PackagingMegaMenu() {
    const [open, setOpen] = useState(false)
    const [activeColumn, setActiveColumn] = useState(DEFAULT_COLUMN)
    const [activeNav, setActiveNav] = useState<string | null>(null)
+   const [storeCategories, setStoreCategories] = useState<PackagingMenuLink[]>([])
+
+   useEffect(() => {
+      fetch('/api/catalog/categories')
+         .then((response) => (response.ok ? response.json() : []))
+         .then((rows: Array<{ title: string; description?: string | null; image?: string }>) => {
+            const known = new Set(
+               PACKAGING_MENU_COLUMNS.flatMap((column) =>
+                  column.links.map((link) => link.label)
+               )
+            )
+            setStoreCategories(
+               rows
+                  .filter((row) => !known.has(row.title))
+                  .map((row) => ({
+                     label: row.title,
+                     href: `/products?category=${encodeURIComponent(row.title.toLowerCase().replace(/\s+/g, '-'))}`,
+                     image: row.image ?? '',
+                     description: row.description ?? undefined,
+                  }))
+            )
+         })
+         .catch(() => setStoreCategories([]))
+   }, [])
 
    const active =
       PACKAGING_MENU_COLUMNS.find((column) => column.title === activeColumn) ??
@@ -157,6 +181,23 @@ export function PackagingMegaMenu() {
                            />
                         ))}
                      </div>
+
+                     {storeCategories.length ? (
+                        <div className="mt-6 border-t pt-4">
+                           <p className="typo-eyebrow mb-3 text-muted-foreground">
+                              More categories
+                           </p>
+                           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+                              {storeCategories.map((link) => (
+                                 <CategoryCard
+                                    key={link.label}
+                                    link={link}
+                                    onNavigate={closeMenu}
+                                 />
+                              ))}
+                           </div>
+                        </div>
+                     ) : null}
 
                      <div className="mt-6 border-t pt-4">
                         <p className="typo-eyebrow mb-3 text-muted-foreground">

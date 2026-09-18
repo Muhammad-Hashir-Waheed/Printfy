@@ -8,6 +8,7 @@ function isPublicApi(pathname: string) {
    if (pathname.startsWith('/api/payments/verify')) return true
    if (pathname === '/api/products') return true
    if (pathname.startsWith('/api/products/')) return true
+   if (pathname.startsWith('/api/catalog')) return true
    return false
 }
 
