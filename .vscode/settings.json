@@ -9,7 +9,6 @@
    },
    "eslint.workingDirectories": [
       "./apps/storefront",
-      "./apps/admin",
       "./apps/storefront/.react-email"
    ]
 }

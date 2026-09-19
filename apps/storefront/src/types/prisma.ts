@@ -50,16 +50,14 @@ export type OrderWithIncludes = Prisma.OrderGetPayload<{
             provider: true
          }
       }
-      orderItems: {
+      orderItems: { include: { product: true } }
+      refund: true
+      fulfillmentTasks: true
+      shipment: {
          include: {
-            product: {
-               include: {
-                  brand: true
-                  categories: true
-               }
-            }
+            trackingEvents: true
          }
       }
-      refund: true
+      fulfillmentEvents: true
    }
 }>

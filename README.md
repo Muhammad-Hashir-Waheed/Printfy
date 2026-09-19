@@ -27,13 +27,12 @@ Welcome to the open-source Next.js E-Commerce Storefront with Admin Panel projec
 -  [x] [**Next Metadata API**](https://nextjs.org/docs/api-reference/metadata) for SEO handling.
 -  [ ] Comprehensive implementations for i18n.
 
-## 2️⃣ Why are there 2 apps in the app folder?
+## 1️⃣ One Vercel project
 
-This project is made up of 2 separate apps ( admin and storefront ) which should be deployed separately. If you are deploying with Vercel you should create 2 different apps.
+Shop and admin are the same Next.js app (`apps/storefront`). Deploy that folder once.
 
-![image](https://github.com/Accretence/next-prisma-tailwind-ecommerce/assets/45223699/f5adc1ac-9dbb-46cb-bb6e-a8db15883348)
-
-Under the general tab there is a Root Directory option, for the admin app you should put in "apps/admin" and for the storefront app you should put in "apps/storefront".
+- Storefront: `/`
+- Admin: `/admin` (login at `/admin/login`)
 
 ## 🔐 Authentication
 

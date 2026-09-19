@@ -7,6 +7,12 @@ export function cn(...inputs: ClassValue[]) {
    return twMerge(clsx(inputs))
 }
 
+export const formatter = new Intl.NumberFormat('en-US', {
+   style: 'currency',
+   currency: 'USD',
+   maximumFractionDigits: 2,
+})
+
 export function formatDate(input: string | number): string {
    const date = new Date(input)
    return date.toLocaleDateString('en-US', {

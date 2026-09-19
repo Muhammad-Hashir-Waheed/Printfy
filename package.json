@@ -4,8 +4,7 @@
    "private": true,
    "scripts": {
       "dev:storefront": "npm --prefix apps/storefront run dev",
-      "dev:admin": "npm --prefix apps/admin run dev",
-      "db:up": "docker compose up -d",
+      "dev:admin": "npm --prefix apps/storefront run dev",
       "db:push": "npm --prefix apps/storefront run db:push",
       "db:seed": "npm --prefix apps/storefront run db:seed",
       "db:verify": "node scripts/verify-db.mjs",

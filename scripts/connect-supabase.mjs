@@ -1,5 +1,5 @@
 /**
- * Writes apps/storefront/.env and apps/admin/.env.
+ * Writes apps/storefront/.env (shop + admin at /admin).
  *
  *   node scripts/connect-supabase.mjs --init
  *     Create local env files (JWT, URLs). Leaves DATABASE_URL empty until connected.
@@ -20,7 +20,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const root = path.resolve(__dirname, '..')
 const storeEnv = path.join(root, 'apps/storefront/.env')
-const adminEnv = path.join(root, 'apps/admin/.env')
 
 function arg(name, fallback = '') {
    const index = process.argv.indexOf(`--${name}`)
@@ -94,13 +93,6 @@ const STORE_KEYS = [
    'JWT_SECRET_KEY',
 ]
 
-const ADMIN_KEYS = [
-   'DATABASE_URL',
-   'DIRECT_URL',
-   'NEXT_PUBLIC_URL',
-   'JWT_SECRET_KEY',
-]
-
 function writeEnv(filePath, overrides, extraLines = [], allowedKeys) {
    const existing = readEnv(filePath)
    const merged = { ...existing, ...overrides }
@@ -123,11 +115,9 @@ function writeEnv(filePath, overrides, extraLines = [], allowedKeys) {
    fs.writeFileSync(filePath, `${lines.join('\n')}\n`)
 }
 
-function writePair(shared, extraStore = {}, extraAdmin = {}) {
+function writeStore(shared, extraStore = {}) {
    const jwt =
-      readEnv(storeEnv).JWT_SECRET_KEY ||
-      readEnv(adminEnv).JWT_SECRET_KEY ||
-      crypto.randomBytes(48).toString('hex')
+      readEnv(storeEnv).JWT_SECRET_KEY || crypto.randomBytes(48).toString('hex')
 
    writeEnv(
       storeEnv,
@@ -137,20 +127,8 @@ function writePair(shared, extraStore = {}, extraAdmin = {}) {
          ...shared,
          ...extraStore,
       },
-      ['# Storefront'],
+      ['# Storefront + admin (/admin)'],
       STORE_KEYS
-   )
-
-   writeEnv(
-      adminEnv,
-      {
-         NEXT_PUBLIC_URL: 'http://localhost:8888',
-         JWT_SECRET_KEY: jwt,
-         ...shared,
-         ...extraAdmin,
-      },
-      ['# Admin'],
-      ADMIN_KEYS
    )
 }
 
@@ -172,14 +150,14 @@ function parseStatusEnv(raw) {
 }
 
 if (hasFlag('init')) {
-   writePair({
+   writeStore({
       DATABASE_URL: readEnv(storeEnv).DATABASE_URL || '',
       DIRECT_URL: readEnv(storeEnv).DIRECT_URL || '',
       NEXT_PUBLIC_SUPABASE_URL: readEnv(storeEnv).NEXT_PUBLIC_SUPABASE_URL || '',
       NEXT_PUBLIC_SUPABASE_ANON_KEY:
          readEnv(storeEnv).NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
    })
-   console.log('Wrote apps/storefront/.env and apps/admin/.env')
+   console.log('Wrote apps/storefront/.env')
    console.log(
       'DATABASE_URL is empty — catalog stays static until you connect Supabase.'
    )
@@ -211,7 +189,7 @@ if (hasFlag('from-status')) {
       process.exit(1)
    }
 
-   writePair({
+   writeStore({
       DATABASE_URL: dbUrl,
       DIRECT_URL: dbUrl,
       NEXT_PUBLIC_SUPABASE_URL: apiUrl,
@@ -237,7 +215,7 @@ if (!databaseUrlRaw || !directUrlRaw || !supabaseUrl || !anon) {
    process.exit(1)
 }
 
-writePair({
+writeStore({
    DATABASE_URL: normalizeDatabaseUrl(databaseUrlRaw, {
       pooled: isPooledUrl(databaseUrlRaw) || hasFlag('pooled'),
    }),
@@ -246,7 +224,7 @@ writePair({
    NEXT_PUBLIC_SUPABASE_ANON_KEY: anon,
 })
 
-console.log('Wrote apps/storefront/.env and apps/admin/.env')
+console.log('Wrote apps/storefront/.env')
 console.log(
    'Next: npm --prefix apps/storefront run db:push && npm --prefix apps/storefront run db:seed'
 )
