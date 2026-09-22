@@ -1,0 +1,27 @@
+{
+   "name": "next-prisma-tailwind-ecommerce",
+   "version": "1.0.0",
+   "private": true,
+   "scripts": {
+      "dev:storefront": "npm --prefix apps/storefront run dev",
+      "dev:admin": "npm --prefix apps/storefront run dev",
+      "db:push": "npm --prefix apps/storefront run db:push",
+      "db:seed": "npm --prefix apps/storefront run db:seed",
+      "db:verify": "node scripts/verify-db.mjs",
+      "env:init": "node scripts/connect-supabase.mjs --init",
+      "supabase:start": "npx supabase start",
+      "supabase:status": "npx supabase status",
+      "supabase:env": "node scripts/connect-supabase.mjs --from-status",
+      "supabase:connect": "node scripts/connect-supabase.mjs"
+   },
+   "author": {
+      "name": "Sesto",
+      "url": "https://github.com/sesto-dev"
+   },
+   "license": "MIT",
+   "dependencies": {
+      "next": "14.2.15",
+      "react": "18.3.1",
+      "react-dom": "18.3.1"
+   }
+}

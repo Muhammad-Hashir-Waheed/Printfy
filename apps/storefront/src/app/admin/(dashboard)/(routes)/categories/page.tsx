@@ -1,0 +1,43 @@
+import { Button } from '@/components/ui/button'
+import { Heading } from '@/components/ui/heading'
+import { Separator } from '@/components/ui/separator'
+import prisma from '@/lib/prisma'
+import { getCategoryImages } from '@/lib/category-image'
+import { Plus } from 'lucide-react'
+import Link from 'next/link'
+
+import { CategoriesClient, CategoryColumn } from './components/table'
+
+export default async function CategoriesPage() {
+   const categories = await prisma.category.findMany({
+      include: {
+         products: true,
+      },
+   })
+
+   const images = await getCategoryImages()
+   const formattedCategories: CategoryColumn[] = categories.map((category) => ({
+      id: category.id,
+      title: category.title,
+      image: images[category.id],
+      products: category.products.length,
+   }))
+
+   return (
+      <div className="my-6 block space-y-4">
+         <div className="flex items-center justify-between">
+            <Heading
+               title={`Categories (${categories.length})`}
+               description="Manage categories for your store"
+            />
+            <Link href="/admin/categories/new">
+               <Button>
+                  <Plus className="mr-2 h-4" /> Add New
+               </Button>
+            </Link>
+         </div>
+         <Separator />
+         <CategoriesClient data={formattedCategories} />
+      </div>
+   )
+}

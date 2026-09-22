@@ -1,0 +1,374 @@
+import { getProductType, isCustomizable } from '@/lib/catalog-client'
+import { resolveProductImages } from '@/lib/catalog-images'
+import { getOfflineCatalogProducts } from '@/lib/catalog-offline'
+import { getCategoryImages } from '@/lib/category-image'
+import prisma from '@/lib/prisma'
+import { slugifyText } from '@/lib/slug'
+import { USE_STATIC_STORE } from '@/lib/static-mode'
+import {
+   DUMMY_BRANDS,
+   DUMMY_CATEGORIES,
+   DUMMY_PRODUCTS,
+   DUMMY_PRODUCT_TYPES,
+   type CatalogProduct,
+} from '@/lib/catalog-dummy'
+
+export type { CatalogProduct }
+
+export const CATALOG_PRODUCT_IDS = DUMMY_PRODUCTS.map((p) => p.id)
+
+export function isCatalogProductId(productId: string) {
+   return CATALOG_PRODUCT_IDS.includes(productId)
+}
+
+export type CatalogSearchParams = {
+   sort?: string
+   isAvailable?: string
+   brand?: string
+   category?: string
+   productType?: string
+   customizable?: string
+   minPrice?: string
+   maxPrice?: string
+   q?: string
+   page?: string
+}
+
+export type { SelectedVariant } from '@/lib/catalog-client'
+export { getProductType, groupVariants, isCustomizable } from '@/lib/catalog-client'
+export { getOfflineCatalogProducts } from '@/lib/catalog-offline'
+
+function toSerializableCatalogProduct(product: CatalogProduct): CatalogProduct {
+   return JSON.parse(
+      JSON.stringify(product, (_key, value) => {
+         if (value instanceof Date) {
+            return value.toISOString()
+         }
+         return value
+      })
+   ) as CatalogProduct
+}
+
+function normalizeProduct(product: CatalogProduct): CatalogProduct {
+   const normalized: CatalogProduct = {
+      ...product,
+      price: Number(product.price),
+      discount: Number(product.discount),
+      stock: Number(product.stock),
+      images: resolveProductImages(product.id, product.images),
+      variants: (product.variants ?? []).map((variant) => ({
+         ...variant,
+         priceModifier: Number(variant.priceModifier),
+      })),
+      keywords: Array.isArray(product.keywords) ? product.keywords : [],
+   }
+
+   return toSerializableCatalogProduct(normalized)
+}
+
+function mergeMetadata(
+   ...sources: Array<unknown>
+): CatalogProduct['metadata'] {
+   const merged: Record<string, unknown> = {}
+   for (const source of sources) {
+      if (source && typeof source === 'object' && !Array.isArray(source)) {
+         Object.assign(merged, source as Record<string, unknown>)
+      }
+   }
+   return merged as CatalogProduct['metadata']
+}
+
+export function mergeWithCatalogDefaults(product: CatalogProduct): CatalogProduct {
+   const dummy = DUMMY_PRODUCTS.find((entry) => entry.id === product.id)
+   if (!dummy) {
+      return normalizeProduct(product)
+   }
+
+   const merged: CatalogProduct = {
+      ...dummy,
+      ...product,
+      title: product.title || dummy.title,
+      description: product.description || dummy.description,
+      price: product.price ?? dummy.price,
+      discount: product.discount ?? dummy.discount,
+      keywords: product.keywords?.length ? product.keywords : dummy.keywords,
+      metadata: mergeMetadata(dummy.metadata, product.metadata),
+      images: resolveProductImages(
+         product.id,
+         product.images?.length ? product.images : dummy.images
+      ),
+      brand: product.brand ?? dummy.brand,
+      categories: Array.isArray(product.categories)
+         ? product.categories
+         : dummy.categories,
+      variants: product.variants?.length ? product.variants : dummy.variants,
+   }
+
+   return normalizeProduct(merged)
+}
+
+function filterProducts(
+   products: CatalogProduct[],
+   params: CatalogSearchParams
+) {
+   const q = params.q?.trim().toLowerCase()
+   const brand = params.brand?.trim().toLowerCase()
+   const category = params.category?.trim().toLowerCase()
+   const productType = params.productType?.trim().toLowerCase()
+   const minPrice = params.minPrice ? Number(params.minPrice) : undefined
+   const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined
+   const onlyAvailable = params.isAvailable === 'true'
+   const customizableOnly = params.customizable === 'true'
+
+   let filtered = products.map(normalizeProduct)
+
+   if (q) {
+      filtered = filtered.filter(
+         (p) =>
+            p.title.toLowerCase().includes(q) ||
+            (p.description ?? '').toLowerCase().includes(q) ||
+            p.keywords.some((k) => k.toLowerCase().includes(q))
+      )
+   }
+
+   if (brand) {
+      filtered = filtered.filter(
+         (p) =>
+            slugifyText(p.brand?.title ?? '') === brand ||
+            p.brand?.title?.toLowerCase().includes(brand)
+      )
+   }
+
+   if (category) {
+      filtered = filtered.filter((p) =>
+         p.categories?.some(
+            (c) =>
+               slugifyText(c.title) === category ||
+               c.title.toLowerCase().includes(category)
+         )
+      )
+   }
+
+   if (productType) {
+      let wanted = productType.trim().toLowerCase()
+      try {
+         wanted = decodeURIComponent(wanted).trim().toLowerCase()
+      } catch {
+         /* use raw param */
+      }
+      filtered = filtered.filter((p) => {
+         const type = getProductType(p)
+         const typeLower = type.toLowerCase()
+         const typeSlug = slugifyText(type)
+         return (
+            typeLower === wanted ||
+            typeSlug === wanted ||
+            typeSlug === slugifyText(wanted) ||
+            typeLower.includes(wanted)
+         )
+      })
+   }
+
+   if (onlyAvailable) {
+      filtered = filtered.filter((p) => p.isAvailable)
+   }
+
+   if (customizableOnly) {
+      filtered = filtered.filter((p) => isCustomizable(p))
+   }
+
+   if (minPrice !== undefined && !Number.isNaN(minPrice)) {
+      filtered = filtered.filter((p) => p.price - p.discount >= minPrice)
+   }
+
+   if (maxPrice !== undefined && !Number.isNaN(maxPrice)) {
+      filtered = filtered.filter((p) => p.price - p.discount <= maxPrice)
+   }
+
+   return filtered
+}
+
+function sortProducts(products: CatalogProduct[], sort?: string) {
+   const list = [...products]
+
+   switch (sort) {
+      case 'most_expensive':
+         return list.sort((a, b) => b.price - a.price)
+      case 'least_expensive':
+         return list.sort((a, b) => a.price - b.price)
+      case 'name_asc':
+         return list.sort((a, b) => a.title.localeCompare(b.title))
+      case 'newest':
+         return list.sort(
+            (a, b) =>
+               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+         )
+      case 'featured':
+      default:
+         return list.sort((a, b) => {
+            if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1
+            return a.title.localeCompare(b.title)
+         })
+   }
+}
+
+const PRODUCT_INCLUDE = {
+   brand: true,
+   categories: true,
+   variants: true,
+} as const
+
+let catalogProductsCache: Promise<{
+   products: CatalogProduct[]
+   fromDb: boolean
+}> | null = null
+
+async function loadCatalogProductsUncached(): Promise<{
+   products: CatalogProduct[]
+   fromDb: boolean
+}> {
+   if (USE_STATIC_STORE) {
+      return { products: getOfflineCatalogProducts(), fromDb: false }
+   }
+
+   try {
+      const rows = await prisma.product.findMany({
+         where: {
+            isAvailable: true,
+            categories: { some: {} },
+         },
+         include: PRODUCT_INCLUDE,
+      })
+      if (!rows.length) {
+         return { products: [], fromDb: true }
+      }
+      return {
+         products: rows.map((row) => mergeWithCatalogDefaults(row as CatalogProduct)),
+         fromDb: true,
+      }
+   } catch (error) {
+      console.error('[CATALOG_DB]', error)
+      return { products: getOfflineCatalogProducts(), fromDb: false }
+   }
+}
+
+async function loadCatalogProducts(): Promise<{
+   products: CatalogProduct[]
+   fromDb: boolean
+}> {
+   if (!catalogProductsCache) {
+      catalogProductsCache = loadCatalogProductsUncached()
+      if (process.env.NEXT_PHASE !== 'phase-production-build') {
+         catalogProductsCache.finally(() => {
+            catalogProductsCache = null
+         })
+      }
+   }
+   return catalogProductsCache
+}
+
+export async function listAllCatalogProducts(): Promise<CatalogProduct[]> {
+   const { products } = await loadCatalogProducts()
+   return products
+}
+
+export async function listCatalogCategories() {
+   if (USE_STATIC_STORE) {
+      return DUMMY_CATEGORIES.map((category) => ({
+         id: category.id,
+         title: category.title,
+         description: category.description,
+         image: undefined as string | undefined,
+      }))
+   }
+
+   try {
+      const rows = await prisma.category.findMany({
+         orderBy: { title: 'asc' },
+         include: {
+            products: {
+               where: { isAvailable: true },
+               select: { images: true },
+               take: 1,
+            },
+         },
+      })
+      const images = await getCategoryImages()
+
+      return rows.map((row) => ({
+         id: row.id,
+         title: row.title,
+         description: row.description,
+         image: images[row.id] || row.products[0]?.images?.[0],
+      }))
+   } catch (error) {
+      console.error('[CATALOG_CATEGORIES]', error)
+      return DUMMY_CATEGORIES.map((category) => ({
+         id: category.id,
+         title: category.title,
+         description: category.description,
+         image: undefined as string | undefined,
+      }))
+   }
+}
+
+export async function listCatalogBrands() {
+   if (USE_STATIC_STORE) return DUMMY_BRANDS
+
+   try {
+      const rows = await prisma.brand.findMany({
+         orderBy: { title: 'asc' },
+      })
+      return rows.length ? rows : DUMMY_BRANDS
+   } catch (error) {
+      console.error('[CATALOG_BRANDS]', error)
+      return DUMMY_BRANDS
+   }
+}
+
+export async function getCatalogSnapshot(params: CatalogSearchParams = {}) {
+   const { products: allProducts, fromDb } = await loadCatalogProducts()
+   const filtered = filterProducts(allProducts, params)
+   const sorted = sortProducts(filtered, params.sort)
+   const page = Math.max(1, Number(params.page) || 1)
+   const pageSize = 48
+   const products = sorted.slice((page - 1) * pageSize, page * pageSize)
+
+   return {
+      products,
+      total: sorted.length,
+      brands: await listCatalogBrands(),
+      categories: await listCatalogCategories(),
+      productTypes: DUMMY_PRODUCT_TYPES,
+      useDummy: !fromDb,
+   }
+}
+
+export async function getCatalogProduct(
+   productId: string
+): Promise<CatalogProduct | null> {
+   const { products, fromDb } = await loadCatalogProducts()
+   const found = products.find((product) => product.id === productId)
+   if (found) return found
+   if (fromDb) return null
+
+   const dummy = DUMMY_PRODUCTS.find((p) => p.id === productId)
+   return dummy ? normalizeProduct(dummy) : null
+}
+
+export async function getRelatedProducts(
+   product: CatalogProduct,
+   limit = 4
+): Promise<CatalogProduct[]> {
+   const categoryTitle = product.categories?.[0]?.title
+   const pool = await listAllCatalogProducts()
+
+   return pool
+      .filter(
+         (p) =>
+            p.id !== product.id &&
+            (!categoryTitle ||
+               p.categories?.some((c) => c.title === categoryTitle))
+      )
+      .slice(0, limit)
+}
