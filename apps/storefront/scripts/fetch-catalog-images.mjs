@@ -162,6 +162,12 @@ async function main() {
       new URL('file:///' + path.join(root, 'src/catalog/data.ts').replace(/\\/g, '/'))
    )
 
+   /** Marketing → Flyers etc. reuse another category's photos */
+   const CATEGORY_ALIAS = {}
+   for (const d of DEPARTMENT_SEEDS) {
+      for (const c of d.categories) if (c.aliasOf) CATEGORY_ALIAS[`${d.slug}/${c.slug}`] = c.aliasOf
+   }
+
    if (flag('--fresh')) {
       fs.rmSync(catalogDir, { recursive: true, force: true })
       writeManifest({})
@@ -185,6 +191,139 @@ async function main() {
             jobs.push({ key: `p:${ckey}/${slugify(name)}`, label: name, large: false, rule, own: q ?? name })
          }
       }
+   }
+
+   /* ── Review workflow ──────────────────────────────────────────────
+    * --candidates   save up to 64 rule-passing photos per category for review
+    * --apply-picks  use the hand-picked photo IDs in scripts/image-picks.mjs
+    */
+   const candidatesDir = path.join(cacheDir, 'candidates')
+   const categoryJobs = new Map()
+   for (const job of jobs) {
+      if (!job.key.startsWith('p:')) continue
+      const ckey = job.key.slice(2).split('/').slice(0, 2).join('/')
+      if (!categoryJobs.has(ckey)) categoryJobs.set(ckey, [])
+      categoryJobs.get(ckey).push(job)
+   }
+
+   if (flag('--candidates')) {
+      fs.mkdirSync(candidatesDir, { recursive: true })
+      for (const [ckey, rule] of Object.entries(CATEGORIES)) {
+         const seen = new Set()
+         const list = []
+         const add = (hits) => {
+            for (const hit of hits ?? []) {
+               if (list.length >= 64) return
+               if (seen.has(hit.id) || !passes(hit, rule)) continue
+               seen.add(hit.id)
+               list.push({
+                  id: hit.id,
+                  previewURL: hit.previewURL,
+                  webformatURL: hit.webformatURL,
+                  largeImageURL: hit.largeImageURL,
+                  imageWidth: hit.imageWidth,
+                  imageHeight: hit.imageHeight,
+                  tags: hit.tags,
+                  user: hit.user,
+                  user_id: hit.user_id,
+                  pageURL: hit.pageURL,
+               })
+            }
+         }
+         // Interleave: a few from every category query, then product-specific searches
+         const results = []
+         for (const q of rule.queries) results.push((await search(key, q)).hits ?? [])
+         for (let round = 0; round < 12 && list.length < 48; round++) {
+            for (const hits of results) add(hits.slice(round * 4, round * 4 + 4))
+         }
+         for (const job of categoryJobs.get(ckey) ?? []) {
+            if (list.length >= 64) break
+            add(((await search(key, job.own)).hits ?? []).slice(0, 4))
+         }
+         fs.writeFileSync(path.join(candidatesDir, `${slugify(ckey)}.json`), JSON.stringify(list))
+         console.log(`${ckey}: ${list.length} candidates`)
+      }
+      return
+   }
+
+   if (flag('--apply-picks')) {
+      const { PICKS, DEPARTMENT_PICKS } = await import('./image-picks.mjs')
+      const byId = new Map()
+      for (const f of fs.readdirSync(candidatesDir)) {
+         for (const c of JSON.parse(fs.readFileSync(path.join(candidatesDir, f), 'utf8'))) byId.set(c.id, c)
+      }
+      const assign = []
+      for (const job of jobs) {
+         const kind = job.key[0]
+         const body = job.key.slice(2)
+         if (kind === 'd' && DEPARTMENT_PICKS[body]) assign.push([job, DEPARTMENT_PICKS[body]])
+         if (kind === 'c') {
+            const picks = PICKS[CATEGORY_ALIAS[body] ?? body]
+            if (picks?.length) assign.push([job, picks[0]])
+         }
+      }
+      for (const [ckey, catJobs] of categoryJobs) {
+         const picks = PICKS[CATEGORY_ALIAS[ckey] ?? ckey]
+         if (!picks?.length) continue
+         const usage = new Map(picks.map((id) => [id, 0]))
+         // Products get the most relevant approved photo, spreading use as evenly as possible
+         for (const job of catJobs) {
+            const best = picks
+               .map((id, index) => ({ id, score: relevance(byId.get(id) ?? {}, job.own) * 10 - usage.get(id) * 4 - index * 0.01 }))
+               .sort((a, b) => b.score - a.score)[0]
+            usage.set(best.id, usage.get(best.id) + 1)
+            assign.push([job, best.id])
+         }
+      }
+
+      let saved = 0
+      for (const [job, id] of assign) {
+         const pick = byId.get(id)
+         if (!pick) {
+            console.warn(`! ${job.key}: photo ${id} not in candidates`)
+            continue
+         }
+         const wantSize = job.large ? 960 : 640
+         const ext = path.extname(new URL(pick.webformatURL).pathname) || '.jpg'
+         const file = `/catalog/${job.key.replace(':', '/')}${ext}`
+         const existing = manifest[job.key]
+         if (existing?.id === id && existing.file === file && fs.existsSync(path.join(publicDir, file))) continue
+         let size = 0
+         for (const [src, w] of [
+            [pick.webformatURL.replace(/_640(\.\w+)$/, `_${wantSize}$1`), wantSize],
+            [pick.largeImageURL, 1280],
+            [pick.webformatURL, 640],
+         ]) {
+            try {
+               await download(src, path.join(publicDir, file))
+               size = w
+               break
+            } catch {
+               // try the next rendition
+            }
+         }
+         if (!size) {
+            console.warn(`! ${job.key}: download failed`)
+            continue
+         }
+         if (existing?.file && existing.file !== file) fs.rmSync(path.join(publicDir, existing.file), { force: true })
+         manifest[job.key] = {
+            id,
+            file,
+            width: size,
+            height: Math.round((size * pick.imageHeight) / pick.imageWidth),
+            alt: `${job.label} — ${tagList(pick).slice(0, 6).join(', ')}`,
+            photographer: pick.user,
+            photographerUrl: `https://pixabay.com/users/${pick.user}-${pick.user_id}/`,
+            pageUrl: pick.pageURL,
+            source: 'pixabay',
+         }
+         saved++
+         if (saved % 10 === 0) writeManifest(manifest)
+      }
+      writeManifest(manifest)
+      console.log(`Applied picks: ${saved} images updated (${assign.length} assigned).`)
+      return
    }
 
    const only = arg('--only')
