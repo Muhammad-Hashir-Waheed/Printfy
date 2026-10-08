@@ -1,33 +1,21 @@
-import { CATALOG_PRODUCT_IDS } from '@/lib/catalog'
+import { ALL_PRODUCTS, DEPARTMENTS } from '@/catalog'
+import config from '@/config/site'
 import { getStaticBlogs } from '@/lib/static-blogs'
+import type { MetadataRoute } from 'next'
 
-const URL = process.env.NEXT_PUBLIC_URL ?? 'http://localhost:7777'
+export default function sitemap(): MetadataRoute.Sitemap {
+   const base = config.url.replace(/\/$/, '')
+   const pages = ['', '/shop', '/quote', '/about', '/contact', '/faq', '/blog', '/privacy', '/terms']
 
-export default function sitemap() {
-   const routes = [
-      '',
-      '/products',
-      '/blog',
-      '/about',
-      '/contact',
-      '/privacy',
-      '/terms',
-      '/faq',
-      '/telegram',
-   ].map((route) => ({
-      url: `${URL}${route}`,
-      lastModified: new Date().toISOString(),
-   }))
-
-   const productRoutes = CATALOG_PRODUCT_IDS.map((id) => ({
-      url: `${URL}/products/${id}`,
-      lastModified: new Date().toISOString(),
-   }))
-
-   const blogRoutes = getStaticBlogs().map((post) => ({
-      url: `${URL}/blog/${post.slug}`,
-      lastModified: post.updatedAt,
-   }))
-
-   return [...routes, ...productRoutes, ...blogRoutes]
+   return [
+      ...pages.map((path) => ({ url: `${base}${path}`, priority: path === '' ? 1 : 0.6 })),
+      ...DEPARTMENTS.map((d) => ({ url: `${base}${d.href}`, priority: 0.9 })),
+      ...DEPARTMENTS.flatMap((d) =>
+         d.categories
+            .filter((c) => !c.external && !c.canonical)
+            .map((c) => ({ url: `${base}${c.href}`, priority: 0.8 }))
+      ),
+      ...ALL_PRODUCTS.map((p) => ({ url: `${base}${p.href}`, priority: 0.7 })),
+      ...getStaticBlogs().map((b) => ({ url: `${base}/blog/${b.slug}`, priority: 0.5 })),
+   ]
 }

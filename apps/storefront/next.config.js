@@ -3,6 +3,8 @@
 const path = require('path')
 
 module.exports = {
+   // Lets a production build run alongside `next dev` (e.g. NEXT_DIST_DIR=.next-build)
+   distDir: process.env.NEXT_DIST_DIR || '.next',
    eslint: {
       ignoreDuringBuilds: true,
    },
@@ -27,27 +29,21 @@ module.exports = {
       return config
    },
    images: {
-      // Local /public assets must resolve on Vercel monorepo root deploys
-      // (apps/storefront/public is synced to repo-root /public at build time).
+      // Catalog photos are downloaded to /public/catalog by scripts/fetch-catalog-images.mjs.
+      // Supabase is kept for uploads made from the (currently hidden) admin.
       remotePatterns: [
-         {
-            protocol: 'https',
-            hostname: '**',
-         },
+         { protocol: 'https', hostname: 'images.unsplash.com' },
+         { protocol: 'https', hostname: '*.supabase.co' },
       ],
    },
    async redirects() {
       return [
-         {
-            source: '/product',
-            destination: '/products',
-            permanent: true,
-         },
-         {
-            source: '/favicon.ico',
-            destination: '/favicon.svg',
-            permanent: false,
-         },
+         { source: '/product', destination: '/shop', permanent: true },
+         { source: '/products', destination: '/shop', permanent: false },
+         { source: '/products/:path*', destination: '/shop', permanent: false },
+         { source: '/customize/:path*', destination: '/shop', permanent: false },
+         { source: '/telegram', destination: '/contact', permanent: false },
+         { source: '/shop/custom-packaging/request-a-quote', destination: '/quote', permanent: true },
       ]
    },
 }

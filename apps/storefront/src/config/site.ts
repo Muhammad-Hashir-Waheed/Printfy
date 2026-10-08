@@ -1,14 +1,28 @@
 const config = {
    name: 'Joji Arts',
    handle: '@jojiarts',
-   url: 'https://jojiarts.com',
-   ogImage:
-      'https://og-image.vercel.app/Joji%20Arts.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-black.svg',
+   url: process.env.NEXT_PUBLIC_URL || 'https://jojiarts.com',
    description:
-      'Custom packaging for cosmetics, hotels, perfume, luxury boxes, corrugated cartons, and 3D branding.',
+      'Custom packaging, printing, labels, acrylic boxes and signage — designed, printed and delivered by Joji Arts.',
+   email: 'support@jojiarts.com',
+   /** Order requests and quotes are emailed here until online payments go live. */
+   ordersEmail: 'orders@jojiarts.com',
+   /** Leave empty to hide. Fill in to show across the site (e.g. "+971 50 000 0000"). */
+   phone: '',
+   whatsapp: '',
+   /**
+    * Prices are hidden while the client finalises pricing — customers build a
+    * quote list and contact us instead. Set to true to show prices and totals.
+    */
+   showPrices: false,
+   currency: 'USD',
+   locale: 'en-US',
+   shippingFlat: 15,
+   freeShippingOver: 250,
    links: {
-      twitter: 'https://twitter.com/sesto_dev',
-      github: 'https://github.com/sesto-dev',
+      instagram: '',
+      facebook: '',
+      linkedin: '',
    },
 }
 

@@ -27,7 +27,7 @@ export default async function BlogPostPage({
       .slice(0, 3)
 
    return (
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+      <div className="page-shell grid grid-cols-1 gap-6 pb-10 pt-10 md:grid-cols-4">
          <Content blog={blog} />
          <Recommendations recommendations={recommendations} />
       </div>
@@ -36,10 +36,10 @@ export default async function BlogPostPage({
 
 function Content({ blog }: { blog: StaticBlogPost }) {
    return (
-      <div className="rounded-lg bg-white p-6 text-justify text-neutral-900 dark:bg-neutral-800 dark:text-neutral-200 md:col-span-3">
-         <h1 className="mb-1 text-3xl font-medium">{blog.title}</h1>
+      <div className="rounded-3xl bg-white p-6 text-neutral-900 ring-1 ring-black/5 sm:p-10 md:col-span-3">
+         <h1 className="display-md mb-1">{blog.title}</h1>
          <p className="mt-2 text-sm font-medium text-neutral-400">
-            {blog.author.name} · {new Date(blog.updatedAt).toLocaleDateString()}
+            {blog.author.name} · {new Date(blog.updatedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })}
          </p>
          <Separator />
          <BlogBody content={blog.content} />

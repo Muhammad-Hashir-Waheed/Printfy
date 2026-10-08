@@ -47,6 +47,10 @@ module.exports = {
    				DEFAULT: 'hsl(var(--card))',
    				foreground: 'hsl(var(--card-foreground))'
    			},
+   			ink: 'hsl(var(--ink) / <alpha-value>)',
+   			paper: 'hsl(var(--paper) / <alpha-value>)',
+   			coral: 'hsl(var(--coral) / <alpha-value>)',
+   			dept: 'var(--accent-hex)',
    			chart: {
    				'1': 'hsl(var(--chart-1))',
    				'2': 'hsl(var(--chart-2))',
@@ -56,13 +60,14 @@ module.exports = {
    			}
    		},
    		borderRadius: {
-   			xl: '`calc(var(--radius) + 4px)`',
+   			xl: 'calc(var(--radius) + 4px)',
    			lg: 'var(--radius)',
    			md: 'calc(var(--radius) - 2px)',
    			sm: 'calc(var(--radius) - 4px)'
    		},
    		fontFamily: {
-   			sans: ['Inter', ...fontFamily.sans]
+   			sans: ['var(--font-sans)', 'Inter', ...fontFamily.sans],
+   			display: ['var(--font-display)', 'var(--font-sans)', ...fontFamily.sans]
    		},
    		keyframes: {
    			'accordion-down': {
@@ -80,11 +85,26 @@ module.exports = {
    				to: {
    					height: '0'
    				}
+   			},
+   			marquee: {
+   				from: { transform: 'translateX(0)' },
+   				to: { transform: 'translateX(-50%)' }
+   			},
+   			flicker: {
+   				'0%, 18%, 22%, 25%, 53%, 57%, 100%': { opacity: '1' },
+   				'20%, 24%, 55%': { opacity: '0.55' }
+   			},
+   			rise: {
+   				from: { opacity: '0', transform: 'translateY(14px)' },
+   				to: { opacity: '1', transform: 'translateY(0)' }
    			}
    		},
    		animation: {
    			'accordion-down': 'accordion-down 0.2s ease-out',
-   			'accordion-up': 'accordion-up 0.2s ease-out'
+   			'accordion-up': 'accordion-up 0.2s ease-out',
+   			marquee: 'marquee 40s linear infinite',
+   			flicker: 'flicker 4s linear infinite',
+   			rise: 'rise 0.6s cubic-bezier(.2,.7,.2,1) both'
    		}
    	}
    },

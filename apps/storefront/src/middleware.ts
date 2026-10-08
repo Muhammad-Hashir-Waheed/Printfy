@@ -2,6 +2,7 @@ import {
    ADMIN_LOGGED_IN_COOKIE,
    ADMIN_TOKEN_COOKIE,
 } from '@/lib/admin-auth'
+import { FEATURES, STATIC_API_ROUTES } from '@/config/features'
 import { verifyJWT } from '@/lib/jwt'
 import { getErrorResponse } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
@@ -72,8 +73,37 @@ async function protect({
    }
 }
 
+function hidden(req: NextRequest) {
+   if (req.nextUrl.pathname.startsWith('/api')) {
+      return NextResponse.json({ message: 'Not found' }, { status: 404 })
+   }
+   // Rewriting to a path with no page renders the app's not-found page with a 404.
+   return NextResponse.rewrite(new URL('/__hidden', req.url))
+}
+
+/** Static storefront mode: hide everything that needs the database. */
+function gate(pathname: string) {
+   if (STATIC_API_ROUTES.includes(pathname)) return 'allow'
+   if (!FEATURES.admin && isAdminPath(pathname)) return 'hide'
+   if (!FEATURES.accounts) {
+      if (pathname.startsWith('/api')) return 'hide'
+      if (
+         pathname === '/login' ||
+         pathname.startsWith('/profile') ||
+         pathname === '/wishlist'
+      ) {
+         return 'hide'
+      }
+   }
+   return 'continue'
+}
+
 export async function middleware(req: NextRequest) {
    const { pathname } = req.nextUrl
+
+   const access = gate(pathname)
+   if (access === 'allow') return NextResponse.next()
+   if (access === 'hide') return hidden(req)
 
    if (isAdminPublic(pathname)) return NextResponse.next()
 
@@ -111,5 +141,12 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-   matcher: ['/admin', '/admin/:path*', '/profile/:path*', '/api/:path*'],
+   matcher: [
+      '/admin',
+      '/admin/:path*',
+      '/profile/:path*',
+      '/login',
+      '/wishlist',
+      '/api/:path*',
+   ],
 }

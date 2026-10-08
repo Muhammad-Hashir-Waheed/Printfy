@@ -1,418 +1,241 @@
 'use client'
 
-import { Heading } from '@/components/native/heading'
-import { ProductImage } from '@/components/native/ProductImage'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { calculatePrice } from '@domain-pricing'
-import { getLocalCart, writeLocalCart } from '@/lib/cart'
-import type { CartLineItem } from '@/lib/cart-lines'
-import { resolveProductImages } from '@/lib/catalog-images'
+import { Breadcrumbs } from '@/components/store/breadcrumbs'
+import { CatalogImage } from '@/components/store/catalog-image'
+import config from '@/config/site'
+import { makeReference } from '@/lib/mailto'
+import { money, units } from '@/lib/money'
+import { LAST_ORDER_KEY, type Customer, type OrderRequest } from '@/lib/order-request'
 import { cn } from '@/lib/utils'
+import { useCart } from '@/state/cart-store'
+import { ArrowRight, Lock, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const SHIPPING_FEE = 5
+type Field = keyof Customer
 
-function formatCardNumber(value: string) {
-   return value
-      .replace(/\D/g, '')
-      .slice(0, 16)
-      .replace(/(\d{4})(?=\d)/g, '$1 ')
-      .trim()
-}
+const FIELDS: Array<{ id: Field; label: string; type?: string; required?: boolean; span?: boolean; auto?: string }> = [
+   { id: 'name', label: 'Full name', required: true, auto: 'name' },
+   { id: 'company', label: 'Company (optional)', auto: 'organization' },
+   { id: 'email', label: 'Email', type: 'email', required: true, auto: 'email' },
+   { id: 'phone', label: 'Phone', type: 'tel', required: true, auto: 'tel' },
+   { id: 'address', label: 'Delivery address', required: true, span: true, auto: 'street-address' },
+   { id: 'city', label: 'City', required: true, auto: 'address-level2' },
+   { id: 'country', label: 'Country', required: true, auto: 'country-name' },
+]
 
 export default function CheckoutPage() {
    const router = useRouter()
-   const [step, setStep] = useState(1)
-   const [loading, setLoading] = useState(false)
-   const [errorMessage, setErrorMessage] = useState('')
-   const [cartItems, setCartItems] = useState<CartLineItem[]>([])
+   const { lines, subtotal, clear } = useCart()
+   const [mounted, setMounted] = useState(false)
+   const [form, setForm] = useState<Customer>({
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      address: '',
+      city: '',
+      country: '',
+      notes: '',
+   })
+   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
+   const [agreed, setAgreed] = useState(false)
 
-   const [fullName, setFullName] = useState('')
-   const [phone, setPhone] = useState('')
-   const [address, setAddress] = useState('')
-   const [city, setCity] = useState('')
-   const [postalCode, setPostalCode] = useState('')
-   const [discountCode, setDiscountCode] = useState('')
+   useEffect(() => setMounted(true), [])
 
-   const [cardName, setCardName] = useState('')
-   const [cardNumber, setCardNumber] = useState('')
-   const [cardExpiry, setCardExpiry] = useState('')
-   const [cardCvv, setCardCvv] = useState('')
+   const P = config.showPrices
+   const shipping = subtotal >= config.freeShippingOver ? 0 : config.shippingFlat
+   const total = Math.round((subtotal + shipping) * 100) / 100
 
-   useEffect(() => {
-      const cart = getLocalCart() as { items?: CartLineItem[] }
-      setCartItems(cart?.items ?? [])
-   }, [])
-
-   const lineTotals = useMemo(() => {
-      return cartItems.map((item) => {
-         const variants =
-            item.selectedVariants ?? (item as any).customDesign?.variants ?? []
-         const pricing = calculatePrice({
-            basePrice: Number(item.product?.price ?? 0),
-            quantity: Number(item.count ?? 1),
-            variants,
-            discount: Number(item.product?.discount ?? 0),
-         })
-         return { item, pricing }
-      })
-   }, [cartItems])
-
-   const subtotal = useMemo(
-      () => lineTotals.reduce((sum, row) => sum + row.pricing.total, 0),
-      [lineTotals]
-   )
-
-   const total = subtotal + SHIPPING_FEE
-
-   const canContinueShipping =
-      fullName.trim().length >= 2 &&
-      phone.trim().length >= 5 &&
-      address.trim().length >= 5 &&
-      city.trim().length >= 2 &&
-      postalCode.trim().length >= 3
-
-   const canContinuePayment =
-      cardName.trim().length >= 2 &&
-      cardNumber.replace(/\s/g, '').length === 16 &&
-      /^\d{2}\/\d{2}$/.test(cardExpiry.trim()) &&
-      cardCvv.trim().length >= 3
-
-   const submitCheckout = async () => {
-      if (!cartItems.length) {
-         setErrorMessage('Your cart is empty.')
-         return
+   function validate() {
+      const next: Partial<Record<Field, string>> = {}
+      for (const f of FIELDS) {
+         if (f.required && !String(form[f.id] ?? '').trim()) next[f.id] = 'Required'
       }
-
-      try {
-         setLoading(true)
-         setErrorMessage('')
-
-         const payload = {
-            fullName: fullName.trim(),
-            phone: phone.trim(),
-            address: address.trim(),
-            city: city.trim(),
-            postalCode: postalCode.trim(),
-            discountCode: discountCode.trim() || undefined,
-            cardLast4: cardNumber.replace(/\s/g, '').slice(-4),
-            items: cartItems.map((item) => ({
-               productId: item.productId,
-               count: item.count,
-               selectedVariants: item.selectedVariants,
-               customDesign: (item as any).customDesign,
-            })),
-         }
-
-         const response = await fetch('/api/checkout/demo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(payload),
-         })
-
-         if (!response.ok) {
-            throw new Error(await response.text())
-         }
-
-         const result = await response.json()
-         writeLocalCart({ items: [] })
-         router.push(result.redirectUrl ?? `/checkout/success?orderId=${result.orderId}`)
-      } catch (error) {
-         setErrorMessage(
-            error instanceof Error ? error.message : 'Checkout failed. Please try again.'
-         )
-      } finally {
-         setLoading(false)
-      }
+      if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Enter a valid email'
+      if (form.phone && form.phone.replace(/\D/g, '').length < 7) next.phone = 'Enter a valid phone number'
+      setErrors(next)
+      return Object.keys(next).length === 0
    }
 
-   if (!cartItems.length) {
+   function submit(e: React.FormEvent) {
+      e.preventDefault()
+      if (!validate() || !agreed) return
+      const order: OrderRequest = {
+         reference: makeReference('JA'),
+         createdAt: new Date().toISOString(),
+         customer: Object.fromEntries(
+            Object.entries(form).map(([k, v]) => [k, String(v ?? '').trim()])
+         ) as Customer,
+         lines: lines.map((l) => ({
+            name: l.name,
+            href: l.href,
+            qty: l.qty,
+            unit: l.unit,
+            total: l.total,
+            designFee: l.designFee,
+            selections: l.selections,
+            unitLabel: l.unitLabel,
+            artwork: { mode: l.artwork.mode, fileName: l.artwork.fileName, brief: l.artwork.brief },
+         })),
+         subtotal,
+         shipping,
+         total,
+      }
+      try {
+         sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order))
+      } catch {
+         // ignore — the success page falls back gracefully
+      }
+      clear()
+      router.push(`/checkout/success?ref=${order.reference}`)
+   }
+
+   if (mounted && lines.length === 0) {
       return (
-         <div className="space-y-4 py-8 text-center">
-            <Heading title="Checkout" description="Your cart is empty." />
-            <Button asChild className="rounded-2xl">
-               <Link href="/products">Browse products</Link>
-            </Button>
+         <div className="page-shell py-20 text-center">
+            <h1 className="display-md">Your cart is empty</h1>
+            <Link href="/shop" className="mt-6 inline-flex h-12 items-center rounded-full bg-ink px-7 font-semibold text-white">
+               Browse products
+            </Link>
          </div>
       )
    }
 
    return (
-      <div className="space-y-6 pb-6">
-         <Heading
-            title="Checkout"
-            description="Enter shipping and payment details to complete your order."
-         />
+      <div className="page-shell pb-10 pt-6 sm:pt-8">
+         <Breadcrumbs items={[{ href: '/cart', label: P ? 'Cart' : 'Quote list' }, { label: P ? 'Checkout' : 'Request a quote' }]} />
+         <h1 className="display-lg mt-6">{P ? 'Checkout' : 'Request your quote'}</h1>
 
-         <div className="grid grid-cols-1 gap-2 rounded-2xl border p-2 sm:grid-cols-3">
-            {[
-               { id: 1, label: 'Shipping' },
-               { id: 2, label: 'Payment' },
-               { id: 3, label: 'Review' },
-            ].map((item) => (
-               <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setStep(item.id)}
-                  className={cn(
-                     'rounded-2xl px-3 py-2 text-sm transition duration-200',
-                     step === item.id
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'hover:bg-accent'
-                  )}
-               >
-                  {item.id}. {item.label}
-               </button>
-            ))}
-         </div>
+         <form onSubmit={submit} noValidate className="mt-8 grid gap-8 lg:grid-cols-[1fr_400px] lg:items-start">
+            <div className="space-y-6">
+               <section className="rounded-3xl border bg-white p-5 sm:p-7">
+                  <h2 className="font-display text-xl font-bold">Contact & delivery</h2>
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                     {FIELDS.map((f) => (
+                        <div key={f.id} className={cn(f.span && 'sm:col-span-2')}>
+                           <label htmlFor={f.id} className="mb-1.5 block text-sm font-medium">
+                              {f.label}
+                           </label>
+                           <input
+                              id={f.id}
+                              type={f.type ?? 'text'}
+                              autoComplete={f.auto}
+                              value={form[f.id] ?? ''}
+                              onChange={(e) => setForm((s) => ({ ...s, [f.id]: e.target.value }))}
+                              aria-invalid={Boolean(errors[f.id])}
+                              className={cn(
+                                 'h-12 w-full rounded-2xl border bg-white px-4 text-[15px] outline-none transition focus:border-ink focus:ring-4 focus:ring-ink/5',
+                                 errors[f.id] ? 'border-red-500' : 'border-input'
+                              )}
+                           />
+                           {errors[f.id] ? <p className="mt-1 text-xs text-red-600">{errors[f.id]}</p> : null}
+                        </div>
+                     ))}
+                     <div className="sm:col-span-2">
+                        <label htmlFor="notes" className="mb-1.5 block text-sm font-medium">
+                           Order notes (optional)
+                        </label>
+                        <textarea
+                           id="notes"
+                           rows={3}
+                           value={form.notes}
+                           onChange={(e) => setForm((s) => ({ ...s, notes: e.target.value }))}
+                           placeholder="Deadline, delivery instructions, Pantone colours…"
+                           className="w-full rounded-2xl border border-input bg-white p-4 text-[15px] outline-none focus:border-ink focus:ring-4 focus:ring-ink/5"
+                        />
+                     </div>
+                  </div>
+               </section>
 
-         <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-3 lg:col-span-2">
-               <Card className="rounded-2xl border shadow-sm">
-                  <CardContent className="space-y-4 p-4">
-                     {step === 1 ? (
-                        <>
-                           <h3 className="font-semibold">Shipping details</h3>
-                           <div className="grid gap-3 md:grid-cols-2">
-                              <div className="space-y-1 md:col-span-2">
-                                 <Label htmlFor="fullName">Full name</Label>
-                                 <input
-                                    id="fullName"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
-                                 />
-                              </div>
-                              <div className="space-y-1">
-                                 <Label htmlFor="phone">Phone</Label>
-                                 <input
-                                    id="phone"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                 />
-                              </div>
-                              <div className="space-y-1">
-                                 <Label htmlFor="discount">Discount code (optional)</Label>
-                                 <input
-                                    id="discount"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={discountCode}
-                                    onChange={(e) => setDiscountCode(e.target.value)}
-                                 />
-                              </div>
-                              <div className="space-y-1 md:col-span-2">
-                                 <Label htmlFor="address">Address</Label>
-                                 <input
-                                    id="address"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                 />
-                              </div>
-                              <div className="space-y-1">
-                                 <Label htmlFor="city">City</Label>
-                                 <input
-                                    id="city"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                 />
-                              </div>
-                              <div className="space-y-1">
-                                 <Label htmlFor="postal">Postal code</Label>
-                                 <input
-                                    id="postal"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={postalCode}
-                                    onChange={(e) => setPostalCode(e.target.value)}
-                                 />
-                              </div>
-                           </div>
-                        </>
-                     ) : null}
-
-                     {step === 2 ? (
-                        <>
-                           <h3 className="font-semibold">Payment</h3>
-                           <p className="text-xs text-muted-foreground">
-                              Demo mode — card data is validated locally and not stored.
-                           </p>
-                           <div className="grid gap-3 md:grid-cols-2">
-                              <div className="space-y-1 md:col-span-2">
-                                 <Label htmlFor="cardName">Name on card</Label>
-                                 <input
-                                    id="cardName"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    value={cardName}
-                                    onChange={(e) => setCardName(e.target.value)}
-                                 />
-                              </div>
-                              <div className="space-y-1 md:col-span-2">
-                                 <Label htmlFor="cardNumber">Card number</Label>
-                                 <input
-                                    id="cardNumber"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    placeholder="4242 4242 4242 4242"
-                                    value={cardNumber}
-                                    onChange={(e) =>
-                                       setCardNumber(formatCardNumber(e.target.value))
-                                    }
-                                 />
-                              </div>
-                              <div className="space-y-1">
-                                 <Label htmlFor="expiry">Expiry (MM/YY)</Label>
-                                 <input
-                                    id="expiry"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    placeholder="12/28"
-                                    value={cardExpiry}
-                                    onChange={(e) => {
-                                       const digits = e.target.value.replace(/\D/g, '').slice(0, 4)
-                                       const formatted =
-                                          digits.length > 2
-                                             ? `${digits.slice(0, 2)}/${digits.slice(2)}`
-                                             : digits
-                                       setCardExpiry(formatted)
-                                    }}
-                                 />
-                              </div>
-                              <div className="space-y-1">
-                                 <Label htmlFor="cvv">CVV</Label>
-                                 <input
-                                    id="cvv"
-                                    className="h-10 w-full rounded-2xl border bg-background px-3 text-sm"
-                                    placeholder="123"
-                                    value={cardCvv}
-                                    onChange={(e) =>
-                                       setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))
-                                    }
-                                 />
-                              </div>
-                           </div>
-                        </>
-                     ) : null}
-
-                     {step === 3 ? (
-                        <>
-                           <h3 className="font-semibold">Review your order</h3>
-                           <p className="text-sm text-muted-foreground">
-                              {fullName} · {phone}
-                           </p>
-                           <p className="text-sm text-muted-foreground">
-                              {address}, {city} {postalCode}
-                           </p>
-                           <p className="text-sm text-muted-foreground">
-                              Card ending in {cardNumber.replace(/\s/g, '').slice(-4) || '----'}
-                           </p>
-                        </>
-                     ) : null}
-                  </CardContent>
-               </Card>
-
-               {lineTotals.map(({ item }) => {
-                  const image = resolveProductImages(
-                     item.productId,
-                     (item.product as any)?.images
-                  )[0]
-
-                  return (
-                     <Card key={item.lineKey} className="rounded-2xl border shadow-sm">
-                        <CardContent className="flex gap-4 p-4">
-                           <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl">
-                              <ProductImage
-                                 productId={item.productId}
-                                 src={image}
-                                 alt={(item.product as any)?.title ?? 'Product'}
-                                 sizes="80px"
-                              />
-                           </div>
-                           <div className="min-w-0 flex-1">
-                              <p className="font-medium">{(item.product as any)?.title}</p>
-                              <p className="text-sm text-muted-foreground">Qty: {item.count}</p>
-                              {item.selectedVariants?.length ? (
-                                 <p className="text-xs text-muted-foreground">
-                                    {item.selectedVariants
-                                       .map((v) => `${v.name}: ${v.value}`)
-                                       .join(' · ')}
-                                 </p>
-                              ) : null}
-                           </div>
-                        </CardContent>
-                     </Card>
-                  )
-               })}
+               <section className="rounded-3xl border bg-white p-5 sm:p-7">
+                  <h2 className="font-display text-xl font-bold">{P ? 'How payment works' : 'What happens next'}</h2>
+                  <ol className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+                     {(P
+                        ? [
+                             ['Send your order', 'We receive your order and artwork details.'],
+                             ['Approve your proof', 'We email a digital proof and final invoice.'],
+                             ['Pay & we print', 'Pay securely by card or bank transfer — production starts.'],
+                          ]
+                        : [
+                             ['Send your request', 'We receive your products, options and artwork details.'],
+                             ['Receive your quote', 'Pricing, proof and lead time within 1 business day.'],
+                             ['Approve & we produce', 'Pay only once you are happy — then we print.'],
+                          ]
+                     ).map(([t, d], i) => (
+                        <li key={t} className="rounded-2xl bg-muted p-4">
+                           <span className="font-display text-2xl font-extrabold text-primary">{i + 1}</span>
+                           <p className="mt-1 font-semibold">{t}</p>
+                           <p className="mt-1 text-muted-foreground">{d}</p>
+                        </li>
+                     ))}
+                  </ol>
+                  <label className="mt-5 flex items-start gap-3 text-sm">
+                     <input
+                        type="checkbox"
+                        checked={agreed}
+                        onChange={(e) => setAgreed(e.target.checked)}
+                        className="mt-0.5 h-5 w-5 rounded border-input accent-[#D42F25]"
+                     />
+                     <span>
+                        I agree to the{' '}
+                        <Link href="/terms" className="font-medium underline">
+                           terms of service
+                        </Link>{' '}
+                        and understand {P ? 'production starts after I approve the proof' : 'Joji Arts will contact me with pricing'}.
+                     </span>
+                  </label>
+               </section>
             </div>
 
-            <Card className="h-fit rounded-2xl border shadow-sm lg:sticky lg:top-24">
-               <CardContent className="space-y-3 p-4">
-                  <div className="flex justify-between text-sm">
-                     <span className="text-muted-foreground">Subtotal</span>
-                     <span>${subtotal.toFixed(2)}</span>
+            <aside className="rounded-3xl bg-ink p-6 text-white lg:sticky lg:top-[150px]">
+               <h2 className="font-display text-xl font-bold">{P ? 'Your order' : 'Your quote list'}</h2>
+               <ul className="mt-5 max-h-[340px] space-y-4 overflow-y-auto pr-1">
+                  {mounted
+                     ? lines.map((l) => (
+                          <li key={l.id} className="flex gap-3">
+                             <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-white/10">
+                                <CatalogImage image={l.image} label={l.name} sizes="56px" />
+                             </span>
+                             <span className="min-w-0 flex-1 text-sm">
+                                <span className="block truncate font-medium">{l.name}</span>
+                                <span className="block text-white/60">{units(l.qty, l.unitLabel)}</span>
+                             </span>
+                             {P ? <span className="text-sm font-semibold">{money(l.total)}</span> : null}
+                          </li>
+                       ))
+                     : null}
+               </ul>
+               {P ? (
+               <dl className="mt-5 space-y-2.5 border-t border-white/15 pt-5 text-sm">
+                  <div className="flex justify-between">
+                     <dt className="text-white/65">Subtotal</dt>
+                     <dd>{money(subtotal)}</dd>
                   </div>
-                  <div className="flex justify-between text-sm">
-                     <span className="text-muted-foreground">Shipping</span>
-                     <span>${SHIPPING_FEE.toFixed(2)}</span>
+                  <div className="flex justify-between">
+                     <dt className="text-white/65">Shipping</dt>
+                     <dd>{shipping ? money(shipping) : 'Free'}</dd>
                   </div>
-                  <div className="flex justify-between font-semibold">
-                     <span>Total</span>
-                     <span>${total.toFixed(2)}</span>
+                  <div className="flex items-end justify-between border-t border-white/15 pt-4">
+                     <dt className="font-semibold">Estimated total</dt>
+                     <dd className="font-display text-3xl font-extrabold">{money(total)}</dd>
                   </div>
-                  <div className="flex gap-2 pt-2">
-                     <Button
-                        variant="ghost"
-                        className="w-full rounded-2xl"
-                        disabled={step === 1 || loading}
-                        onClick={() => setStep((prev) => Math.max(1, prev - 1))}
-                     >
-                        Back
-                     </Button>
-                     <Button
-                        className="w-full rounded-2xl"
-                        disabled={loading}
-                        onClick={() => {
-                           if (step === 1) {
-                              if (!canContinueShipping) {
-                                 setErrorMessage('Complete all shipping fields.')
-                                 return
-                              }
-                              setErrorMessage('')
-                              setStep(2)
-                              return
-                           }
-                           if (step === 2) {
-                              if (!canContinuePayment) {
-                                 setErrorMessage('Enter valid payment details.')
-                                 return
-                              }
-                              setErrorMessage('')
-                              setStep(3)
-                              return
-                           }
-                           submitCheckout()
-                        }}
-                     >
-                        {step === 3
-                           ? loading
-                              ? 'Processing...'
-                              : 'Place order'
-                           : 'Continue'}
-                     </Button>
-                  </div>
-                  {errorMessage ? (
-                     <p className="text-xs text-destructive">{errorMessage}</p>
-                  ) : null}
-                  <Button asChild variant="outline" className="w-full rounded-2xl">
-                     <Link href="/cart">Back to cart</Link>
-                  </Button>
-               </CardContent>
-            </Card>
-         </div>
+               </dl>
+               ) : null}
+               <button
+                  type="submit"
+                  disabled={!agreed}
+                  className="btn-shine mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+               >
+                  <Lock className="h-4 w-4" /> {P ? 'Place order request' : 'Send quote request'} <ArrowRight className="h-5 w-5" />
+               </button>
+               <p className="mt-4 flex items-start gap-2 text-xs text-white/55">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
+                  {P ? 'No payment is taken now. Taxes are added on your final invoice.' : 'Free, no-obligation quote. No payment is taken now.'}
+               </p>
+            </aside>
+         </form>
       </div>
    )
 }

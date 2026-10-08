@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 const FAQS: Array<{ q: string; a: string }> = [
    {
-      q: 'What packaging can I order?',
-      a: 'Cosmetics (cartons, bags, tags, tissue), hotel and food packaging, perfume and makeup boxes, rigid luxury boxes, corrugated mailers and cartons, plus 3D branding boards, neon, and LED signs.',
+      q: 'What can I order from Joji Arts?',
+      a: 'Eleven departments: packaging, food packaging, retail packaging, bags, printing, labels & stickers, marketing, corporate, custom packaging, acrylic & plastic packaging, and signage & displays — from business cards and mailer boxes to neon signs and LED video walls.',
    },
    {
       q: 'Can I add my logo?',
@@ -18,19 +18,23 @@ const FAQS: Array<{ q: string; a: string }> = [
    },
    {
       q: 'How long does production take?',
-      a: 'Typical lead time is a few business days after artwork approval, then shipping time depends on your destination. Exact estimates appear on product pages.',
+      a: 'Most printed products are produced in 3–10 business days after you approve your proof; signage and LED displays take 1–6 weeks. Every product page shows its lead time.',
    },
    {
       q: 'What file specs do you need?',
       a: 'Use 300 DPI at print size when possible. Keep important text inside safe margins. Vector files (SVG/PDF) work best for logos.',
    },
    {
-      q: 'Can I order samples?',
-      a: 'Yes for many items — start with a small quantity on the product page, or contact us for a sample pack quote.',
+      q: 'How do I get a price?',
+      a: 'Choose your products and options, add them to your quote list and send the request — it takes a minute. We reply within one business day with pricing, a digital proof and lead time. You only pay once you approve.',
+   },
+   {
+      q: 'Can I order samples or prototypes?',
+      a: 'Yes. Order a Prototype & Sample Box from Custom Packaging, or request a quote for a sample pack.',
    },
    {
       q: 'Do you offer bulk discounts?',
-      a: 'Larger quantities usually lower the unit price. For very large runs, contact support for a custom quote.',
+      a: 'Yes — larger runs bring the unit price down. Add the quantity you need to your quote list and we will price every tier for you. For very large runs we can quote offset pricing.',
    },
    {
       q: 'What if my order arrives damaged?',
@@ -38,7 +42,7 @@ const FAQS: Array<{ q: string; a: string }> = [
    },
    {
       q: 'How do I track my order?',
-      a: 'After checkout you receive email updates. You can also reach support with your order ID via Contact or Telegram.',
+      a: 'We email you at every step: proof, production and dispatch with a tracking link. Questions? Reply to any of our emails or contact us with your order reference.',
    },
 ]
 
@@ -46,7 +50,7 @@ export default function FaqPage() {
    return (
       <ContentPage
          title="FAQ"
-         description="Answers to common questions about ordering custom packaging."
+         description="Answers to common questions about ordering packaging, print and signage."
       >
          {FAQS.map((item) => (
             <div key={item.q}>
@@ -57,8 +61,8 @@ export default function FaqPage() {
 
          <h2>Still need help?</h2>
          <p>
-            Visit <Link href="/contact">Contact</Link> or join{' '}
-            <Link href="/telegram">Telegram</Link> for support.
+            Visit <Link href="/contact">Contact</Link> or{' '}
+            <Link href="/quote">request a quote</Link> for custom work.
          </p>
       </ContentPage>
    )

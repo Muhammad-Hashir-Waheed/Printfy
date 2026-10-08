@@ -1,8 +1,7 @@
 {
-   "name": "next-prisma-tailwind-ecommerce",
+   "name": "joji-arts-storefront",
    "author": {
-      "name": "Sesto",
-      "url": "https://github.com/sesto-dev"
+      "name": "Joji Arts"
    },
    "license": "MIT",
    "scripts": {
@@ -11,6 +10,7 @@
       "vercel-build": "prisma generate && next build && node scripts/sync-vercel-output.cjs",
       "start": "next start",
       "lint": "next lint",
+      "images:fetch": "node scripts/fetch-catalog-images.mjs",
       "postinstall": "prisma generate",
       "update": "npx npm-check-updates -u",
       "db:generate": "npx prisma generate",

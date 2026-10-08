@@ -1,18 +1,18 @@
-import Footer from '@/components/native/Footer'
-import Header from '@/components/native/nav/parent'
-import { ScrollProgress } from '@/components/ui/scroll-progress'
+import { SiteFooter } from '@/components/store/site-footer'
+import { SiteHeader } from '@/components/store/site-header'
 
-export default async function DashboardLayout({
-   children,
-}: {
-   children: React.ReactNode
-}) {
+export default function StoreLayout({ children }: { children: React.ReactNode }) {
    return (
       <>
-         <ScrollProgress />
-         <Header />
-         <main className="page-shell py-5">{children}</main>
-         <Footer />
+         <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
+         >
+            Skip to content
+         </a>
+         <SiteHeader />
+         <main id="main">{children}</main>
+         <SiteFooter />
       </>
    )
 }
