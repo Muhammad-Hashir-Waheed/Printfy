@@ -1,4 +1,4 @@
-import manifest from './image-manifest.json'
+import manifest from './image-manifest'
 
 export type CatalogImage = {
    src: string
@@ -24,7 +24,7 @@ type ManifestEntry = {
    photographerUrl?: string
 }
 
-const MANIFEST = manifest as Record<string, ManifestEntry>
+const MANIFEST = manifest as unknown as Record<string, ManifestEntry>
 
 /**
  * Photos that shipped with the original storefront. Used until the Pixabay
