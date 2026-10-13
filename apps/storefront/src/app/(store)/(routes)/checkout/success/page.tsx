@@ -75,7 +75,17 @@ export default function CheckoutSuccessPage() {
                         <ClipboardCopy className="h-5 w-5" /> {copied ? 'Link copied!' : 'Copy private link'}
                      </button>
                   </div>
-                  <p className="mt-3 text-xs text-muted-foreground">Bookmark your private link — it shows your design, its status and our messages.</p>
+                  {order.submission.emailed ? (
+                     <p className="mx-auto mt-5 flex max-w-md items-center justify-center gap-2 rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+                        <Mail className="h-4 w-4 shrink-0" />
+                        <span>
+                           We&apos;ve emailed your private tracking link to <strong>{order.customer.email}</strong>. We&apos;ll email
+                           you again whenever there&apos;s an update.
+                        </span>
+                     </p>
+                  ) : (
+                     <p className="mt-3 text-xs text-muted-foreground">Bookmark your private link — it shows your design, its status and our messages.</p>
+                  )}
                </div>
             ) : (
             <>

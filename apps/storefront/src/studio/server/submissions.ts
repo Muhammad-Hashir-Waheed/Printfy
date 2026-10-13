@@ -131,7 +131,7 @@ export function customerView(s: Submission) {
       files: Object.fromEntries(
          Object.entries(s.files).map(([id, f]) => [id, { ...f, token: undefined }])
       ),
-      timeline: s.timeline.filter((t) => t.kind !== 'note'),
+      timeline: s.timeline.filter((t) => t.kind !== 'note' && t.kind !== 'email'),
    }
 }
 

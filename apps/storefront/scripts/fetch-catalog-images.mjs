@@ -124,6 +124,17 @@ async function download(url, dest) {
    fs.renameSync(tmp, dest)
 }
 
+async function lookupById(key, id) {
+   try {
+      const res = await fetch(`https://pixabay.com/api/?key=${encodeURIComponent(key)}&id=${id}`)
+      if (!res.ok) return null
+      await sleep(650)
+      return (await res.json()).hits?.[0] ?? null
+   } catch {
+      return null
+   }
+}
+
 /* ───────────── Matching ───────────── */
 
 function tagList(hit) {
@@ -247,10 +258,16 @@ async function main() {
    }
 
    if (flag('--apply-picks')) {
-      const { PICKS, DEPARTMENT_PICKS } = await import('./image-picks.mjs')
+      const { PICKS, DEPARTMENT_PICKS, PRODUCT_PICKS = {} } = await import('./image-picks.mjs')
       const byId = new Map()
       for (const f of fs.readdirSync(candidatesDir)) {
          for (const c of JSON.parse(fs.readFileSync(path.join(candidatesDir, f), 'utf8'))) byId.set(c.id, c)
+      }
+      const productCandidates = path.join(cacheDir, 'product-candidates.json')
+      if (fs.existsSync(productCandidates)) {
+         for (const list of Object.values(JSON.parse(fs.readFileSync(productCandidates, 'utf8')))) {
+            for (const c of list) byId.set(c.id, c)
+         }
       }
       const assign = []
       for (const job of jobs) {
@@ -268,6 +285,12 @@ async function main() {
          const usage = new Map(picks.map((id) => [id, 0]))
          // Products get the most relevant approved photo, spreading use as evenly as possible
          for (const job of catJobs) {
+            // A hand-picked photo for this exact product wins
+            const own = PRODUCT_PICKS[job.key.slice(2)]
+            if (own) {
+               assign.push([job, own])
+               continue
+            }
             const best = picks
                .map((id, index) => ({ id, score: relevance(byId.get(id) ?? {}, job.own) * 10 - usage.get(id) * 4 - index * 0.01 }))
                .sort((a, b) => b.score - a.score)[0]
@@ -300,6 +323,25 @@ async function main() {
                break
             } catch {
                // try the next rendition
+            }
+         }
+         if (!size) {
+            // Pixabay URLs expire after 24h — look the photo up again by id for fresh links
+            const fresh = (await lookupById(key, id))
+            if (fresh) {
+               for (const [src, w] of [
+                  [fresh.webformatURL.replace(/_640(\.\w+)$/, `_${wantSize}$1`), wantSize],
+                  [fresh.largeImageURL, 1280],
+                  [fresh.webformatURL, 640],
+               ]) {
+                  try {
+                     await download(src, path.join(publicDir, file))
+                     size = w
+                     break
+                  } catch {
+                     // next rendition
+                  }
+               }
             }
          }
          if (!size) {

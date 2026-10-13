@@ -1,4 +1,5 @@
 import { claimFiles, UploadError } from '@/studio/server/files'
+import { baseUrlFrom, notifyCustomerReply } from '@/studio/server/notify'
 import { customerView, getForCustomer, timeline, updateSubmission } from '@/studio/server/submissions'
 import { clientIp, handleError, jsonError, rateLimit } from '@/studio/server/util'
 import { NextResponse } from 'next/server'
@@ -53,7 +54,9 @@ export async function POST(req: Request, { params }: Params) {
          }
          s.seenByAdmin = false
       })
-      return NextResponse.json(customerView(updated as NonNullable<typeof updated>))
+      const saved = updated as NonNullable<typeof updated>
+      await notifyCustomerReply(saved, baseUrlFrom(req), body.message, body.files.length)
+      return NextResponse.json(customerView(saved))
    } catch (error) {
       if (error instanceof UploadError) return jsonError(error.status, error.message)
       return handleError(error, 'REVIEW_REPLY')

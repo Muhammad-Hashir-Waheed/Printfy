@@ -46,7 +46,7 @@ export function QuoteForm() {
       details: '',
    })
    const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({})
-   const [sent, setSent] = useState<{ ref: string; text: string; href: string; reviewUrl?: string } | null>(null)
+   const [sent, setSent] = useState<{ ref: string; text: string; href: string; reviewUrl?: string; emailed?: boolean } | null>(null)
    const [files, setFiles] = useState<UploadedDesign[]>([])
    const [uploading, setUploading] = useState(false)
    const [sending, setSending] = useState(false)
@@ -122,7 +122,7 @@ export function QuoteForm() {
          })
          const data = await res.json().catch(() => ({}))
          if (res.ok) {
-            setSent({ ref: data.reference, text, href, reviewUrl: data.reviewUrl })
+            setSent({ ref: data.reference, text, href, reviewUrl: data.reviewUrl, emailed: Boolean(data.emailed) })
             return
          }
          if (res.status === 400 || res.status === 429) {
@@ -149,6 +149,7 @@ export function QuoteForm() {
             <p className="mx-auto mt-3 max-w-md text-muted-foreground">
                Our team has your brief{files.length ? ' and files' : ''}. We&apos;ll reply to <strong className="text-foreground">{form.email}</strong> within
                one business day.
+               {sent.emailed ? ' Your private tracking link is on its way to your inbox.' : ''}
             </p>
             <Link
                href={sent.reviewUrl}

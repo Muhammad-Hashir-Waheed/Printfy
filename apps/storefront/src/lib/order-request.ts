@@ -26,7 +26,7 @@ export type OrderRequest = {
    shipping: number
    total: number
    /** Saved in the Design Studio (when storage is available) */
-   submission?: { id: string; reference: string; reviewUrl: string }
+   submission?: { id: string; reference: string; reviewUrl: string; emailed?: boolean }
 }
 
 export const LAST_ORDER_KEY = 'joji-last-order'

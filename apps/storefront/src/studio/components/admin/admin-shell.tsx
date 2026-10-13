@@ -18,11 +18,13 @@ export function AdminShell({
    email,
    inboxCount,
    storage,
+   mail,
 }: {
    children: React.ReactNode
    email: string
    inboxCount: number
    storage: 'local' | 'supabase' | null
+   mail: 'resend' | 'smtp' | 'preview'
 }) {
    const pathname = usePathname()
    const router = useRouter()
@@ -83,6 +85,10 @@ export function AdminShell({
             <p className="mt-0.5 flex items-center gap-1.5 text-xs text-white/50">
                <span className={cn('h-1.5 w-1.5 rounded-full', storage ? 'bg-emerald-400' : 'bg-amber-400')} />
                {storage === 'supabase' ? 'Cloud storage' : storage === 'local' ? 'Local storage (dev)' : 'Storage not configured'}
+            </p>
+            <p className="mt-0.5 flex items-center gap-1.5 text-xs text-white/50">
+               <span className={cn('h-1.5 w-1.5 rounded-full', mail === 'preview' ? 'bg-amber-400' : 'bg-emerald-400')} />
+               {mail === 'resend' ? 'Email via Resend' : mail === 'smtp' ? 'Email via SMTP' : 'Email preview mode'}
             </p>
             <button
                type="button"

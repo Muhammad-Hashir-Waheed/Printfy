@@ -290,7 +290,10 @@ export function SiteHeader() {
          if (ticking) return
          ticking = true
          requestAnimationFrame(() => {
-            setCompact(window.scrollY > 120)
+            // Hysteresis: the header shrinks ~50px when it goes compact, which shifts the page.
+            // Separate enter/exit thresholds (gap > that shift) stop it flickering at the edge.
+            const y = window.scrollY
+            setCompact((was) => (was ? y > 40 : y > 160))
             ticking = false
          })
       }
@@ -365,6 +368,7 @@ export function SiteHeader() {
          </div>
 
          <header
+            style={{ overflowAnchor: 'none' }}
             className={cn('sticky top-0 z-40 transition-[padding] duration-500 [transition-timing-function:cubic-bezier(.2,.7,.2,1)]', compact ? 'lg:px-4 lg:pt-3' : '')}
             onMouseLeave={closeSoon}
             onMouseEnter={cancelClose}

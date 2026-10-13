@@ -58,6 +58,7 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
    const [changesOpen, setChangesOpen] = useState(false)
    const [changesText, setChangesText] = useState('')
    const [statusMenu, setStatusMenu] = useState(false)
+   const [notify, setNotify] = useState(true)
 
    // Every file with the item it belongs to (for product mockups)
    const files = useMemo(() => {
@@ -99,14 +100,16 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
 
    async function setStatus(status: SubmissionStatus, message?: string) {
       setStatusMenu(false)
-      if (await patch({ action: 'status', status, message }, status)) toast.success(`Marked as ${STATUS_META[status].label.toLowerCase()}`)
+      if (await patch({ action: 'status', status, message, notify }, status)) {
+         toast.success(`Marked as ${STATUS_META[status].label.toLowerCase()}${notify ? ' · customer emailed' : ''}`)
+      }
    }
 
    async function sendComposer() {
       if (!text.trim()) return
-      if (await patch({ action: composer, text: text.trim() }, 'composer')) {
+      if (await patch(composer === 'message' ? { action: 'message', text: text.trim(), notify } : { action: 'note', text: text.trim() }, 'composer')) {
          setText('')
-         toast.success(composer === 'note' ? 'Note saved' : 'Message added to the customer’s page')
+         toast.success(composer === 'note' ? 'Note saved' : notify ? 'Message sent · customer emailed' : 'Message added to the customer’s page')
       }
    }
 
@@ -399,19 +402,29 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
                      ) : null}
                   </ul>
                   {c.notes ? <p className="mt-3 rounded-2xl bg-muted p-3 text-sm">“{c.notes}”</p> : null}
-                  <div className="mt-4 grid grid-cols-2 gap-2">
+                  <button
+                     type="button"
+                     onClick={async () => {
+                        if (await patch({ action: 'resend_link' }, 'resend')) toast.success(`Tracking link emailed to ${c.email}`)
+                     }}
+                     disabled={busy === 'resend'}
+                     className="btn-shine mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-ink text-sm font-semibold text-white disabled:opacity-60"
+                  >
+                     {busy === 'resend' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />} Email tracking link
+                  </button>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
                      <a
-                        href={`mailto:${c.email}?subject=${encodeURIComponent(`Your design ${s.reference}`)}&body=${encodeURIComponent(`Hi ${c.name.split(' ')[0]},\n\nYou can see your design and its status here:\n${customerLink}\n\n— Joji Arts`)}`}
-                        className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-ink text-sm font-semibold text-white"
+                        href={`mailto:${c.email}?subject=${encodeURIComponent(`Your design ${s.reference}`)}`}
+                        className="inline-flex h-10 items-center justify-center gap-2 rounded-full border text-sm font-semibold hover:border-ink"
                      >
-                        <Mail className="h-4 w-4" /> Email
+                        <Mail className="h-4 w-4" /> Write email
                      </a>
                      <button
                         type="button"
                         onClick={() => navigator.clipboard.writeText(customerLink).then(() => toast.success('Customer link copied'))}
                         className="inline-flex h-10 items-center justify-center gap-2 rounded-full border text-sm font-semibold hover:border-ink"
                      >
-                        <Copy className="h-4 w-4" /> Client link
+                        <Copy className="h-4 w-4" /> Copy link
                      </button>
                   </div>
                </section>
@@ -452,8 +465,25 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
                         className="mt-2 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-ink text-sm font-semibold text-white disabled:opacity-40"
                      >
                         {busy === 'composer' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                        {composer === 'note' ? 'Save note' : 'Send to customer page'}
+                        {composer === 'note' ? 'Save note' : notify ? 'Send & email customer' : 'Send to customer page'}
                      </button>
+                     <label className="mt-3 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-muted/60 px-3 py-2.5 text-sm">
+                        <span>
+                           <span className="flex items-center gap-1.5 font-semibold">
+                              <Mail className="h-4 w-4" /> Email the customer
+                           </span>
+                           <span className="block text-xs text-muted-foreground">On status changes and messages</span>
+                        </span>
+                        <button
+                           type="button"
+                           role="switch"
+                           aria-checked={notify}
+                           onClick={() => setNotify((n) => !n)}
+                           className={cn('relative h-6 w-11 shrink-0 rounded-full transition', notify ? 'bg-emerald-500' : 'bg-zinc-300')}
+                        >
+                           <span className={cn('absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all', notify ? 'left-[22px]' : 'left-0.5')} />
+                        </button>
+                     </label>
                   </div>
                   <ol className="max-h-[520px] space-y-4 overflow-y-auto border-t px-5 py-5">
                      {s.timeline
@@ -464,10 +494,10 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
                               <span
                                  className={cn(
                                     'mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full',
-                                    t.kind === 'note' ? 'bg-amber-100 text-amber-700' : t.by === 'customer' ? 'bg-ink text-white' : t.by === 'admin' ? 'bg-primary/10 text-primary' : 'bg-muted'
+                                    t.kind === 'email' ? (t.email?.ok ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700') : t.kind === 'note' ? 'bg-amber-100 text-amber-700' : t.by === 'customer' ? 'bg-ink text-white' : t.by === 'admin' ? 'bg-primary/10 text-primary' : 'bg-muted'
                                  )}
                               >
-                                 {t.kind === 'note' ? <Lock className="h-3.5 w-3.5" /> : t.by === 'customer' ? <span className="text-[10px] font-bold">{c.name[0]}</span> : <Clock className="h-3.5 w-3.5" />}
+                                 {t.kind === 'email' ? <Mail className="h-3.5 w-3.5" /> : t.kind === 'note' ? <Lock className="h-3.5 w-3.5" /> : t.by === 'customer' ? <span className="text-[10px] font-bold">{c.name[0]}</span> : <Clock className="h-3.5 w-3.5" />}
                               </span>
                               <div className="min-w-0 flex-1 text-sm">
                                  <p className="font-semibold">
@@ -483,7 +513,22 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
                                                ? STATUS_META[t.status].label
                                                : t.text}
                                  </p>
-                                 {t.text && t.kind !== 'created' && t.kind !== 'status' ? (
+                                 {t.kind === 'email' && t.email ? (
+                                    <p className="mt-0.5 text-xs text-muted-foreground">
+                                       <span className="block truncate">“{t.email.subject}”</span>
+                                       <span className="block truncate">to {t.email.to}</span>
+                                       <span
+                                          className={cn(
+                                             'mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold',
+                                             !t.email.ok ? 'bg-red-50 text-red-700' : t.email.via === 'preview' ? 'bg-amber-50 text-amber-800' : 'bg-emerald-50 text-emerald-700'
+                                          )}
+                                          title={t.email.error}
+                                       >
+                                          {!t.email.ok ? `Failed${t.email.error ? ` · ${t.email.error.slice(0, 60)}` : ''}` : t.email.via === 'preview' ? 'Preview only (no email provider)' : `Sent via ${t.email.via === 'resend' ? 'Resend' : 'SMTP'}`}
+                                       </span>
+                                    </p>
+                                 ) : null}
+                                 {t.text && t.kind !== 'created' && t.kind !== 'status' && t.kind !== 'email' ? (
                                     <p className={cn('mt-1 whitespace-pre-line rounded-xl px-3 py-2', t.kind === 'note' ? 'bg-amber-50' : 'bg-muted')}>{t.text}</p>
                                  ) : null}
                                  {t.fileIds?.length && t.kind === 'revision' ? (

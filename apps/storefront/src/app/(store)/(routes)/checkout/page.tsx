@@ -111,7 +111,7 @@ export default function CheckoutPage() {
          const data = await res.json().catch(() => ({}))
          if (res.ok) {
             order.reference = data.reference
-            order.submission = { id: data.id, reference: data.reference, reviewUrl: data.reviewUrl }
+            order.submission = { id: data.id, reference: data.reference, reviewUrl: data.reviewUrl, emailed: Boolean(data.emailed) }
          } else if (res.status === 400 || res.status === 429) {
             // A real problem the customer can fix (e.g. a file that didn't upload)
             setSendError(data.error || 'Please check your details and try again.')

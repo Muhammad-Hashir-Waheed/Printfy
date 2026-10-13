@@ -120,12 +120,14 @@ export type Customer = {
 export type TimelineEntry = {
    id: string
    at: string
-   kind: 'status' | 'note' | 'message' | 'customer_message' | 'revision' | 'created'
+   kind: 'status' | 'note' | 'message' | 'customer_message' | 'revision' | 'created' | 'email'
    /** 'admin' | 'customer' | 'system' */
    by: 'admin' | 'customer' | 'system'
    text?: string
    status?: SubmissionStatus
    fileIds?: string[]
+   /** kind === 'email': delivery result */
+   email?: { to: string; subject: string; ok: boolean; via: 'resend' | 'smtp' | 'preview'; error?: string }
 }
 
 export type Submission = {

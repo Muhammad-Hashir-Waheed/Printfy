@@ -1,5 +1,6 @@
 import { getProductByKey, isValidQuantity, sanitizeSelections } from '@/catalog'
 import { claimFiles, UploadError } from '@/studio/server/files'
+import { baseUrlFrom, notifyNewSubmission } from '@/studio/server/notify'
 import { createSubmission, timeline } from '@/studio/server/submissions'
 import { clientIp, handleError, jsonError, newId, newToken, rateLimit, reference } from '@/studio/server/util'
 import type { Submission, SubmissionItem } from '@/studio/types'
@@ -105,8 +106,11 @@ export async function POST(req: Request) {
          seenByAdmin: false,
       }
       await createSubmission(submission)
+      const emails = await notifyNewSubmission(submission, baseUrlFrom(req))
+      const customerEmail = emails.find((e) => e.audience === 'customer')
 
       return NextResponse.json({
+         emailed: Boolean(customerEmail?.result.ok && customerEmail.result.via !== 'preview'),
          id: submission.id,
          reference: submission.reference,
          reviewUrl: `/design-review/${submission.id}?t=${encodeURIComponent(submission.accessToken)}`,
