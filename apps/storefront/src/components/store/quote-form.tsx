@@ -4,7 +4,10 @@ import { ALL_PRODUCTS, DEPARTMENTS, getProductByKey } from '@/catalog'
 import config from '@/config/site'
 import { copyText, mailto, makeReference } from '@/lib/mailto'
 import { cn } from '@/lib/utils'
-import { Check, ClipboardCopy, Mail } from 'lucide-react'
+import { ArtworkUploader } from '@/studio/components/artwork-uploader'
+import type { UploadedDesign } from '@/studio/client/upload'
+import { Check, ClipboardCopy, Eye, Loader2, Mail, Send } from 'lucide-react'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 
@@ -43,7 +46,11 @@ export function QuoteForm() {
       details: '',
    })
    const [errors, setErrors] = useState<Partial<Record<keyof Form, string>>>({})
-   const [sent, setSent] = useState<{ ref: string; text: string; href: string } | null>(null)
+   const [sent, setSent] = useState<{ ref: string; text: string; href: string; reviewUrl?: string } | null>(null)
+   const [files, setFiles] = useState<UploadedDesign[]>([])
+   const [uploading, setUploading] = useState(false)
+   const [sending, setSending] = useState(false)
+   const [submitError, setSubmitError] = useState('')
    const [copied, setCopied] = useState(false)
 
    const productOptions = useMemo(
@@ -54,12 +61,13 @@ export function QuoteForm() {
    const set = (key: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
       setForm((s) => ({ ...s, [key]: e.target.value }))
 
-   function submit(e: React.FormEvent) {
+   async function submit(e: React.FormEvent) {
       e.preventDefault()
+      if (uploading || sending) return
       const next: Partial<Record<keyof Form, string>> = {}
       if (!form.name.trim()) next.name = 'Required'
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Enter a valid email'
-      if (!form.details.trim() && !form.product.trim()) next.details = 'Tell us what you need'
+      if (!form.details.trim() && !form.product.trim() && !files.length) next.details = 'Tell us what you need'
       setErrors(next)
       if (Object.keys(next).length) return
 
@@ -85,8 +93,71 @@ export function QuoteForm() {
          .join('\n')
 
       const href = mailto(config.email, `Quote request ${ref} — ${form.product || dept || 'Custom project'}`, text)
+
+      // Save to the Design Studio (with attachments); fall back to email if storage isn't available.
+      setSending(true)
+      setSubmitError('')
+      try {
+         const details = [
+            dept ? `Department: ${dept}` : '',
+            form.product ? `Product: ${form.product}` : '',
+            form.quantity ? `Quantity: ${form.quantity}` : '',
+            form.size ? `Size / dimensions: ${form.size}` : '',
+            form.deadline ? `Needed by: ${form.deadline}` : '',
+            form.budget ? `Budget: ${form.budget}` : '',
+            form.details.trim() ? `\n${form.details.trim()}` : '',
+         ]
+            .filter(Boolean)
+            .join('\n')
+            .trim()
+         const res = await fetch('/api/submissions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               source: 'quote',
+               customer: { name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim() || undefined, company: form.company.trim() || undefined },
+               attachments: files.map((f) => ({ id: f.id, token: f.token })),
+               details: details || undefined,
+            }),
+         })
+         const data = await res.json().catch(() => ({}))
+         if (res.ok) {
+            setSent({ ref: data.reference, text, href, reviewUrl: data.reviewUrl })
+            return
+         }
+         if (res.status === 400 || res.status === 429) {
+            setSubmitError(data.error || 'Please check your details and try again.')
+            return
+         }
+      } catch {
+         // offline → email fallback below
+      } finally {
+         setSending(false)
+      }
       setSent({ ref, text, href })
       window.location.href = href
+   }
+
+   if (sent?.reviewUrl) {
+      return (
+         <div className="rounded-[2rem] border bg-white p-8 text-center sm:p-12">
+            <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-500 text-white shadow-lg shadow-emerald-500/30">
+               <Check className="h-8 w-8" />
+            </span>
+            <p className="eyebrow mt-6 text-muted-foreground">Reference {sent.ref}</p>
+            <h2 className="display-md mt-2">Request received — thank you!</h2>
+            <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+               Our team has your brief{files.length ? ' and files' : ''}. We&apos;ll reply to <strong className="text-foreground">{form.email}</strong> within
+               one business day.
+            </p>
+            <Link
+               href={sent.reviewUrl}
+               className="btn-shine mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-ink px-6 font-semibold text-white"
+            >
+               <Eye className="h-4 w-4" /> Track my request
+            </Link>
+         </div>
+      )
    }
 
    if (sent) {
@@ -191,14 +262,23 @@ export function QuoteForm() {
                {errors.details ? <p className="mt-1 text-xs text-red-600">{errors.details}</p> : null}
             </div>
          </div>
+         <div className="mt-5">
+            <p className="mb-1.5 text-sm font-medium">
+               Artwork, logos or reference photos <span className="font-normal text-muted-foreground">(optional)</span>
+            </p>
+            <ArtworkUploader multiple compact value={files} onChange={setFiles} onBusyChange={setUploading} />
+         </div>
+         {submitError ? <p className="mt-4 rounded-2xl bg-red-50 p-3 text-sm text-red-700">{submitError}</p> : null}
          <button
             type="submit"
-            className="mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold text-white transition hover:bg-primary/90 sm:w-auto sm:px-10"
+            disabled={uploading || sending}
+            className="btn-shine mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold text-white transition hover:bg-primary/90 disabled:opacity-60 sm:w-auto sm:px-10"
          >
-            <Mail className="h-5 w-5" /> Send quote request
+            {uploading || sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+            {uploading ? 'Uploading files…' : sending ? 'Sending…' : 'Send quote request'}
          </button>
          <p className="mt-3 text-xs text-muted-foreground">
-            This opens your email app with your request filled in, addressed to {config.email}.
+            Your request and files go straight to our design team — we reply by email within one business day.
          </p>
       </form>
    )

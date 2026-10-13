@@ -1,17 +1,16 @@
 /**
- * Feature switches. The storefront currently runs as a static catalog:
- * no database, no admin portal, no customer accounts.
+ * Feature switches.
  *
- * Turn things back on later with environment variables:
- *   ENABLE_ADMIN=true      → /admin dashboard and /api/admin/*
- *   ENABLE_ACCOUNTS=true   → /login, /profile, /wishlist and the database-backed /api/*
+ *   ENABLE_ACCOUNTS=true → /login, /profile, /wishlist and the database-backed /api/*
+ *                          (requires DATABASE_URL and JWT_SECRET_KEY)
  *
- * Both require DATABASE_URL and JWT_SECRET_KEY to be configured.
+ * The Design Studio admin (/admin) is always on and protected by ADMIN_EMAIL /
+ * ADMIN_PASSWORD / ADMIN_SESSION_SECRET. The old database admin lives in
+ * src/app/_legacy and is not routed.
  */
 export const FEATURES = {
-   admin: process.env.ENABLE_ADMIN === 'true',
    accounts: process.env.ENABLE_ACCOUNTS === 'true',
 }
 
-/** API routes that work without a database and stay public. */
-export const STATIC_API_ROUTES = ['/api/order-request']
+/** Public API routes that work without customer accounts (they do their own checks). */
+export const PUBLIC_API_PREFIXES = ['/api/uploads', '/api/files/', '/api/submissions', '/api/design-review/']

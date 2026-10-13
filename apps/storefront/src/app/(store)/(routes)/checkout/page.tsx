@@ -8,7 +8,7 @@ import { money, units } from '@/lib/money'
 import { LAST_ORDER_KEY, type Customer, type OrderRequest } from '@/lib/order-request'
 import { cn } from '@/lib/utils'
 import { useCart } from '@/state/cart-store'
-import { ArrowRight, Lock, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Loader2, Lock, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -59,9 +59,14 @@ export default function CheckoutPage() {
       return Object.keys(next).length === 0
    }
 
-   function submit(e: React.FormEvent) {
+   const [sending, setSending] = useState(false)
+   const [sendError, setSendError] = useState('')
+
+   async function submit(e: React.FormEvent) {
       e.preventDefault()
-      if (!validate() || !agreed) return
+      if (!validate() || !agreed || sending) return
+      setSending(true)
+      setSendError('')
       const order: OrderRequest = {
          reference: makeReference('JA'),
          createdAt: new Date().toISOString(),
@@ -83,6 +88,41 @@ export default function CheckoutPage() {
          shipping,
          total,
       }
+      // Save to the Design Studio so the team sees it (with uploaded artwork) in the admin.
+      try {
+         const res = await fetch('/api/submissions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               source: 'checkout',
+               customer: order.customer,
+               items: lines.map((l) => ({
+                  productKey: l.productKey,
+                  qty: l.qty,
+                  selections: l.selections,
+                  artwork: {
+                     mode: l.artwork.mode,
+                     files: l.artwork.fileId && l.artwork.fileToken ? [{ id: l.artwork.fileId, token: l.artwork.fileToken }] : [],
+                     brief: l.artwork.brief,
+                  },
+               })),
+            }),
+         })
+         const data = await res.json().catch(() => ({}))
+         if (res.ok) {
+            order.reference = data.reference
+            order.submission = { id: data.id, reference: data.reference, reviewUrl: data.reviewUrl }
+         } else if (res.status === 400 || res.status === 429) {
+            // A real problem the customer can fix (e.g. a file that didn't upload)
+            setSendError(data.error || 'Please check your details and try again.')
+            setSending(false)
+            return
+         }
+         // 503 (storage not configured) / 5xx → fall back to the email flow below
+      } catch {
+         // offline → email flow
+      }
+
       try {
          sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order))
       } catch {
@@ -225,11 +265,13 @@ export default function CheckoutPage() {
                ) : null}
                <button
                   type="submit"
-                  disabled={!agreed}
+                  disabled={!agreed || sending}
                   className="btn-shine mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                >
-                  <Lock className="h-4 w-4" /> {P ? 'Place order request' : 'Send quote request'} <ArrowRight className="h-5 w-5" />
+                  {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}{' '}
+                  {sending ? 'Sending…' : P ? 'Place order request' : 'Send quote request'} <ArrowRight className="h-5 w-5" />
                </button>
+               {sendError ? <p className="mt-3 rounded-2xl bg-red-500/15 p-3 text-sm text-red-100">{sendError}</p> : null}
                <p className="mt-4 flex items-start gap-2 text-xs text-white/55">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
                   {P ? 'No payment is taken now. Taxes are added on your final invoice.' : 'Free, no-obligation quote. No payment is taken now.'}

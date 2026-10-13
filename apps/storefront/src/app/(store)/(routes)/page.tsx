@@ -260,7 +260,7 @@ function SignageFeature() {
                   <Link
                      key={c.slug}
                      href={c.href}
-                     className={`group relative aspect-[4/5] overflow-hidden rounded-3xl bg-white/5 ring-1 ring-white/10 sm:aspect-[5/4] ${i % 2 === 1 ? 'lg:translate-y-8' : ''}`}
+                     className={`group relative block aspect-[4/5] overflow-hidden rounded-3xl bg-white/5 ring-1 ring-white/10 sm:aspect-[5/4] ${i % 2 === 1 ? 'lg:translate-y-8' : ''}`}
                   >
                      <CatalogImage image={c.image} label={c.name} accent={dept.accent} dark sizes="(min-width:1024px) 28vw, 50vw" className="transition duration-700 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
@@ -352,11 +352,11 @@ function Industries() {
       <section className="page-shell py-20 sm:py-24">
          <SectionHeading eyebrow="Shop by industry" title="Built for how you do business." />
          <Reveal stagger={90} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {items.map((item, i) => (
+            {items.map((item) => (
                <Link
                   key={item.title}
                   href={item.href}
-                  className={`group relative overflow-hidden rounded-3xl bg-muted ${i === 0 ? 'sm:col-span-2 lg:col-span-1 lg:row-span-1' : ''}`}
+                  className="group relative block h-full overflow-hidden rounded-3xl bg-muted"
                >
                   <div className="relative aspect-[3/4] max-h-[420px] w-full sm:aspect-[4/5]">
                      <CatalogImage image={item.image?.image ?? null} label={item.title} accent={item.image?.accent} dark={item.image?.dark} sizes="(min-width:1024px) 20vw, 50vw" className="transition duration-700 group-hover:scale-105" />

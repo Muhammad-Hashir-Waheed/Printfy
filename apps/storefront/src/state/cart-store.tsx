@@ -16,9 +16,14 @@ export type ArtworkMode = 'upload' | 'design' | 'later'
 export type CartArtwork = {
    mode: ArtworkMode
    fileName?: string
-   /** Small JPEG preview (data URL) — the full file is requested by email after ordering */
+   /** Small JPEG preview (data URL) for the cart */
    thumb?: string
    brief?: string
+   /** Uploaded file (Design Studio) — id + secret token prove the customer owns it */
+   fileId?: string
+   fileToken?: string
+   ext?: string
+   hasPreview?: boolean
 }
 
 export type CartLine = {

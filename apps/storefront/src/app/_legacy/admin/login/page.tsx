@@ -1,4 +1,4 @@
-import { UserAuthForm } from '@/app/admin/login/components/user-auth-form'
+import { UserAuthForm } from './components/user-auth-form'
 import config from '@/config/site'
 import { Metadata } from 'next'
 import Link from 'next/link'

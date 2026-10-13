@@ -5,43 +5,13 @@ import config from '@/config/site'
 import { money, roundMoney, unitMoney, units } from '@/lib/money'
 import { cn } from '@/lib/utils'
 import { DESIGN_SERVICE_FEE, useCart, type ArtworkMode, type CartArtwork } from '@/state/cart-store'
-import { ArrowRight, Check, Clock, FileUp, MessageSquareQuote, PenTool, Send, ShoppingBag, Sparkles, X } from 'lucide-react'
+import { ArtworkUploader } from '@/studio/components/artwork-uploader'
+import type { UploadedDesign } from '@/studio/client/upload'
+import { ArrowRight, Check, Clock, FileUp, Loader2, MessageSquareQuote, PenTool, Send, ShoppingBag, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-
-const ACCEPT = 'image/*,.pdf,.ai,.eps,.svg,.psd'
-const MAX_MB = 50
-
-/** Makes a small JPEG preview so the cart can show it without filling localStorage. */
-async function makeThumb(file: File): Promise<string | undefined> {
-   if (!file.type.startsWith('image/') || file.type === 'image/svg+xml') return undefined
-   const url = URL.createObjectURL(file)
-   try {
-      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-         const el = new Image()
-         el.onload = () => resolve(el)
-         el.onerror = reject
-         el.src = url
-      })
-      const size = 180
-      const scale = Math.min(size / img.width, size / img.height, 1)
-      const canvas = document.createElement('canvas')
-      canvas.width = Math.round(img.width * scale)
-      canvas.height = Math.round(img.height * scale)
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return undefined
-      ctx.fillStyle = '#fff'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-      return canvas.toDataURL('image/jpeg', 0.72)
-   } catch {
-      return undefined
-   } finally {
-      URL.revokeObjectURL(url)
-   }
-}
 
 export function Configurator({ productKey }: { productKey: string }) {
    const product = getProductByKey(productKey)!
@@ -52,35 +22,36 @@ export function Configurator({ productKey }: { productKey: string }) {
    const [selections, setSelections] = useState<Selections>(() => defaultSelections(product))
    const [qty, setQty] = useState(preset.tiers[Math.min(1, preset.tiers.length - 1)].qty)
    const [mode, setMode] = useState<ArtworkMode>('upload')
-   const [file, setFile] = useState<{ name: string; thumb?: string } | null>(null)
+   const [designs, setDesigns] = useState<UploadedDesign[]>([])
+   const [uploading, setUploading] = useState(false)
    const [brief, setBrief] = useState('')
-   const [dragging, setDragging] = useState(false)
-   const inputRef = useRef<HTMLInputElement>(null)
+   const file = designs[0]
 
    const price = useMemo(() => priceFor(product, selections, qty), [product, selections, qty])
    const designFee = mode === 'design' ? DESIGN_SERVICE_FEE : 0
    const listName = config.showPrices ? 'cart' : 'quote list'
    const total = Math.round((price.total + designFee) * 100) / 100
 
-   async function pickFile(f?: File | null) {
-      if (!f) return
-      if (f.size > MAX_MB * 1024 * 1024) {
-         toast.error(`Files up to ${MAX_MB} MB please — larger files can be emailed after ordering.`)
+   function addToCart(goToCart: boolean) {
+      if (mode === 'upload' && uploading) {
+         toast('Hang on — your file is still uploading.')
          return
       }
-      const thumb = await makeThumb(f)
-      setFile({ name: f.name, thumb })
-      setMode('upload')
-   }
-
-   function addToCart(goToCart: boolean) {
       if (mode === 'upload' && !file) {
          toast.error('Upload your artwork, or choose “Design it for me” / “Send it later”.')
          return
       }
       const artwork: CartArtwork =
          mode === 'upload'
-            ? { mode, fileName: file?.name, thumb: file?.thumb }
+            ? {
+                 mode,
+                 fileName: file.name,
+                 thumb: file.thumb,
+                 fileId: file.id,
+                 fileToken: file.token,
+                 ext: file.ext,
+                 hasPreview: file.hasPreview,
+              }
             : mode === 'design'
               ? { mode, brief: brief.trim() || undefined }
               : { mode }
@@ -301,64 +272,12 @@ export function Configurator({ productKey }: { productKey: string }) {
             </div>
 
             {mode === 'upload' ? (
-               <div
-                  onDragOver={(e) => {
-                     e.preventDefault()
-                     setDragging(true)
-                  }}
-                  onDragLeave={() => setDragging(false)}
-                  onDrop={(e) => {
-                     e.preventDefault()
-                     setDragging(false)
-                     pickFile(e.dataTransfer.files?.[0])
-                  }}
-                  className={cn(
-                     'mt-3 rounded-2xl border-2 border-dashed p-5 transition',
-                     dragging ? 'border-ink bg-white' : 'border-input bg-white/60'
-                  )}
-               >
-                  {file ? (
-                     <div className="flex items-center gap-4">
-                        <span className="relative grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl border bg-white">
-                           {file.thumb ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img src={file.thumb} alt="" className="h-full w-full object-contain" />
-                           ) : (
-                              <FileUp className="h-6 w-6 text-muted-foreground" />
-                           )}
-                        </span>
-                        <span className="min-w-0 flex-1">
-                           <span className="block truncate text-sm font-semibold">{file.name}</span>
-                           <span className="block text-xs text-emerald-700">Ready — we&apos;ll check it before printing</span>
-                        </span>
-                        <button
-                           type="button"
-                           onClick={() => setFile(null)}
-                           className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted"
-                           aria-label="Remove file"
-                        >
-                           <X className="h-4 w-4" />
-                        </button>
-                     </div>
-                  ) : (
-                     <button
-                        type="button"
-                        onClick={() => inputRef.current?.click()}
-                        className="flex w-full flex-col items-center gap-2 py-3 text-center"
-                     >
-                        <FileUp className="h-7 w-7 text-muted-foreground" />
-                        <span className="text-sm">
-                           <span className="font-semibold text-primary underline">Choose a file</span> or drag it here
-                        </span>
-                        <span className="text-xs text-muted-foreground">PDF, AI, EPS, SVG, PNG or JPG · up to {MAX_MB} MB</span>
-                     </button>
-                  )}
-                  <input
-                     ref={inputRef}
-                     type="file"
-                     accept={ACCEPT}
-                     className="sr-only"
-                     onChange={(e) => pickFile(e.target.files?.[0])}
+               <div className="mt-3">
+                  <ArtworkUploader
+                     product={{ name: product.name, image: product.image, accent: product.accent, dark: product.dark }}
+                     value={designs}
+                     onChange={setDesigns}
+                     onBusyChange={setUploading}
                   />
                </div>
             ) : null}
@@ -451,7 +370,8 @@ export function Configurator({ productKey }: { productKey: string }) {
                      onClick={() => addToCart(false)}
                      className="btn-shine inline-flex h-14 items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold text-white transition hover:bg-primary/90 active:scale-[0.98]"
                   >
-                     <ShoppingBag className="h-5 w-5" /> Add to quote list
+                     {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ShoppingBag className="h-5 w-5" />}{' '}
+                     {uploading ? 'Uploading…' : 'Add to quote list'}
                   </button>
                   <button
                      type="button"
