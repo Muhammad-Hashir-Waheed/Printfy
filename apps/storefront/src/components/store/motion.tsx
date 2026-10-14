@@ -48,6 +48,7 @@ export function Reveal({
    className,
    delay = 0,
    stagger,
+   itemClassName,
    as: Tag = 'div',
    y = 24,
 }: {
@@ -56,6 +57,8 @@ export function Reveal({
    delay?: number
    /** Animate each direct child in sequence (ms between items) */
    stagger?: number
+   /** Classes for the wrapper around each staggered child (it is the actual grid/flex item) */
+   itemClassName?: string
    as?: ElementType
    y?: number
 }) {
@@ -71,7 +74,7 @@ export function Reveal({
       return (
          <Tag ref={ref} className={className}>
             {Children.map(children, (child, i) => (
-               <div style={style(i)} className="h-full">
+               <div style={style(i)} className={cn('h-full', itemClassName)}>
                   {child}
                </div>
             ))}

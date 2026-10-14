@@ -209,11 +209,17 @@ function SignatureThree() {
                </p>
             </div>
 
-            <Reveal stagger={140} y={48} className="mt-12 grid gap-5 md:grid-cols-3 lg:gap-6">
+            <Reveal
+               stagger={140}
+               y={48}
+               itemClassName="flex h-auto w-[78%] max-w-[320px] shrink-0 snap-center lg:w-auto lg:max-w-none"
+               className="no-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-3 sm:mt-12 lg:mx-auto lg:grid lg:max-w-5xl lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0"
+            >
                {panels.map((p) => (
-                  <SignaturePanel key={p.kind} panel={p} className="min-h-[500px]" />
+                  <SignaturePanel key={p.kind} panel={p} className="min-h-[400px] w-full lg:min-h-[420px]" />
                ))}
             </Reveal>
+            <p className="mt-2 text-center text-xs text-white/40 lg:hidden">Swipe to see all three →</p>
 
             <div aria-hidden className="mask-fade-x mt-10">
                <Marquee speed={45}>

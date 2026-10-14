@@ -207,14 +207,54 @@ const ART: Record<SignatureKind, () => JSX.Element> = { rigid: RigidArt, mailer:
 
 /* ------------------------------------------------------------------ */
 
-/** Stand-alone illustration for flagship category pages — performs once on load, then on hover. */
+const isTouch = () => window.matchMedia('(hover: none), (pointer: coarse)').matches
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/**
+ * Touch screens have no hover: while the element is on screen, loop the
+ * unboxing (open → hold → close) so the art is always alive.
+ */
+function useTouchPlay(ref: React.RefObject<HTMLElement>) {
+   useEffect(() => {
+      const node = ref.current
+      if (!node || !isTouch() || reducedMotion() || !('IntersectionObserver' in window)) return
+      let timer: ReturnType<typeof setTimeout> | undefined
+      const stop = () => {
+         clearTimeout(timer)
+         node.removeAttribute('data-active')
+      }
+      const cycle = (open: boolean) => {
+         node.toggleAttribute('data-active', open)
+         timer = setTimeout(() => cycle(!open), open ? 2800 : 1300)
+      }
+      const io = new IntersectionObserver(
+         ([e]) => {
+            if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+               if (!timer) timer = setTimeout(() => cycle(true), 250)
+            } else {
+               stop()
+               timer = undefined
+            }
+         },
+         { threshold: [0, 0.5] }
+      )
+      io.observe(node)
+      return () => {
+         io.disconnect()
+         stop()
+      }
+   }, [ref])
+}
+
+/** Stand-alone illustration for flagship category pages — performs once on load, then on hover (loops on touch). */
 export function SignatureShowcase({ kind, background, className }: { kind: SignatureKind; background: string; className?: string }) {
    const ref = useRef<HTMLDivElement>(null)
    const Art = ART[kind]
 
+   useTouchPlay(ref)
    useEffect(() => {
       const node = ref.current
-      if (!node || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      if (!node || reducedMotion() || isTouch()) return
       const open = setTimeout(() => node.setAttribute('data-active', ''), 700)
       const close = setTimeout(() => node.removeAttribute('data-active'), 3400)
       return () => {
@@ -237,16 +277,7 @@ export function SignaturePanel({ panel, className }: { panel: SignaturePanelData
    const ref = useRef<HTMLAnchorElement>(null)
    const Art = ART[panel.kind]
 
-   // Touch screens have no hover — play the animation when the panel is centred in view.
-   useEffect(() => {
-      const node = ref.current
-      if (!node || !window.matchMedia('(hover: none)').matches || !('IntersectionObserver' in window)) return
-      const io = new IntersectionObserver(([e]) => node.toggleAttribute('data-active', e.intersectionRatio > 0.6), {
-         threshold: [0, 0.6, 1],
-      })
-      io.observe(node)
-      return () => io.disconnect()
-   }, [])
+   useTouchPlay(ref)
 
    function onMove(e: PointerEvent<HTMLAnchorElement>) {
       if (e.pointerType !== 'mouse') return
@@ -272,7 +303,7 @@ export function SignaturePanel({ panel, className }: { panel: SignaturePanelData
          href={panel.href}
          onPointerMove={onMove}
          onPointerLeave={onLeave}
-         className={cn('sig-panel group relative flex h-full flex-col overflow-hidden rounded-[2rem] p-6 text-white ring-1 ring-white/10 sm:p-7', className)}
+         className={cn('sig-panel group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-5 text-white ring-1 ring-white/10 lg:p-6', className)}
          style={{ background: panel.background }}
       >
          <span aria-hidden className="sig-sheen pointer-events-none absolute inset-0" />
@@ -285,25 +316,25 @@ export function SignaturePanel({ panel, className }: { panel: SignaturePanelData
             </span>
          </div>
 
-         <div className="sig-art relative mx-auto my-4 aspect-[260/220] w-full max-w-[340px] sm:my-6">
+         <div className="sig-art relative mx-auto my-3 aspect-[260/220] w-full max-w-[210px] lg:max-w-[240px]">
             <Art />
          </div>
 
          <div className="relative mt-auto">
-            <h3 className="font-display text-[2rem] font-extrabold leading-none tracking-[-0.03em] sm:text-[2.4rem]">{panel.name}</h3>
-            <p className="mt-2 bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text font-display text-lg font-semibold italic text-transparent sm:text-xl">
+            <h3 className="font-display text-[1.65rem] font-extrabold leading-none tracking-[-0.03em] lg:text-[1.9rem]">{panel.name}</h3>
+            <p className="mt-1.5 bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text font-display text-base font-semibold italic text-transparent lg:text-lg">
                {panel.promise}
             </p>
-            <ul className="mt-4 flex flex-wrap gap-1.5">
+            <ul className="mt-3 flex flex-wrap gap-1.5">
                {panel.styles.map((s) => (
-                  <li key={s} className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-white/85 ring-1 ring-white/10">
+                  <li key={s} className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/85 ring-1 ring-white/10">
                      {s}
                   </li>
                ))}
             </ul>
-            <div className="mt-6 flex items-center justify-between border-t border-white/15 pt-4">
-               <span className="text-sm text-white/65">{panel.count} styles to choose from</span>
-               <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-ink transition duration-300 group-hover:gap-3 group-hover:bg-[#F3D88C]">
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/15 pt-3.5">
+               <span className="text-[13px] text-white/65">{panel.count} styles</span>
+               <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[13px] font-semibold text-ink transition duration-300 group-hover:gap-3 group-hover:bg-[#F3D88C]">
                   Design yours <ArrowRight className="h-4 w-4" />
                </span>
             </div>
