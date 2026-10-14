@@ -1,341 +1,121 @@
 'use client'
 
+import type { CatalogImage as CatalogImageData } from '@/catalog'
 import { cn } from '@/lib/utils'
-import { ArrowRight, Star } from 'lucide-react'
+import { ArrowUpRight, Star } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useRef, type PointerEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-export type SignatureKind = 'rigid' | 'mailer' | 'cards'
+import { CatalogImage } from './catalog-image'
 
-export type SignaturePanelData = {
-   kind: SignatureKind
+export type SignatureCardData = {
    index: number
    href: string
    name: string
    promise: string
    styles: string[]
    count: number
-   background: string
+   accent: string
+   photos: Array<{ image: CatalogImageData | null; label: string }>
 }
 
-/* ------------------------------------------------------------------ */
-/* Illustrations — drawn by hand so the hero products always look      */
-/* their best. Moving parts are animated from globals.css (.sig-*).    */
-/* ------------------------------------------------------------------ */
-
-function GoldDefs({ id }: { id: string }) {
-   return (
-      <defs>
-         <linearGradient id={`${id}-gold`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#F7E3A1" />
-            <stop offset="0.45" stopColor="#D9AE4F" />
-            <stop offset="0.7" stopColor="#F3D88C" />
-            <stop offset="1" stopColor="#A8792A" />
-         </linearGradient>
-         <radialGradient id={`${id}-glow`}>
-            <stop offset="0" stopColor="#FFE9A8" stopOpacity="0.95" />
-            <stop offset="1" stopColor="#FFE9A8" stopOpacity="0" />
-         </radialGradient>
-      </defs>
-   )
-}
-
-function Sparkles({ id, points }: { id: string; points: Array<[number, number, number]> }) {
-   return (
-      <>
-         {points.map(([x, y, s], i) => (
-            <path
-               key={i}
-               className="sig-spark"
-               style={{ transitionDelay: `${180 + i * 70}ms` }}
-               d={`M${x} ${y - s}Q${x} ${y} ${x + s} ${y}Q${x} ${y} ${x} ${y + s}Q${x} ${y} ${x - s} ${y}Q${x} ${y} ${x} ${y - s}Z`}
-               fill={`url(#${id}-gold)`}
-            />
-         ))}
-      </>
-   )
-}
-
-function RigidArt() {
-   const id = 'sig-rigid'
-   return (
-      <svg viewBox="0 0 260 220" className="h-full w-full overflow-visible" aria-hidden>
-         <GoldDefs id={id} />
-         <ellipse cx="135" cy="188" rx="98" ry="9" fill="#000" opacity="0.35" />
-         {/* glow escaping the open box */}
-         <ellipse className="sig-glow" cx="135" cy="96" rx="96" ry="34" fill={`url(#${id}-glow)`} />
-         {/* base */}
-         <polygon points="50,110 80,92 220,92 190,110" fill="#04110d" />
-         <polygon points="58,108 84,94 214,94 188,108" fill="#0a2a22" />
-         <rect x="50" y="110" width="140" height="70" fill="#14463a" />
-         <rect x="50" y="110" width="140" height="70" fill="url(#sig-rigid-gold)" opacity="0.06" />
-         <polygon points="190,110 220,92 220,162 190,180" fill="#0b2a22" />
-         <rect x="112" y="110" width="16" height="70" fill={`url(#${id}-gold)`} />
-         <polygon points="190,140 220,122 220,131 190,149" fill={`url(#${id}-gold)`} opacity="0.85" />
-         <text x="158" y="158" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontWeight="700" fontSize="22" fill={`url(#${id}-gold)`}>
-            JA
-         </text>
-         {/* lid */}
-         <g className="sig-lid">
-            <polygon points="44,104 76,84 226,84 194,104" fill="#1b5a4a" />
-            <rect x="44" y="104" width="150" height="20" fill="#174d40" />
-            <polygon points="194,104 226,84 226,104 194,124" fill="#0f3a30" />
-            <polygon points="112,104 144,84 160,84 128,104" fill={`url(#${id}-gold)`} />
-            <polygon points="55,97 205,97 215,91 65,91" fill={`url(#${id}-gold)`} />
-            <rect x="112" y="104" width="16" height="20" fill={`url(#${id}-gold)`} />
-            <polygon points="194,111 226,91 226,97 194,117" fill={`url(#${id}-gold)`} opacity="0.85" />
-            <g stroke="#8a6220" strokeWidth="0.8">
-               <ellipse cx="124" cy="83" rx="15" ry="8" transform="rotate(-22 124 83)" fill={`url(#${id}-gold)`} />
-               <ellipse cx="150" cy="83" rx="15" ry="8" transform="rotate(22 150 83)" fill={`url(#${id}-gold)`} />
-               <path d="M133 92 L122 108 M141 92 L150 108" strokeWidth="4" stroke={`url(#${id}-gold)`} strokeLinecap="round" />
-               <circle cx="137" cy="90" r="6" fill={`url(#${id}-gold)`} />
-            </g>
-         </g>
-         <Sparkles id={id} points={[[72, 52, 7], [196, 44, 9], [138, 30, 6], [226, 70, 5], [44, 78, 5]]} />
-      </svg>
-   )
-}
-
-function MailerArt() {
-   const id = 'sig-mailer'
-   return (
-      <svg viewBox="0 0 260 220" className="h-full w-full overflow-visible" aria-hidden>
-         <GoldDefs id={id} />
-         <defs>
-            <pattern id={`${id}-print`} width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)">
-               <rect width="14" height="14" fill="#1E1A17" />
-               <circle cx="7" cy="7" r="2.2" fill="#FFD84D" />
-            </pattern>
-         </defs>
-         <ellipse cx="135" cy="188" rx="98" ry="9" fill="#000" opacity="0.3" />
-         {/* opened flap — printed inside */}
-         <g className="sig-flap-open">
-            <polygon points="75,94 225,94 214,30 64,30" fill={`url(#${id}-print)`} />
-            <polygon points="75,94 225,94 214,30 64,30" fill="none" stroke="#C9965F" strokeWidth="3" />
-            <text x="145" y="68" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize="15" fill="#fff">
-               hello, gorgeous
-            </text>
-         </g>
-         {/* interior */}
-         <polygon points="45,112 75,94 225,94 195,112" fill={`url(#${id}-print)`} />
-         {/* tissue + thank-you card rise out */}
-         <path className="sig-tissue" d="M60 110 Q80 88 100 102 Q120 84 140 100 Q160 86 180 100 Q196 90 206 104 L195 112 L45 112 Z" fill="#fff" opacity="0.92" />
-         <g className="sig-note">
-            <rect x="104" y="84" width="58" height="36" rx="2" fill="#FFF8EC" transform="rotate(-8 133 102)" />
-            <text x="133" y="106" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize="11" fill="#D42F25" transform="rotate(-8 133 102)">
-               thank you ♥
-            </text>
-         </g>
-         {/* box body */}
-         <rect x="45" y="112" width="150" height="66" fill="#C9965F" />
-         <rect x="45" y="112" width="150" height="5" fill="#B5814B" />
-         <polygon points="195,112 225,94 225,160 195,178" fill="#A97845" />
-         <circle cx="120" cy="146" r="17" fill="none" stroke="#3a2614" strokeWidth="2" opacity="0.8" />
-         <text x="120" y="152" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontWeight="700" fontSize="16" fill="#3a2614" opacity="0.85">
-            JA
-         </text>
-         <path d="M58 168 h30 M160 168 h24" stroke="#3a2614" strokeWidth="2" opacity="0.35" strokeLinecap="round" />
-         {/* closed lid */}
-         <g className="sig-flap-closed">
-            <polygon points="45,112 75,94 225,94 195,112" fill="#DDAF77" />
-            <polygon points="45,112 195,112 195,117 45,117" fill="#C08A52" />
-            <polygon points="111,112 141,94 155,94 125,112" fill="#D42F25" opacity="0.9" />
-         </g>
-         <Sparkles id={id} points={[[48, 70, 6], [234, 64, 8], [24, 120, 5], [244, 120, 5]]} />
-      </svg>
-   )
-}
-
-function CardsArt() {
-   const id = 'sig-cards'
-   const card = 'M0 0h140v84H0z'
-   return (
-      <svg viewBox="0 0 260 220" className="h-full w-full overflow-visible" aria-hidden>
-         <GoldDefs id={id} />
-         <defs>
-            <linearGradient id={`${id}-holo`} x1="0" y1="0" x2="1" y2="1">
-               <stop offset="0" stopColor="#ffb3e6" />
-               <stop offset="0.35" stopColor="#b7c8ff" />
-               <stop offset="0.65" stopColor="#a8fff0" />
-               <stop offset="1" stopColor="#fff2a8" />
-            </linearGradient>
-            <clipPath id={`${id}-clip`}>
-               <rect width="140" height="84" rx="6" />
-            </clipPath>
-         </defs>
-         <ellipse cx="130" cy="190" rx="92" ry="8" fill="#000" opacity="0.35" />
-         <g transform="translate(60 92)">
-            {/* holographic */}
-            <g className="sig-card sig-card-1">
-               <rect width="140" height="84" rx="6" fill={`url(#${id}-holo)`} />
-               <path d="M18 60h50" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity="0.8" />
-            </g>
-            {/* kraft */}
-            <g className="sig-card sig-card-2">
-               <rect width="140" height="84" rx="6" fill="#C9965F" />
-               <circle cx="112" cy="26" r="11" fill="none" stroke="#3a2614" strokeWidth="1.6" />
-               <path d="M18 56h56M18 66h38" stroke="#3a2614" strokeWidth="2.5" strokeLinecap="round" opacity="0.6" />
-            </g>
-            {/* black + gold */}
-            <g className="sig-card sig-card-3">
-               <rect width="140" height="84" rx="6" fill="#111" />
-               <path d="M18 24h40" stroke={`url(#${id}-gold)`} strokeWidth="4" strokeLinecap="round" />
-               <path d="M18 60h70M18 69h48" stroke={`url(#${id}-gold)`} strokeWidth="2" strokeLinecap="round" opacity="0.8" />
-            </g>
-            {/* ivory with foil monogram (top) */}
-            <g className="sig-card sig-card-4">
-               <g clipPath={`url(#${id}-clip)`}>
-                  <path d={card} fill="#FBF6EC" />
-                  <rect x="-60" y="-10" width="40" height="110" fill="#fff" opacity="0.85" className="sig-foil" transform="skewX(-20)" />
-               </g>
-               <rect width="140" height="84" rx="6" fill="none" stroke="#E7DCC6" />
-               <text x="70" y="44" textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontWeight="700" fontSize="26" fill={`url(#${id}-gold)`}>
-                  JA
-               </text>
-               <path d="M48 54h44" stroke={`url(#${id}-gold)`} strokeWidth="1.4" />
-               <text x="70" y="68" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="6.5" letterSpacing="2" fill="#6b5b45">
-                  JOJI ARTS STUDIO
-               </text>
-            </g>
-         </g>
-         <Sparkles id={id} points={[[40, 64, 7], [222, 52, 9], [130, 30, 6], [236, 150, 5]]} />
-      </svg>
-   )
-}
-
-const ART: Record<SignatureKind, () => JSX.Element> = { rigid: RigidArt, mailer: MailerArt, cards: CardsArt }
-
-/* ------------------------------------------------------------------ */
-
-const isTouch = () => window.matchMedia('(hover: none), (pointer: coarse)').matches
-const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const STEP = 2200
 
 /**
- * Touch screens have no hover: while the element is on screen, loop the
- * unboxing (open → hold → close) so the art is always alive.
+ * Compact bestseller card: a slow photo slideshow of the range with gold progress
+ * bars. Plays while hovered on desktop, and on its own on touch screens while the
+ * card is on screen.
  */
-function useTouchPlay(ref: React.RefObject<HTMLElement>) {
+export function SignatureCard({ card, priority }: { card: SignatureCardData; priority?: boolean }) {
+   const ref = useRef<HTMLAnchorElement>(null)
+   const [active, setActive] = useState(0)
+   const [playing, setPlaying] = useState(false)
+
+   // Touch screens: play while at least half the card is visible
    useEffect(() => {
       const node = ref.current
-      if (!node || !isTouch() || reducedMotion() || !('IntersectionObserver' in window)) return
-      let timer: ReturnType<typeof setTimeout> | undefined
-      const stop = () => {
-         clearTimeout(timer)
-         node.removeAttribute('data-active')
-      }
-      const cycle = (open: boolean) => {
-         node.toggleAttribute('data-active', open)
-         timer = setTimeout(() => cycle(!open), open ? 2800 : 1300)
-      }
-      const io = new IntersectionObserver(
-         ([e]) => {
-            if (e.isIntersecting && e.intersectionRatio >= 0.5) {
-               if (!timer) timer = setTimeout(() => cycle(true), 250)
-            } else {
-               stop()
-               timer = undefined
-            }
-         },
-         { threshold: [0, 0.5] }
-      )
+      if (!node || !('IntersectionObserver' in window)) return
+      if (!window.matchMedia('(hover: none), (pointer: coarse)').matches) return
+      const io = new IntersectionObserver(([e]) => setPlaying(e.isIntersecting && e.intersectionRatio >= 0.5), {
+         threshold: [0, 0.5],
+      })
       io.observe(node)
-      return () => {
-         io.disconnect()
-         stop()
-      }
-   }, [ref])
-}
-
-/** Stand-alone illustration for flagship category pages — performs once on load, then on hover (loops on touch). */
-export function SignatureShowcase({ kind, background, className }: { kind: SignatureKind; background: string; className?: string }) {
-   const ref = useRef<HTMLDivElement>(null)
-   const Art = ART[kind]
-
-   useTouchPlay(ref)
-   useEffect(() => {
-      const node = ref.current
-      if (!node || reducedMotion() || isTouch()) return
-      const open = setTimeout(() => node.setAttribute('data-active', ''), 700)
-      const close = setTimeout(() => node.removeAttribute('data-active'), 3400)
-      return () => {
-         clearTimeout(open)
-         clearTimeout(close)
-      }
+      return () => io.disconnect()
    }, [])
 
-   return (
-      <div ref={ref} className={cn('sig-panel relative grid place-items-center overflow-hidden rounded-[1.75rem] p-8', className)} style={{ background }}>
-         <span aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,.07)_1px,transparent_1px)] [background-size:14px_14px]" />
-         <div className="sig-art relative aspect-[260/220] w-full max-w-[360px]">
-            <Art />
-         </div>
-      </div>
-   )
-}
-
-export function SignaturePanel({ panel, className }: { panel: SignaturePanelData; className?: string }) {
-   const ref = useRef<HTMLAnchorElement>(null)
-   const Art = ART[panel.kind]
-
-   useTouchPlay(ref)
-
-   function onMove(e: PointerEvent<HTMLAnchorElement>) {
-      if (e.pointerType !== 'mouse') return
-      const node = ref.current!
-      const r = node.getBoundingClientRect()
-      const x = (e.clientX - r.left) / r.width
-      const y = (e.clientY - r.top) / r.height
-      node.style.setProperty('--ry', `${(x - 0.5) * 9}deg`)
-      node.style.setProperty('--rx', `${(0.5 - y) * 7}deg`)
-      node.style.setProperty('--mx', `${x * 100}%`)
-      node.style.setProperty('--my', `${y * 100}%`)
-   }
-
-   function onLeave() {
-      const node = ref.current!
-      node.style.setProperty('--ry', '0deg')
-      node.style.setProperty('--rx', '0deg')
-   }
+   useEffect(() => {
+      if (!playing || card.photos.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const t = setInterval(() => setActive((i) => (i + 1) % card.photos.length), STEP)
+      return () => clearInterval(t)
+   }, [playing, card.photos.length])
 
    return (
       <Link
          ref={ref}
-         href={panel.href}
-         onPointerMove={onMove}
-         onPointerLeave={onLeave}
-         className={cn('sig-panel group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] p-5 text-white ring-1 ring-white/10 lg:p-6', className)}
-         style={{ background: panel.background }}
+         href={card.href}
+         onMouseEnter={() => {
+            setActive((i) => (i + 1) % card.photos.length)
+            setPlaying(true)
+         }}
+         onMouseLeave={() => setPlaying(false)}
+         data-playing={playing || undefined}
+         className="sig-card group relative block aspect-[4/3] overflow-hidden rounded-3xl bg-[#1d1611] shadow-[0_24px_50px_-30px_rgba(0,0,0,.9)] ring-1 ring-white/10 transition duration-500 hover:-translate-y-1 hover:ring-[#D9AE4F]/50"
       >
-         <span aria-hidden className="sig-sheen pointer-events-none absolute inset-0" />
-         <span aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,.07)_1px,transparent_1px)] [background-size:14px_14px]" />
+         {card.photos.map((p, i) => (
+            <div
+               key={i}
+               aria-hidden={i !== active}
+               className={cn(
+                  'absolute inset-0 transition-opacity duration-1000 ease-out',
+                  i === active ? 'opacity-100' : 'opacity-0'
+               )}
+            >
+               <CatalogImage
+                  image={p.image}
+                  label={p.label}
+                  accent={card.accent}
+                  priority={priority && i === 0}
+                  sizes="(min-width: 1024px) 340px, 75vw"
+                  className={cn('sig-kenburns', i === active && playing && 'is-on')}
+               />
+            </div>
+         ))}
 
-         <div className="relative flex items-center justify-between">
-            <span className="font-display text-sm font-bold tracking-[0.2em] text-white/55">0{panel.index}</span>
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#F3D88C] ring-1 ring-[#F3D88C]/30 backdrop-blur">
+         {/* legibility + gold foil sweep */}
+         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10" />
+         <span aria-hidden className="sig-foil pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 skew-x-[-20deg] bg-gradient-to-r from-transparent via-[#FFE9A8]/25 to-transparent" />
+
+         <div className="absolute inset-x-4 top-4 flex items-center justify-between">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[linear-gradient(110deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wide text-[#3b2a0c] shadow">
                <Star className="h-3 w-3 fill-current" /> Bestseller
             </span>
+            <span className="font-display text-xs font-bold tracking-[0.2em] text-white/70">0{card.index}</span>
          </div>
 
-         <div className="sig-art relative mx-auto my-3 aspect-[260/220] w-full max-w-[210px] lg:max-w-[240px]">
-            <Art />
-         </div>
-
-         <div className="relative mt-auto">
-            <h3 className="font-display text-[1.65rem] font-extrabold leading-none tracking-[-0.03em] lg:text-[1.9rem]">{panel.name}</h3>
-            <p className="mt-1.5 bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text font-display text-base font-semibold italic text-transparent lg:text-lg">
-               {panel.promise}
-            </p>
-            <ul className="mt-3 flex flex-wrap gap-1.5">
-               {panel.styles.map((s) => (
-                  <li key={s} className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/85 ring-1 ring-white/10">
-                     {s}
-                  </li>
+         <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
+            {/* slideshow progress */}
+            <div className="mb-3 flex gap-1.5">
+               {card.photos.map((_, i) => (
+                  <span key={i} className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/25">
+                     <span
+                        className={cn('block h-full origin-left rounded-full bg-[#F3D88C]', i === active ? 'sig-progress' : i < active ? 'scale-x-100' : 'scale-x-0')}
+                        style={i === active ? { animationDuration: `${STEP}ms`, animationPlayState: playing ? 'running' : 'paused' } : undefined}
+                     />
+                  </span>
                ))}
-            </ul>
-            <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/15 pt-3.5">
-               <span className="text-[13px] text-white/65">{panel.count} styles</span>
-               <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[13px] font-semibold text-ink transition duration-300 group-hover:gap-3 group-hover:bg-[#F3D88C]">
-                  Design yours <ArrowRight className="h-4 w-4" />
+            </div>
+            <div className="flex items-end justify-between gap-3">
+               <div className="min-w-0">
+                  <h3 className="font-display text-xl font-extrabold leading-tight tracking-tight sm:text-2xl">{card.name}</h3>
+                  <p className="mt-0.5 bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text text-sm font-semibold italic text-transparent">
+                     {card.promise}
+                  </p>
+                  <p className="mt-1 truncate text-xs text-white/60">
+                     {card.styles.join(' · ')} · {card.count} styles
+                  </p>
+               </div>
+               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-ink transition duration-300 group-hover:rotate-45 group-hover:bg-[#F3D88C]">
+                  <ArrowUpRight className="h-4 w-4" />
                </span>
             </div>
          </div>

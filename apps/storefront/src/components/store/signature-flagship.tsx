@@ -2,15 +2,13 @@ import type { Category } from '@/catalog'
 import { cn } from '@/lib/utils'
 import { Check, ChevronDown } from 'lucide-react'
 
-import type { SignatureKind } from './signature'
-
 type Finish = { name: string; note: string; swatch: string; ink?: 'light' | 'dark' }
 
 export type SignatureContent = {
-   kind: SignatureKind
    promise: string
    styles: string[]
-   background: string
+   /** Product slugs (within the category) shown in the bestseller slideshow */
+   photos: string[]
    why: Array<{ title: string; text: string }>
    finishes: Finish[]
    faq: Array<{ q: string; a: string }>
@@ -72,10 +70,9 @@ const F: Record<string, Finish> = {
 
 export const SIGNATURE_CONTENT: Record<string, SignatureContent> = {
    'packaging/rigid-boxes': {
-      kind: 'rigid',
       promise: 'Luxury you can feel.',
       styles: ['Magnetic', 'Drawer', 'Book-style', 'Foil & emboss'],
-      background: 'radial-gradient(120% 80% at 25% 15%, #1f5a4a 0%, #0e2f27 55%, #06150f 100%)',
+      photos: ['magnetic-closure-box', 'sleeve-rigid-box', 'premium-rigid-box'],
       why: [
          { title: 'Heavyweight greyboard', text: 'Thick chipboard wrapped by hand, so every corner stays crisp and every lid closes with a satisfying weight.' },
          { title: 'Every closure style', text: 'Magnetic flap, drawer with ribbon pull, book-style, sleeve or classic lift-off lid — built to your exact size.' },
@@ -91,10 +88,9 @@ export const SIGNATURE_CONTENT: Record<string, SignatureContent> = {
       ],
    },
    'packaging/mailer-boxes': {
-      kind: 'mailer',
       promise: 'Unboxing they’ll post about.',
       styles: ['Branded', 'Kraft', 'Inside print', 'Subscription'],
-      background: 'radial-gradient(120% 80% at 25% 15%, #e2493c 0%, #a91f17 55%, #4a0b07 100%)',
+      photos: ['subscription-mailer-box', 'branded-mailer-box', 'rigid-mailer-box'],
       why: [
          { title: 'Built for the courier', text: 'Sturdy corrugated board with self-locking tabs that survives the trip and arrives looking new.' },
          { title: 'Print outside, inside, or both', text: 'Your brand on the outside, a hidden message or pattern on the inside — the moment they open it.' },
@@ -110,10 +106,9 @@ export const SIGNATURE_CONTENT: Record<string, SignatureContent> = {
       ],
    },
    'printing/business-cards': {
-      kind: 'cards',
       promise: 'First impressions, foiled.',
       styles: ['Gold foil', 'Spot UV', 'Soft matte', 'Kraft'],
-      background: 'radial-gradient(120% 80% at 25% 15%, #2b3778 0%, #161d48 55%, #070a1f 100%)',
+      photos: ['foil-business-cards', 'spot-uv-business-cards', 'rounded-corner-business-cards'],
       why: [
          { title: 'Stocks with real weight', text: 'Thick, premium card that feels substantial in the hand — from classic matte to natural kraft.' },
          { title: 'Foil that catches the light', text: 'Gold, silver and rose-gold foil on logos, names and borders.' },

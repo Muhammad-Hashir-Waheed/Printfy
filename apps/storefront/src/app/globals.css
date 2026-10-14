@@ -363,122 +363,40 @@
 }
 
 /* ---------------------------------------------------------------- */
-/* Signature Three — tilt, sheen and the illustrated unboxing        */
+/* Signature Three — photo slideshow cards                            */
 /* ---------------------------------------------------------------- */
-.sig-panel {
-   transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-   transition:
-      transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
-      box-shadow 0.5s ease;
-   box-shadow: 0 30px 60px -40px rgb(0 0 0 / 0.6);
+.sig-kenburns {
+   transform: scale(1.02);
+   transition: transform 7s cubic-bezier(0.2, 0.6, 0.2, 1);
 }
-.sig-panel:hover {
-   transition-duration: 0.18s, 0.5s;
-   box-shadow: 0 50px 90px -40px rgb(0 0 0 / 0.75);
+.sig-kenburns.is-on {
+   transform: scale(1.12);
 }
-.sig-sheen {
-   background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 0%), rgb(255 236 190 / 0.2), transparent 45%);
-   opacity: 0;
-   transition: opacity 0.4s ease;
+.sig-progress {
+   animation: sig-progress linear forwards;
+   transform: scaleX(0);
 }
-.sig-panel:hover .sig-sheen {
-   opacity: 1;
+@keyframes sig-progress {
+   to {
+      transform: scaleX(1);
+   }
 }
-.sig-art {
-   animation: float-y 6s ease-in-out infinite;
+.sig-card:hover .sig-foil,
+.sig-card[data-playing] .sig-foil {
+   animation: sig-foil 2.2s ease-in-out infinite;
 }
-.sig-art :is(.sig-lid, .sig-glow, .sig-spark, .sig-flap-open, .sig-flap-closed, .sig-tissue, .sig-note, .sig-card, .sig-foil) {
-   transform-box: fill-box;
-   transition:
-      transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
-      opacity 0.5s ease;
+@keyframes sig-foil {
+   from {
+      transform: translateX(0) skewX(-20deg);
+   }
+   to {
+      transform: translateX(520%) skewX(-20deg);
+   }
 }
-.sig-lid {
-   transform-origin: 8% 100%;
-}
-.sig-glow {
-   transform-origin: center;
-   opacity: 0;
-   transform: scale(0.6);
-}
-.sig-spark {
-   transform-origin: center;
-   transform: scale(0) rotate(-45deg);
-}
-.sig-flap-closed {
-   transform-origin: 50% 0%;
-   transition-duration: 0.35s !important;
-}
-.sig-flap-open {
-   transform-origin: 50% 100%;
-   transform: scaleY(0);
-}
-.sig-tissue {
-   transform: translateY(14px);
-}
-.sig-note {
-   transform: translateY(28px);
-}
-.sig-card {
-   transform-origin: 50% 230%;
-}
-.sig-card-1 {
-   transform: translate(-6px, 7px) rotate(-4deg);
-}
-.sig-card-2 {
-   transform: translate(-3px, 4px) rotate(-2deg);
-}
-.sig-card-3 {
-   transform: rotate(1deg);
-}
-.sig-foil {
-   transform: translateX(0) skewX(-20deg);
-   transition-duration: 1.1s !important;
-}
-
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-lid {
-   transform: translate(0, -42px) rotate(-8deg);
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) :is(.sig-glow, .sig-spark) {
-   opacity: 1;
-   transform: none;
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-flap-closed {
-   transform: scaleY(0);
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-flap-open {
-   transform: none;
-   transition-delay: 0.3s;
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-tissue {
-   transform: none;
-   transition-delay: 0.45s;
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-note {
-   transform: translateY(-18px) rotate(-4deg);
-   transition-delay: 0.6s;
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-card-1 {
-   transform: rotate(-24deg);
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-card-2 {
-   transform: rotate(-10deg);
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-card-3 {
-   transform: rotate(5deg);
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-card-4 {
-   transform: translateY(-8px) rotate(17deg);
-}
-:is(.sig-panel:hover, .sig-panel:focus-visible, .sig-panel[data-active]) .sig-foil {
-   transform: translateX(260px) skewX(-20deg);
-   transition-delay: 0.35s;
-}
-
 @media (prefers-reduced-motion: reduce) {
-   .sig-panel,
-   .sig-art,
-   .sig-art * {
+   .sig-kenburns,
+   .sig-foil,
+   .sig-progress {
       animation: none !important;
       transition: none !important;
    }

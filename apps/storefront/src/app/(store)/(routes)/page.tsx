@@ -13,7 +13,7 @@ import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/com
 import { CatalogImage } from '@/components/store/catalog-image'
 import { CountUp, Magnetic, Marquee, Reveal, RotatingWords } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
-import { SignaturePanel, type SignaturePanelData } from '@/components/store/signature'
+import { SignatureCard, type SignatureCardData } from '@/components/store/signature'
 import { SIGNATURE_CONTENT } from '@/components/store/signature-flagship'
 import { ArrowRight, BadgeCheck, Box, Clock3, CreditCard, Gift, Palette, Sparkle, Truck, Upload } from 'lucide-react'
 import Link from 'next/link'
@@ -184,21 +184,33 @@ function Hero() {
 const FINISHES = ['Soft-touch', 'Gold foil', 'Spot UV', 'Embossing', 'Metalized', 'Magnetic closure', 'Inside print', 'Ribbon pull']
 
 function SignatureThree() {
-   const panels: SignaturePanelData[] = SIGNATURE_CATEGORIES.map((key, i) => {
+   const cards: SignatureCardData[] = SIGNATURE_CATEGORIES.map((key, i) => {
       const c = cat(key)
-      const { kind, promise, styles, background } = SIGNATURE_CONTENT[key]
-      return { kind, promise, styles, background, index: i + 1, href: c.href, name: c.name, count: c.products.length }
+      const { promise, styles, photos } = SIGNATURE_CONTENT[key]
+      return {
+         index: i + 1,
+         href: c.href,
+         name: c.name,
+         promise,
+         styles: styles.slice(0, 3),
+         count: c.products.length,
+         accent: c.accent,
+         photos: photos
+            .map((slug) => c.products.find((p) => p.slug === slug))
+            .filter(Boolean)
+            .map((p) => ({ image: p!.image, label: p!.name })),
+      }
    })
    const kit = getProductByKey(BUNDLE_KEY)
 
    return (
-      <section id="signature" className="grain relative scroll-mt-28 overflow-hidden bg-[#120d0a] py-20 text-white sm:py-28">
+      <section id="signature" className="grain relative scroll-mt-28 overflow-hidden bg-[#120d0a] py-16 text-white sm:py-20">
          <div className="pointer-events-none absolute -left-32 top-10 h-[460px] w-[460px] rounded-full bg-[#D9AE4F]/15 blur-[120px]" />
          <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-[#D42F25]/20 blur-[120px]" />
          <div className="page-shell relative">
             <div className="mx-auto max-w-3xl text-center">
                <p className="eyebrow text-[#F3D88C]">The Signature Three</p>
-               <h2 className="mt-4 font-display text-[2.6rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
+               <h2 className="mt-3 font-display text-[2.4rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
                   What we&apos;re{' '}
                   <span className="bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text pr-1 italic text-transparent">known</span>{' '}
                   for.
@@ -210,16 +222,16 @@ function SignatureThree() {
             </div>
 
             <Reveal
-               stagger={140}
-               y={48}
-               itemClassName="flex h-auto w-[78%] max-w-[320px] shrink-0 snap-center lg:w-auto lg:max-w-none"
-               className="no-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-3 sm:mt-12 lg:mx-auto lg:grid lg:max-w-5xl lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0"
+               stagger={120}
+               y={32}
+               itemClassName="w-[78%] max-w-[300px] shrink-0 snap-center sm:w-[44%] sm:max-w-[360px] lg:w-auto lg:max-w-none"
+               className="no-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-2 lg:mx-auto lg:grid lg:max-w-5xl lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0"
             >
-               {panels.map((p) => (
-                  <SignaturePanel key={p.kind} panel={p} className="min-h-[400px] w-full lg:min-h-[420px]" />
+               {cards.map((c, i) => (
+                  <SignatureCard key={c.href} card={c} priority={i === 0} />
                ))}
             </Reveal>
-            <p className="mt-2 text-center text-xs text-white/40 lg:hidden">Swipe to see all three →</p>
+            <p className="mt-3 text-center text-xs text-white/40 lg:hidden">Swipe to see all three →</p>
 
             <div aria-hidden className="mask-fade-x mt-10">
                <Marquee speed={45}>

@@ -3,7 +3,6 @@ import { Breadcrumbs } from '@/components/store/breadcrumbs'
 import { CatalogImage } from '@/components/store/catalog-image'
 import { ProductGrid } from '@/components/store/product-grid'
 import { QuoteBand } from '@/components/store/quote-band'
-import { SignatureShowcase } from '@/components/store/signature'
 import { SignatureFlagship, signatureContentFor } from '@/components/store/signature-flagship'
 import { unitMoney } from '@/lib/money'
 import config from '@/config/site'
@@ -91,13 +90,9 @@ export default function CategoryPage({ params }: Params) {
                         </p>
                      ) : null}
                   </div>
-                  {signature ? (
-                     <SignatureShowcase kind={signature.kind} background={signature.background} className="aspect-[16/10] max-lg:mx-auto max-lg:w-full max-lg:max-w-md" />
-                  ) : (
-                     <div className="relative hidden aspect-[16/9] overflow-hidden rounded-[1.75rem] lg:block">
-                        <CatalogImage image={category.image} label={category.name} accent={dept.accent} dark={dark} priority sizes="40vw" />
-                     </div>
-                  )}
+                  <div className="relative hidden aspect-[16/9] overflow-hidden rounded-[1.75rem] lg:block">
+                     <CatalogImage image={category.image} label={category.name} accent={dept.accent} dark={dark} priority sizes="40vw" />
+                  </div>
                </div>
             </div>
          </section>
