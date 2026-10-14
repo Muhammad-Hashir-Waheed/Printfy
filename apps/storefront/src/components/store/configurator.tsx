@@ -10,7 +10,17 @@ import type { UploadedDesign } from '@/studio/client/upload'
 import { ArrowRight, Check, Clock, FileUp, Loader2, MessageSquareQuote, PenTool, Send, ShoppingBag, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { METALLIC_IMAGE_KEY } from '@/catalog/presets'
+import { useEffect, useMemo, useState } from 'react'
+
+import { useProductFinish } from './product-finish'
+
+const METAL_SWATCH: Record<string, string> = {
+   'Metalized silver': 'linear-gradient(135deg,#f5f5f5,#9a9a9a 45%,#e9e9e9 55%,#7d7d7d)',
+   'Metalized gold': 'linear-gradient(135deg,#fff3b0,#c9a227 45%,#fde68a 55%,#8a6a12)',
+   'Rose gold': 'linear-gradient(135deg,#ffe4e1,#c98b8b 45%,#f7c6c0 55%,#9c5d5d)',
+   Holographic: 'conic-gradient(from 30deg,#ff9ad5,#9ad0ff,#b8ffb0,#fff59a,#ff9ad5)',
+}
 import toast from 'react-hot-toast'
 
 export function Configurator({ productKey }: { productKey: string }) {
@@ -26,6 +36,10 @@ export function Configurator({ productKey }: { productKey: string }) {
    const [uploading, setUploading] = useState(false)
    const [brief, setBrief] = useState('')
    const file = designs[0]
+   const { setMetallic } = useProductFinish()
+   useEffect(() => {
+      setMetallic(METALLIC_IMAGE_KEY[selections.metallic ?? ''] ?? null)
+   }, [selections.metallic, setMetallic])
 
    const price = useMemo(() => priceFor(product, selections, qty), [product, selections, qty])
    const designFee = mode === 'design' ? DESIGN_SERVICE_FEE : 0
@@ -147,7 +161,16 @@ export function Configurator({ productKey }: { productKey: string }) {
                                  : 'border-input bg-white hover:border-ink'
                            )}
                         >
-                           <span className="block font-medium">{choice.label}</span>
+                           <span className="flex items-center gap-2 font-medium">
+                              {group.id === 'metallic' ? (
+                                 <span
+                                    aria-hidden
+                                    className="h-4 w-4 shrink-0 rounded-full ring-1 ring-black/10"
+                                    style={{ background: METAL_SWATCH[choice.label] ?? 'linear-gradient(135deg,#fff,#e8e2da)' }}
+                                 />
+                              ) : null}
+                              {choice.label}
+                           </span>
                            {choice.hint ? (
                               <span className={cn('block text-xs', active ? 'text-white/70' : 'text-muted-foreground')}>
                                  {choice.hint}

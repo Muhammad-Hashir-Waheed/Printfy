@@ -255,7 +255,7 @@ function DepartmentRow({
                         onClick={onClose}
                         aria-expanded={isOpen}
                         className={cn(
-                           'relative z-10 inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-[13.5px] font-semibold transition-colors xl:px-3.5 xl:text-[14px]',
+                           'relative z-10 inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-1.5 text-[13.5px] font-semibold transition-colors xl:px-3.5 xl:text-[14px]',
                            isOpen || isCurrent ? 'text-ink' : 'text-foreground/60 hover:text-ink'
                         )}
                      >

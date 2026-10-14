@@ -1,6 +1,6 @@
 import { DEPARTMENT_SEEDS, type PresetKind, type ProductSeed } from './data'
 import { resolveImage, type CatalogImage } from './images'
-import { PRESETS, type Preset } from './presets'
+import { METALLIC_OPTION, PRESETS, type Preset } from './presets'
 
 export type { CatalogImage } from './images'
 export type { OptionChoice, OptionGroup, Preset, QuantityTier } from './presets'
@@ -24,6 +24,8 @@ export type Product = {
    quote: boolean
    kind: PresetKind
    preset: Preset
+   /** Offers the metalized finish (box products) */
+   metallic: boolean
 }
 
 export type Category = {
@@ -96,9 +98,26 @@ function buildProduct(
       dark: Boolean(dept.dark),
       image: resolveImage(`p:${key}`, name),
       basePrice,
-      quote: quote || cat.kind === 'digital' || cat.kind === 'led',
+      quote: quote || cat.kind === 'digital' || cat.kind === 'led' || cat.kind === 'rack',
       kind: cat.kind,
-      preset: PRESETS[cat.kind],
+      preset: withMetallic(PRESETS[cat.kind], isBoxProduct(cat.kind, name)),
+      metallic: isBoxProduct(cat.kind, name),
+   }
+}
+
+const BOX_KINDS = new Set(['box', 'rigid', 'carton', 'display-box'])
+
+/** Every paperboard box product can be ordered with a metalized finish. */
+function isBoxProduct(kind: string, name: string) {
+   return BOX_KINDS.has(kind) || ((kind === 'food' || kind === 'accessory') && /(box|carton)/i.test(name))
+}
+
+function withMetallic(preset: Preset, enabled: boolean): Preset {
+   if (!enabled) return preset
+   return {
+      ...preset,
+      options: [...preset.options, METALLIC_OPTION],
+      highlights: [...preset.highlights, 'Metalized gold, silver, rose-gold & holographic finishes'],
    }
 }
 

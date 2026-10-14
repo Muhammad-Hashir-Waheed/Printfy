@@ -942,4 +942,33 @@ export const PRESETS: Record<PresetKind, Preset> = {
       specs: [['Frames', 'Aluminium tube / pop-up'], ['Minimum order', '1 piece']],
       leadTime: '4–7 business days',
    },
+   rack: {
+      unit: 'unit',
+      tiers: PIECE,
+      options: [],
+      highlights: ['Designed around your products & brand', 'Metal, MDF or acrylic construction', 'LED-lit headers available'],
+      specs: [['Materials', 'Powder-coated metal / MDF / acrylic'], ['Branding', 'Printed or lit header, side panels'], ['Service', 'Design, fabrication & delivery']],
+      leadTime: '2–4 weeks',
+   },
+}
+
+/** Metalized finish, offered on every box product. */
+export const METALLIC_OPTION: OptionGroup = {
+   id: 'metallic',
+   label: 'Metalized finish',
+   choices: [
+      { label: 'Standard print' },
+      { label: 'Metalized silver', hint: 'mirror-silver board', mult: 1.25 },
+      { label: 'Metalized gold', hint: 'luxury gold foil', mult: 1.3 },
+      { label: 'Rose gold', hint: 'soft pink metallic', mult: 1.3 },
+      { label: 'Holographic', hint: 'rainbow iridescent', mult: 1.35 },
+   ],
+}
+
+/** Which metal-finish photo set to show for a selected choice. */
+export const METALLIC_IMAGE_KEY: Record<string, string> = {
+   'Metalized silver': 'silver',
+   'Metalized gold': 'gold',
+   'Rose gold': 'rose-gold',
+   Holographic: 'holographic',
 }

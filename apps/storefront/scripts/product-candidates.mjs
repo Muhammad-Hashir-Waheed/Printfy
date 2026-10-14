@@ -45,15 +45,23 @@ const banned = (hit) => {
 }
 
 const { DEPARTMENT_SEEDS } = await import(new URL('file:///' + path.join(root, 'src/catalog/data.ts').replace(/\\/g, '/')))
-const only = process.argv[2]
+const only = process.argv.slice(2).find((a) => !a.startsWith('--'))
 const result = fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : {}
 
-for (const d of DEPARTMENT_SEEDS) {
-   for (const c of d.categories) {
-      for (const [name, , , q] of c.products) {
-         const k = `${d.slug}/${c.slug}/${slugify(name)}`
+const missingOnly = process.argv.includes('--missing')
+const targets = []
+for (const d of DEPARTMENT_SEEDS)
+   for (const c of d.categories)
+      for (const [name, , , q] of c.products) targets.push([`${d.slug}/${c.slug}/${slugify(name)}`, [q ?? name, name]])
+// Department / category heroes and extra images (keys like 'd:…', 'c:…', 'x:…')
+for (const k of Object.keys(PRODUCT_QUERIES)) if (k.includes(':')) targets.push([k, PRODUCT_QUERIES[k]])
+
+for (const [k, fallback] of targets) {
+   {
+      {
          if (only && !k.startsWith(only)) continue
-         const queries = PRODUCT_QUERIES[k] ?? [q ?? name, name]
+         if (missingOnly && result[k]?.length) continue
+         const queries = PRODUCT_QUERIES[k] ?? fallback
          const seen = new Set()
          const list = []
          // Interleave results from each query so every phrasing gets a say

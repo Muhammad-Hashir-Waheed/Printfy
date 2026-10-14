@@ -11,7 +11,9 @@ import { Breadcrumbs } from '@/components/store/breadcrumbs'
 import { PriceTag, ProductCard, SectionHeading } from '@/components/store/cards'
 import { Configurator } from '@/components/store/configurator'
 import { Reveal } from '@/components/store/motion'
+import { ProductFinishProvider } from '@/components/store/product-finish'
 import { ProductGallery } from '@/components/store/product-gallery'
+import { resolveImage } from '@/catalog/images'
 import config from '@/config/site'
 import { BadgeCheck, Check, Leaf, ShieldCheck, Truck } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -53,6 +55,16 @@ export default function ProductPage({ params }: Params) {
    ].filter((g, i, all) => i === 0 || (g.image && all.findIndex((x) => x.image?.src === g.image?.src) === i))
 
    const related = relatedProducts(product, 8)
+   const metalStyle = product.kind === 'rigid' ? 'gift' : 'box'
+   const metalImages = product.metallic
+      ? Object.fromEntries(
+           ['silver', 'gold', 'rose-gold', 'holographic'].map((v) => [
+              v,
+              resolveImage(`x:metal/${v}-${metalStyle}`, `${product.name} — ${v} finish`) ??
+                 resolveImage(`x:metal/${v}-box`, `${product.name} — ${v} finish`),
+           ])
+        )
+      : undefined
    const { preset } = product
 
    const jsonLd = {
@@ -89,8 +101,9 @@ export default function ProductPage({ params }: Params) {
             />
          </div>
 
+         <ProductFinishProvider>
          <section className="page-shell mt-6 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
-            <ProductGallery images={gallery} label={product.name} accent={dept.accent} dark={dept.dark} />
+            <ProductGallery images={gallery} label={product.name} accent={dept.accent} dark={dept.dark} metalImages={metalImages} />
 
             <div>
                <p className="eyebrow" style={{ color: dept.accent }}>
@@ -169,6 +182,7 @@ export default function ProductPage({ params }: Params) {
                </Accordion>
             </div>
          </section>
+         </ProductFinishProvider>
 
          {related.length ? (
             <section className="page-shell mt-20 sm:mt-28">

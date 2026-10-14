@@ -91,8 +91,13 @@ module.exports = {
    				to: { transform: 'translateX(-50%)' }
    			},
    			flicker: {
-   				'0%, 18%, 22%, 25%, 53%, 57%, 100%': { opacity: '1' },
-   				'20%, 24%, 55%': { opacity: '0.55' }
+   				'0%, 90%, 93%, 96%, 100%': { opacity: '1' },
+   				'91.5%': { opacity: '0.82' },
+   				'94.5%': { opacity: '0.9' }
+   			},
+   			'neon-breathe': {
+   				'0%, 100%': { textShadow: '0 0 4px rgb(255 255 255 / 0.55), 0 0 14px var(--accent-hex), 0 0 30px var(--accent-hex)' },
+   				'50%': { textShadow: '0 0 6px rgb(255 255 255 / 0.7), 0 0 22px var(--accent-hex), 0 0 48px var(--accent-hex)' }
    			},
    			rise: {
    				from: { opacity: '0', transform: 'translateY(14px)' },
@@ -103,7 +108,7 @@ module.exports = {
    			'accordion-down': 'accordion-down 0.2s ease-out',
    			'accordion-up': 'accordion-up 0.2s ease-out',
    			marquee: 'marquee 40s linear infinite',
-   			flicker: 'flicker 4s linear infinite',
+   			flicker: 'flicker 9s linear infinite, neon-breathe 6s ease-in-out infinite',
    			rise: 'rise 0.6s cubic-bezier(.2,.7,.2,1) both'
    		}
    	}

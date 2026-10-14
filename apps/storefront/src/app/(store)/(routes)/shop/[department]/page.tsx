@@ -54,7 +54,7 @@ export default function DepartmentPage({ params }: Params) {
                   <p className="eyebrow mt-10" style={{ color: dark ? '#ff7ab8' : dept.accent }}>
                      {dept.categories.length} categories · {dept.productCount} products
                   </p>
-                  <h1 className={cn('display-xl mt-4 animate-in fade-in-0 slide-in-from-bottom-4 duration-700', dark && 'neon-text animate-flicker')}>{dept.name}</h1>
+                  <h1 className={cn('display-xl mt-4', dark ? 'neon-text animate-flicker' : 'animate-in fade-in-0 slide-in-from-bottom-4 duration-700')}>{dept.name}</h1>
                   <p className={cn('mt-3 font-display text-2xl font-semibold tracking-tight', dark ? 'text-white/90' : 'text-ink/80')}>
                      {dept.tagline}
                   </p>

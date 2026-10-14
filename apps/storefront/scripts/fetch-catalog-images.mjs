@@ -258,7 +258,12 @@ async function main() {
    }
 
    if (flag('--apply-picks')) {
-      const { PICKS, DEPARTMENT_PICKS, PRODUCT_PICKS = {} } = await import('./image-picks.mjs')
+      const { PICKS, DEPARTMENT_PICKS, PRODUCT_PICKS = {}, EXTRA_PICKS = {} } = await import('./image-picks.mjs')
+      const hd = flag('--hd')
+      // Extra images that aren't catalog entries (e.g. metalized finish previews)
+      for (const key of Object.keys(EXTRA_PICKS)) {
+         if (key.startsWith('x:') && !jobs.some((j) => j.key === key)) jobs.push({ key, label: key.slice(2).replace(/[/-]/g, ' '), large: true, rule: {}, own: null })
+      }
       const byId = new Map()
       for (const f of fs.readdirSync(candidatesDir)) {
          for (const c of JSON.parse(fs.readFileSync(path.join(candidatesDir, f), 'utf8'))) byId.set(c.id, c)
@@ -273,6 +278,10 @@ async function main() {
       for (const job of jobs) {
          const kind = job.key[0]
          const body = job.key.slice(2)
+         if (EXTRA_PICKS[job.key]) {
+            assign.push([job, EXTRA_PICKS[job.key]])
+            continue
+         }
          if (kind === 'd' && DEPARTMENT_PICKS[body]) assign.push([job, DEPARTMENT_PICKS[body]])
          if (kind === 'c') {
             const picks = PICKS[CATEGORY_ALIAS[body] ?? body]
@@ -280,8 +289,7 @@ async function main() {
          }
       }
       for (const [ckey, catJobs] of categoryJobs) {
-         const picks = PICKS[CATEGORY_ALIAS[ckey] ?? ckey]
-         if (!picks?.length) continue
+         const picks = PICKS[CATEGORY_ALIAS[ckey] ?? ckey] ?? []
          const usage = new Map(picks.map((id) => [id, 0]))
          // Products get the most relevant approved photo, spreading use as evenly as possible
          for (const job of catJobs) {
@@ -291,6 +299,7 @@ async function main() {
                assign.push([job, own])
                continue
             }
+            if (!picks.length) continue
             const best = picks
                .map((id, index) => ({ id, score: relevance(byId.get(id) ?? {}, job.own) * 10 - usage.get(id) * 4 - index * 0.01 }))
                .sort((a, b) => b.score - a.score)[0]
@@ -306,11 +315,12 @@ async function main() {
             console.warn(`! ${job.key}: photo ${id} not in candidates`)
             continue
          }
-         const wantSize = job.large ? 960 : 640
+         const wantSize = hd ? (job.large ? 1280 : 960) : job.large ? 960 : 640
          const ext = path.extname(new URL(pick.webformatURL).pathname) || '.jpg'
          const file = `/catalog/${job.key.replace(':', '/')}${ext}`
          const existing = manifest[job.key]
-         if (existing?.id === id && existing.file === file && fs.existsSync(path.join(publicDir, file))) continue
+         const upToDate = existing?.id === id && existing.file === file && fs.existsSync(path.join(publicDir, file))
+         if (upToDate && (!hd || existing.width >= wantSize)) continue
          let size = 0
          for (const [src, w] of [
             [pick.webformatURL.replace(/_640(\.\w+)$/, `_${wantSize}$1`), wantSize],

@@ -56,6 +56,7 @@ export type PresetKind =
    | 'branding'
    | 'office-sign'
    | 'event'
+   | 'rack'
 
 export type CategorySeed = {
    slug: string
@@ -315,6 +316,11 @@ export const DEPARTMENT_SEEDS: DepartmentSeed[] = [
                ['Electronics Box', 'Precise-fit box for gadgets and accessories.', 1.2, 'electronics packaging'],
                ['Jewelry Box', 'Small rigid box with foam or velvet insert.', 1.4, 'jewelry box'],
                ['Apparel Box', 'Shallow box for shirts, scarves and garments.', 1.3, 'clothing gift box'],
+               ['Parts Box', 'Printed boxes for auto, bike and machine parts.', 0.95, 'auto parts box'],
+               ['Electric Box', 'Boxes for wires, switches, sockets and electrical fittings.', 0.85, 'electrical product box'],
+               ['Vape & Flavour Box', 'Compact printed boxes for vape devices and e-liquid flavours.', 0.75, 'vape box'],
+               ['Sweet Box', 'Mithai and confectionery boxes for shops and gifting.', 0.9, 'sweet box'],
+               ['Tissue Box', 'Branded tissue boxes for hotels, offices and cars.', 0.7, 'tissue box'],
             ],
          },
          {
@@ -345,6 +351,7 @@ export const DEPARTMENT_SEEDS: DepartmentSeed[] = [
                ['Cardboard Box Insert', 'Die-cut cardboard insert that holds products in place.', 0.35, 'box insert cardboard'],
                ['Foam Insert', 'Custom-cut foam insert for fragile items.', 0.65, 'foam insert case'],
                ['Product Leaflet', 'Folded leaflet or manual for inside the box.', 0.18, 'leaflet printing'],
+               ['Fragrance Cards', 'Scented and perfume sample cards for boxes and counters.', 0.22, 'perfume card'],
             ],
          },
          {
@@ -362,6 +369,76 @@ export const DEPARTMENT_SEEDS: DepartmentSeed[] = [
                ['Kraft Hang Tags', 'Eco kraft tag with one-colour stamp print.', 0.09, 'kraft tag'],
                ['Fold-Over Product Tags', 'Fold-over tags for jewellery and small goods.', 0.15, 'product tag'],
                ['Logo Ribbons', 'Satin or grosgrain ribbon printed with your logo.', 0.3, 'ribbon gift'],
+            ],
+         },
+      ],
+   },
+
+   /* ───────────────────────────── DISPLAY RACKS ───────────────────────────── */
+   {
+      slug: 'display-racks',
+      name: 'Display Racks',
+      short: 'Racks',
+      tagline: 'Put your products in the spotlight',
+      description:
+         'Branded display racks and stands for shops, pharmacies and malls, designed, fabricated and delivered with your brand on top.',
+      accent: '#B0478C',
+      imageQuery: 'cosmetics display stand',
+      categories: [
+         {
+            slug: 'cosmetic-beauty-racks',
+            name: 'Cosmetic & Beauty Racks',
+            blurb: 'Lit, branded stands for skincare, makeup and fragrance.',
+            kind: 'rack',
+            imageQuery: 'cosmetics display stand',
+            products: [
+               ['Skincare Display Rack', 'Backlit header with tiered shelves for creams and serums.', { quote: 280 }, 'skincare display shelf'],
+               ['Makeup Display Stand', 'Branded makeup unit with tester trays and mirror.', { quote: 320 }, 'makeup display stand'],
+               ['Perfume Display Rack', 'Glass-shelf fragrance display with LED lighting.', { quote: 350 }, 'perfume display shelf'],
+               ['Lit Header Beauty Gondola', 'Freestanding gondola with an illuminated logo header.', { quote: 420 }, 'beauty store shelves'],
+               ['Nail Polish Display Rack', 'Slim angled rack for nail colours and minis.', { quote: 140 }, 'nail polish display'],
+            ],
+         },
+         {
+            slug: 'floor-standing-racks',
+            name: 'Floor-Standing Racks',
+            blurb: 'Freestanding units and gondolas for retail floors.',
+            kind: 'rack',
+            imageQuery: 'retail display rack',
+            products: [
+               ['Retail Floor Display Rack', 'Branded freestanding unit for any product line.', { quote: 260 }, 'retail display rack'],
+               ['Supermarket Gondola Shelving', 'Double-sided gondola shelving with price strips.', { quote: 380 }, 'supermarket shelving'],
+               ['Pharmacy Display Rack', 'Clean, organised shelving for pharmacies.', { quote: 300 }, 'pharmacy shelves'],
+               ['Snack & Beverage Rack', 'Wire or metal rack for chips, drinks and snacks.', { quote: 180 }, 'snack rack store'],
+               ['Mobile Accessories Display', 'Hook-and-shelf stand for phone accessories.', { quote: 240 }, 'phone accessories store display'],
+            ],
+         },
+         {
+            slug: 'countertop-racks',
+            name: 'Countertop Racks',
+            blurb: 'Compact displays for counters, tills and checkouts.',
+            kind: 'rack',
+            imageQuery: 'counter display products',
+            products: [
+               ['Acrylic Countertop Display', 'Clear acrylic tiers for small products.', { quote: 45 }, 'acrylic display stand'],
+               ['Checkout Counter Rack', 'Impulse-buy rack for the till point.', { quote: 85 }, 'checkout counter display'],
+               ['Tiered Countertop Stand', 'Two- or three-tier stand with a branded header.', { quote: 65 }, 'tiered display stand'],
+               ['Rotating Countertop Display', 'Spinner display for keyrings, cards and minis.', { quote: 95 }, 'rotating display stand'],
+               ['Brochure & Card Holder', 'Countertop holder for leaflets and business cards.', { quote: 25 }, 'brochure holder'],
+            ],
+         },
+         {
+            slug: 'wall-mounted-racks',
+            name: 'Wall-Mounted Racks',
+            blurb: 'Shelving, slatwall and pegboard displays for walls.',
+            kind: 'rack',
+            imageQuery: 'wall shelves store',
+            products: [
+               ['Wall Shelving Unit', 'Branded wall shelves with a lit header panel.', { quote: 220 }, 'store wall shelves'],
+               ['Slatwall Display Panel', 'Slatwall with hooks, shelves and baskets.', { quote: 160 }, 'slatwall display'],
+               ['Pegboard Display', 'Pegboard panel for hanging products.', { quote: 120 }, 'pegboard display'],
+               ['Floating Wall Display', 'Minimal floating shelves for premium products.', { quote: 140 }, 'floating shelves display'],
+               ['Wall-Mounted Brochure Rack', 'Multi-pocket rack for brochures and catalogs.', { quote: 75 }, 'brochure rack wall'],
             ],
          },
       ],
@@ -538,6 +615,9 @@ export const DEPARTMENT_SEEDS: DepartmentSeed[] = [
                ['ID Cards', 'PVC staff ID cards with photo and barcode.', 0.9, 'id card'],
                ['Self-Inking Stamps', 'Company stamps with custom logo and text.', 9, 'rubber stamp'],
                ['Certificates', 'Premium certificates on textured paper.', 0.4, 'certificate paper'],
+               ['Award Shields', 'Wooden, acrylic and crystal shields printed or engraved with your text.', 18, 'award shield'],
+               ['File Covers', 'Printed file covers and document folders with your branding.', 0.9, 'file folder'],
+               ['Society Maps', 'Printed housing-society and plot maps on paper, laminated or board-mounted.', 4.5, 'site map plan'],
             ],
          },
       ],
