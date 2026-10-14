@@ -1,10 +1,10 @@
 'use client'
 
-import { DEPARTMENTS, type Department } from '@/catalog'
+import { BUNDLE_KEY, DEPARTMENTS, getCategory, getProductByKey, SIGNATURE_CATEGORIES, type Department } from '@/catalog'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
 import { useCart } from '@/state/cart-store'
-import { ArrowRight, ArrowUpRight, ChevronDown, Menu, Search, ShoppingBag, Sparkles } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronDown, Menu, Search, ShoppingBag, Sparkles, Star } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -60,6 +60,59 @@ function CartButton() {
 }
 
 /* ─────────────── Mega panel ─────────────── */
+
+const SIGNATURE_PROMISES = ['Luxury you can feel.', 'Unboxing they’ll post about.', 'First impressions, foiled.']
+
+/** The Signature Three — always one hover away. */
+function BestsellersMenu() {
+   const cats = SIGNATURE_CATEGORIES.map((key) => getCategory(...(key.split('/') as [string, string]))).filter(Boolean)
+   const kit = getProductByKey(BUNDLE_KEY)
+
+   return (
+      <div className="group/best relative hidden lg:block">
+         <Link
+            href="/#signature"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition hover:bg-[#F3D88C]/30"
+         >
+            <Star className="h-4 w-4 fill-[#D9AE4F] text-[#D9AE4F] transition duration-500 group-hover/best:rotate-[72deg] group-hover/best:scale-110" />
+            Bestsellers
+         </Link>
+         <div className="invisible absolute right-0 top-full z-50 w-[600px] pt-3 opacity-0 transition-all duration-300 group-focus-within/best:visible group-focus-within/best:opacity-100 group-hover/best:visible group-hover/best:opacity-100">
+            <div className="translate-y-2 overflow-hidden rounded-3xl border bg-white p-4 shadow-[0_30px_80px_-30px_rgba(30,20,10,.45)] transition-transform duration-300 group-hover/best:translate-y-0">
+               <p className="eyebrow px-1 pb-3 text-[#a8792a]">The Signature Three</p>
+               <ul className="grid grid-cols-3 gap-3">
+                  {cats.map((c, i) => (
+                     <li key={c!.key}>
+                        <Link href={c!.href} className="group/item block">
+                           <span className="relative block aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
+                              <CatalogImage image={c!.image} label={c!.name} accent={c!.accent} dark={c!.dark} sizes="190px" className="transition duration-700 group-hover/item:scale-110" />
+                              <span className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+                              <span className="absolute inset-x-0 bottom-0 p-3 text-white">
+                                 <span className="block font-display text-lg font-bold leading-tight">{c!.name}</span>
+                                 <span className="mt-0.5 block text-xs italic text-[#F3D88C]">{SIGNATURE_PROMISES[i]}</span>
+                              </span>
+                           </span>
+                        </Link>
+                     </li>
+                  ))}
+               </ul>
+               {kit ? (
+                  <Link
+                     href={kit.href}
+                     className="group/kit mt-3 flex items-center justify-between rounded-2xl bg-[#F6EFE6] px-4 py-3 text-sm transition hover:bg-[#f1e4d2]"
+                  >
+                     <span>
+                        <span className="font-semibold">Brand Launch Kit</span>
+                        <span className="text-muted-foreground"> — all three, designed as one set</span>
+                     </span>
+                     <ArrowRight className="h-4 w-4 transition group-hover/kit:translate-x-1" />
+                  </Link>
+               ) : null}
+            </div>
+         </div>
+      </div>
+   )
+}
 
 function MegaPanel({
    dept,
@@ -435,9 +488,7 @@ export function SiteHeader() {
                      >
                         <Search className="h-[22px] w-[22px]" />
                      </button>
-                     <Link href="/contact" className="link-draw hidden px-2 py-1 text-sm font-semibold lg:inline-block">
-                        Help
-                     </Link>
+                     <BestsellersMenu />
                      <Magnetic strength={0.25} className="hidden sm:inline-block">
                         <Link
                            href="/quote"

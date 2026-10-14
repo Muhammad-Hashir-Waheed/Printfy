@@ -1,11 +1,28 @@
-import { startingUnitPrice, type Category, type Department, type Product } from '@/catalog'
+import { isSignature, startingUnitPrice, type Category, type Department, type Product } from '@/catalog'
 import config from '@/config/site'
 import { roundMoney, unitMoney } from '@/lib/money'
 import { cn } from '@/lib/utils'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Star } from 'lucide-react'
 import Link from 'next/link'
 
 import { CatalogImage } from './catalog-image'
+
+/** Gold-foil ribbon for the Signature Three (rigid boxes, mailer boxes, business cards). */
+export function BestsellerRibbon({ className }: { className?: string }) {
+   return (
+      <span
+         className={cn(
+            'btn-shine absolute left-3 top-3 z-[1] inline-flex items-center gap-1 rounded-full bg-[linear-gradient(110deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-[#3b2a0c] shadow-[0_6px_16px_-6px_rgba(120,80,10,.6)]',
+            className
+         )}
+      >
+         <Star className="h-3 w-3 fill-current" /> Bestseller
+      </span>
+   )
+}
+
+export const categoryIsSignature = (c: Category) =>
+   isSignature(c.canonical ?? { departmentSlug: c.departmentSlug, categorySlug: c.slug })
 
 export function PriceTag({ product, className }: { product: Product; className?: string }) {
    if (!config.showPrices) {
@@ -55,7 +72,9 @@ export function ProductCard({
                sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, 50vw"
                className="transition duration-700 ease-out group-hover:scale-[1.06]"
             />
-            {product.quote ? (
+            {isSignature(product) ? (
+               <BestsellerRibbon />
+            ) : product.quote ? (
                <span className="absolute left-3 top-3 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
                   Made to order
                </span>
@@ -94,6 +113,7 @@ export function CategoryCard({ category, priority }: { category: Category; prior
                className="transition duration-700 ease-out group-hover:scale-[1.05]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+            {categoryIsSignature(category) ? <BestsellerRibbon className="left-4 top-4" /> : null}
          </div>
          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5 text-white">
             <div className="min-w-0">
@@ -114,9 +134,9 @@ export function CategoryCard({ category, priority }: { category: Category; prior
 
 export function DepartmentTile({ department }: { department: Department }) {
    return (
-      <Link href={department.href} className="group flex flex-col items-center gap-3 text-center">
+      <Link href={department.href} aria-label={department.name} className="group flex flex-col items-center gap-3 text-center">
          <span
-            className="relative block aspect-square w-full overflow-hidden rounded-full ring-1 ring-black/5 transition duration-500 group-hover:ring-4"
+            className="relative block aspect-square w-full overflow-hidden rounded-full ring-1 ring-black/5 transition duration-500 group-hover:-translate-y-1 group-hover:ring-4"
             style={{ ['--tw-ring-color' as string]: department.accent }}
          >
             <CatalogImage
@@ -128,7 +148,12 @@ export function DepartmentTile({ department }: { department: Department }) {
                className="transition duration-700 group-hover:scale-110"
             />
          </span>
-         <span className="text-[13.5px] font-semibold leading-tight sm:text-sm">{department.name}</span>
+         <span className="text-balance text-[13.5px] font-semibold leading-tight transition-colors group-hover:text-primary sm:text-sm xl:hidden">
+            {department.name}
+         </span>
+         <span aria-hidden className="hidden text-balance text-sm font-semibold leading-tight transition-colors group-hover:text-primary xl:block">
+            {department.short}
+         </span>
       </Link>
    )
 }

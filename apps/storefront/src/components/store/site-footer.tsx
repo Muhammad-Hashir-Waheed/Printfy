@@ -1,6 +1,6 @@
 'use client'
 
-import { DEPARTMENTS, type Department } from '@/catalog'
+import { DEPARTMENTS, getCategory, SIGNATURE_CATEGORIES, type Department } from '@/catalog'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
 import { ArrowUp, ArrowUpRight, Mail, Sparkle } from 'lucide-react'
@@ -143,6 +143,22 @@ export function SiteFooter() {
          {/* Department marquee */}
          <div className="border-b border-white/10 py-6">
             <Marquee speed={55}>
+               {SIGNATURE_CATEGORIES.map((key) => {
+                  const [d, c] = key.split('/')
+                  const cat = getCategory(d, c)
+                  return cat ? (
+                     <Link
+                        key={key}
+                        href={cat.href}
+                        className="group flex items-center gap-8 px-4 font-display text-4xl font-extrabold italic tracking-tight sm:text-6xl"
+                     >
+                        <span className="bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text pr-1 text-transparent transition-opacity duration-300 group-hover:opacity-80">
+                           {cat.name}
+                        </span>
+                        <Sparkle className="h-6 w-6 shrink-0 fill-[#D9AE4F] text-[#D9AE4F] transition-transform duration-700 group-hover:rotate-180" />
+                     </Link>
+                  ) : null
+               })}
                {DEPARTMENTS.map((d) => (
                   <Link
                      key={d.slug}

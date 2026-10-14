@@ -25,6 +25,14 @@ type Form = {
    details: string
 }
 
+/** Our bestsellers, one tap away */
+const QUICK_PICKS = [
+   { label: 'Rigid boxes', department: 'packaging' },
+   { label: 'Mailer boxes', department: 'packaging' },
+   { label: 'Business cards', department: 'printing' },
+   { label: 'Brand Launch Kit', department: 'custom-packaging' },
+]
+
 const input =
    'h-12 w-full rounded-2xl border border-input bg-white px-4 text-[15px] outline-none transition focus:border-ink focus:ring-4 focus:ring-ink/5'
 
@@ -230,6 +238,21 @@ export function QuoteForm() {
                      <option key={name} value={name} />
                   ))}
                </datalist>
+               <div className="mt-2 flex flex-wrap gap-1.5">
+                  {QUICK_PICKS.map((pick) => (
+                     <button
+                        key={pick.label}
+                        type="button"
+                        onClick={() => setForm((f) => ({ ...f, department: pick.department, product: pick.label }))}
+                        className={cn(
+                           'rounded-full border px-2.5 py-1 text-xs font-semibold transition',
+                           form.product === pick.label ? 'border-[#C99A3E] bg-[#F3D88C]/40' : 'border-ink/10 bg-white hover:border-[#C99A3E]'
+                        )}
+                     >
+                        ★ {pick.label}
+                     </button>
+                  ))}
+               </div>
             </div>
             {field('quantity', 'Quantity', { placeholder: 'e.g. 500 pcs', inputMode: 'numeric' })}
             {field('size', 'Size / dimensions', { placeholder: 'e.g. 3 m × 1 m' })}

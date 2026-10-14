@@ -92,7 +92,14 @@ const LEGACY: Record<string, string> = {
    'p:signage-displays/digital-sign-boards/led-digital-sign-boards': 'led-sign',
 }
 
+/** Hand-made images that always win over the manifest (e.g. composed bundle shots). */
+const OVERRIDES: Record<string, { src: string; width: number; height: number }> = {
+   'p:custom-packaging/custom-printing/brand-launch-kit': { src: '/catalog/signature/brand-launch-kit.jpg', width: 1600, height: 1100 },
+}
+
 export function resolveImage(key: string, alt: string): CatalogImage | null {
+   const override = OVERRIDES[key]
+   if (override) return { ...override, alt }
    const entry = MANIFEST[key]
    if (entry && (entry.file || entry.url)) {
       return {

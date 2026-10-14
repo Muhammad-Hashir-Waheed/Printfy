@@ -386,14 +386,14 @@ const manifest = {
   "source": "pixabay"
  },
  "c:packaging/mailer-boxes": {
-  "id": 4967335,
+  "id": 10506185,
   "file": "/catalog/c/packaging/mailer-boxes.jpg",
   "width": 1280,
   "height": 720,
-  "alt": "Mailer Boxes — space, wood, deliver, logistics, receive, transportation",
-  "photographer": "ha11ok",
-  "photographerUrl": "https://pixabay.com/users/ha11ok-1785462/",
-  "pageUrl": "https://pixabay.com/photos/space-wood-deliver-logistics-4967335/",
+  "alt": "Mailer Boxes — packaging, clothing, folding, box, hands, at home",
+  "photographer": "AhmedAlMaslamani",
+  "photographerUrl": "https://pixabay.com/users/AhmedAlMaslamani-13030624/",
+  "pageUrl": "https://pixabay.com/photos/packaging-clothing-folding-box-10506185/",
   "source": "pixabay"
  },
  "c:packaging/rigid-boxes": {
@@ -1626,6 +1626,17 @@ const manifest = {
   "photographer": "promil69",
   "photographerUrl": "https://pixabay.com/users/promil69-5433806/",
   "pageUrl": "https://pixabay.com/photos/cardboard-package-courier-shipping-5144898/",
+  "source": "pixabay"
+ },
+ "p:custom-packaging/custom-printing/brand-launch-kit": {
+  "id": 3634411,
+  "file": "/catalog/p/custom-packaging/custom-printing/brand-launch-kit.jpg",
+  "width": 1280,
+  "height": 853,
+  "alt": "Brand Launch Kit — offset printing macine, printing services, bruchure printing, printing services, printing services, printing services",
+  "photographer": "paine_z",
+  "photographerUrl": "https://pixabay.com/users/paine_z-9934419/",
+  "pageUrl": "https://pixabay.com/photos/offset-printing-macine-3634411/",
   "source": "pixabay"
  },
  "p:custom-packaging/custom-printing/custom-print-job": {
@@ -2993,14 +3004,14 @@ const manifest = {
   "source": "pixabay"
  },
  "p:packaging/mailer-boxes/branded-mailer-box": {
-  "id": 4967335,
+  "id": 10416934,
   "file": "/catalog/p/packaging/mailer-boxes/branded-mailer-box.jpg",
   "width": 1280,
-  "height": 720,
-  "alt": "Branded Mailer Box — space, wood, deliver, logistics, receive, transportation",
-  "photographer": "ha11ok",
-  "photographerUrl": "https://pixabay.com/users/ha11ok-1785462/",
-  "pageUrl": "https://pixabay.com/photos/space-wood-deliver-logistics-4967335/",
+  "height": 956,
+  "alt": "Branded Mailer Box — packages, boxes, delivery, outdoor, door mat, door",
+  "photographer": "MonsterDealz",
+  "photographerUrl": "https://pixabay.com/users/MonsterDealz-57057939/",
+  "pageUrl": "https://pixabay.com/photos/packages-boxes-delivery-outdoor-10416934/",
   "source": "pixabay"
  },
  "p:packaging/mailer-boxes/inside-printed-mailer-box": {
@@ -3268,14 +3279,14 @@ const manifest = {
   "source": "pixabay"
  },
  "p:printing/business-cards/foil-business-cards": {
-  "id": 2585710,
+  "id": 386254,
   "file": "/catalog/p/printing/business-cards/foil-business-cards.jpg",
   "width": 1280,
-  "height": 854,
-  "alt": "Foil Business Cards — gold, chip, sticker, card, business, brochure",
-  "photographer": "StockSnap",
-  "photographerUrl": "https://pixabay.com/users/StockSnap-894430/",
-  "pageUrl": "https://pixabay.com/photos/gold-chip-sticker-card-business-2585710/",
+  "height": 747,
+  "alt": "Foil Business Cards — visit card, business card, paper, business, gold, visit card",
+  "photographer": "webvilla",
+  "photographerUrl": "https://pixabay.com/users/webvilla-86582/",
+  "pageUrl": "https://pixabay.com/photos/visit-card-business-card-paper-386254/",
   "source": "pixabay"
  },
  "p:printing/business-cards/kraft-business-cards": {
@@ -3312,14 +3323,14 @@ const manifest = {
   "source": "pixabay"
  },
  "p:printing/business-cards/spot-uv-business-cards": {
-  "id": 318425,
+  "id": 792113,
   "file": "/catalog/p/printing/business-cards/spot-uv-business-cards.jpg",
   "width": 1280,
   "height": 853,
-  "alt": "Spot UV Business Cards — business card, pixabay, company, address, name, logo",
-  "photographer": "Hans",
-  "photographerUrl": "https://pixabay.com/users/Hans-2/",
-  "pageUrl": "https://pixabay.com/photos/business-card-pixabay-company-318425/",
+  "alt": "Spot UV Business Cards — coffee, phone, paper, business, branding, blank",
+  "photographer": "kaboompics",
+  "photographerUrl": "https://pixabay.com/users/kaboompics-1013994/",
+  "pageUrl": "https://pixabay.com/photos/coffee-phone-paper-business-792113/",
   "source": "pixabay"
  },
  "p:printing/business-cards/square-business-cards": {

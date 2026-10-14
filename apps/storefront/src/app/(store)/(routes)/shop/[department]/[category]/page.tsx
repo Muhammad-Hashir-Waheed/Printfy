@@ -3,6 +3,8 @@ import { Breadcrumbs } from '@/components/store/breadcrumbs'
 import { CatalogImage } from '@/components/store/catalog-image'
 import { ProductGrid } from '@/components/store/product-grid'
 import { QuoteBand } from '@/components/store/quote-band'
+import { SignatureShowcase } from '@/components/store/signature'
+import { SignatureFlagship, signatureContentFor } from '@/components/store/signature-flagship'
 import { unitMoney } from '@/lib/money'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
@@ -39,6 +41,7 @@ export default function CategoryPage({ params }: Params) {
 
    const dark = dept.dark
    const canonicalDept = category.canonical ? getDepartment(category.canonical.departmentSlug) : null
+   const signature = signatureContentFor(category)
 
    return (
       <div style={{ ['--accent-hex' as string]: dept.accent }}>
@@ -57,10 +60,20 @@ export default function CategoryPage({ params }: Params) {
                />
                <div className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
                   <div>
-                     <p className="eyebrow" style={{ color: dark ? '#ff7ab8' : dept.accent }}>
+                     <p className="eyebrow flex flex-wrap items-center gap-3" style={{ color: dark ? '#ff7ab8' : dept.accent }}>
                         {dept.name}
+                        {signature ? (
+                           <span className="rounded-full bg-[linear-gradient(110deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] px-2.5 py-1 text-[11px] text-[#3b2a0c]">
+                              ★ Signature Three
+                           </span>
+                        ) : null}
                      </p>
                      <h1 className={cn('display-xl mt-3', dark && 'neon-text')}>{category.name}</h1>
+                     {signature ? (
+                        <p className="mt-3 bg-[linear-gradient(100deg,#B8892B,#D9AE4F_45%,#A8792A)] bg-clip-text font-display text-2xl font-bold italic text-transparent sm:text-3xl">
+                           {signature.promise}
+                        </p>
+                     ) : null}
                      <p className={cn('mt-4 max-w-xl text-[16px] leading-relaxed', dark ? 'text-white/70' : 'text-muted-foreground')}>
                         {category.blurb}{' '}
                         {config.showPrices && category.fromPrice ? (
@@ -78,9 +91,13 @@ export default function CategoryPage({ params }: Params) {
                         </p>
                      ) : null}
                   </div>
-                  <div className="relative hidden aspect-[16/9] overflow-hidden rounded-[1.75rem] lg:block">
-                     <CatalogImage image={category.image} label={category.name} accent={dept.accent} dark={dark} priority sizes="40vw" />
-                  </div>
+                  {signature ? (
+                     <SignatureShowcase kind={signature.kind} background={signature.background} className="aspect-[16/10] max-lg:mx-auto max-lg:w-full max-lg:max-w-md" />
+                  ) : (
+                     <div className="relative hidden aspect-[16/9] overflow-hidden rounded-[1.75rem] lg:block">
+                        <CatalogImage image={category.image} label={category.name} accent={dept.accent} dark={dark} priority sizes="40vw" />
+                     </div>
+                  )}
                </div>
             </div>
          </section>
@@ -88,6 +105,8 @@ export default function CategoryPage({ params }: Params) {
          <section className="page-shell pt-8">
             <ProductGrid products={category.products} />
          </section>
+
+         {signature ? <SignatureFlagship category={category} content={signature} /> : null}
 
          <section className="page-shell mt-16">
             <p className="eyebrow mb-4 text-muted-foreground">More in {dept.name}</p>

@@ -1,17 +1,21 @@
 import {
+   BUNDLE_KEY,
    CATALOG_STATS,
    DEPARTMENTS,
    getCategory,
    getDepartment,
    getProductByKey,
    popularProducts,
+   SIGNATURE_CATEGORIES,
    type Category,
 } from '@/catalog'
 import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/components/store/cards'
 import { CatalogImage } from '@/components/store/catalog-image'
 import { CountUp, Magnetic, Marquee, Reveal, RotatingWords } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
-import { ArrowRight, BadgeCheck, Clock3, Palette, Sparkle, Sparkles, Truck, Upload } from 'lucide-react'
+import { SignaturePanel, type SignaturePanelData } from '@/components/store/signature'
+import { SIGNATURE_CONTENT } from '@/components/store/signature-flagship'
+import { ArrowRight, BadgeCheck, Box, Clock3, CreditCard, Gift, Palette, Sparkle, Truck, Upload } from 'lucide-react'
 import Link from 'next/link'
 
 const cat = (key: string) => {
@@ -21,9 +25,9 @@ const cat = (key: string) => {
 
 function Hero() {
    const signage = getDepartment('signage-displays')!
-   const mailer = getProductByKey('packaging/mailer-boxes/branded-mailer-box')!
+   const rigid = getProductByKey('packaging/rigid-boxes/magnetic-closure-box')!
+   const mailer = getProductByKey('packaging/mailer-boxes/subscription-mailer-box')!
    const cards = getProductByKey('printing/business-cards/foil-business-cards')!
-   const acrylic = getProductByKey('acrylic-plastic-packaging/acrylic-boxes/acrylic-gift-boxes')!
 
    return (
       <section className="grain relative overflow-hidden">
@@ -34,7 +38,7 @@ function Hero() {
                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
                      <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                   </span>
-                  Packaging · Print · Signage — under one roof
+                  Rigid boxes · Mailer boxes · Business cards
                </p>
                <h1 className="display-xl mt-6">
                   <span className="word-rise block">
@@ -46,7 +50,7 @@ function Hero() {
                   </span>
                   <span className="word-rise block">
                      <span style={{ animationDelay: '420ms' }} className="relative text-primary">
-                        <RotatingWords words={['unforgettable.', 'irresistible.', 'glow.', 'stand out.']} interval={2600} />
+                        <RotatingWords words={['unboxable.', 'unforgettable.', 'luxe.', 'stand out.']} interval={2600} />
                         <svg
                            viewBox="0 0 300 20"
                            className="absolute -bottom-2 left-0 h-3 w-full text-coral sm:-bottom-3 sm:h-4"
@@ -69,16 +73,16 @@ function Hero() {
                   </span>
                </h1>
                <p className="mt-7 max-w-xl text-[17px] leading-relaxed text-muted-foreground animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
-                  Custom boxes, business cards, labels, acrylic packaging and glowing signage — designed with you,
-                  printed with care and delivered on time.
+                  Luxury rigid boxes, mailer boxes made for unboxing and business cards finished in foil — plus
+                  everything else your brand touches. Designed with you, printed with care, delivered on time.
                </p>
                <div className="mt-8 flex flex-col gap-3 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:flex-row" style={{ animationDelay: '650ms', animationFillMode: 'both' }}>
                   <Magnetic className="w-full sm:w-auto">
                      <Link
-                        href="/shop"
+                        href="#signature"
                         className="btn-shine group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-ink px-8 text-base font-semibold text-white transition hover:bg-ink/90 sm:w-auto"
                      >
-                        Explore products <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                        See our bestsellers <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                      </Link>
                   </Magnetic>
                   <Magnetic className="w-full sm:w-auto">
@@ -114,28 +118,26 @@ function Hero() {
 
             {/* Bento collage */}
             <div className="relative grid h-[440px] grid-cols-6 grid-rows-6 gap-3 animate-in fade-in-0 zoom-in-95 duration-1000 sm:h-[540px] lg:h-[600px]" style={{ animationDelay: '250ms', animationFillMode: 'both' }}>
-               <span aria-hidden className="float-y absolute -left-4 top-[18%] z-10 hidden rotate-[-8deg] rounded-full bg-[#FFD84D] px-4 py-2 font-display text-sm font-extrabold text-ink shadow-lg sm:block">
+               <span aria-hidden className="float-y absolute -left-4 top-[16%] z-10 hidden rotate-[-8deg] rounded-full bg-[#FFD84D] px-4 py-2 font-display text-sm font-extrabold text-ink shadow-lg sm:block">
                   ✦ Foil &amp; spot UV
                </span>
-               <span aria-hidden className="float-y absolute -right-3 top-[66%] z-10 hidden rotate-[6deg] rounded-full bg-[#0E9FC4] px-4 py-2 font-display text-sm font-extrabold text-white shadow-lg sm:block" style={{ animationDelay: '1.4s' }}>
-                  Crystal acrylic
+               <span aria-hidden className="float-y absolute -right-3 top-[52%] z-10 hidden rotate-[6deg] rounded-full bg-[linear-gradient(110deg,#d8d8d8,#ffffff_40%,#b9b9b9_60%,#f2f2f2)] px-4 py-2 font-display text-sm font-extrabold text-ink shadow-lg ring-1 ring-black/10 sm:block" style={{ animationDelay: '1.4s' }}>
+                  Metalized finishes
                </span>
-               <Link
-                  href={signage.href}
-                  className="group relative col-span-4 row-span-4 overflow-hidden rounded-[1.75rem] bg-[#140d18]"
-                  style={{ ['--accent-hex' as string]: signage.accent }}
-               >
-                  <CatalogImage image={signage.image} label={signage.name} accent={signage.accent} dark priority sizes="(min-width:1024px) 34vw, 66vw" className="opacity-80 transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-transparent to-black/70" />
-                  <p className="neon-text absolute left-5 top-5 animate-flicker font-display text-4xl font-extrabold italic tracking-tight text-white sm:text-5xl">
-                     open late
-                  </p>
-                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between text-white">
+               <Link href={rigid.href} className="group relative col-span-4 row-span-4 overflow-hidden rounded-[1.75rem] bg-[#0d2b24]">
+                  <CatalogImage image={rigid.image} label={rigid.name} accent={rigid.accent} priority sizes="(min-width:1024px) 34vw, 66vw" className="transition duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0d2b24]/60 via-transparent to-black/75" />
+                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#F3D88C] ring-1 ring-[#F3D88C]/40 backdrop-blur">
+                     ★ Bestseller
+                  </span>
+                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-3 text-white">
                      <div>
-                        <p className="eyebrow text-white/60">Signage & Displays</p>
-                        <p className="font-display text-lg font-bold sm:text-xl">Neon, 3D letters & LED</p>
+                        <p className="bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text pb-1 font-display text-3xl font-extrabold italic leading-none tracking-tight text-transparent sm:text-5xl">
+                           Luxury, unboxed.
+                        </p>
+                        <p className="mt-1 text-sm font-medium text-white/85 sm:text-base">Rigid boxes · magnetic, drawer &amp; book-style</p>
                      </div>
-                     <span className="grid h-10 w-10 place-items-center rounded-full bg-white text-ink transition group-hover:-rotate-45">
+                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-ink transition group-hover:-rotate-45">
                         <ArrowRight className="h-4 w-4" />
                      </span>
                   </div>
@@ -143,20 +145,24 @@ function Hero() {
 
                <Link href={mailer.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
                   <CatalogImage image={mailer.image} label={mailer.name} accent={mailer.accent} priority sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
-                  <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold shadow">Mailer boxes</span>
+                  <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold shadow">★ Mailer boxes</span>
                </Link>
 
-               <Link href={acrylic.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
-                  <CatalogImage image={acrylic.image} label={acrylic.name} accent={acrylic.accent} sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
-                  <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold shadow">Acrylic boxes</span>
+               <Link href={cards.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
+                  <CatalogImage image={cards.image} label={cards.name} accent={cards.accent} sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
+                  <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold shadow">★ Business cards</span>
                </Link>
 
-               <Link href={cards.href} className="group relative col-span-4 row-span-2 overflow-hidden rounded-[1.75rem] bg-muted">
-                  <CatalogImage image={cards.image} label={cards.name} accent={cards.accent} sizes="(min-width:1024px) 34vw, 66vw" className="transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+               <Link
+                  href={signage.href}
+                  className="group relative col-span-4 row-span-2 overflow-hidden rounded-[1.75rem] bg-[#140d18]"
+                  style={{ ['--accent-hex' as string]: signage.accent }}
+               >
+                  <CatalogImage image={signage.image} label={signage.name} accent={signage.accent} dark sizes="(min-width:1024px) 34vw, 66vw" className="opacity-70 transition duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/75 to-transparent" />
                   <div className="absolute inset-y-0 left-5 flex flex-col justify-center text-white">
-                     <p className="font-display text-xl font-bold sm:text-2xl">Business cards</p>
-                     <p className="text-sm text-white/80">Foil, spot UV & luxe stocks</p>
+                     <p className="neon-text animate-flicker font-display text-2xl font-extrabold italic tracking-tight sm:text-3xl">open late</p>
+                     <p className="text-sm text-white/80">Neon, 3D letters &amp; LED signage</p>
                   </div>
                </Link>
 
@@ -175,6 +181,92 @@ function Hero() {
    )
 }
 
+const FINISHES = ['Soft-touch', 'Gold foil', 'Spot UV', 'Embossing', 'Metalized', 'Magnetic closure', 'Inside print', 'Ribbon pull']
+
+function SignatureThree() {
+   const panels: SignaturePanelData[] = SIGNATURE_CATEGORIES.map((key, i) => {
+      const c = cat(key)
+      const { kind, promise, styles, background } = SIGNATURE_CONTENT[key]
+      return { kind, promise, styles, background, index: i + 1, href: c.href, name: c.name, count: c.products.length }
+   })
+   const kit = getProductByKey(BUNDLE_KEY)
+
+   return (
+      <section id="signature" className="grain relative scroll-mt-28 overflow-hidden bg-[#120d0a] py-20 text-white sm:py-28">
+         <div className="pointer-events-none absolute -left-32 top-10 h-[460px] w-[460px] rounded-full bg-[#D9AE4F]/15 blur-[120px]" />
+         <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-[#D42F25]/20 blur-[120px]" />
+         <div className="page-shell relative">
+            <div className="mx-auto max-w-3xl text-center">
+               <p className="eyebrow text-[#F3D88C]">The Signature Three</p>
+               <h2 className="mt-4 font-display text-[2.6rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
+                  What we&apos;re{' '}
+                  <span className="bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text pr-1 italic text-transparent">known</span>{' '}
+                  for.
+               </h2>
+               <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-white/65 sm:text-base">
+                  Our most-ordered work, perfected run after run. Made to order, proofed by a human and finished by
+                  hand.
+               </p>
+            </div>
+
+            <Reveal stagger={140} y={48} className="mt-12 grid gap-5 md:grid-cols-3 lg:gap-6">
+               {panels.map((p) => (
+                  <SignaturePanel key={p.kind} panel={p} className="min-h-[500px]" />
+               ))}
+            </Reveal>
+
+            <div aria-hidden className="mask-fade-x mt-10">
+               <Marquee speed={45}>
+                  {FINISHES.map((f) => (
+                     <span key={f} className="flex items-center gap-5 px-5 font-display text-lg font-semibold italic text-white/50 sm:text-xl">
+                        {f}
+                        <Sparkle className="h-4 w-4 fill-[#D9AE4F] text-[#D9AE4F]" />
+                     </span>
+                  ))}
+               </Marquee>
+            </div>
+
+            {kit ? (
+               <Reveal y={40} className="mt-14">
+                  <Link
+                     href={kit.href}
+                     className="group grid overflow-hidden rounded-[2rem] bg-[#F6EFE6] text-ink ring-1 ring-white/10 md:grid-cols-[1.15fr_1fr]"
+                  >
+                     <div className="relative aspect-[16/11] overflow-hidden md:aspect-auto md:min-h-[380px]">
+                        <CatalogImage image={kit.image} label={kit.name} accent={kit.accent} sizes="(min-width:768px) 55vw, 100vw" className="transition duration-700 group-hover:scale-[1.04]" />
+                     </div>
+                     <div className="flex flex-col justify-center p-7 sm:p-10">
+                        <p className="eyebrow text-primary">All three, one look</p>
+                        <h3 className="display-lg mt-3">The Brand Launch Kit</h3>
+                        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+                           Rigid boxes, mailers and business cards designed together as one matching set — so your brand
+                           looks the same from the first handshake to the final unboxing.
+                        </p>
+                        <ul className="mt-6 grid grid-cols-3 gap-3">
+                           {[
+                              { icon: Gift, n: '100', l: 'rigid boxes' },
+                              { icon: Box, n: '250', l: 'mailer boxes' },
+                              { icon: CreditCard, n: '500', l: 'business cards' },
+                           ].map(({ icon: Icon, n, l }) => (
+                              <li key={l} className="rounded-2xl bg-white p-3 text-center shadow-sm ring-1 ring-black/5">
+                                 <Icon className="mx-auto h-5 w-5 text-primary" />
+                                 <p className="mt-1.5 font-display text-2xl font-extrabold leading-none">{n}</p>
+                                 <p className="mt-1 text-[11px] text-muted-foreground sm:text-xs">{l}</p>
+                              </li>
+                           ))}
+                        </ul>
+                        <span className="mt-7 inline-flex h-12 items-center gap-2 self-start rounded-full bg-ink px-6 font-semibold text-white transition-all group-hover:gap-3 group-hover:bg-primary">
+                           Build my launch kit <ArrowRight className="h-4 w-4" />
+                        </span>
+                     </div>
+                  </Link>
+               </Reveal>
+            ) : null}
+         </div>
+      </section>
+   )
+}
+
 function DepartmentRail() {
    return (
       <section className="page-shell py-12 sm:py-16">
@@ -183,7 +275,7 @@ function DepartmentRail() {
             title="Everything your brand touches."
             action={{ href: '/shop', label: 'All departments' }}
          />
-         <Reveal stagger={50} className="grid grid-cols-3 gap-x-4 gap-y-7 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-11 xl:gap-x-5">
+         <Reveal stagger={50} className="grid grid-cols-3 gap-x-4 gap-y-7 sm:grid-cols-4 md:grid-cols-6 xl:grid-cols-12 xl:gap-x-4">
             {DEPARTMENTS.map((d) => (
                <DepartmentTile key={d.slug} department={d} />
             ))}
@@ -375,11 +467,11 @@ function Industries() {
 
 function PackagingBento() {
    const keys = [
-      'packaging/mailer-boxes',
-      'packaging/rigid-boxes',
+      'retail-packaging/product-boxes',
+      'packaging/folding-cartons',
       'food-packaging/cups',
       'labels-stickers/stickers',
-      'printing/business-cards',
+      'bags/paper-bags',
       'bags/fabric-bags',
    ]
    return (
@@ -458,6 +550,7 @@ export default function HomePage() {
       <>
          <Hero />
          <Guarantees />
+         <SignatureThree />
          <DepartmentRail />
          <Popular />
          <KineticBand />

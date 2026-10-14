@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom'
 
 import { CatalogImage } from './catalog-image'
 
-const TRENDING = ['Neon signs', 'Business cards', 'Mailer boxes', 'Acrylic boxes', 'Roll-up banners', 'Stickers', 'Paper bags']
+const TRENDING = ['Rigid boxes', 'Mailer boxes', 'Business cards', 'Neon signs', 'Acrylic boxes', 'Stickers', 'Paper bags']
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
    const router = useRouter()

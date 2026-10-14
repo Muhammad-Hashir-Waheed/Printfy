@@ -1,6 +1,6 @@
 'use client'
 
-import { DEPARTMENTS } from '@/catalog'
+import { DEPARTMENTS, getCategory, SIGNATURE_CATEGORIES } from '@/catalog'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ArrowLeft, ChevronRight, HelpCircle, Info, MessageSquareQuote, Newspaper } from 'lucide-react'
 import Link from 'next/link'
@@ -87,7 +87,24 @@ export function MobileMenu({ trigger }: { trigger: ReactNode }) {
                   </div>
                ) : (
                   <div className="animate-in fade-in-0 duration-200">
-                     <p className="eyebrow px-5 pb-2 pt-5 text-muted-foreground">Shop by department</p>
+                     <p className="eyebrow px-5 pb-2 pt-5 text-[#a8792a]">★ Bestsellers</p>
+                     <ul className="grid grid-cols-3 gap-2 px-5">
+                        {SIGNATURE_CATEGORIES.map((key) => {
+                           const [d, c] = key.split('/')
+                           const cat = getCategory(d, c)
+                           if (!cat) return null
+                           return (
+                              <li key={key}>
+                                 <Link href={cat.href} className="relative block aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
+                                    <CatalogImage image={cat.image} label={cat.name} accent={cat.accent} dark={cat.dark} sizes="120px" />
+                                    <span className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                                    <span className="absolute inset-x-0 bottom-0 p-2 text-[13px] font-semibold leading-tight text-white">{cat.name}</span>
+                                 </Link>
+                              </li>
+                           )
+                        })}
+                     </ul>
+                     <p className="eyebrow px-5 pb-2 pt-6 text-muted-foreground">Shop by department</p>
                      <ul className="px-3">
                         {DEPARTMENTS.map((d, i) => (
                            <li

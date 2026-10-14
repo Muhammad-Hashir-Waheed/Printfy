@@ -1,6 +1,6 @@
 'use client'
 
-import { startingUnitPrice, type Product } from '@/catalog'
+import { isSignature, startingUnitPrice, type Product } from '@/catalog'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
 import { LayoutGrid, Rows3 } from 'lucide-react'
@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
 import { CatalogImage } from './catalog-image'
-import { PriceTag } from './cards'
+import { BestsellerRibbon, PriceTag } from './cards'
 
 type Sort = 'featured' | 'price-asc' | 'price-desc' | 'name'
 type Filter = 'all' | 'online' | 'quote'
@@ -38,6 +38,8 @@ export function ProductGrid({ products, showCategory }: { products: Product[]; s
       let list = products
       if (filter === 'online') list = list.filter((p) => !p.quote)
       if (filter === 'quote') list = list.filter((p) => p.quote)
+      // Bestsellers lead mixed listings (search, departments); stable sort keeps the rest in order
+      if (sort === 'featured') list = [...list].sort((a, b) => Number(isSignature(b)) - Number(isSignature(a)))
       if (sort === 'price-asc') list = [...list].sort((a, b) => priceOf(a) - priceOf(b))
       if (sort === 'price-desc') list = [...list].sort((a, b) => priceOf(b) - priceOf(a))
       if (sort === 'name') list = [...list].sort((a, b) => a.name.localeCompare(b.name))
@@ -149,7 +151,9 @@ function GridCard({ product, showCategory, priority }: { product: Product; showC
                sizes="(min-width: 1024px) 23vw, (min-width: 768px) 31vw, 48vw"
                className="transition duration-700 ease-out group-hover:scale-[1.06]"
             />
-            {product.quote ? (
+            {isSignature(product) ? (
+               <BestsellerRibbon />
+            ) : product.quote ? (
                <span className="absolute left-3 top-3 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
                   Made to order
                </span>

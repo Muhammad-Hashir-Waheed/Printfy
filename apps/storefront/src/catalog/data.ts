@@ -893,6 +893,7 @@ export const DEPARTMENT_SEEDS: DepartmentSeed[] = [
                ['Packaging Design Service', 'Our designers create print-ready artwork for you.', 149, 'graphic designer'],
                ['Prototype & Sample Box', 'A physical sample before you commit to production.', 25, 'box prototype'],
                ['Large Volume Printing', 'Offset pricing for 10,000+ units.', 0.1, 'offset printing'],
+               ['Brand Launch Kit', '100 rigid boxes + 250 mailer boxes + 500 business cards, designed as one matching set.', { quote: 650 }, 'gift box branding'],
             ],
          },
          {

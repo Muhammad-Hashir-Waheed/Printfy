@@ -298,19 +298,28 @@ export function relatedProducts(product: Product, limit = 8) {
 }
 
 /** Hand-picked bestsellers for the home page */
+/** Joji Arts' core business — featured, badged and ranked first across the site. */
+export const SIGNATURE_CATEGORIES = ['packaging/rigid-boxes', 'packaging/mailer-boxes', 'printing/business-cards'] as const
+
+export function isSignature(product: Pick<Product, 'departmentSlug' | 'categorySlug'>) {
+   return (SIGNATURE_CATEGORIES as readonly string[]).includes(`${product.departmentSlug}/${product.categorySlug}`)
+}
+
+export const BUNDLE_KEY = 'custom-packaging/custom-printing/brand-launch-kit'
+
 export const POPULAR_KEYS = [
+   'packaging/rigid-boxes/magnetic-closure-box',
+   'packaging/mailer-boxes/branded-mailer-box',
+   'printing/business-cards/foil-business-cards',
+   'packaging/rigid-boxes/drawer-rigid-box',
+   'packaging/mailer-boxes/kraft-mailer-box',
+   'printing/business-cards/spot-uv-business-cards',
+   'packaging/rigid-boxes/premium-rigid-box',
    'printing/business-cards/premium-matte-business-cards',
    'signage-displays/neon-signs/custom-neon-signs',
-   'packaging/mailer-boxes/branded-mailer-box',
    'acrylic-plastic-packaging/acrylic-boxes/acrylic-gift-boxes',
-   'food-packaging/food-boxes/custom-pizza-box',
    'labels-stickers/stickers/die-cut-stickers',
-   'signage-displays/advertising-displays/roll-up-banners',
-   'bags/paper-bags/luxury-shopper-bag',
-   'packaging/rigid-boxes/magnetic-closure-box',
-   'signage-displays/3d-raised-letter-signs/3d-acrylic-letters',
-   'food-packaging/cups/double-wall-coffee-cup',
-   'corporate/apparel/custom-t-shirts',
+   'food-packaging/food-boxes/custom-pizza-box',
 ]
 
 export function popularProducts() {
@@ -345,6 +354,7 @@ export function searchProducts(query: string, limit = 60) {
    })
 
    return scored
+      .map((s) => (s.score > 0 && isSignature(s.product) ? { ...s, score: s.score + 2 } : s))
       .filter((s) => s.score > 0)
       .sort((a, b) => b.score - a.score || a.product.name.localeCompare(b.product.name))
       .slice(0, limit)

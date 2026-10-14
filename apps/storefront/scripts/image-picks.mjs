@@ -19,6 +19,7 @@ export const PICKS = {
   648886
  ],
  "packaging/mailer-boxes": [
+  10506185,
   4967335,
   5144898,
   6153947,
@@ -873,7 +874,7 @@ export const PRODUCT_PICKS = {
  "packaging/corrugated-boxes/tray-and-lid-corrugated-box": 2507270,
  "packaging/corrugated-boxes/moving-and-storage-box": 5574911,
  "packaging/corrugated-boxes/e-flute-retail-box": 10416934,
- "packaging/mailer-boxes/branded-mailer-box": 4967335,
+ "packaging/mailer-boxes/branded-mailer-box": 10416934,
  "packaging/mailer-boxes/rigid-mailer-box": 1420830,
  "packaging/mailer-boxes/lite-mailer-box": 314504,
  "packaging/mailer-boxes/kraft-mailer-box": 2484376,
@@ -996,8 +997,8 @@ export const PRODUCT_PICKS = {
  "bags/pouches/branded-bubble-mailer": 3297996,
  "printing/business-cards/standard-business-cards": 4275118,
  "printing/business-cards/premium-matte-business-cards": 943997,
- "printing/business-cards/spot-uv-business-cards": 318425,
- "printing/business-cards/foil-business-cards": 2585710,
+ "printing/business-cards/spot-uv-business-cards": 792113,
+ "printing/business-cards/foil-business-cards": 386254,
  "printing/business-cards/kraft-business-cards": 943998,
  "printing/business-cards/rounded-corner-business-cards": 2918333,
  "printing/business-cards/square-business-cards": 3152885,
