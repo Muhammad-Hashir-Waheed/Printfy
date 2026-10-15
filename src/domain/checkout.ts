@@ -5,8 +5,8 @@ import {
    reserveDiscountCode,
    type DesignTransform,
    type OrderItemInput,
-} from '../../domain-orders/src'
-import type { PricingVariant } from '../../domain-pricing/src'
+} from './orders'
+import type { PricingVariant } from './pricing'
 import { z } from 'zod'
 
 const pricingVariantSchema = z.object({

@@ -4,7 +4,7 @@
  * product in src/catalog/data.ts. Files go to public/catalog/ and are recorded in
  * src/catalog/image-manifest.ts (a TS module, so builds never trace it as a file).
  *
- *   1. Put your key in apps/storefront/.env.local →  PIXABAY_API_KEY=xxxxxxxx
+ *   1. Put your key in .env.local →  PIXABAY_API_KEY=xxxxxxxx
  *   2. npm run images:fetch
  *
  *   npm run images:fetch -- --only signage-displays          # one department
@@ -165,7 +165,7 @@ function relevance(hit, query) {
 async function main() {
    const key = readKey()
    if (!key) {
-      console.error('\nMissing PIXABAY_API_KEY.\nAdd it to apps/storefront/.env.local like this:\n\n   PIXABAY_API_KEY=your-key-here\n')
+      console.error('\nMissing PIXABAY_API_KEY.\nAdd it to .env.local like this:\n\n   PIXABAY_API_KEY=your-key-here\n')
       process.exit(1)
    }
 

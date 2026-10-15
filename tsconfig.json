@@ -27,23 +27,17 @@
       "@/*": [
         "./src/*"
       ],
-      "@prisma/client": [
-        "./node_modules/@prisma/client"
-      ],
-      "zod": [
-        "./node_modules/zod"
-      ],
       "@domain-pricing": [
-        "../../packages/domain-pricing/src/index.ts"
+        "./src/domain/pricing.ts"
       ],
       "@domain-orders": [
-        "../../packages/domain-orders/src/index.ts"
+        "./src/domain/orders.ts"
       ],
       "@domain-checkout": [
-        "../../packages/domain-checkout/src/index.ts"
+        "./src/domain/checkout.ts"
       ],
       "@domain-fulfillment": [
-        "../../packages/domain-fulfillment/src/index.ts"
+        "./src/domain/fulfillment.ts"
       ]
     },
     "strictNullChecks": false

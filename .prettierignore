@@ -1,2 +1,5 @@
 .next
+.next-build
 .vercel
+.data
+node_modules

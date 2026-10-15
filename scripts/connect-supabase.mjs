@@ -1,5 +1,5 @@
 /**
- * Writes apps/storefront/.env (shop + admin at /admin).
+ * Writes .env (shop + admin at /admin).
  *
  *   node scripts/connect-supabase.mjs --init
  *     Create local env files (JWT, URLs). Leaves DATABASE_URL empty until connected.
@@ -19,7 +19,7 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const root = path.resolve(__dirname, '..')
-const storeEnv = path.join(root, 'apps/storefront/.env')
+const storeEnv = path.join(root, '.env')
 
 function arg(name, fallback = '') {
    const index = process.argv.indexOf(`--${name}`)
@@ -157,7 +157,7 @@ if (hasFlag('init')) {
       NEXT_PUBLIC_SUPABASE_ANON_KEY:
          readEnv(storeEnv).NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
    })
-   console.log('Wrote apps/storefront/.env')
+   console.log('Wrote .env')
    console.log(
       'DATABASE_URL is empty — catalog stays static until you connect Supabase.'
    )
@@ -197,7 +197,7 @@ if (hasFlag('from-status')) {
    })
    console.log('Wrote env from local `supabase status`')
    console.log(
-      'Next: npm --prefix apps/storefront run db:push && npm --prefix apps/storefront run db:seed'
+      'Next: npm run db:push && npm run db:seed'
    )
    process.exit(0)
 }
@@ -224,7 +224,7 @@ writeStore({
    NEXT_PUBLIC_SUPABASE_ANON_KEY: anon,
 })
 
-console.log('Wrote apps/storefront/.env')
+console.log('Wrote .env')
 console.log(
-   'Next: npm --prefix apps/storefront run db:push && npm --prefix apps/storefront run db:seed'
+   'Next: npm run db:push && npm run db:seed'
 )

@@ -5,8 +5,8 @@ export type DiscountCode = {
    percent: number
    maxDiscountAmount: number
 }
-import { initializeOrderFulfillment, processOrderAsync } from '../../domain-fulfillment/src'
-import { calculatePrice, type PricingVariant } from '../../domain-pricing/src'
+import { initializeOrderFulfillment, processOrderAsync } from './fulfillment'
+import { calculatePrice, type PricingVariant } from './pricing'
 
 export type DesignTransform = {
    scale: number
