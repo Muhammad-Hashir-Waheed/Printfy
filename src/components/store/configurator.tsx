@@ -255,7 +255,7 @@ export function Configurator({ productKey }: { productKey: string }) {
             )}
             <p className="mt-2 text-xs text-muted-foreground">
                Need a different quantity or size?{' '}
-               <Link href={`/quote?product=${encodeURIComponent(product.key)}`} className="font-medium text-primary underline">
+               <Link href={`/quote?product=${encodeURIComponent(product.key)}`} className="-my-2 inline-block py-2 font-medium text-primary underline">
                   Ask for a custom quote
                </Link>
             </p>

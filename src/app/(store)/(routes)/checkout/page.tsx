@@ -11,7 +11,7 @@ import { useCart } from '@/state/cart-store'
 import { ArrowRight, Loader2, Lock, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Field = keyof Customer
 
@@ -41,6 +41,8 @@ export default function CheckoutPage() {
    })
    const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
    const [agreed, setAgreed] = useState(false)
+   const [agreeError, setAgreeError] = useState(false)
+   const agreeRef = useRef<HTMLInputElement>(null)
 
    useEffect(() => setMounted(true), [])
 
@@ -64,7 +66,14 @@ export default function CheckoutPage() {
 
    async function submit(e: React.FormEvent) {
       e.preventDefault()
-      if (!validate() || !agreed || sending) return
+      if (sending || !validate()) return
+      if (!agreed) {
+         // The checkbox can sit below the fold — take the customer to it instead of failing silently
+         setAgreeError(true)
+         agreeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+         agreeRef.current?.focus({ preventScroll: true })
+         return
+      }
       setSending(true)
       setSendError('')
       const order: OrderRequest = {
@@ -211,11 +220,21 @@ export default function CheckoutPage() {
                         </li>
                      ))}
                   </ol>
-                  <label className="mt-5 flex items-start gap-3 text-sm">
+                  <label
+                     className={cn(
+                        'mt-5 flex items-start gap-3 rounded-2xl text-sm transition',
+                        agreeError && !agreed && 'bg-red-50 p-3 ring-2 ring-red-400'
+                     )}
+                  >
                      <input
+                        ref={agreeRef}
                         type="checkbox"
                         checked={agreed}
-                        onChange={(e) => setAgreed(e.target.checked)}
+                        onChange={(e) => {
+                           setAgreed(e.target.checked)
+                           if (e.target.checked) setAgreeError(false)
+                        }}
+                        aria-invalid={agreeError && !agreed}
                         className="mt-0.5 h-5 w-5 rounded border-input accent-[#D42F25]"
                      />
                      <span>
@@ -224,6 +243,9 @@ export default function CheckoutPage() {
                            terms of service
                         </Link>{' '}
                         and understand {P ? 'production starts after I approve the proof' : 'Joji Arts will contact me with pricing'}.
+                        {agreeError && !agreed ? (
+                           <span className="mt-1 block font-semibold text-red-600">Please tick this box to send your request.</span>
+                        ) : null}
                      </span>
                   </label>
                </section>
@@ -265,7 +287,7 @@ export default function CheckoutPage() {
                ) : null}
                <button
                   type="submit"
-                  disabled={!agreed || sending}
+                  disabled={sending}
                   className="btn-shine mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                >
                   {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}{' '}

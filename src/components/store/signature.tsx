@@ -86,7 +86,7 @@ export function SignatureCard({ card, priority }: { card: SignatureCardData; pri
          <span aria-hidden className="sig-foil pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 skew-x-[-20deg] bg-gradient-to-r from-transparent via-[#FFE9A8]/25 to-transparent" />
 
          <div className="absolute inset-x-4 top-4 flex items-center justify-between">
-            <span className="inline-flex items-center gap-1 rounded-full bg-[linear-gradient(110deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wide text-[#3b2a0c] shadow">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[linear-gradient(110deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-[#3b2a0c] shadow">
                <Star className="h-3 w-3 fill-current" /> Bestseller
             </span>
             <span className="font-display text-xs font-bold tracking-[0.2em] text-white/70">0{card.index}</span>

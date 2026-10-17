@@ -104,6 +104,9 @@ let bucketReady: Promise<void> | null = null
 function supabaseStorage(url: string, serviceKey: string): Storage {
    const client: SupabaseClient = createClient(url, serviceKey, {
       auth: { persistSession: false, autoRefreshToken: false },
+      // Next.js caches server fetches (even POSTs) by default — storage calls must always be live,
+      // otherwise pages reuse expired signed URLs and show stale or missing records.
+      global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) },
    })
    const bucket = () => client.storage.from(BUCKET)
 
@@ -130,9 +133,16 @@ function supabaseStorage(url: string, serviceKey: string): Storage {
       },
       async get(key) {
          await ensureBucket()
-         const { data, error } = await bucket().download(key)
-         if (error || !data) return null
-         return { data: Buffer.from(await data.arrayBuffer()), contentType: data.type || contentTypeFor(key) }
+         // Records (uploads, submissions) are overwritten in place, and `download()` can serve a
+         // cached older copy — so read through a one-off signed URL that bypasses every cache.
+         const { data: signed, error } = await bucket().createSignedUrl(key, 60)
+         if (error || !signed) return null
+         const res = await fetch(`${signed.signedUrl}&fresh=${Date.now()}`, { cache: 'no-store' })
+         if (!res.ok) return null
+         return {
+            data: Buffer.from(await res.arrayBuffer()),
+            contentType: res.headers.get('content-type') || contentTypeFor(key),
+         }
       },
       async exists(key) {
          await ensureBucket()

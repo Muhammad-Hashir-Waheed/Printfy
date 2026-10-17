@@ -145,12 +145,12 @@ function Hero() {
 
                <Link href={mailer.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
                   <CatalogImage image={mailer.image} label={mailer.name} accent={mailer.accent} priority sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
-                  <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold shadow">★ Mailer boxes</span>
+                  <span className="absolute bottom-2 left-2 whitespace-nowrap rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold shadow sm:bottom-3 sm:left-3 sm:px-3 sm:text-xs">★ Mailers</span>
                </Link>
 
                <Link href={cards.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
                   <CatalogImage image={cards.image} label={cards.name} accent={cards.accent} sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
-                  <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold shadow">★ Business cards</span>
+                  <span className="absolute bottom-2 left-2 whitespace-nowrap rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold shadow sm:bottom-3 sm:left-3 sm:px-3 sm:text-xs">★ Cards</span>
                </Link>
 
                <Link
@@ -166,7 +166,7 @@ function Hero() {
                   </div>
                </Link>
 
-               <div className="float-y absolute -bottom-5 right-4 z-10 hidden items-center gap-2.5 rounded-2xl bg-white px-4 py-3 shadow-[0_20px_40px_-15px_rgba(30,20,10,0.4)] sm:flex" style={{ animationDelay: '0.7s' }}>
+               <div className="float-y absolute -bottom-5 right-4 z-10 hidden items-center gap-2.5 rounded-2xl bg-white px-4 py-3 shadow-[0_20px_40px_-15px_rgba(30,20,10,0.4)] lg:flex" style={{ animationDelay: '0.7s' }}>
                   <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-100 text-emerald-700">
                      <BadgeCheck className="h-5 w-5" />
                   </span>

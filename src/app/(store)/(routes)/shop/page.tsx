@@ -85,7 +85,10 @@ export default function ShopPage() {
                               </li>
                            ))}
                         </ul>
-                        <Link href={d.href} className={`mt-6 inline-flex items-center gap-1.5 text-sm font-semibold sm:hidden ${d.dark ? 'text-white' : 'text-primary'}`}>
+                        <Link
+                           href={d.href}
+                           className={`mt-6 inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-sm font-semibold sm:hidden ${d.dark ? 'bg-white text-ink' : 'bg-ink text-white'}`}
+                        >
                            View all {d.productCount} products <ArrowRight className="h-4 w-4" />
                         </Link>
                      </div>

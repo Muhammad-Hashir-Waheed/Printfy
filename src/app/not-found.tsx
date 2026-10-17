@@ -1,6 +1,6 @@
-import Footer from '@/components/native/Footer'
-import { NotFoundContent } from '@/components/native/not-found-content'
-import Header from '@/components/native/nav/parent'
+import { NotFoundView } from '@/components/store/not-found-view'
+import { SiteFooter } from '@/components/store/site-footer'
+import { SiteHeader } from '@/components/store/site-header'
 
 export const metadata = {
    title: 'Page not found',
@@ -9,11 +9,11 @@ export const metadata = {
 export default function NotFound() {
    return (
       <>
-         <Header />
-         <div className="px-4 sm:px-6 lg:px-12">
-            <NotFoundContent />
-         </div>
-         <Footer />
+         <SiteHeader />
+         <main id="main">
+            <NotFoundView />
+         </main>
+         <SiteFooter />
       </>
    )
 }

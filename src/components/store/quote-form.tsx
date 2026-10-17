@@ -245,7 +245,7 @@ export function QuoteForm() {
                         type="button"
                         onClick={() => setForm((f) => ({ ...f, department: pick.department, product: pick.label }))}
                         className={cn(
-                           'rounded-full border px-2.5 py-1 text-xs font-semibold transition',
+                           'inline-flex h-9 items-center rounded-full border px-3 text-xs font-semibold transition',
                            form.product === pick.label ? 'border-[#C99A3E] bg-[#F3D88C]/40' : 'border-ink/10 bg-white hover:border-[#C99A3E]'
                         )}
                      >
