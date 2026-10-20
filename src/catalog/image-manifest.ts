@@ -1365,14 +1365,14 @@ const manifest = {
   "source": "pixabay"
  },
  "p:corporate/apparel/uniform-jackets": {
-  "id": 10420279,
+  "id": 10234772,
   "file": "/catalog/p/corporate/apparel/uniform-jackets.jpg",
   "width": 1280,
-  "height": 853,
-  "alt": "Uniform Jackets — working, office, notebook, computer, laptop, professional",
-  "photographer": "lewisandpecker",
-  "photographerUrl": "https://pixabay.com/users/lewisandpecker-51401616/",
-  "pageUrl": "https://pixabay.com/photos/working-office-notebook-computer-10420279/",
+  "height": 714,
+  "alt": "Uniform Jackets — team, professionals, corporate, unity, ambitious, youth",
+  "photographer": "geralt",
+  "photographerUrl": "https://pixabay.com/users/geralt-9301/",
+  "pageUrl": "https://pixabay.com/photos/team-professionals-corporate-unity-10234772/",
   "source": "pixabay"
  },
  "p:corporate/corporate-gifts/awards-and-trophies": {
@@ -4654,14 +4654,14 @@ const manifest = {
   "source": "pixabay"
  },
  "p:signage-displays/neon-signs/neon-bedroom-signs": {
-  "id": 7417678,
+  "id": 1845901,
   "file": "/catalog/p/signage-displays/neon-signs/neon-bedroom-signs.jpg",
   "width": 1280,
-  "height": 966,
-  "alt": "Neon Bedroom Signs — woman, bedroom, dancing, hd wallpaper, phone wallpaper, digital art",
-  "photographer": "Mollyroselee",
-  "photographerUrl": "https://pixabay.com/users/Mollyroselee-9214707/",
-  "pageUrl": "https://pixabay.com/photos/woman-bedroom-dancing-hd-wallpaper-7417678/",
+  "height": 720,
+  "alt": "Neon Bedroom Signs — work harder, blue, motivation, neon lights, sign, text",
+  "photographer": "Pexels",
+  "photographerUrl": "https://pixabay.com/users/Pexels-2286921/",
+  "pageUrl": "https://pixabay.com/photos/work-harder-blue-motivation-1845901/",
   "source": "pixabay"
  },
  "p:signage-displays/neon-signs/neon-event-signs": {

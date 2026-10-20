@@ -1,5 +1,5 @@
 import { DEPARTMENT_SEEDS, type PresetKind, type ProductSeed } from './data'
-import { resolveImage, type CatalogImage } from './images'
+import { resolveGallery, resolveImage, type CatalogImage } from './images'
 import { METALLIC_OPTION, PRESETS, type Preset } from './presets'
 
 export type { CatalogImage } from './images'
@@ -18,6 +18,8 @@ export type Product = {
    accent: string
    dark: boolean
    image: CatalogImage | null
+   /** Several angles of this product (studio renders or curated photos), hero first */
+   gallery: CatalogImage[]
    /** Starting unit price (at the default options and the first tier) */
    basePrice: number
    /** Quote-only product (no online checkout) */
@@ -97,6 +99,7 @@ function buildProduct(
       accent: dept.accent,
       dark: Boolean(dept.dark),
       image: resolveImage(`p:${key}`, name),
+      gallery: resolveGallery(`p:${key}`, name),
       basePrice,
       quote: quote || cat.kind === 'digital' || cat.kind === 'led' || cat.kind === 'rack',
       kind: cat.kind,

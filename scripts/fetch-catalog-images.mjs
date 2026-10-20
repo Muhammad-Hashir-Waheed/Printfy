@@ -308,6 +308,13 @@ async function main() {
          }
       }
 
+      // Hand-picked photos that never appeared in a candidate search: fetch them by id
+      for (const [, id] of assign) {
+         if (byId.has(id)) continue
+         const hit = await lookupById(key, id)
+         if (hit) byId.set(id, hit)
+      }
+
       let saved = 0
       for (const [job, id] of assign) {
          const pick = byId.get(id)

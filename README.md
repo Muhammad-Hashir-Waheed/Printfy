@@ -58,6 +58,13 @@ Product photos come from Pixabay and live in `public/catalog`. To refresh them, 
 `PIXABAY_API_KEY` in `.env.local` and run `npm run images:fetch`. Hand-picked photo IDs are in
 `scripts/image-picks.mjs`.
 
+Products that stock photography can't show properly use **studio-rendered mockups**: 3D scenes
+built with three.js (`scripts/mockups/`, one recipe per product, fictional sample brands only).
+`npm run images:mockups` renders them all to `public/catalog/mockups/` and regenerates
+`src/catalog/mockup-manifest.ts`; pass a key prefix to render a subset, e.g.
+`npm run images:mockups -- packaging/mailer-boxes`. Mockups always take priority over photos.
+Rendering needs Google Chrome installed (or `CHROME_PATH`).
+
 ## Credits
 
 Started from [next-prisma-tailwind-ecommerce](https://github.com/sesto-dev/next-prisma-tailwind-ecommerce)

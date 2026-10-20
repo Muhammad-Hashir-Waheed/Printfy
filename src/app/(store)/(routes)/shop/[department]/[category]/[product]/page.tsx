@@ -48,11 +48,10 @@ export default function ProductPage({ params }: Params) {
    const category = getCategory(params.department, params.category)
    if (!product || !dept || !category) notFound()
 
-   const gallery = [
-      { image: product.image, caption: product.name },
-      { image: category.image, caption: category.name },
-      { image: dept.image, caption: dept.name },
-   ].filter((g, i, all) => i === 0 || (g.image && all.findIndex((x) => x.image?.src === g.image?.src) === i))
+   // This product's own angles only — never padded with category or department photos
+   const gallery = product.gallery.length
+      ? product.gallery.map((image, i) => ({ image, caption: i === 0 ? product.name : image.alt.split(' — ').pop() ?? product.name }))
+      : [{ image: product.image, caption: product.name }]
 
    const related = relatedProducts(product, 8)
    const metalStyle = product.kind === 'rigid' ? 'gift' : 'box'

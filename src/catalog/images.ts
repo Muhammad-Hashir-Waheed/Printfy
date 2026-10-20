@@ -1,4 +1,6 @@
 import manifest from './image-manifest'
+import MOCKUPS from './mockup-manifest'
+import PHOTO_GALLERIES from './photo-galleries'
 
 export type CatalogImage = {
    src: string
@@ -92,14 +94,24 @@ const LEGACY: Record<string, string> = {
    'p:signage-displays/digital-sign-boards/led-digital-sign-boards': 'led-sign',
 }
 
-/** Hand-made images that always win over the manifest (e.g. composed bundle shots). */
-const OVERRIDES: Record<string, { src: string; width: number; height: number }> = {
-   'p:custom-packaging/custom-printing/brand-launch-kit': { src: '/catalog/signature/brand-launch-kit.jpg', width: 1600, height: 1100 },
+/**
+ * Studio-rendered product galleries (scripts/mockups) and curated photo galleries:
+ * several angles per product. They always win over the single Pixabay photo.
+ */
+const GALLERIES: Record<string, Array<{ src: string; width: number; height: number }>> = { ...PHOTO_GALLERIES, ...MOCKUPS }
+
+const VIEW_LABELS = ['', 'front view', 'from above', 'close-up detail', 'another angle', 'in use']
+
+/** Every image for a product, best first (empty when only the single photo exists). */
+export function resolveGallery(key: string, alt: string): CatalogImage[] {
+   const views = GALLERIES[key]
+   if (!views?.length) return []
+   return views.map((v, i) => ({ ...v, alt: VIEW_LABELS[i] ? `${alt} — ${VIEW_LABELS[i]}` : alt }))
 }
 
 export function resolveImage(key: string, alt: string): CatalogImage | null {
-   const override = OVERRIDES[key]
-   if (override) return { ...override, alt }
+   const gallery = GALLERIES[key]
+   if (gallery?.length) return { ...gallery[0], alt }
    const entry = MANIFEST[key]
    if (entry && (entry.file || entry.url)) {
       return {
