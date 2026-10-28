@@ -54,7 +54,8 @@ export async function POST(req: Request, { params }: Params) {
          }
          s.seenByAdmin = false
       })
-      const saved = updated as NonNullable<typeof updated>
+      if (!updated) return jsonError(404, 'Not found')
+      const saved = updated
       await notifyCustomerReply(saved, baseUrlFrom(req), body.message, body.files.length)
       return NextResponse.json(customerView(saved))
    } catch (error) {

@@ -64,8 +64,31 @@ async function rebuildIndex(): Promise<SubmissionSummary[]> {
    return rows
 }
 
+const submissionIds = async () =>
+   (await requireStorage().list('submissions'))
+      .map((k) => k.split('/').pop() ?? '')
+      .filter((n) => n.endsWith('.json') && n !== '_index.json')
+      .map((n) => n.slice(0, -5))
+
 export async function listSubmissions(): Promise<SubmissionSummary[]> {
-   return (await readJSON<SubmissionSummary[]>(INDEX_KEY)) ?? (await serial(rebuildIndex))
+   const index = await readJSON<SubmissionSummary[]>(INDEX_KEY)
+   if (!index) return serial(rebuildIndex)
+   // Writes are only serialised per instance, so two instances saving at once can drop a row
+   // from the index. The records themselves are always written — add back any the index lost.
+   const known = new Set(index.map((r) => r.id))
+   if ((await submissionIds()).every((id) => known.has(id))) return index
+   return serial(async () => {
+      const fresh = (await readJSON<SubmissionSummary[]>(INDEX_KEY)) ?? []
+      const have = new Set(fresh.map((r) => r.id))
+      for (const id of await submissionIds()) {
+         if (have.has(id)) continue
+         const s = await getSubmission(id)
+         if (s) fresh.push(summarize(s))
+      }
+      fresh.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      await requireStorage().put(INDEX_KEY, JSON.stringify(fresh), 'application/json')
+      return fresh
+   })
 }
 
 export async function getSubmission(id: string): Promise<Submission | null> {

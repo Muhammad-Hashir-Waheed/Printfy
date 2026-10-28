@@ -21,6 +21,8 @@ export const metadata: Metadata = {
       template: `%s | ${config.name}`,
    },
    description: config.description,
+   // './' resolves against each page's own path, so every page gets a self-referencing canonical
+   alternates: { canonical: './' },
    keywords: [
       'custom packaging',
       'printed boxes',

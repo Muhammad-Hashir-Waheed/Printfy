@@ -33,3 +33,7 @@ sw.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Blender mockup renderer: CC0 assets (re-fetch with scripts/mockups/fetch-assets.mjs) + scene export cache
+scripts/mockups/assets/
+scripts/mockups/.cache/

@@ -39,12 +39,23 @@ export function rateLimit(key: string, limit: number, windowMs: number) {
    return entry.count <= limit
 }
 
+/** Checks a bucket without counting a hit. */
+export function isRateLimited(key: string, limit: number) {
+   const entry = buckets.get(key)
+   return Boolean(entry && entry.reset >= Date.now() && entry.count >= limit)
+}
+
+/**
+ * The caller's IP for rate limiting. Prefers headers our host sets itself (Vercel overwrites
+ * these, so they can't be spoofed); otherwise takes the *last* X-Forwarded-For hop — the one
+ * appended by the proxy in front of us — never the first, which the client controls.
+ */
 export function clientIp(req: Request) {
-   return (
-      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-      req.headers.get('x-real-ip') ||
-      'local'
-   )
+   const h = req.headers
+   const trusted = h.get('x-vercel-forwarded-for') || h.get('x-real-ip')
+   if (trusted) return trusted.split(',')[0].trim()
+   const hops = h.get('x-forwarded-for')?.split(',').map((s) => s.trim()).filter(Boolean)
+   return hops?.length ? hops[hops.length - 1] : 'local'
 }
 
 /* ───────────── Responses ───────────── */
@@ -55,6 +66,8 @@ export function jsonError(status: number, message: string) {
 
 export function handleError(error: unknown, scope: string) {
    if (error instanceof StorageNotConfiguredError) return jsonError(503, error.message)
+   // Malformed JSON body from req.json()
+   if (error instanceof SyntaxError) return jsonError(400, 'Invalid request body.')
    if (error && typeof error === 'object' && 'issues' in error) {
       return jsonError(400, 'Some details are missing or invalid.')
    }

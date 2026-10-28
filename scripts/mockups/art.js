@@ -198,35 +198,39 @@ export function printFace(aspect, opts = {}) {
    const H = Math.max(64, Math.round(W / Math.max(0.08, aspect)))
    const cw = H > 2048 ? Math.round(W * 2048 / H) : W
    const ch = Math.min(H, 2048)
+   const mask = !!opts.mask // foil mask: only the logo + text, white on black
    const tex = canvasTexture(cw, ch, (ctx, w, h) => {
-      if (opts.kraft) {
+      if (mask) {
+         ctx.fillStyle = '#000'
+         ctx.fillRect(0, 0, w, h)
+      } else if (opts.kraft) {
          const k = kraftTexture(opts.kraft === true ? '#8f6840' : opts.kraft).image
          ctx.drawImage(k, 0, 0, w, h)
       } else {
          ctx.fillStyle = opts.bg || brand.paper
          ctx.fillRect(0, 0, w, h)
       }
-      if (opts.gradient) {
+      if (opts.gradient && !mask) {
          const g = ctx.createLinearGradient(0, 0, w, h)
          g.addColorStop(0, opts.gradient[0]); g.addColorStop(1, opts.gradient[1])
          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h)
       }
-      if (opts.pattern) {
+      if (opts.pattern && !mask) {
          ctx.globalAlpha = opts.patternAlpha ?? 0.22
          drawPattern(ctx, w, h, opts.pattern, opts.patternInk || brand.accent, opts.seed || 7, brand.mono)
          ctx.globalAlpha = 1
       }
-      if (opts.band) {
+      if (opts.band && !mask) {
          ctx.fillStyle = opts.band
          ctx.fillRect(0, h * 0.82, w, h * 0.18)
       }
-      if (opts.draw) opts.draw(ctx, w, h, brand)
+      if (opts.draw && !mask) opts.draw(ctx, w, h, brand)
       if (opts.logo !== false) {
          const s = Math.min(w, h) * (opts.logoScale ?? 0.13)
-         drawLogo(ctx, brand, w / 2, h * (opts.logoY ?? 0.5), s, { emblem: opts.emblem ?? Math.min(w, h) > 300, tag: opts.tag ?? true, color: opts.ink, maxWidth: w * (opts.fit ?? 0.84) })
+         drawLogo(ctx, brand, w / 2, h * (opts.logoY ?? 0.5), s, { emblem: opts.emblem ?? Math.min(w, h) > 300, tag: opts.tag ?? true, color: mask ? '#fff' : opts.ink, maxWidth: w * (opts.fit ?? 0.84) })
       }
       if (opts.text) {
-         ctx.fillStyle = opts.ink || brand.ink
+         ctx.fillStyle = mask ? '#fff' : opts.ink || brand.ink
          ctx.textAlign = 'center'
          let ts = Math.min(w, h) * (opts.textSize ?? 0.08)
          ctx.font = font(ts, opts.textFont || 'Arial', '800')

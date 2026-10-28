@@ -311,7 +311,7 @@ T['printing/business-cards'] = (p) => {
    const square = has(p, 'square')
    const w = square ? 0.65 : 0.9, h = square ? 0.65 : 0.55
    let front = P(w / h, { brand: b, logoScale: 0.2 })
-   if (has(p, 'foil')) front = P(w / h, { brand: 'maison', logoScale: 0.2 }, { mat: { metalness: 0.45, roughness: 0.3 } })
+   if (has(p, 'foil')) front = P(w / h, { brand: 'maison', logoScale: 0.2 }, { foil: true })
    if (has(p, 'spot-uv')) front = P(w / h, { brand: 'nova', logoScale: 0.2, pattern: 'waves', patternInk: '#35c3ff', patternAlpha: 0.25 }, { rough: 0.25 })
    const edge = M.matte(has(p, 'foil') ? '#16130f' : B.paper)
    const back = P(w / h, { brand: b, bg: '#ffffff', logo: false, draw: cardBackDraw(has(p, 'foil') ? 'maison' : b) })

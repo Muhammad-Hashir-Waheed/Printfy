@@ -1,12 +1,23 @@
 import { Separator } from '@/components/native/separator'
 import { getStaticBlog, getStaticBlogs, type StaticBlogPost } from '@/lib/static-blogs'
 import { BlogBody } from './components/blog-body'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
    return getStaticBlogs().map((post) => ({ slug: post.slug }))
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+   const blog = getStaticBlog(params.slug)
+   if (!blog) return {}
+   return {
+      title: blog.title,
+      description: blog.description,
+      openGraph: { type: 'article', title: blog.title, description: blog.description, images: [blog.image] },
+   }
 }
 
 /** Posts come from a fixed static set, so unknown slugs should be a real 404. */

@@ -1,3 +1,4 @@
+import { MAX_UPLOAD_MB } from '@/studio/types'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
@@ -14,6 +15,8 @@ export interface Storage {
    put(key: string, data: Buffer | string, contentType: string): Promise<void>
    get(key: string): Promise<{ data: Buffer; contentType: string } | null>
    exists(key: string): Promise<boolean>
+   /** Stored size in bytes, or null if the object doesn't exist */
+   size(key: string): Promise<number | null>
    list(prefix: string): Promise<string[]>
    remove(key: string): Promise<void>
    /** A URL the browser can PUT the file to directly (Supabase); null = upload through our API */
@@ -76,6 +79,13 @@ function localStorage(): Storage {
             return false
          }
       },
+      async size(key) {
+         try {
+            return (await fs.stat(resolve(key))).size
+         } catch {
+            return null
+         }
+      },
       async list(prefix) {
          const dir = resolve(prefix)
          try {
@@ -112,10 +122,14 @@ function supabaseStorage(url: string, serviceKey: string): Storage {
 
    const ensureBucket = () => {
       bucketReady ??= (async () => {
+         // Supabase itself rejects anything over the upload limit, whatever size the browser declared
+         const fileSizeLimit = MAX_UPLOAD_MB * 1024 * 1024
          const { data } = await client.storage.getBucket(BUCKET)
          if (!data) {
-            const { error } = await client.storage.createBucket(BUCKET, { public: false })
+            const { error } = await client.storage.createBucket(BUCKET, { public: false, fileSizeLimit })
             if (error && !/already exists/i.test(error.message)) throw error
+         } else if (data.file_size_limit !== fileSizeLimit) {
+            await client.storage.updateBucket(BUCKET, { public: false, fileSizeLimit })
          }
       })().catch((error) => {
          bucketReady = null
@@ -150,6 +164,14 @@ function supabaseStorage(url: string, serviceKey: string): Storage {
          const name = key.split('/').pop()
          const { data } = await bucket().list(dir, { search: name, limit: 5 })
          return Boolean(data?.some((f) => f.name === name))
+      },
+      async size(key) {
+         await ensureBucket()
+         const dir = key.split('/').slice(0, -1).join('/')
+         const name = key.split('/').pop()
+         const { data } = await bucket().list(dir, { search: name, limit: 5 })
+         const file = data?.find((f) => f.name === name)
+         return file ? Number(file.metadata?.size ?? 0) : null
       },
       async list(prefix) {
          await ensureBucket()

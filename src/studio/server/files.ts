@@ -118,10 +118,22 @@ export async function completeUpload(
    const record = await readFileRecord(id)
    if (!record || !safeEqual(record.token, token)) throw new UploadError('Upload link expired.', 403)
    const storage = requireStorage()
-   if (!(await storage.exists(originalKey(record)))) throw new UploadError('The file did not finish uploading.', 409)
-   const hasPreview = Boolean(info.hasPreview) && (await storage.exists(previewKey(id)))
+   // Check the bytes that actually arrived — with direct uploads the declared size is the browser's word
+   const size = await storage.size(originalKey(record))
+   if (size === null) throw new UploadError('The file did not finish uploading.', 409)
+   if (size === 0 || size > MAX_BYTES) {
+      await storage.remove(`uploads/${id}`)
+      throw new UploadError(size === 0 ? 'That file looks empty.' : `Files up to ${MAX_UPLOAD_MB} MB please.`, 413)
+   }
+   const previewSize = info.hasPreview ? await storage.size(previewKey(id)) : null
+   if (previewSize !== null && previewSize > MAX_PREVIEW_BYTES) {
+      await storage.remove(previewKey(id))
+      throw new UploadError('Preview too large.', 413)
+   }
+   const hasPreview = previewSize !== null && previewSize > 0
    const next: FileRecord = {
       ...record,
+      size,
       status: 'ready',
       hasPreview,
       width: clampDim(info.width),

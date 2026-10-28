@@ -17,7 +17,7 @@
    </head>
    <body>
       <script type="module">
-         import { render } from './studio.js'
+         import { exportScene, render } from './studio.js'
          import { RECIPES } from './recipes.js'
          import { autoRecipe } from './recipes/auto.js'
 
@@ -33,6 +33,11 @@
             const recipe = sceneFor(key)
             if (!recipe) throw new Error(`No scene for ${key}`)
             return render(await recipe())
+         }
+         window.exportKey = async (key) => {
+            const recipe = sceneFor(key)
+            if (!recipe) throw new Error(`No scene for ${key}`)
+            return exportScene(await recipe())
          }
          window.studioReady = true
       </script>

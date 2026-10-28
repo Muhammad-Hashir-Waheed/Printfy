@@ -4,7 +4,7 @@
 import * as THREE from 'three'
 
 import { BRANDS, canvasTexture, drawLogo, rng } from './art.js'
-import { M, block } from './studio.js'
+import { M, block, tag } from './studio.js'
 import { grp, mesh } from './kit2.js'
 
 const BEVEL = 0.05 // soft rolled edge
@@ -58,9 +58,9 @@ function weave(c, w, h, color, { seed = 3, heather = 0, folds = true } = {}) {
 }
 
 function fabric(map, color, { sheen = 0.22, rough = 0.92 } = {}) {
-   return new THREE.MeshPhysicalMaterial({
+   return tag('cotton', new THREE.MeshPhysicalMaterial({
       map, roughness: rough, sheen, sheenRoughness: 0.8, sheenColor: new THREE.Color(light(color, 0.15)), envMapIntensity: 0.45, side: THREE.DoubleSide,
-   })
+   }))
 }
 
 /** [['M',x,y], ['L',x,y], ['Q',cx,cy,x,y]] → dense point list */

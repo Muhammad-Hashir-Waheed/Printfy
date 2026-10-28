@@ -1,6 +1,6 @@
 import { ADMIN_COOKIE, ADMIN_COOKIE_MAX_AGE, adminConfigured, signAdminSession } from '@/studio/admin-session'
 import { checkAdminCredentials } from '@/studio/server/admin'
-import { clientIp, jsonError, rateLimit } from '@/studio/server/util'
+import { clientIp, isRateLimited, jsonError, rateLimit } from '@/studio/server/util'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -12,11 +12,13 @@ export async function POST(req: Request) {
    if (!adminConfigured()) {
       return jsonError(503, 'Admin login is not configured. Set ADMIN_EMAIL, ADMIN_PASSWORD and ADMIN_SESSION_SECRET.')
    }
-   if (!rateLimit(`admin-login:${clientIp(req)}`, 8, 15 * 60_000)) {
+   // Per-IP limit, plus a global cap on failed logins so rotating IPs can't brute-force the password
+   if (!rateLimit(`admin-login:${clientIp(req)}`, 8, 15 * 60_000) || isRateLimited('admin-login-fail:all', 30)) {
       return jsonError(429, 'Too many attempts. Try again in 15 minutes.')
    }
    const parsed = schema.safeParse(await req.json().catch(() => null))
    if (!parsed.success || !checkAdminCredentials(parsed.data.email, parsed.data.password)) {
+      rateLimit('admin-login-fail:all', 30, 15 * 60_000)
       await new Promise((r) => setTimeout(r, 600))
       return jsonError(401, 'Wrong email or password.')
    }

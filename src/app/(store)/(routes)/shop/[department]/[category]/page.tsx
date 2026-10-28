@@ -29,7 +29,7 @@ export function generateMetadata({ params }: Params): Metadata {
    return {
       title: `${category.name} — ${category.departmentName}`,
       description: `${category.blurb} Shop ${category.products.length} custom ${category.name.toLowerCase()} at Joji Arts.`,
-      alternates: category.canonical ? { canonical: category.canonical.href } : undefined,
+      alternates: { canonical: category.canonical ? category.canonical.href : './' },
    }
 }
 

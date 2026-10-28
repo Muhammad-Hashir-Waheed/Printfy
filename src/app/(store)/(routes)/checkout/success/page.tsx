@@ -4,6 +4,7 @@ import config from '@/config/site'
 import { copyText, mailto } from '@/lib/mailto'
 import { money, units } from '@/lib/money'
 import { LAST_ORDER_KEY, orderText, type OrderRequest } from '@/lib/order-request'
+import { useCart } from '@/state/cart-store'
 import { Check, ClipboardCopy, Eye, Mail } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -12,6 +13,8 @@ export default function CheckoutSuccessPage() {
    const [order, setOrder] = useState<OrderRequest | null>(null)
    const [loaded, setLoaded] = useState(false)
    const [copied, setCopied] = useState(false)
+   // In the email fallback the cart is kept until the customer actually sends or copies the request
+   const { clear: clearCart } = useCart()
 
    useEffect(() => {
       try {
@@ -23,7 +26,13 @@ export default function CheckoutSuccessPage() {
       setLoaded(true)
    }, [])
 
-   if (!loaded) return <div className="page-shell py-24" />
+   if (!loaded) {
+      return (
+         <div className="page-shell py-24">
+            <h1 className="sr-only">Request sent</h1>
+         </div>
+      )
+   }
 
    if (!order) {
       return (
@@ -105,13 +114,18 @@ export default function CheckoutSuccessPage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
                <a
                   href={href}
+                  onClick={clearCart}
                   className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-semibold text-white transition hover:bg-primary/90"
                >
                   <Mail className="h-5 w-5" /> Email my {P ? 'order' : 'request'} to {config.name}
                </a>
                <button
                   type="button"
-                  onClick={async () => setCopied(await copyText(text))}
+                  onClick={async () => {
+                     const ok = await copyText(text)
+                     setCopied(ok)
+                     if (ok) clearCart()
+                  }}
                   className="inline-flex h-14 items-center justify-center gap-2 rounded-full border bg-white px-8 text-base font-semibold transition hover:border-ink"
                >
                   <ClipboardCopy className="h-5 w-5" /> {copied ? 'Copied!' : 'Copy details'}

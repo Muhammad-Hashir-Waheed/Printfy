@@ -46,7 +46,6 @@ let transporter: { sendMail: (o: object) => Promise<unknown> } | null = null
 
 async function viaSmtp(mail: Mail): Promise<SendResult> {
    if (!transporter) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const nodemailer = require('nodemailer')
       const port = Number(process.env.SMTP_PORT || 587)
       transporter = nodemailer.createTransport({

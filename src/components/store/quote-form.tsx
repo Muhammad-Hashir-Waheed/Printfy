@@ -202,7 +202,7 @@ export function QuoteForm() {
          <label htmlFor={key} className="mb-1.5 block text-sm font-medium">
             {label}
          </label>
-         <input id={key} value={form[key]} onChange={set(key)} className={cn(input, errors[key] && 'border-red-500')} {...props} />
+         <input id={key} value={form[key]} onChange={set(key)} aria-invalid={Boolean(errors[key])} className={cn(input, errors[key] && 'border-red-500')} {...props} />
          {errors[key] ? <p className="mt-1 text-xs text-red-600">{errors[key]}</p> : null}
       </div>
    )
@@ -277,6 +277,7 @@ export function QuoteForm() {
                   rows={5}
                   value={form.details}
                   onChange={set('details')}
+                  aria-invalid={Boolean(errors.details)}
                   placeholder="Materials, colours, finishes, where it will be installed, links to inspiration…"
                   className={cn(
                      'w-full rounded-2xl border border-input bg-white p-4 text-[15px] outline-none focus:border-ink focus:ring-4 focus:ring-ink/5',
@@ -292,7 +293,7 @@ export function QuoteForm() {
             </p>
             <ArtworkUploader multiple compact value={files} onChange={setFiles} onBusyChange={setUploading} />
          </div>
-         {submitError ? <p className="mt-4 rounded-2xl bg-red-50 p-3 text-sm text-red-700">{submitError}</p> : null}
+         {submitError ? <p role="alert" className="mt-4 rounded-2xl bg-red-50 p-3 text-sm text-red-700">{submitError}</p> : null}
          <button
             type="submit"
             disabled={uploading || sending}

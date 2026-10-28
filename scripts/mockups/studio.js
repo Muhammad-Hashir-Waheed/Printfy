@@ -6,6 +6,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
 
 import { backdropTexture, kraftTexture, paperGrain, printFace, radialTexture } from './art.js'
 
@@ -28,26 +29,41 @@ const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
 
 /* ───────────────────────── Materials ───────────────────────── */
 
+/** Tag a material with its physical type — the Blender renderer (render.py) builds its PBR shader from it. */
+export const tag = (kind, m) => {
+   m.userData.kind = kind
+   return m
+}
+
 export const M = {
-   kraft: (tone = '#8f6840') => new THREE.MeshStandardMaterial({ map: kraftTexture(tone), roughness: 0.94, envMapIntensity: 0.5 }),
-   white: (tone = '#f5f3ef') => new THREE.MeshStandardMaterial({ map: paperGrain(tone, 4, 0.035), roughness: 0.86, envMapIntensity: 0.6 }),
-   matte: (color) => new THREE.MeshStandardMaterial({ color, roughness: 0.82, envMapIntensity: 0.6 }),
-   softTouch: (color = '#1b1a1c') => new THREE.MeshStandardMaterial({ color, roughness: 0.85 }),
-   gloss: (color) => new THREE.MeshPhysicalMaterial({ color, roughness: 0.25, clearcoat: 0.7, clearcoatRoughness: 0.15 }),
-   print: (aspect, opts, extra = {}) => new THREE.MeshStandardMaterial({ map: printFace(aspect, opts), roughness: extra.rough ?? 0.8, envMapIntensity: 0.6, ...extra.mat }),
-   foil: (color = '#d4af37', rough = 0.22) => new THREE.MeshStandardMaterial({ color, metalness: 1, roughness: rough }),
-   metal: (color = '#cfd2d6', rough = 0.32) => new THREE.MeshStandardMaterial({ color, metalness: 1, roughness: rough }),
+   kraft: (tone = '#8f6840') => tag('cardboard', new THREE.MeshStandardMaterial({ map: kraftTexture(tone), roughness: 0.94, envMapIntensity: 0.5 })),
+   white: (tone = '#f5f3ef') => tag('paper', new THREE.MeshStandardMaterial({ map: paperGrain(tone, 4, 0.035), roughness: 0.86, envMapIntensity: 0.6 })),
+   matte: (color) => tag('matte', new THREE.MeshStandardMaterial({ color, roughness: 0.82, envMapIntensity: 0.6 })),
+   softTouch: (color = '#1b1a1c') => tag('softtouch', new THREE.MeshStandardMaterial({ color, roughness: 0.85 })),
+   gloss: (color) => tag('gloss', new THREE.MeshPhysicalMaterial({ color, roughness: 0.25, clearcoat: 0.7, clearcoatRoughness: 0.15 })),
+   print: (aspect, opts, extra = {}) => {
+      const m = new THREE.MeshStandardMaterial({ map: printFace(aspect, opts), roughness: extra.rough ?? 0.8, envMapIntensity: 0.6, ...extra.mat })
+      if (extra.foil) {
+         // hot-foil stamp: the logo / text areas are metallic, the rest stays paper
+         m.metalnessMap = printFace(aspect, { ...opts, mask: true })
+         m.metalness = 1
+         m.userData.foilMask = m.metalnessMap
+      }
+      return tag(extra.kind || 'paper', m)
+   },
+   foil: (color = '#d4af37', rough = 0.22) => tag('foil', new THREE.MeshStandardMaterial({ color, metalness: 1, roughness: rough })),
+   metal: (color = '#cfd2d6', rough = 0.32) => tag('metal', new THREE.MeshStandardMaterial({ color, metalness: 1, roughness: rough })),
    acrylic: (tint = '#ffffff', opts = {}) =>
-      new THREE.MeshPhysicalMaterial({
+      tag('glass', new THREE.MeshPhysicalMaterial({
          color: tint, metalness: 0, roughness: opts.rough ?? 0.04, transmission: 1, thickness: opts.thickness ?? 0.08,
          ior: 1.49, transparent: true, opacity: 1, envMapIntensity: 1.2, specularIntensity: 1,
-      }),
+      })),
    frosted: (tint = '#ffffff') =>
-      new THREE.MeshPhysicalMaterial({ color: tint, roughness: 0.45, transmission: 0.9, thickness: 0.1, ior: 1.45, transparent: true }),
-   glow: (color, intensity = 3) => new THREE.MeshStandardMaterial({ color: '#000', emissive: color, emissiveIntensity: intensity }),
-   screen: (tex, intensity = 1.4) => new THREE.MeshStandardMaterial({ color: '#000', emissive: '#fff', emissiveMap: tex, emissiveIntensity: intensity, roughness: 0.35 }),
-   fabric: (color) => new THREE.MeshStandardMaterial({ color, roughness: 0.95, map: paperGrain(color, 9, 0.08) }),
-   wood: () => new THREE.MeshStandardMaterial({ map: kraftTexture('#8a6a4a', 11), roughness: 0.7 }),
+      tag('frosted', new THREE.MeshPhysicalMaterial({ color: tint, roughness: 0.45, transmission: 0.9, thickness: 0.1, ior: 1.45, transparent: true })),
+   glow: (color, intensity = 3) => tag('emissive', new THREE.MeshStandardMaterial({ color: '#000', emissive: color, emissiveIntensity: intensity })),
+   screen: (tex, intensity = 1.4) => tag('emissive', new THREE.MeshStandardMaterial({ color: '#000', emissive: '#fff', emissiveMap: tex, emissiveIntensity: intensity, roughness: 0.35 })),
+   fabric: (color) => tag('cotton', new THREE.MeshStandardMaterial({ color, roughness: 0.95, map: paperGrain(color, 9, 0.08) })),
+   wood: () => tag('wood', new THREE.MeshStandardMaterial({ map: kraftTexture('#8a6a4a', 11), roughness: 0.7 })),
 }
 
 /* ───────────────────────── Geometry helpers ───────────────────────── */
@@ -499,31 +515,7 @@ export async function render(spec) {
    scene.add(rim)
    scene.add(new THREE.HemisphereLight('#ffffff', '#d9cbb8', dark ? 0.1 : 0.35))
 
-   // camera framing — the same scene is shot from several angles (hero first)
-   const sphere = box.getBoundingSphere(new THREE.Sphere())
-   const heroDir = spec.view || [1, 0.85, 1.7]
-   const heroN = new THREE.Vector3(...heroDir).normalize()
-   const shot = spec.shot || (spec.wall ? 'wall' : heroN.y > 0.72 ? 'flat' : 'floor')
-   const side = heroDir[0] >= 0 ? 1 : -1
-   const PRESETS = {
-      floor: [
-         { dir: [side * 0.1, 0.3, 1], pad: 0.84 },
-         { dir: [side * -0.85, 1.35, 1.0], pad: 0.84 },
-         { dir: heroDir, pad: 0.5, lift: 0.18 },
-      ],
-      flat: [
-         { dir: [0.02, 3, 0.3], pad: 0.8 },
-         { dir: [side * -1.1, 0.5, 1.25], pad: 0.78 },
-         { dir: heroDir, pad: 0.48 },
-      ],
-      wall: [
-         { dir: [0.03, 0.04, 1], pad: 0.84 },
-         { dir: [-0.62, 0.1, 1], pad: 0.84 },
-         { dir: [0.55, 0.14, 1], pad: 0.52, lift: 0.08 },
-      ],
-   }
-   const views = [{ dir: heroDir, pad: spec.pad ?? 0.86 }, ...(spec.views || PRESETS[shot])].slice(0, spec.viewCount ?? 4)
-   const baseTarget = spec.target ? new THREE.Vector3(...spec.target) : centre.clone().setY(centre.y * (spec.aimY ?? (spec.wall ? 1 : 0.85)))
+   const { sphere, views, baseTarget } = framing(spec, box)
 
    renderer.toneMappingExposure = spec.exposure ?? 1
    const out = document.createElement('canvas')
@@ -559,13 +551,111 @@ export async function render(spec) {
 
    // free GPU memory between renders
    if (scene.background?.dispose) scene.background.dispose()
-   scene.traverse((o) => {
+   dispose(scene)
+   return urls
+}
+
+/** Free GPU memory held by a scene graph. */
+function dispose(root) {
+   root.traverse((o) => {
       if (o.geometry) o.geometry.dispose()
       const mats = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : []
       for (const m of mats) {
-         for (const k of ['map', 'emissiveMap']) if (m[k] && !m[k].__shared) m[k].dispose()
+         for (const k of ['map', 'emissiveMap', 'metalnessMap']) if (m[k] && !m[k].__shared) m[k].dispose()
          m.dispose()
       }
    })
-   return urls
+}
+
+/** Camera set for a scene — hero first, then the shot preset (front, high / top-down, close-up). */
+function framing(spec, box) {
+   const size = box.getSize(new THREE.Vector3())
+   const centre = box.getCenter(new THREE.Vector3())
+   const sphere = box.getBoundingSphere(new THREE.Sphere())
+   const heroDir = spec.view || [1, 0.85, 1.7]
+   const heroN = new THREE.Vector3(...heroDir).normalize()
+   const shot = spec.shot || (spec.wall ? 'wall' : heroN.y > 0.72 ? 'flat' : 'floor')
+   const side = heroDir[0] >= 0 ? 1 : -1
+   const PRESETS = {
+      floor: [
+         { dir: [side * 0.1, 0.3, 1], pad: 0.84 },
+         { dir: [side * -0.85, 1.35, 1.0], pad: 0.84 },
+         { dir: heroDir, pad: 0.5, lift: 0.18 },
+      ],
+      flat: [
+         { dir: [0.02, 3, 0.3], pad: 0.8 },
+         { dir: [side * -1.1, 0.5, 1.25], pad: 0.78 },
+         { dir: heroDir, pad: 0.48 },
+      ],
+      wall: [
+         { dir: [0.03, 0.04, 1], pad: 0.84 },
+         { dir: [-0.62, 0.1, 1], pad: 0.84 },
+         { dir: [0.55, 0.14, 1], pad: 0.52, lift: 0.08 },
+      ],
+   }
+   const views = [{ dir: heroDir, pad: spec.pad ?? 0.86 }, ...(spec.views || PRESETS[shot])].slice(0, spec.viewCount ?? 4)
+   const baseTarget = spec.target ? new THREE.Vector3(...spec.target) : centre.clone().setY(centre.y * (spec.aimY ?? (spec.wall ? 1 : 0.85)))
+
+   return { size, centre, sphere, views, baseTarget }
+}
+
+/** PNG of a canvas, flipped vertically — GLTFExporter flips texture images the same way (glTF UV origin is top-left). */
+function flippedPng(img) {
+   const c = document.createElement('canvas')
+   c.width = img.width
+   c.height = img.height
+   const ctx = c.getContext('2d')
+   ctx.translate(0, c.height)
+   ctx.scale(1, -1)
+   ctx.drawImage(img, 0, 0)
+   return c.toDataURL('image/png')
+}
+
+/**
+ * Scene → glTF + render notes for the Blender / Cycles renderer (render.py).
+ * Same items and camera set as render(); materials are named m0…mN and described
+ * (physical type, foil mask) in meta.materials.
+ */
+export async function exportScene(spec) {
+   const root = new THREE.Group()
+   for (const it of spec.items) root.add(it)
+   root.updateMatrixWorld(true)
+   const box = new THREE.Box3().setFromObject(root)
+   const { size, sphere, views, baseTarget } = framing(spec, box)
+
+   const materials = {}
+   let n = 0
+   root.traverse((o) => {
+      if (!o.isMesh) return
+      for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+         if (m.name && materials[m.name]) continue
+         m.name = `m${n++}`
+         materials[m.name] = {
+            kind: m.userData.kind || 'generic',
+            foilMask: m.userData.foilMask ? flippedPng(m.userData.foilMask.image) : null,
+         }
+         m.userData = {} // userData would travel as glTF extras (it holds textures)
+      }
+   })
+
+   const glb = await new GLTFExporter().parseAsync(root, { binary: true, maxTextureSize: 4096 })
+   const bytes = new Uint8Array(glb)
+   let bin = ''
+   for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
+   dispose(root)
+
+   return {
+      glb: btoa(bin),
+      meta: {
+         bg: typeof spec.bg === 'string' ? spec.bg : 'warm',
+         light: spec.light || [-0.55, 1, 0.75],
+         exposure: spec.exposure ?? 1,
+         radius: sphere.radius,
+         views: views.map((v) => {
+            const t = baseTarget.clone().add(new THREE.Vector3(0, size.y * (v.lift ?? 0), 0))
+            return { dir: new THREE.Vector3(...v.dir).normalize().toArray(), pad: v.pad, target: t.toArray() }
+         }),
+         materials,
+      },
+   }
 }

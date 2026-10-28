@@ -63,6 +63,7 @@ export default function CheckoutPage() {
 
    const [sending, setSending] = useState(false)
    const [sendError, setSendError] = useState('')
+   const [fallbackOrder, setFallbackOrder] = useState<OrderRequest | null>(null)
 
    async function submit(e: React.FormEvent) {
       e.preventDefault()
@@ -76,6 +77,7 @@ export default function CheckoutPage() {
       }
       setSending(true)
       setSendError('')
+      setFallbackOrder(null)
       const order: OrderRequest = {
          reference: makeReference('JA'),
          createdAt: new Date().toISOString(),
@@ -121,23 +123,32 @@ export default function CheckoutPage() {
          if (res.ok) {
             order.reference = data.reference
             order.submission = { id: data.id, reference: data.reference, reviewUrl: data.reviewUrl, emailed: Boolean(data.emailed) }
-         } else if (res.status === 400 || res.status === 429) {
+            openSuccess(order)
+            clear()
+            return
+         }
+         if (res.status === 400 || res.status === 429) {
             // A real problem the customer can fix (e.g. a file that didn't upload)
             setSendError(data.error || 'Please check your details and try again.')
             setSending(false)
             return
          }
-         // 503 (storage not configured) / 5xx → fall back to the email flow below
+         // 503 (storage not configured) / 5xx → fall through to the email option
       } catch {
-         // offline → email flow
+         // offline → email option
       }
+      // Nothing was saved: keep the cart and say so, instead of a success page that loses the order
+      setSendError("We couldn't send your request just now. Your list is still here — try again, or email it to us instead.")
+      setFallbackOrder(order)
+      setSending(false)
+   }
 
+   function openSuccess(order: OrderRequest) {
       try {
          sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order))
       } catch {
          // ignore — the success page falls back gracefully
       }
-      clear()
       router.push(`/checkout/success?ref=${order.reference}`)
    }
 
@@ -293,7 +304,20 @@ export default function CheckoutPage() {
                   {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}{' '}
                   {sending ? 'Sending…' : P ? 'Place order request' : 'Send quote request'} <ArrowRight className="h-5 w-5" />
                </button>
-               {sendError ? <p className="mt-3 rounded-2xl bg-red-500/15 p-3 text-sm text-red-100">{sendError}</p> : null}
+               {sendError ? (
+                  <div role="alert" className="mt-3 rounded-2xl bg-red-500/15 p-3 text-sm text-red-100">
+                     {sendError}
+                     {fallbackOrder ? (
+                        <button
+                           type="button"
+                           onClick={() => openSuccess(fallbackOrder)}
+                           className="mt-2 block font-semibold text-white underline underline-offset-2"
+                        >
+                           Email my request instead
+                        </button>
+                     ) : null}
+                  </div>
+               ) : null}
                <p className="mt-4 flex items-start gap-2 text-xs text-white/55">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
                   {P ? 'No payment is taken now. Taxes are added on your final invoice.' : 'Free, no-obligation quote. No payment is taken now.'}

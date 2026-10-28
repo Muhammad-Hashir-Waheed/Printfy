@@ -1,7 +1,12 @@
 const config = {
    name: 'Joji Arts',
    handle: '@jojiarts',
-   url: process.env.NEXT_PUBLIC_URL || 'https://jojiarts.com',
+   /** Set NEXT_PUBLIC_URL once the custom domain is live; until then Vercel's production URL is used. */
+   url:
+      process.env.NEXT_PUBLIC_URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '') ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
+      'https://jojiarts.com',
    description:
       'Custom packaging, printing, labels, acrylic boxes and signage — designed, printed and delivered by Joji Arts.',
    email: 'support@jojiarts.com',
