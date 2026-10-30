@@ -37,3 +37,6 @@ yarn-error.log*
 # Blender mockup renderer: CC0 assets (re-fetch with scripts/mockups/fetch-assets.mjs) + scene export cache
 scripts/mockups/assets/
 scripts/mockups/.cache/
+
+# Raw AI-generated product photos (source for `npm run images:generated`); optimised copies live in public/catalog/generated
+/assets/generated-images/

@@ -1,3 +1,4 @@
+import GENERATED from './generated-manifest'
 import manifest from './image-manifest'
 import MOCKUPS from './mockup-manifest'
 import PHOTO_GALLERIES from './photo-galleries'
@@ -95,10 +96,11 @@ const LEGACY: Record<string, string> = {
 }
 
 /**
- * Studio-rendered product galleries (scripts/mockups) and curated photo galleries:
- * several angles per product. They always win over the single Pixabay photo.
+ * Studio-rendered product galleries (scripts/mockups), curated photo galleries and AI-generated
+ * product photos (scripts/generated-images.mjs, which also supplies category/department covers):
+ * several angles per product. Generated photos win, and all of them win over the single Pixabay photo.
  */
-const GALLERIES: Record<string, Array<{ src: string; width: number; height: number }>> = { ...PHOTO_GALLERIES, ...MOCKUPS }
+const GALLERIES: Record<string, Array<{ src: string; width: number; height: number }>> = { ...PHOTO_GALLERIES, ...MOCKUPS, ...GENERATED }
 
 const VIEW_LABELS = ['', 'front view', 'from above', 'close-up detail', 'another angle', 'in use']
 

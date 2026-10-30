@@ -285,7 +285,24 @@ function DepartmentRow({
       setPill({ left: el.offsetLeft, width: el.offsetWidth, color: dept.accent })
    }, [])
 
-   useIsoLayoutEffect(() => moveTo(openSlug ?? currentSlug), [openSlug, currentSlug, moveTo])
+   const target = openSlug ?? currentSlug
+   useIsoLayoutEffect(() => moveTo(target), [target, moveTo])
+
+   // The pill is positioned from measurements, so re-measure whenever the items change size —
+   // the web font swapping in after first paint, a window resize, or the xl padding breakpoint.
+   const targetRef = useRef(target)
+   targetRef.current = target
+   useEffect(() => {
+      const list = listRef.current
+      if (!list) return
+      const remeasure = () => moveTo(targetRef.current)
+      const observer = new ResizeObserver(remeasure)
+      // The list catches resizes that only move items; the items catch font swaps that resize them
+      observer.observe(list)
+      list.querySelectorAll('li').forEach((li) => observer.observe(li))
+      document.fonts?.ready.then(remeasure)
+      return () => observer.disconnect()
+   }, [moveTo])
 
    return (
       <nav aria-label="Departments" className="page-shell">

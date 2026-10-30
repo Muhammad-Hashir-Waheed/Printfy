@@ -12,6 +12,7 @@
       "lint": "next lint",
       "images:fetch": "node scripts/fetch-catalog-images.mjs",
       "images:mockups": "node scripts/mockups/render.mjs",
+      "images:generated": "node scripts/generated-images.mjs",
       "postinstall": "prisma generate",
       "update": "npx npm-check-updates -u",
       "db:generate": "npx prisma generate",
