@@ -6,10 +6,11 @@ import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
-type Params = { params: { id: string } }
+type Params = { params: Promise<{ id: string }> }
 
 /** Local storage only: receive the raw file bytes. (With Supabase the browser uploads directly.) */
-export async function PUT(req: Request, { params }: Params) {
+export async function PUT(req: Request, props: Params) {
+   const params = await props.params
    if (getStorage()?.kind !== 'local') return jsonError(404, 'Not found')
    const url = new URL(req.url)
    const part = url.searchParams.get('part') === 'preview' ? 'preview' : 'original'
@@ -33,7 +34,8 @@ const completeSchema = z.object({
 })
 
 /** Confirm the upload finished. */
-export async function POST(req: Request, { params }: Params) {
+export async function POST(req: Request, props: Params) {
+   const params = await props.params
    try {
       const body = completeSchema.parse(await req.json())
       const file = await completeUpload(params.id, body.token, body)

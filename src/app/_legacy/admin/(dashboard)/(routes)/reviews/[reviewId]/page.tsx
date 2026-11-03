@@ -3,11 +3,12 @@ import { getAdminReview } from '@/lib/product-reviews'
 
 import { ReviewForm } from './components/review-form'
 
-export default async function ReviewPage({
-   params,
-}: {
-   params: { reviewId: string }
-}) {
+export default async function ReviewPage(
+   props: {
+      params: Promise<{ reviewId: string }>
+   }
+) {
+   const params = await props.params
    const review =
       params.reviewId === 'new' ? null : await getAdminReview(params.reviewId)
 

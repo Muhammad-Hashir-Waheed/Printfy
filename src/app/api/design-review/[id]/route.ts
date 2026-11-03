@@ -7,9 +7,10 @@ import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
-type Params = { params: { id: string } }
+type Params = { params: Promise<{ id: string }> }
 
-export async function GET(req: Request, { params }: Params) {
+export async function GET(req: Request, props: Params) {
+   const params = await props.params
    try {
       const s = await getForCustomer(params.id, new URL(req.url).searchParams.get('t'))
       if (!s) return jsonError(404, 'Not found')
@@ -26,7 +27,8 @@ const replySchema = z.object({
 })
 
 /** Customer replies — optionally with a revised file. */
-export async function POST(req: Request, { params }: Params) {
+export async function POST(req: Request, props: Params) {
+   const params = await props.params
    if (!rateLimit(`reply:${clientIp(req)}`, 20, 10 * 60_000)) return jsonError(429, 'Too many requests.')
    try {
       const body = replySchema.parse(await req.json())

@@ -13,10 +13,8 @@ const reviewSchema = z.object({
    isVisible: z.boolean().optional(),
 })
 
-export async function PATCH(
-   req: Request,
-   { params }: { params: { reviewId: string } }
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ reviewId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) return new NextResponse('Unauthorized', { status: 401 })
@@ -39,10 +37,8 @@ export async function PATCH(
    }
 }
 
-export async function DELETE(
-   req: Request,
-   { params }: { params: { reviewId: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ reviewId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) return new NextResponse('Unauthorized', { status: 401 })

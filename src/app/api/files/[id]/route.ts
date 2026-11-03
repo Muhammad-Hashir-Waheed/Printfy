@@ -10,7 +10,8 @@ export const dynamic = 'force-dynamic'
  * GET /api/files/{id}?part=preview|original[&download=1]
  *   Access: admin session, OR the file's upload token (?t=), OR a submission link (?s=&a=).
  */
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
+   const params = await props.params
    const storage = getStorage()
    if (!storage) return jsonError(503, 'Storage not configured')
    const url = new URL(req.url)

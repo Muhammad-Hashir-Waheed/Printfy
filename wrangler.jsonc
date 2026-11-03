@@ -1,0 +1,41 @@
+/**
+ * Cloudflare Workers config for the Joji Arts storefront (built with @opennextjs/cloudflare).
+ *
+ *   npm run preview   → build and run locally in the Workers runtime
+ *   npm run deploy    → build and deploy
+ *
+ * Secrets are not kept here — set them once with `npx wrangler secret put <NAME>`
+ * (or in the dashboard: Workers & Pages → joji-arts → Settings → Variables and Secrets):
+ *   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, EMAIL_FROM,
+ *   ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_SESSION_SECRET
+ */
+{
+   "$schema": "node_modules/wrangler/config-schema.json",
+   "name": "joji-arts",
+   "main": ".open-next/worker.js",
+   "compatibility_date": "2026-09-01",
+   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+   "assets": {
+      "directory": ".open-next/assets",
+      "binding": "ASSETS"
+   },
+   "services": [
+      {
+         "binding": "WORKER_SELF_REFERENCE",
+         "service": "joji-arts"
+      }
+   ],
+   // Requires jojiarts.com to be an active zone on this Cloudflare account (nameservers moved to Cloudflare).
+   // Cloudflare creates the DNS record and SSL certificate on deploy. www.jojiarts.com is redirected to
+   // the bare domain by a Cloudflare Redirect Rule (see DEPLOY.md), so it never runs the Worker.
+   "routes": [{ "pattern": "jojiarts.com", "custom_domain": true }],
+   // The default *.workers.dev address stays off so the site only lives on jojiarts.com
+   "workers_dev": false,
+   "preview_urls": false,
+   "vars": {
+      "ENABLE_ACCOUNTS": "false"
+   },
+   "observability": {
+      "enabled": true
+   }
+}

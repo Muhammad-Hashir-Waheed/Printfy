@@ -1,10 +1,8 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET(
-   req: Request,
-   { params }: { params: { addressId: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ addressId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
 
@@ -30,10 +28,8 @@ export async function GET(
    }
 }
 
-export async function PATCH(
-   req: Request,
-   { params }: { params: { addressId: string } }
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ addressId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
 
@@ -71,10 +67,8 @@ export async function PATCH(
    }
 }
 
-export async function DELETE(
-   req: Request,
-   { params }: { params: { addressId: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ addressId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
 

@@ -11,7 +11,7 @@ export function checkAdminCredentials(email: string, password: string) {
 
 /** For server components / route handlers. */
 export async function currentAdmin() {
-   return verifyAdminSession(cookies().get(ADMIN_COOKIE)?.value)
+   return verifyAdminSession((await cookies()).get(ADMIN_COOKIE)?.value)
 }
 
 export async function isAdminRequest(req: Request) {

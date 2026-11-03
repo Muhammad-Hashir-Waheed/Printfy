@@ -62,7 +62,8 @@ export default function PrivacyPolicyPage() {
          <p>
             Questions about this Privacy Policy? Visit our{' '}
             <a href="/contact">Contact</a> page or email{' '}
-            <a href="mailto:support@jojiarts.com">support@jojiarts.com</a>.
+            <a href="mailto:support@jojiarts.com">support@jojiarts.com</a>. You can also write to us at
+            our office: {config.address.full}.
          </p>
       </ContentPage>
    )

@@ -16,17 +16,19 @@ module.exports = {
    eslint: {
       ignoreDuringBuilds: true,
    },
-   experimental: {
-      outputFileTracingIncludes: {
-         '/*': ['./node_modules/.prisma/client/**'],
-         '/api/**': ['./node_modules/.prisma/client/**'],
-      },
-      // Local-only folders (dev uploads, test emails, side-by-side builds) never ship
-      outputFileTracingExcludes: {
-         '*': ['./.data/**', './.next-build/**'],
-      },
+   outputFileTracingIncludes: {
+      '/*': ['./node_modules/.prisma/client/**'],
+      '/api/**': ['./node_modules/.prisma/client/**'],
+   },
+   // Local-only folders (dev uploads, test emails, side-by-side builds, raw photos) never ship
+   outputFileTracingExcludes: {
+      '*': ['./.data/**', './.next-build/**', './.open-next/**', './assets/**'],
    },
    images: {
+      // No image optimisation server on Cloudflare Workers: images are pre-sized at build time
+      // (scripts/image-variants.mjs) and this loader picks the right copy.
+      loader: 'custom',
+      loaderFile: './src/lib/image-loader.ts',
       // Fewer candidate widths → much shorter srcset attributes on image-heavy pages
       deviceSizes: [640, 828, 1080, 1440, 1920],
       imageSizes: [64, 128, 256, 384],

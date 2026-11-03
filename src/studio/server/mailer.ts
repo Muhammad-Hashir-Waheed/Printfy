@@ -1,6 +1,8 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
+import { hasPersistentDisk } from './runtime'
+
 /**
  * Transactional email.
  *
@@ -67,7 +69,7 @@ async function viaSmtp(mail: Mail): Promise<SendResult> {
 }
 
 async function viaPreview(mail: Mail): Promise<SendResult> {
-   if (process.env.VERCEL) {
+   if (!hasPersistentDisk()) {
       return { ok: false, via: 'preview', error: 'No email provider configured (set RESEND_API_KEY or SMTP_*)' }
    }
    const dir = path.join(process.cwd(), '.data', 'outbox')

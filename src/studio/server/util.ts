@@ -46,13 +46,14 @@ export function isRateLimited(key: string, limit: number) {
 }
 
 /**
- * The caller's IP for rate limiting. Prefers headers our host sets itself (Vercel overwrites
- * these, so they can't be spoofed); otherwise takes the *last* X-Forwarded-For hop — the one
- * appended by the proxy in front of us — never the first, which the client controls.
+ * The caller's IP for rate limiting. Prefers headers our host sets itself (Cloudflare and Vercel
+ * overwrite these, so they can't be spoofed); otherwise takes the *last* X-Forwarded-For hop —
+ * the one appended by the proxy in front of us — never the first, which the client controls.
+ * On Cloudflare, CF-Connecting-IP is checked first: X-Real-IP is passed through from the client there.
  */
 export function clientIp(req: Request) {
    const h = req.headers
-   const trusted = h.get('x-vercel-forwarded-for') || h.get('x-real-ip')
+   const trusted = h.get('cf-connecting-ip') || h.get('x-vercel-forwarded-for') || h.get('x-real-ip')
    if (trusted) return trusted.split(',')[0].trim()
    const hops = h.get('x-forwarded-for')?.split(',').map((s) => s.trim()).filter(Boolean)
    return hops?.length ? hops[hops.length - 1] : 'local'

@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-type Params = { params: { department: string } }
+type Params = { params: Promise<{ department: string }> }
 
 /** Every catalog path is pre-rendered; anything else is a real 404. */
 export const dynamicParams = false
@@ -18,13 +18,15 @@ export function generateStaticParams() {
    return DEPARTMENTS.map((d) => ({ department: d.slug }))
 }
 
-export function generateMetadata({ params }: Params): Metadata {
+export async function generateMetadata(props: Params): Promise<Metadata> {
+   const params = await props.params
    const dept = getDepartment(params.department)
    if (!dept) return {}
    return { title: dept.name, description: dept.description }
 }
 
-export default function DepartmentPage({ params }: Params) {
+export default async function DepartmentPage(props: Params) {
+   const params = await props.params
    const dept = getDepartment(params.department)
    if (!dept) notFound()
 

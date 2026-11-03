@@ -15,6 +15,21 @@ const config = {
    /** Leave empty to hide. Fill in to show across the site (e.g. "+971 50 000 0000"). */
    phone: '',
    whatsapp: '',
+   /** Office address — shown on the contact page, footer, legal pages and in structured data. */
+   address: {
+      line1: 'Office #5, Second Floor, ESA Musa Center',
+      line2: 'Royal Park, Lakshmi Chowk',
+      city: 'Lahore',
+      region: 'Punjab',
+      country: 'Pakistan',
+      countryCode: 'PK',
+      /** Single-line form for compact spots and the map search. */
+      full: 'Office #5, Second Floor, ESA Musa Center, Royal Park, Lakshmi Chowk, Lahore, Pakistan',
+      /** Share link from the owner — used for "Get directions". */
+      mapsUrl: 'https://maps.app.goo.gl/4i7TMakh6HCcpPaeA',
+      /** Pin coordinates, taken from where the share link above resolves. */
+      geo: { lat: 31.5660052, lng: 74.3246282 },
+   },
    /**
     * Prices are hidden while the client finalises pricing — customers build a
     * quote list and contact us instead. Set to true to show prices and totals.

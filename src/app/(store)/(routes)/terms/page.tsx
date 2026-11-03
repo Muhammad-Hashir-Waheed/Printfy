@@ -74,7 +74,7 @@ export default function TermsPage() {
          <p>
             Questions about these terms? Email{' '}
             <a href="mailto:support@jojiarts.com">support@jojiarts.com</a> or use the{' '}
-            <a href="/contact">Contact</a> page.
+            <a href="/contact">Contact</a> page. Our office is at {config.address.full}.
          </p>
       </ContentPage>
    )

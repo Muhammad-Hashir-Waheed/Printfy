@@ -6,14 +6,16 @@ import { SearchBox } from '@/components/store/search-box'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-type Props = { searchParams: { q?: string } }
+type Props = { searchParams: Promise<{ q?: string }> }
 
-export function generateMetadata({ searchParams }: Props): Metadata {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+   const searchParams = await props.searchParams
    const q = searchParams.q?.trim()
    return { title: q ? `Search: ${q}` : 'Search', robots: { index: false } }
 }
 
-export default function SearchPage({ searchParams }: Props) {
+export default async function SearchPage(props: Props) {
+   const searchParams = await props.searchParams
    const q = (searchParams.q ?? '').trim().slice(0, 80)
    const products = q ? searchProducts(q, 120) : []
    const categories = q ? searchCategories(q, 8) : []

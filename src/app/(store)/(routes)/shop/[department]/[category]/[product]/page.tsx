@@ -19,7 +19,7 @@ import { BadgeCheck, Check, Leaf, ShieldCheck, Truck } from 'lucide-react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-type Params = { params: { department: string; category: string; product: string } }
+type Params = { params: Promise<{ department: string; category: string; product: string }> }
 
 /** Every catalog path is pre-rendered; anything else is a real 404. */
 export const dynamicParams = false
@@ -32,7 +32,8 @@ export function generateStaticParams() {
    }))
 }
 
-export function generateMetadata({ params }: Params): Metadata {
+export async function generateMetadata(props: Params): Promise<Metadata> {
+   const params = await props.params
    const product = getProduct(params.department, params.category, params.product)
    if (!product) return {}
    return {
@@ -42,7 +43,8 @@ export function generateMetadata({ params }: Params): Metadata {
    }
 }
 
-export default function ProductPage({ params }: Params) {
+export default async function ProductPage(props: Params) {
+   const params = await props.params
    const product = getProduct(params.department, params.category, params.product)
    const dept = getDepartment(params.department)
    const category = getCategory(params.department, params.category)

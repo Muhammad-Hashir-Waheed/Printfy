@@ -3,11 +3,12 @@ import { getCategoryImage } from '@/lib/category-image'
 
 import { CategoryForm } from './components/category-form'
 
-const CategoryPage = async ({
-   params,
-}: {
-   params: { categoryId: string }
-}) => {
+const CategoryPage = async (
+   props: {
+      params: Promise<{ categoryId: string }>
+   }
+) => {
+   const params = await props.params
    const category =
       params.categoryId === 'new'
          ? null

@@ -40,3 +40,10 @@ scripts/mockups/.cache/
 
 # Raw AI-generated product photos (source for `npm run images:generated`); optimised copies live in public/catalog/generated
 /assets/generated-images/
+
+# Cloudflare build output and generated image copies
+/.open-next/
+/.wrangler/
+/public/_v/
+.dev.vars*
+!.dev.vars.example

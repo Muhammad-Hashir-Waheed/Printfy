@@ -11,10 +11,8 @@ const patchShipmentSchema = z.object({
 
 
 export const dynamic = 'force-dynamic'
-export async function GET(
-   req: Request,
-   { params }: { params: { shipmentId: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ shipmentId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
@@ -32,10 +30,8 @@ export async function GET(
    }
 }
 
-export async function PATCH(
-   req: Request,
-   { params }: { params: { shipmentId: string } }
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ shipmentId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })

@@ -11,10 +11,8 @@ const paymentPatchSchema = z.object({
 
 
 export const dynamic = 'force-dynamic'
-export async function PATCH(
-   req: Request,
-   { params }: { params: { paymentId: string } }
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ paymentId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) {

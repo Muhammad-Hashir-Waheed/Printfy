@@ -3,7 +3,7 @@
 import { DEPARTMENTS, getCategory, SIGNATURE_CATEGORIES, type Department } from '@/catalog'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
-import { ArrowUp, ArrowUpRight, Mail, Sparkle } from 'lucide-react'
+import { ArrowUp, ArrowUpRight, Mail, MapPin, Sparkle } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
@@ -223,6 +223,19 @@ export function SiteFooter() {
                         {config.email}
                      </a>
                      {config.phone ? <p className="mt-2 text-sm text-white/60">{config.phone}</p> : null}
+                     <a
+                        href={config.address.mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-4 flex items-start gap-2 text-sm leading-relaxed text-white/60 transition-colors hover:text-white"
+                     >
+                        <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+                        <address className="not-italic">
+                           {config.address.line1},
+                           <br />
+                           {config.address.line2}, {config.address.city}, {config.address.country}
+                        </address>
+                     </a>
                   </div>
 
                   <div className="grid gap-10 sm:grid-cols-[2fr_1fr_1fr]">

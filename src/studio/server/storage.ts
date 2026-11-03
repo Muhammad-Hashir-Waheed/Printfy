@@ -3,6 +3,8 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
+import { hasPersistentDisk } from './runtime'
+
 /**
  * Object storage for design files and submission records.
  *
@@ -215,7 +217,7 @@ export function getStorage(): Storage | null {
    const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
    const key = process.env.SUPABASE_SERVICE_ROLE_KEY
    if (url && key) instance = supabaseStorage(url, key)
-   else if (process.env.VERCEL) instance = null // read-only filesystem: storage must be configured
+   else if (!hasPersistentDisk()) instance = null // hosted: storage must be configured
    else instance = localStorage()
    return instance
 }

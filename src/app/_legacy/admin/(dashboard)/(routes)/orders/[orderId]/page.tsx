@@ -18,7 +18,8 @@ import Link from 'next/link'
 import { FulfillmentPanel } from './components/fulfillment-panel'
 import { OrderForm } from './components/order-form'
 
-const ProductPage = async ({ params }: { params: { orderId: string } }) => {
+const ProductPage = async (props: { params: Promise<{ orderId: string }> }) => {
+   const params = await props.params
    const order = await prisma.order.findUnique({
       where: {
          id: params.orderId,

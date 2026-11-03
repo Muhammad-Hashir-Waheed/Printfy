@@ -11,10 +11,8 @@ const userPatchSchema = z.object({
 
 
 export const dynamic = 'force-dynamic'
-export async function PATCH(
-   req: Request,
-   { params }: { params: { userId: string } }
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ userId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) {

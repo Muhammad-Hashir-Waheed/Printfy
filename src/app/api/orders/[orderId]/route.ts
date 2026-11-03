@@ -3,10 +3,8 @@ import { NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(
-   req: Request,
-   { params }: { params: { orderId: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ orderId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
       if (!userId) {

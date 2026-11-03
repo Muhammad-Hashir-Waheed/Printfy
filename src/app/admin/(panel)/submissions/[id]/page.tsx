@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation'
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Review design' }
 
-export default async function SubmissionPage({ params }: { params: { id: string } }) {
+export default async function SubmissionPage(props: { params: Promise<{ id: string }> }) {
+   const params = await props.params
    let submission = await getSubmission(params.id)
    if (!submission) notFound()
    if (!submission.seenByAdmin) {

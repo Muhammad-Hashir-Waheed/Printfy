@@ -10,7 +10,8 @@ export function generateStaticParams() {
    return getStaticBlogs().map((post) => ({ slug: post.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+   const params = await props.params
    const blog = getStaticBlog(params.slug)
    if (!blog) return {}
    return {
@@ -23,11 +24,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 /** Posts come from a fixed static set, so unknown slugs should be a real 404. */
 export const dynamicParams = false
 
-export default async function BlogPostPage({
-   params,
-}: {
-   params: { slug: string }
-}) {
+export default async function BlogPostPage(
+   props: {
+      params: Promise<{ slug: string }>
+   }
+) {
+   const params = await props.params
    const blog = getStaticBlog(params.slug)
    if (!blog) {
       notFound()

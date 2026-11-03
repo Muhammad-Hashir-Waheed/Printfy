@@ -3,8 +3,13 @@
 import { ContentPage } from '@/components/native/content-page'
 import config from '@/config/site'
 import { mailto } from '@/lib/mailto'
+import { ArrowUpRight, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+
+const { address } = config
+/** Pin the embed to the exact coordinates — address text alone can land on the wrong building. */
+const mapEmbed = `https://www.google.com/maps?q=${address.geo.lat},${address.geo.lng}&z=17&output=embed`
 
 const input =
    'h-12 w-full rounded-2xl border border-input bg-white px-4 text-[15px] outline-none transition focus:border-ink focus:ring-4 focus:ring-ink/5'
@@ -35,6 +40,39 @@ export function ContactForm() {
                <span className="mt-1 block font-display text-lg font-bold text-white">Request a quote →</span>
                <span className="mt-1 block text-sm text-white/60">Sizes, finishes, signage & bulk</span>
             </Link>
+         </div>
+
+         {/* Office address + map */}
+         <div className="overflow-hidden rounded-3xl bg-white ring-1 ring-black/5">
+            <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between">
+               <div className="flex gap-3">
+                  <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                     <span className="block text-sm text-muted-foreground">Visit our office</span>
+                     <address className="mt-1 block font-display text-lg font-bold not-italic leading-snug text-foreground">
+                        {address.line1}
+                        <br />
+                        {address.line2}, {address.city}, {address.country}
+                     </address>
+                  </div>
+               </div>
+               <a
+                  href={address.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="!no-underline inline-flex h-11 shrink-0 items-center gap-1.5 self-start rounded-full border px-5 text-sm font-semibold !text-foreground hover:border-ink"
+               >
+                  Get directions <ArrowUpRight className="h-4 w-4" />
+               </a>
+            </div>
+            <iframe
+               src={mapEmbed}
+               title={`Map showing the ${config.name} office in ${address.city}`}
+               loading="lazy"
+               referrerPolicy="no-referrer-when-downgrade"
+               allowFullScreen
+               className="block aspect-[4/3] w-full border-0 sm:aspect-[16/7]"
+            />
          </div>
 
          <h2>Send a message</h2>

@@ -3,10 +3,8 @@ import { NextResponse } from 'next/server'
 
 
 export const dynamic = 'force-dynamic'
-export async function GET(
-   req: Request,
-   { params }: { params: { productId: string } }
-) {
+export async function GET(req: Request, props: { params: Promise<{ productId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
 
@@ -31,10 +29,8 @@ export async function GET(
    }
 }
 
-export async function DELETE(
-   req: Request,
-   { params }: { params: { productId: string } }
-) {
+export async function DELETE(req: Request, props: { params: Promise<{ productId: string }> }) {
+   const params = await props.params
    try {
       const userId = req.headers.get('X-USER-ID')
 
@@ -55,10 +51,8 @@ export async function DELETE(
    }
 }
 
-export async function PATCH(
-   req: Request,
-   { params }: { params: { productId: string } }
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ productId: string }> }) {
+   const params = await props.params
    try {
       if (!params.productId) {
          return new NextResponse('Product Id is required', { status: 400 })

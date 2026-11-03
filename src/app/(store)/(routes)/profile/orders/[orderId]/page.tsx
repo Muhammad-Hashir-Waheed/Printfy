@@ -9,11 +9,12 @@ import { Loader } from '@/components/ui/loader'
 import { useAuthenticated } from '@/hooks/useAuthentication'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 
 import { UserCombobox } from '../../components/switcher'
 
-const ProductPage = ({ params }: { params: { orderId: string } }) => {
+const ProductPage = (props: { params: Promise<{ orderId: string }> }) => {
+   const params = use(props.params)
    const { authenticated } = useAuthenticated()
    const [order, setOrder] = useState(null)
    const [unavailable, setUnavailable] = useState(false)

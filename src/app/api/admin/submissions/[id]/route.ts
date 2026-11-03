@@ -8,9 +8,10 @@ import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
-type Params = { params: { id: string } }
+type Params = { params: Promise<{ id: string }> }
 
-export async function GET(req: Request, { params }: Params) {
+export async function GET(req: Request, props: Params) {
+   const params = await props.params
    if (!(await isAdminRequest(req))) return jsonError(401, 'Unauthorized')
    try {
       const s = await getSubmission(params.id)
@@ -35,7 +36,8 @@ const schema = z.discriminatedUnion('action', [
    z.object({ action: z.literal('resend_link') }),
 ])
 
-export async function PATCH(req: Request, { params }: Params) {
+export async function PATCH(req: Request, props: Params) {
+   const params = await props.params
    if (!(await isAdminRequest(req))) return jsonError(401, 'Unauthorized')
    try {
       const body = schema.parse(await req.json())

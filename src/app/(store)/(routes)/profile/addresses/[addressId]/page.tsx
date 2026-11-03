@@ -5,15 +5,16 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Loader } from '@/components/ui/loader'
 import { useAuthenticated } from '@/hooks/useAuthentication'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 
 import { AddressForm } from './components/address-form'
 
-export default function AddressPage({
-   params,
-}: {
-   params: { addressId: string }
-}) {
+export default function AddressPage(
+   props: {
+      params: Promise<{ addressId: string }>
+   }
+) {
+   const params = use(props.params)
    const { authenticated } = useAuthenticated()
    const isNew = params.addressId === 'new'
 
