@@ -415,3 +415,63 @@
       transition: none !important;
    }
 }
+
+/* ───────── Hero scene (src/components/store/hero-scene.tsx) ───────── */
+.hero-scene {
+   perspective: 1400px;
+}
+.hero-plane {
+   position: absolute;
+   left: -45%;
+   top: -55%;
+   width: 190%;
+   display: flex;
+   flex-direction: column;
+   gap: 24px;
+   transform: rotateX(52deg) rotateZ(-16deg);
+   transform-origin: 50% 50%;
+}
+.hero-belt {
+   display: flex;
+   width: max-content;
+   animation: hero-belt linear infinite;
+}
+.hero-tile {
+   width: 200px;
+   height: 200px;
+   margin-right: 24px;
+   flex: none;
+   overflow: hidden;
+   border-radius: 22px;
+   background: hsl(var(--muted));
+   box-shadow: 0 18px 30px -12px rgb(60 40 25 / 0.35);
+}
+/* A touch more colour and contrast so the photos read crisp through the light wash */
+.hero-photo {
+   filter: saturate(1.18) contrast(1.08) brightness(1.02);
+}
+@keyframes hero-belt {
+   from {
+      transform: translate3d(0, 0, 0);
+   }
+   to {
+      transform: translate3d(-50%, 0, 0);
+   }
+}
+
+@media (max-width: 767px) {
+   .hero-tile {
+      width: 140px;
+      height: 140px;
+      margin-right: 16px;
+   }
+   .hero-plane {
+      top: -140px;
+      gap: 16px;
+   }
+}
+@media (prefers-reduced-motion: reduce) {
+   .hero-belt {
+      animation: none !important;
+   }
+}

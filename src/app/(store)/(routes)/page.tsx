@@ -12,6 +12,7 @@ import {
 import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/components/store/cards'
 import { BackgroundImage } from '@/components/store/background-image'
 import { CatalogImage } from '@/components/store/catalog-image'
+import { HeroScene } from '@/components/store/hero-scene'
 import { CountUp, Magnetic, Marquee, Reveal, RotatingWords } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
 import { SignatureCard, type SignatureCardData } from '@/components/store/signature'
@@ -32,7 +33,7 @@ function Hero() {
 
    return (
       <section className="grain relative overflow-hidden">
-         <BackgroundImage src="/catalog/c/packaging/rigid-boxes.jpg" eager />
+         <HeroScene />
          {/* A light wash behind the text column only; the photo stays clear everywhere else */}
          <div aria-hidden className="pointer-events-none absolute inset-0 bg-[hsl(var(--background)/0.62)] lg:hidden" />
          <div
