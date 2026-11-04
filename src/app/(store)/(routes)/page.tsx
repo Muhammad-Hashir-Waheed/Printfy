@@ -10,7 +10,7 @@ import {
    type Category,
 } from '@/catalog'
 import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/components/store/cards'
-import { BackgroundVideo } from '@/components/store/background-video'
+import { BackgroundImage } from '@/components/store/background-image'
 import { CatalogImage } from '@/components/store/catalog-image'
 import { CountUp, Magnetic, Marquee, Reveal, RotatingWords } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
@@ -32,8 +32,8 @@ function Hero() {
 
    return (
       <section className="grain relative overflow-hidden">
-         <BackgroundVideo src="/videos/hero" eager controlClassName="bottom-auto top-3 right-3 sm:top-4 sm:right-4" />
-         {/* A light wash behind the text column only; the film stays clear everywhere else */}
+         <BackgroundImage src="/catalog/c/packaging/rigid-boxes.jpg" eager />
+         {/* A light wash behind the text column only; the photo stays clear everywhere else */}
          <div aria-hidden className="pointer-events-none absolute inset-0 bg-[hsl(var(--background)/0.62)] lg:hidden" />
          <div
             aria-hidden
@@ -217,7 +217,7 @@ function SignatureThree() {
 
    return (
       <section id="signature" className="grain relative scroll-mt-28 overflow-hidden bg-[#120d0a] py-16 text-white sm:py-20">
-         <BackgroundVideo src="/videos/signature" />
+         <BackgroundImage src="/catalog/c/custom-packaging/custom-printing.jpg" />
          <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgb(18_13_10/0.72)_0%,rgb(18_13_10/0.38)_30%,rgb(18_13_10/0.38)_70%,rgb(18_13_10/0.6)_100%)]" />
          <div className="pointer-events-none absolute -left-32 top-10 h-[460px] w-[460px] rounded-full bg-[#D9AE4F]/15 blur-[120px]" />
          <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-[#D42F25]/20 blur-[120px]" />
@@ -348,7 +348,7 @@ function SignageFeature() {
          className="relative mt-8 overflow-hidden bg-[#0f0a14] py-20 text-white sm:py-28"
          style={{ ['--accent-hex' as string]: dept.accent }}
       >
-         <BackgroundVideo src="/videos/signage" />
+         <BackgroundImage src="/catalog/c/signage-displays/neon-signs.jpg" />
          <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0f0a14]/80 via-[#0f0a14]/40 to-[#0f0a14]/10" />
          <div className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] rounded-full bg-[#ff2e88]/25 blur-[120px]" />
          <div className="pointer-events-none absolute -right-40 bottom-0 h-[460px] w-[460px] rounded-full bg-[#2ee6ff]/15 blur-[120px]" />
@@ -593,7 +593,7 @@ export default function HomePage() {
          <AcrylicSpotlight />
          <HowItWorks />
          <Industries />
-         <QuoteBand video="/videos/quote" />
+         <QuoteBand image="/catalog/c/packaging/mailer-boxes.jpg" />
       </>
    )
 }

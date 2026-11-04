@@ -1,23 +1,23 @@
 import { ArrowRight, Clock, PenTool, Ruler } from 'lucide-react'
 import Link from 'next/link'
 
-import { BackgroundVideo } from './background-video'
+import { BackgroundImage } from './background-image'
 
-/** `video`: optional background film (path without extension, see BackgroundVideo), tinted in the brand red */
-export function QuoteBand({ title, text, video }: { title?: string; text?: string; video?: string }) {
+/** `image`: optional background photo, tinted in the brand red */
+export function QuoteBand({ title, text, image }: { title?: string; text?: string; image?: string }) {
    return (
       <section className="page-shell mt-20 sm:mt-24">
          <div className="relative overflow-hidden rounded-[2rem] bg-primary px-6 py-12 text-white sm:px-12 sm:py-16">
-            {video ? (
+            {image ? (
                <>
-                  <BackgroundVideo src={video} />
+                  <BackgroundImage src={image} />
                   <div aria-hidden className="pointer-events-none absolute inset-0 bg-[hsl(var(--primary)/0.58)]" />
                </>
             ) : null}
             <div className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-white/10 blur-2xl" />
             <div className="pointer-events-none absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-black/10 blur-2xl" />
             <div className="relative grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
-               <div className={video ? 'text-on-dark-film' : undefined}>
+               <div className={image ? 'text-on-dark-film' : undefined}>
                   <p className="eyebrow text-white/70">Custom projects</p>
                   <h2 className="display-lg mt-3">{title ?? 'Something specific in mind? Let’s quote it.'}</h2>
                   <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/80 sm:text-base">

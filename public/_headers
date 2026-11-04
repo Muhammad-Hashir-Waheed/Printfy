@@ -18,5 +18,3 @@
   Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
 /packaging/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
-/videos/*
-  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
