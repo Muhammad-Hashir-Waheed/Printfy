@@ -10,6 +10,7 @@ import {
    type Category,
 } from '@/catalog'
 import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/components/store/cards'
+import { BackgroundVideo } from '@/components/store/background-video'
 import { CatalogImage } from '@/components/store/catalog-image'
 import { CountUp, Magnetic, Marquee, Reveal, RotatingWords } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
@@ -31,8 +32,19 @@ function Hero() {
 
    return (
       <section className="grain relative overflow-hidden">
-         <div className="page-shell grid items-center gap-10 pb-14 pt-8 sm:pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pb-20 lg:pt-16">
-            <div>
+         <BackgroundVideo src="/videos/hero" eager controlClassName="bottom-auto top-3 right-3 sm:top-4 sm:right-4" />
+         {/* A light wash behind the text column only; the film stays clear everywhere else */}
+         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[hsl(var(--background)/0.62)] lg:hidden" />
+         <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 hidden lg:block"
+            style={{
+               background:
+                  'linear-gradient(90deg, hsl(var(--background) / 0.86) 0%, hsl(var(--background) / 0.72) 32%, hsl(var(--background) / 0.2) 50%, transparent 62%)',
+            }}
+         />
+         <div className="page-shell relative grid items-center gap-10 pb-14 pt-8 sm:pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pb-20 lg:pt-16">
+            <div className="text-on-film">
                <p className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-3 py-1.5 text-[13px] font-medium shadow-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-700">
                   <span className="relative flex h-2 w-2">
                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
@@ -72,7 +84,7 @@ function Hero() {
                      </span>
                   </span>
                </h1>
-               <p className="mt-7 max-w-xl text-[17px] leading-relaxed text-muted-foreground animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
+               <p className="mt-7 max-w-xl text-[17px] font-medium leading-relaxed text-foreground/85 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
                   Luxury rigid boxes, mailer boxes made for unboxing and business cards finished in foil — plus
                   everything else your brand touches. Designed with you, printed with care, delivered on time.
                </p>
@@ -99,19 +111,19 @@ function Hero() {
                      <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
                         <CountUp to={CATALOG_STATS.products} suffix="+" />
                      </p>
-                     <p className="mt-1 text-xs text-muted-foreground sm:text-[13px]">products to customise</p>
+                     <p className="mt-1 text-xs font-medium text-foreground/75 sm:text-[13px]">products to customise</p>
                   </li>
                   <li>
                      <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
                         <CountUp to={CATALOG_STATS.departments} />
                      </p>
-                     <p className="mt-1 text-xs text-muted-foreground sm:text-[13px]">departments, one studio</p>
+                     <p className="mt-1 text-xs font-medium text-foreground/75 sm:text-[13px]">departments, one studio</p>
                   </li>
                   <li>
                      <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
                         <CountUp to={24} suffix="h" />
                      </p>
-                     <p className="mt-1 text-xs text-muted-foreground sm:text-[13px]">quote turnaround</p>
+                     <p className="mt-1 text-xs font-medium text-foreground/75 sm:text-[13px]">quote turnaround</p>
                   </li>
                </ul>
             </div>
@@ -205,10 +217,12 @@ function SignatureThree() {
 
    return (
       <section id="signature" className="grain relative scroll-mt-28 overflow-hidden bg-[#120d0a] py-16 text-white sm:py-20">
+         <BackgroundVideo src="/videos/signature" />
+         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgb(18_13_10/0.72)_0%,rgb(18_13_10/0.38)_30%,rgb(18_13_10/0.38)_70%,rgb(18_13_10/0.6)_100%)]" />
          <div className="pointer-events-none absolute -left-32 top-10 h-[460px] w-[460px] rounded-full bg-[#D9AE4F]/15 blur-[120px]" />
          <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-[#D42F25]/20 blur-[120px]" />
          <div className="page-shell relative">
-            <div className="mx-auto max-w-3xl text-center">
+            <div className="text-on-dark-film mx-auto max-w-3xl text-center">
                <p className="eyebrow text-[#F3D88C]">The Signature Three</p>
                <h2 className="mt-3 font-display text-[2.4rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-5xl lg:text-6xl">
                   What we&apos;re{' '}
@@ -334,10 +348,12 @@ function SignageFeature() {
          className="relative mt-8 overflow-hidden bg-[#0f0a14] py-20 text-white sm:py-28"
          style={{ ['--accent-hex' as string]: dept.accent }}
       >
+         <BackgroundVideo src="/videos/signage" />
+         <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0f0a14]/80 via-[#0f0a14]/40 to-[#0f0a14]/10" />
          <div className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] rounded-full bg-[#ff2e88]/25 blur-[120px]" />
          <div className="pointer-events-none absolute -right-40 bottom-0 h-[460px] w-[460px] rounded-full bg-[#2ee6ff]/15 blur-[120px]" />
          <div className="page-shell relative grid gap-12 lg:grid-cols-[0.9fr_1.4fr] lg:items-center">
-            <div>
+            <div className="text-on-dark-film">
                <p className="eyebrow text-[#ff7ab8]">Signage & Displays</p>
                <h2 className="mt-4 font-display text-5xl font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
                   Light up <br />
@@ -577,7 +593,7 @@ export default function HomePage() {
          <AcrylicSpotlight />
          <HowItWorks />
          <Industries />
-         <QuoteBand />
+         <QuoteBand video="/videos/quote" />
       </>
    )
 }

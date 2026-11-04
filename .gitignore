@@ -47,3 +47,4 @@ scripts/mockups/.cache/
 /public/_v/
 .dev.vars*
 !.dev.vars.example
+/assets/videos/

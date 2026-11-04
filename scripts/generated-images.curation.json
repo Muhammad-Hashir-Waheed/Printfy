@@ -1,0 +1,2362 @@
+{
+  "products": {
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-boxes-with-lids": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-cake-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-cosmetic-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-display-boxes": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-gift-boxes": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-hamper-boxes": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-jewelry-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-product-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-storage-boxes": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-sweet-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/acrylic-window-boxes": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/clear-acrylic-boxes": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/custom-acrylic-boxes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/custom-shape-acrylic-boxes": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/laser-cut-acrylic-boxes": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/magnetic-acrylic-boxes": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/acrylic-boxes/printed-acrylic-boxes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/clear-plastic-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/pet-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/plastic-cosmetic-containers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/plastic-display-boxes": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/plastic-food-containers": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/plastic-gift-boxes": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/plastic-product-containers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/pp-boxes": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/pvc-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "acrylic-plastic-packaging/plastic-packaging/transparent-packaging-boxes": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/fabric-bags/canvas-tote-bag": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "bags/fabric-bags/cotton-drawstring-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/fabric-bags/foldable-shopping-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/fabric-bags/jute-bag": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "bags/fabric-bags/non-woven-bag": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "bags/fabric-bags/velvet-pouch": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "bags/kraft-bags/flat-handle-kraft-bag": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "bags/kraft-bags/kraft-bag-with-window": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "bags/kraft-bags/kraft-shopping-bag": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "bags/kraft-bags/mini-kraft-gift-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/kraft-bags/twisted-handle-kraft-bag": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "bags/paper-bags/boutique-ribbon-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/paper-bags/laminated-paper-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/paper-bags/luxury-shopper-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/paper-bags/paper-shopping-bag": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/paper-bags/rope-handle-gift-bag": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "bags/paper-bags/white-paper-bag": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "bags/pouches/branded-bubble-mailer": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "bags/pouches/custom-poly-mailer": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "bags/pouches/flat-bottom-pouch": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/pouches/kraft-paper-mailer": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "bags/pouches/stand-up-pouch": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "bags/pouches/zipper-pouch": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "corporate/apparel/aprons": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "corporate/apparel/caps": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/apparel/custom-t-shirts": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "corporate/apparel/hoodies": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "corporate/apparel/polo-shirts": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "corporate/apparel/uniform-jackets": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "corporate/corporate-gifts/awards-and-trophies": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "corporate/corporate-gifts/branded-diaries": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/corporate-gifts/desk-organisers": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/corporate-gifts/employee-welcome-kits": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "corporate/corporate-gifts/executive-gift-sets": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "corporate/corporate-gifts/leather-folders": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/branded-pens": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/custom-mugs": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "corporate/promotional-products/keychains": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/lanyards": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/mouse-pads": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/power-banks": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/usb-drives": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "corporate/promotional-products/water-bottles": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-bags/custom-fabric-bags": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-bags/custom-luxury-bags": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-bags/custom-printed-bags": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "custom-packaging/custom-bags/custom-size-bags": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-boxes/custom-die-cut-box": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "custom-packaging/custom-boxes/custom-luxury-box": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-boxes/custom-printed-box": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "custom-packaging/custom-boxes/custom-shape-box": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-boxes/custom-size-box": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-printing/brand-launch-kit": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-printing/custom-print-job": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-printing/large-volume-printing": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-printing/packaging-design-service": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "custom-packaging/custom-printing/prototype-and-sample-box": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "display-racks/cosmetic-beauty-racks/lit-header-beauty-gondola": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "display-racks/cosmetic-beauty-racks/makeup-display-stand": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/cosmetic-beauty-racks/nail-polish-display-rack": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/cosmetic-beauty-racks/perfume-display-rack": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/cosmetic-beauty-racks/skincare-display-rack": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "display-racks/countertop-racks/acrylic-countertop-display": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "display-racks/countertop-racks/brochure-and-card-holder": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "display-racks/countertop-racks/checkout-counter-rack": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "display-racks/countertop-racks/rotating-countertop-display": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/countertop-racks/tiered-countertop-stand": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "display-racks/floor-standing-racks/mobile-accessories-display": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "display-racks/floor-standing-racks/pharmacy-display-rack": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "display-racks/floor-standing-racks/retail-floor-display-rack": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/floor-standing-racks/snack-and-beverage-rack": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "display-racks/floor-standing-racks/supermarket-gondola-shelving": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "display-racks/wall-mounted-racks/floating-wall-display": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "display-racks/wall-mounted-racks/pegboard-display": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/wall-mounted-racks/slatwall-display-panel": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "display-racks/wall-mounted-racks/wall-mounted-brochure-rack": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "display-racks/wall-mounted-racks/wall-shelving-unit": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "food-packaging/cups/clear-pet-smoothie-cup": {
+      "last": [
+        "variation-2"
+      ]
+    },
+    "food-packaging/cups/hot-paper-cup": {
+      "last": [
+        "Gemini_Generated_Image_3rvu2s3rvu2s3rvu"
+      ]
+    },
+    "food-packaging/food-accessories/2-cup-drink-carrier": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-accessories/4-bottle-carrier": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-accessories/4-cup-drink-carrier": {
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "food-packaging/food-accessories/cutlery-pouch": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "food-packaging/food-accessories/greaseproof-tray-liners": {
+      "lead": [
+        "variation-3 (2)"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-bags/grease-resistant-takeout-bag": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-bags/kraft-to-go-bag": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-bags/sandwich-bag": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-bags/sos-grocery-bag": {
+      "last": [
+        "variation-1",
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-boxes/branded-burger-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-boxes/cake-box": {
+      "lead": [
+        "variation-3",
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-boxes/custom-pizza-box": {
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-boxes/donut-box": {
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-boxes/fries-and-nugget-carton": {
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-boxes/large-combo-burger-box": {
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-boxes/window-pizza-box": {
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-containers/catering-meal-tray": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-containers/kraft-meal-tray-with-lid": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "food-packaging/food-containers/salad-bowl-container": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "food-packaging/food-containers/soup-container": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "labels-stickers/barcode-qr-labels/asset-tags": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "labels-stickers/barcode-qr-labels/barcode-labels": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "labels-stickers/barcode-qr-labels/inventory-labels": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "labels-stickers/barcode-qr-labels/qr-code-stickers": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "labels-stickers/barcode-qr-labels/serial-number-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "labels-stickers/product-labels/bottle-labels": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "labels-stickers/product-labels/clear-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/product-labels/cosmetic-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/product-labels/foil-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "labels-stickers/product-labels/food-labels": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/product-labels/jar-labels": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "labels-stickers/product-labels/roll-labels": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/product-labels/sheet-labels": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "labels-stickers/shipping-labels/custom-shipping-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/shipping-labels/fragile-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/shipping-labels/return-address-labels": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "labels-stickers/shipping-labels/thermal-shipping-labels": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/stickers/circle-stickers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/stickers/die-cut-stickers": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "labels-stickers/stickers/holographic-stickers": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "labels-stickers/stickers/package-closure-seals": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "labels-stickers/stickers/sticker-sheets": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/stickers/vinyl-stickers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "labels-stickers/stickers/window-decals": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "marketing/banners/fabric-banners": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "marketing/banners/feather-flags": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "marketing/banners/mesh-banners": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "marketing/banners/pole-banners": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "marketing/banners/printed-table-covers": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "marketing/banners/vinyl-banners": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "marketing/posters/canvas-prints": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "marketing/posters/event-posters": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "marketing/posters/foam-board-posters": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "marketing/posters/large-format-posters": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "marketing/posters/standard-posters": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "marketing/promotional-materials/gift-vouchers": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "marketing/promotional-materials/greeting-cards": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "marketing/promotional-materials/loyalty-cards": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "marketing/promotional-materials/menu-cards": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "marketing/promotional-materials/postcards": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "marketing/promotional-materials/table-tent-cards": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "marketing/promotional-materials/wall-calendars": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/corrugated-boxes/cube-shipping-box": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "packaging/corrugated-boxes/e-flute-retail-box": {
+      "last": [
+        "variations"
+      ]
+    },
+    "packaging/corrugated-boxes/moving-and-storage-box": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "packaging/folding-cartons/auto-lock-bottom-carton": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "packaging/folding-cartons/cosmetic-set-carton": {
+      "lead": [
+        "variation-4"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "packaging/folding-cartons/gable-box": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "packaging/folding-cartons/makeup-folding-carton": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/folding-cartons/perfume-sleeve-carton": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "packaging/folding-cartons/pharmaceutical-carton": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "packaging/folding-cartons/tuck-end-carton": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/kraft-boxes/kraft-gift-box": {
+      "lead": [
+        "variation-5",
+        "variation-2"
+      ],
+      "last": [
+        "variation-4"
+      ]
+    },
+    "packaging/kraft-boxes/kraft-pillow-box": {
+      "lead": [
+        "variation-1",
+        "variation-4"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "packaging/kraft-boxes/kraft-tuck-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "packaging/mailer-boxes/branded-mailer-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-4"
+      ]
+    },
+    "packaging/mailer-boxes/kraft-mailer-box": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "packaging/mailer-boxes/lite-mailer-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/mailer-boxes/rigid-mailer-box": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "packaging/mailer-boxes/subscription-mailer-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/rigid-boxes/book-style-rigid-box": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "packaging/rigid-boxes/collapsible-rigid-box": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "packaging/rigid-boxes/drawer-rigid-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-4"
+      ]
+    },
+    "packaging/rigid-boxes/lift-off-lid-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/rigid-boxes/magnetic-closure-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/rigid-boxes/premium-rigid-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "packaging/rigid-boxes/sleeve-rigid-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/specialty-boxes/briefcase-handle-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/specialty-boxes/cylinder-tube-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/specialty-boxes/hexagon-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "packaging/specialty-boxes/pillow-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "packaging/specialty-boxes/sliding-sleeve-box": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/brochures/bi-fold-brochure": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/brochures/booklet-brochure": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/brochures/catalog-printing": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "printing/brochures/presentation-folder": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "printing/brochures/tri-fold-brochure": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/business-cards/foil-business-cards": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/business-cards/kraft-business-cards": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "printing/business-cards/premium-matte-business-cards": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "printing/business-cards/rounded-corner-business-cards": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "printing/business-cards/spot-uv-business-cards": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "printing/business-cards/square-business-cards": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/business-cards/standard-business-cards": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "printing/envelopes/c4-document-envelopes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/envelopes/c5-envelopes": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "printing/envelopes/dl-envelopes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/envelopes/invitation-envelopes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/envelopes/kraft-envelopes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/envelopes/window-envelopes": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/flyers/door-hangers": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "printing/flyers/folded-flyers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/flyers/menu-flyers": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "printing/flyers/premium-flyers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/flyers/rack-cards": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/flyers/standard-flyers": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/letterheads/continuation-sheets": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/letterheads/premium-textured-letterhead": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/letterheads/standard-letterhead": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/letterheads/two-sided-letterhead": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/award-shields": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/branded-notebooks": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "printing/office-stationery/branded-notepads": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/certificates": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/compliment-slips": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/desk-calendars": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/file-covers": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1",
+        "variation-2"
+      ]
+    },
+    "printing/office-stationery/id-cards": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "printing/office-stationery/self-inking-stamps": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "printing/office-stationery/society-maps": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/display-boxes/floor-display-unit": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/display-boxes/lip-balm-display-box": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "retail-packaging/display-boxes/point-of-sale-display": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/display-boxes/window-display-box": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-2"
+      ]
+    },
+    "retail-packaging/inserts/cardboard-box-insert": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/inserts/foam-insert": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "retail-packaging/inserts/fragrance-cards": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "retail-packaging/inserts/product-care-insert": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/inserts/product-leaflet": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/inserts/promo-insert-card": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "retail-packaging/inserts/thank-you-insert-card": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "retail-packaging/specialty-packaging/custom-hang-tags": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "retail-packaging/specialty-packaging/custom-tissue-paper": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/specialty-packaging/custom-wrapping-paper": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "retail-packaging/specialty-packaging/fold-over-product-tags": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "retail-packaging/specialty-packaging/kraft-hang-tags": {
+      "lead": [
+        "variation-2"
+      ]
+    },
+    "retail-packaging/specialty-packaging/kraft-wrapping-paper": {
+      "lead": [
+        "variation-1"
+      ],
+      "last": [
+        "variation-3"
+      ]
+    },
+    "retail-packaging/specialty-packaging/logo-ribbons": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1",
+        "variation-3"
+      ]
+    },
+    "retail-packaging/specialty-packaging/pattern-tissue-paper": {
+      "lead": [
+        "variation-1"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/3d-metal-letters": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/aluminum-letters": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/building-logos": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/channel-letters": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/corporate-logos": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/gold-and-silver-letters": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/reception-logos": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/stainless-steel-letters": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/3d-raised-letter-signs/wall-mounted-logos": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/backdrops": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/counter-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/l-banners": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/promotional-stands": {
+      "lead": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/pull-up-banners": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/roll-up-banners": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "signage-displays/advertising-displays/step-and-repeat-walls": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/advertising-displays/x-banners": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/digital-advertising-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/digital-billboard-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/digital-menu-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/electronic-message-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/indoor-led-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/led-digital-sign-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/outdoor-led-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/programmable-led-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/restaurant-digital-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/scrolling-led-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/digital-sign-boards/video-display-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/event-led-screens": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/fine-pitch-led-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/indoor-led-walls": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/led-video-walls": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/outdoor-led-walls": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/rental-led-displays": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/led-displays/stage-led-screens": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/custom-neon-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/custom-shape-neon-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/led-neon-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/neon-bar-signs": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "signage-displays/neon-signs/neon-logo-signs": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "signage-displays/neon-signs/neon-name-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/neon-restaurant-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/neon-shop-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/neon-signs/neon-wedding-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/retail-shop-branding/glass-frosting": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/retail-shop-branding/shop-front-signs": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/retail-shop-branding/storefront-branding": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/retail-shop-branding/window-graphics": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/retail-shop-branding/window-vinyl": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/3d-sign-boards": {
+      "last": [
+        "variation-2"
+      ]
+    },
+    "signage-displays/sign-boards/acp-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/acrylic-sign-boards": {
+      "lead": [
+        "variation-3"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "signage-displays/sign-boards/aluminum-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/back-lit-sign-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/directional-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/flex-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/front-lit-sign-boards": {
+      "last": [
+        "variation-2"
+      ]
+    },
+    "signage-displays/sign-boards/indoor-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/office-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/outdoor-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/parking-sign-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/raised-letter-sign-boards": {
+      "last": [
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/safety-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    },
+    "signage-displays/sign-boards/shop-sign-boards": {
+      "lead": [
+        "Gemini_Generated_Image_k4vem1k4vem1k4ve"
+      ]
+    },
+    "signage-displays/sign-boards/stainless-steel-sign-boards": {
+      "lead": [
+        "variation-2"
+      ],
+      "last": [
+        "variation-1"
+      ]
+    },
+    "signage-displays/sign-boards/vinyl-sign-boards": {
+      "last": [
+        "variation-2",
+        "variation-3"
+      ]
+    }
+  },
+  "covers": {
+    "d:acrylic-plastic-packaging": [
+      "acrylic-plastic-packaging/acrylic-boxes/acrylic-cake-boxes",
+      "variation-1"
+    ],
+    "d:bags": [
+      "bags/paper-bags/rope-handle-gift-bag",
+      "variation-3"
+    ],
+    "d:corporate": [
+      "corporate/corporate-gifts/employee-welcome-kits",
+      "variation-3"
+    ],
+    "d:custom-packaging": [
+      "custom-packaging/custom-boxes/custom-luxury-box",
+      "variation-1"
+    ],
+    "d:display-racks": [
+      "display-racks/countertop-racks/rotating-countertop-display",
+      "variation-1"
+    ],
+    "d:food-packaging": [
+      "food-packaging/food-boxes/custom-pizza-box",
+      "variation-2"
+    ],
+    "d:labels-stickers": [
+      "labels-stickers/product-labels/cosmetic-labels",
+      "variation-2"
+    ],
+    "d:marketing": [
+      "marketing/banners/vinyl-banners",
+      "variation-3"
+    ],
+    "d:packaging": [
+      "packaging/kraft-boxes/kraft-shipping-box",
+      "variation-3"
+    ],
+    "d:printing": [
+      "printing/business-cards/foil-business-cards",
+      "variation-2"
+    ],
+    "d:retail-packaging": [
+      "retail-packaging/product-boxes/jewelry-box",
+      "variation-3"
+    ],
+    "d:signage-displays": [
+      "signage-displays/3d-raised-letter-signs/channel-letters",
+      "variation-1"
+    ],
+    "c:acrylic-plastic-packaging/acrylic-boxes": [
+      "acrylic-plastic-packaging/acrylic-boxes/acrylic-gift-boxes",
+      "variation-2"
+    ],
+    "c:acrylic-plastic-packaging/plastic-packaging": [
+      "acrylic-plastic-packaging/plastic-packaging/plastic-cosmetic-containers",
+      "variation-2"
+    ],
+    "c:bags/fabric-bags": [
+      "bags/fabric-bags/jute-bag",
+      "variation-3"
+    ],
+    "c:bags/kraft-bags": [
+      "bags/kraft-bags/kraft-shopping-bag",
+      "variation-1"
+    ],
+    "c:bags/paper-bags": [
+      "bags/paper-bags/laminated-paper-bag",
+      "variation-1"
+    ],
+    "c:bags/pouches": [
+      "bags/pouches/stand-up-pouch",
+      "variation-2"
+    ],
+    "c:corporate/apparel": [
+      "corporate/apparel/hoodies",
+      "variation-1"
+    ],
+    "c:corporate/corporate-gifts": [
+      "corporate/corporate-gifts/executive-gift-sets",
+      "variation-2"
+    ],
+    "c:corporate/promotional-products": [
+      "corporate/promotional-products/custom-mugs",
+      "variation-2"
+    ],
+    "c:custom-packaging/custom-bags": [
+      "custom-packaging/custom-bags/custom-luxury-bags",
+      "variation-1"
+    ],
+    "c:custom-packaging/custom-boxes": [
+      "custom-packaging/custom-boxes/custom-printed-box",
+      "variation-2"
+    ],
+    "c:custom-packaging/custom-printing": [
+      "custom-packaging/custom-printing/brand-launch-kit",
+      "variation-1"
+    ],
+    "c:display-racks/cosmetic-beauty-racks": [
+      "display-racks/cosmetic-beauty-racks/nail-polish-display-rack",
+      "variation-1"
+    ],
+    "c:display-racks/countertop-racks": [
+      "display-racks/countertop-racks/tiered-countertop-stand",
+      "variation-2"
+    ],
+    "c:display-racks/floor-standing-racks": [
+      "display-racks/floor-standing-racks/mobile-accessories-display",
+      "variation-3"
+    ],
+    "c:display-racks/wall-mounted-racks": [
+      "display-racks/wall-mounted-racks/wall-shelving-unit",
+      "variation-2"
+    ],
+    "c:food-packaging/cups": [
+      "food-packaging/cups/double-wall-coffee-cup",
+      "variation-1"
+    ],
+    "c:food-packaging/food-accessories": [
+      "food-packaging/food-accessories/4-bottle-carrier",
+      "variation-3"
+    ],
+    "c:food-packaging/food-bags": [
+      "food-packaging/food-bags/bakery-bread-bag",
+      "variation-2"
+    ],
+    "c:food-packaging/food-boxes": [
+      "food-packaging/food-boxes/branded-burger-box",
+      "variation-2"
+    ],
+    "c:food-packaging/food-containers": [
+      "food-packaging/food-containers/salad-bowl-container",
+      "variation-3"
+    ],
+    "c:labels-stickers/barcode-qr-labels": [
+      "labels-stickers/barcode-qr-labels/inventory-labels",
+      "variation-2"
+    ],
+    "c:labels-stickers/product-labels": [
+      "labels-stickers/product-labels/jar-labels",
+      "variation-1"
+    ],
+    "c:labels-stickers/shipping-labels": [
+      "labels-stickers/shipping-labels/return-address-labels",
+      "variation-2"
+    ],
+    "c:labels-stickers/stickers": [
+      "labels-stickers/stickers/window-decals",
+      "variation-3"
+    ],
+    "c:marketing/banners": [
+      "marketing/banners/mesh-banners",
+      "variation-2"
+    ],
+    "c:marketing/posters": [
+      "marketing/posters/canvas-prints",
+      "variation-2"
+    ],
+    "c:marketing/promotional-materials": [
+      "marketing/promotional-materials/gift-vouchers",
+      "variation-3"
+    ],
+    "c:packaging/corrugated-boxes": [
+      "packaging/corrugated-boxes/corrugated-shipping-box",
+      "main"
+    ],
+    "c:packaging/folding-cartons": [
+      "packaging/folding-cartons/makeup-folding-carton",
+      "variation-2"
+    ],
+    "c:packaging/kraft-boxes": [
+      "packaging/kraft-boxes/kraft-window-box",
+      "variation-3"
+    ],
+    "c:packaging/mailer-boxes": [
+      "packaging/mailer-boxes/rigid-mailer-box",
+      "variation-2"
+    ],
+    "c:packaging/rigid-boxes": [
+      "packaging/rigid-boxes/magnetic-closure-box",
+      "variation-2"
+    ],
+    "c:packaging/specialty-boxes": [
+      "packaging/specialty-boxes/hexagon-box",
+      "variation-2"
+    ],
+    "c:printing/brochures": [
+      "printing/brochures/catalog-printing",
+      "variation-2"
+    ],
+    "c:printing/business-cards": [
+      "printing/business-cards/premium-matte-business-cards",
+      "variation-3"
+    ],
+    "c:printing/envelopes": [
+      "printing/envelopes/c5-envelopes",
+      "variation-2"
+    ],
+    "c:printing/flyers": [
+      "printing/flyers/premium-flyers",
+      "variation-2"
+    ],
+    "c:printing/letterheads": [
+      "printing/letterheads/two-sided-letterhead",
+      "variation-2"
+    ],
+    "c:printing/office-stationery": [
+      "printing/office-stationery/desk-calendars",
+      "variation-2"
+    ],
+    "c:retail-packaging/display-boxes": [
+      "retail-packaging/display-boxes/counter-display-box",
+      "variation-1"
+    ],
+    "c:retail-packaging/inserts": [
+      "retail-packaging/inserts/fragrance-cards",
+      "variation-2"
+    ],
+    "c:retail-packaging/product-boxes": [
+      "retail-packaging/product-boxes/candle-box",
+      "variation-3"
+    ],
+    "c:retail-packaging/specialty-packaging": [
+      "retail-packaging/specialty-packaging/custom-tissue-paper",
+      "variation-2"
+    ],
+    "c:signage-displays/3d-raised-letter-signs": [
+      "signage-displays/3d-raised-letter-signs/gold-and-silver-letters",
+      "variation-1"
+    ],
+    "c:signage-displays/advertising-displays": [
+      "signage-displays/advertising-displays/pull-up-banners",
+      "variation-1"
+    ],
+    "c:signage-displays/digital-sign-boards": [
+      "signage-displays/digital-sign-boards/digital-menu-boards",
+      "variation-1"
+    ],
+    "c:signage-displays/led-displays": [
+      "signage-displays/led-displays/led-video-walls",
+      "variation-1"
+    ],
+    "c:signage-displays/neon-signs": [
+      "signage-displays/neon-signs/custom-neon-signs",
+      "variation-1"
+    ],
+    "c:signage-displays/office-corporate-signage": [
+      "signage-displays/office-corporate-signage/office-reception-signs",
+      "variation-1"
+    ],
+    "c:signage-displays/retail-shop-branding": [
+      "signage-displays/retail-shop-branding/shop-front-signs",
+      "variation-1"
+    ],
+    "c:signage-displays/sign-boards": [
+      "signage-displays/sign-boards/aluminum-sign-boards",
+      "variation-1"
+    ]
+  }
+}

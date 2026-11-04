@@ -33,65 +33,22 @@ const ALIASES = {
    'packaging/corrugated-boxes/moving-storage-box': 'packaging/corrugated-boxes/moving-and-storage-box',
    'packaging/corrugated-boxes/tray-lid-corrugated-box': 'packaging/corrugated-boxes/tray-and-lid-corrugated-box',
    'retail-packaging/product-boxes/vape-flavour-box': 'retail-packaging/product-boxes/vape-and-flavour-box',
+   'corporate/corporate-gifts/awards-trophies': 'corporate/corporate-gifts/awards-and-trophies',
+   'custom-packaging/custom-printing/prototype-sample-box': 'custom-packaging/custom-printing/prototype-and-sample-box',
+   'display-racks/countertop-racks/brochure-card-holder': 'display-racks/countertop-racks/brochure-and-card-holder',
+   'display-racks/floor-standing-racks/snack-beverage-rack': 'display-racks/floor-standing-racks/snack-and-beverage-rack',
+   'signage-displays/3d-raised-letter-signs/gold-silver-letters': 'signage-displays/3d-raised-letter-signs/gold-and-silver-letters',
+   'signage-displays/advertising-displays/step-repeat-walls': 'signage-displays/advertising-displays/step-and-repeat-walls',
 }
 
 /**
- * Per product (catalog key without "p:"), by file name without extension:
- *   lead — shown first;  last — moved to the end (collages, busy scenes, garbled lettering);
- *   hide — never shown (unused: every generated photo is shown, the weak ones just never lead).
- * A product whose every image is hidden keeps its studio render.
+ * Curation lives in scripts/generated-images.curation.json:
+ *   products["<catalog key without p:>"] — by file name without extension:
+ *     lead — shown first, in this order;  last — moved to the end (collages, busy scenes, garbled lettering).
+ *     Every generated photo is shown; curation only orders them.
+ *   covers["c:<dept>/<category>" | "d:<dept>"] — [product key, image file name] used as that page's cover.
  */
-const CURATION = {
-   // Comparison collages with caption text, mostly bottle carriers
-   'food-packaging/food-accessories/4-cup-drink-carrier': { last: ['variation-1', 'variation-2'] },
-   // Brand lettering garbled in every shot ("JOS GROCERY", "JOJI A-OCERY")
-   'food-packaging/food-bags/sos-grocery-bag': { last: ['variation-1', 'variation-2', 'variation-3'] },
-   'food-packaging/food-bags/kraft-to-go-bag': { last: ['variation-3'] }, // "JOJI TO-ARTS"
-   'food-packaging/food-bags/grease-resistant-takeout-bag': { last: ['variation-3'] }, // "TAKEARTS"
-   'food-packaging/cups/clear-pet-smoothie-cup': { last: ['variation-2'] }, // mostly mugs
-   'food-packaging/cups/hot-paper-cup': { last: ['Gemini_Generated_Image_3rvu2s3rvu2s3rvu'] },
-   'food-packaging/food-boxes/custom-pizza-box': { last: ['variation-1'] }, // "JOJI ART"
-   'food-packaging/food-boxes/cake-box': { lead: ['variation-3', 'variation-2'], last: ['variation-1'] },
-   'food-packaging/food-boxes/large-combo-burger-box': { last: ['variation-1'] },
-   'food-packaging/food-boxes/donut-box': { last: ['variation-1'] },
-   'food-packaging/food-boxes/fries-and-nugget-carton': { last: ['variation-1'] },
-   'food-packaging/food-boxes/window-pizza-box': { last: ['variation-1'] },
-   'food-packaging/food-containers/kraft-meal-tray-with-lid': { last: ['variation-3'] },
-   'packaging/corrugated-boxes/cube-shipping-box': { last: ['variation-3'] },
-   'packaging/corrugated-boxes/e-flute-retail-box': { last: ['variations'] },
-   'packaging/corrugated-boxes/moving-and-storage-box': { last: ['variation-3'] },
-   'packaging/folding-cartons/pharmaceutical-carton': { last: ['variation-3'] }, // red-cross emblem, "JUD-AID"
-   'packaging/kraft-boxes/kraft-gift-box': { lead: ['variation-5', 'variation-2'], last: ['variation-4'] }, // "Gift Calency"
-   'packaging/kraft-boxes/kraft-tuck-box': { lead: ['variation-2'], last: ['variation-3'] }, // "TUCK BECX"
-   'packaging/kraft-boxes/kraft-pillow-box': { lead: ['variation-1', 'variation-4'], last: ['variation-3'] }, // not a pillow box
-   'packaging/mailer-boxes/branded-mailer-box': { last: ['variation-1'] },
-   'packaging/mailer-boxes/lite-mailer-box': { lead: ['main', 'variation-a', 'variation-b', 'variation-c'] },
-   'packaging/rigid-boxes/collapsible-rigid-box': { last: ['variation-3'] },
-   'packaging/rigid-boxes/drawer-rigid-box': { last: ['variation-3', 'variation-4'] },
-   'packaging/rigid-boxes/magnetic-closure-box': { last: ['variation-3', 'variation-4', 'variation-5'] },
-   'packaging/rigid-boxes/premium-rigid-box': { last: ['variation-3', 'variation-5'] },
-   'packaging/rigid-boxes/sleeve-rigid-box': { last: ['variation-3'] },
-}
-
-/** Category and department covers: [product key, image file name] */
-const COVERS = {
-   'd:food-packaging': ['food-packaging/food-boxes/custom-pizza-box', 'variation-2'],
-   'd:packaging': ['packaging/kraft-boxes/kraft-shipping-box', 'variation-3'],
-   'd:retail-packaging': ['retail-packaging/product-boxes/jewelry-box', 'variation-3'],
-   'c:food-packaging/cups': ['food-packaging/cups/double-wall-coffee-cup', 'variation-1'],
-   'c:food-packaging/food-accessories': ['food-packaging/food-accessories/4-bottle-carrier', 'variation-3'],
-   'c:food-packaging/food-bags': ['food-packaging/food-bags/bakery-bread-bag', 'variation-2'],
-   'c:food-packaging/food-boxes': ['food-packaging/food-boxes/branded-burger-box', 'variation-1'],
-   'c:food-packaging/food-containers': ['food-packaging/food-containers/salad-bowl-container', 'variation-3'],
-   'c:packaging/corrugated-boxes': ['packaging/corrugated-boxes/corrugated-shipping-box', 'main'],
-   'c:packaging/folding-cartons': ['packaging/folding-cartons/tuck-end-carton', 'variation-1'],
-   'c:packaging/kraft-boxes': ['packaging/kraft-boxes/kraft-window-box', 'variation-3'],
-   'c:packaging/mailer-boxes': ['packaging/mailer-boxes/rigid-mailer-box', 'variation-3'],
-   'c:packaging/rigid-boxes': ['packaging/rigid-boxes/magnetic-closure-box', 'variation-1'],
-   'c:packaging/specialty-boxes': ['packaging/specialty-boxes/hexagon-box', 'variation-2'],
-   'c:retail-packaging/display-boxes': ['retail-packaging/display-boxes/counter-display-box', 'variation-1'],
-   'c:retail-packaging/product-boxes': ['retail-packaging/product-boxes/candle-box', 'variation-3'],
-}
+const { products: CURATION, covers: COVERS } = JSON.parse(fs.readFileSync(path.join(root, 'scripts/generated-images.curation.json'), 'utf8'))
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 const stem = (f) => f.replace(/\.(png|jpe?g|webp)$/i, '')
@@ -109,7 +66,6 @@ function defaultRank(name) {
 }
 
 function order(files, rule = {}) {
-   const hide = new Set(rule.hide ?? [])
    const lead = rule.lead ?? []
    const last = new Set(rule.last ?? [])
    const rank = (f) => {
@@ -119,7 +75,6 @@ function order(files, rule = {}) {
       return defaultRank(s)
    }
    return files
-      .filter((f) => !hide.has(stem(f)))
       .sort((a, b) => {
          const [x, y] = [rank(a), rank(b)]
          return x[0] - y[0] || x[1] - y[1] || a.localeCompare(b)
