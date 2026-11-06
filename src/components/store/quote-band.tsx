@@ -1,7 +1,10 @@
-import { ArrowRight, Clock, PenTool, Ruler } from 'lucide-react'
+import config from '@/config/site'
+import { SITE_STATS } from '@/config/stats'
+import { ArrowRight, Clock, PenTool, Phone, Ruler } from 'lucide-react'
 import Link from 'next/link'
 
 import { BackgroundImage } from './background-image'
+import { WhatsAppIcon } from './brand-icons'
 
 /** `image`: optional background photo, tinted in the brand red */
 export function QuoteBand({ title, text, image }: { title?: string; text?: string; image?: string }) {
@@ -22,7 +25,7 @@ export function QuoteBand({ title, text, image }: { title?: string; text?: strin
                   <h2 className="display-lg mt-3">{title ?? 'Something specific in mind? Let’s quote it.'}</h2>
                   <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/80 sm:text-base">
                      {text ??
-                        'Custom sizes, special finishes, large volumes or a full signage fit-out — send us the details and a specialist will reply within one business day.'}
+                        `Custom sizes, special finishes, large volumes or a full signage fit-out — send us the details and a specialist will reply within ${SITE_STATS.quoteTurnaround}.`}
                   </p>
                   <div className="mt-8 flex flex-wrap gap-3">
                      <Link
@@ -31,17 +34,25 @@ export function QuoteBand({ title, text, image }: { title?: string; text?: strin
                      >
                         Request a quote <ArrowRight className="h-4 w-4" />
                      </Link>
-                     <Link
-                        href="/contact"
-                        className="inline-flex h-12 items-center rounded-full border border-white/40 px-7 text-[15px] font-semibold transition hover:bg-white/10"
+                     <a
+                        href={config.whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex h-12 items-center gap-2 rounded-full bg-[#25D366] px-7 text-[15px] font-semibold text-white transition hover:bg-[#1ebe5b]"
                      >
-                        Talk to us
-                     </Link>
+                        <WhatsAppIcon className="h-[18px] w-[18px]" /> WhatsApp us
+                     </a>
+                     <a
+                        href={config.phoneHref}
+                        className="inline-flex h-12 items-center gap-2 rounded-full border border-white/40 px-7 text-[15px] font-semibold transition hover:bg-white/10"
+                     >
+                        <Phone className="h-4 w-4" /> Talk to us
+                     </a>
                   </div>
                </div>
                <ul className="grid gap-3 text-[15px]">
                   {[
-                     { icon: Clock, title: 'Reply within 1 business day', text: 'Real people, real pricing.' },
+                     { icon: Clock, title: `Reply within ${SITE_STATS.quoteTurnaround}`, text: 'Real people, real pricing.' },
                      { icon: Ruler, title: 'Any size, shape or finish', text: 'Engineered around your product.' },
                      { icon: PenTool, title: 'Free artwork check', text: 'We fix issues before print.' },
                   ].map(({ icon: Icon, title: t, text: d }) => (

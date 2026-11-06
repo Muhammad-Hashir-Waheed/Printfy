@@ -5,6 +5,7 @@ import {
    Children,
    useCallback,
    useEffect,
+   useLayoutEffect,
    useRef,
    useState,
    type CSSProperties,
@@ -16,33 +17,61 @@ function prefersReducedMotion() {
    return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
-/** Calls back once when the element scrolls into view. */
-function useInView<T extends Element>(threshold = 0.15) {
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
+/** Reveals start this far below the screen edge, so content is in place before it scrolls in. */
+const REVEAL_MARGIN = '0px 0px 15% 0px'
+const REVEAL_MS = 420
+const MAX_Y = 16
+const MAX_STAGGER = 60
+const MAX_GROUP_DELAY = 300
+
+type RevealState = 'shown' | 'hidden' | 'revealed'
+
+/**
+ * Progressive reveal. Content is visible in the server HTML and stays visible if JS never runs.
+ * After hydration, only elements still well below the screen are hidden; each one fades back in
+ * just before it scrolls into view. Elements already on (or near) the screen are never hidden,
+ * and reduced-motion visitors get no reveal at all.
+ */
+function useReveal<T extends Element>() {
    const ref = useRef<T>(null)
-   const [inView, setInView] = useState(false)
-   useEffect(() => {
+   const [state, setState] = useState<RevealState>('shown')
+
+   useIsoLayoutEffect(() => {
       const node = ref.current
-      if (!node) return
-      if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
-         setInView(true)
-         return
-      }
+      if (!node || prefersReducedMotion() || !('IntersectionObserver' in window)) return
+      // Before paint, so nothing on screen ever blinks out
+      if (node.getBoundingClientRect().top < window.innerHeight * 1.15) return
+      setState('hidden')
       const io = new IntersectionObserver(
          ([entry]) => {
             if (entry.isIntersecting) {
-               setInView(true)
+               setState('revealed')
                io.disconnect()
             }
          },
-         { threshold, rootMargin: '0px 0px -8% 0px' }
+         { rootMargin: REVEAL_MARGIN, threshold: 0 }
       )
       io.observe(node)
       return () => io.disconnect()
-   }, [threshold])
-   return { ref, inView }
+   }, [])
+
+   return { ref, state }
 }
 
-/** Fades + lifts content in as it enters the viewport. Children can stagger. */
+function revealStyle(state: RevealState, y: number, delay: number): CSSProperties | undefined {
+   if (state === 'shown') return undefined
+   if (state === 'hidden') return { opacity: 0, transform: `translate3d(0, ${y}px, 0)` }
+   const ease = 'cubic-bezier(.2,.7,.2,1)'
+   return {
+      opacity: 1,
+      transform: 'none',
+      transition: `opacity ${REVEAL_MS}ms ${ease} ${delay}ms, transform ${REVEAL_MS}ms ${ease} ${delay}ms`,
+   }
+}
+
+/** Fades + lifts content in just before it enters the viewport. Children can stagger. */
 export function Reveal({
    children,
    className,
@@ -50,31 +79,29 @@ export function Reveal({
    stagger,
    itemClassName,
    as: Tag = 'div',
-   y = 24,
+   y = MAX_Y,
 }: {
    children: ReactNode
    className?: string
    delay?: number
-   /** Animate each direct child in sequence (ms between items) */
+   /** Animate each direct child in sequence (ms between items, capped at 60) */
    stagger?: number
    /** Classes for the wrapper around each staggered child (it is the actual grid/flex item) */
    itemClassName?: string
    as?: ElementType
+   /** Lift distance in px (capped at 16) */
    y?: number
 }) {
-   const { ref, inView } = useInView<HTMLDivElement>()
-
-   const style = (i: number): CSSProperties => ({
-      opacity: inView ? 1 : 0,
-      transform: inView ? 'none' : `translate3d(0, ${y}px, 0)`,
-      transition: `opacity .8s cubic-bezier(.2,.7,.2,1) ${delay + i * (stagger ?? 0)}ms, transform .9s cubic-bezier(.2,.7,.2,1) ${delay + i * (stagger ?? 0)}ms`,
-   })
+   const { ref, state } = useReveal<HTMLDivElement>()
+   const lift = Math.min(y, MAX_Y)
+   const step = Math.min(stagger ?? 0, MAX_STAGGER)
+   const delayFor = (i: number) => Math.min(delay + i * step, MAX_GROUP_DELAY)
 
    if (stagger) {
       return (
          <Tag ref={ref} className={className}>
             {Children.map(children, (child, i) => (
-               <div style={style(i)} className={cn('h-full', itemClassName)}>
+               <div style={revealStyle(state, lift, delayFor(i))} className={cn('h-full', itemClassName)}>
                   {child}
                </div>
             ))}
@@ -83,7 +110,7 @@ export function Reveal({
    }
 
    return (
-      <Tag ref={ref} className={className} style={style(0)}>
+      <Tag ref={ref} className={className} style={revealStyle(state, lift, delayFor(0))}>
          {children}
       </Tag>
    )
@@ -172,28 +199,44 @@ export function SpotlightGlow({ color = 'rgba(255,90,82,.18)', size = 380 }: { c
    )
 }
 
-/** Counts up from 0 when it scrolls into view. */
-export function CountUp({ to, suffix = '', duration = 1600 }: { to: number; suffix?: string; duration?: number }) {
-   const { ref, inView } = useInView<HTMLSpanElement>(0.5)
-   const [value, setValue] = useState(0)
+/**
+ * Shows a number that counts up when it scrolls into view. The server HTML (and no-JS / reduced
+ * motion visitors) always gets the final number; the count-up is a client-only flourish.
+ */
+export function CountUp({ to, suffix = '', duration = 1400 }: { to: number; suffix?: string; duration?: number }) {
+   const ref = useRef<HTMLSpanElement>(null)
+   const [value, setValue] = useState(to)
 
-   useEffect(() => {
-      if (!inView) return
-      if (prefersReducedMotion()) {
-         setValue(to)
-         return
-      }
+   useIsoLayoutEffect(() => {
+      const node = ref.current
+      if (!node || prefersReducedMotion() || !('IntersectionObserver' in window)) return
       let raf = 0
-      const start = performance.now()
-      const tick = (now: number) => {
-         const t = Math.min(1, (now - start) / duration)
-         const eased = 1 - Math.pow(1 - t, 4)
-         setValue(Math.round(to * eased))
-         if (t < 1) raf = requestAnimationFrame(tick)
+      const run = () => {
+         const start = performance.now()
+         const tick = (now: number) => {
+            const t = Math.min(1, (now - start) / duration)
+            setValue(Math.round(to * (1 - Math.pow(1 - t, 4))))
+            if (t < 1) raf = requestAnimationFrame(tick)
+         }
+         raf = requestAnimationFrame(tick)
       }
-      raf = requestAnimationFrame(tick)
-      return () => cancelAnimationFrame(raf)
-   }, [inView, to, duration])
+      setValue(0)
+      const io = new IntersectionObserver(
+         ([entry]) => {
+            if (entry.isIntersecting) {
+               io.disconnect()
+               run()
+            }
+         },
+         { threshold: 0.3 }
+      )
+      io.observe(node)
+      return () => {
+         io.disconnect()
+         cancelAnimationFrame(raf)
+         setValue(to)
+      }
+   }, [to, duration])
 
    return (
       <span ref={ref} className="tabular-nums">
@@ -291,7 +334,7 @@ export function Marquee({
             <div
                key={copy}
                aria-hidden={copy === 1}
-               className="flex shrink-0 items-center group-hover/marquee:[animation-play-state:paused]"
+               className="marquee-track flex shrink-0 items-center group-hover/marquee:[animation-play-state:paused]"
                style={{ animation: `marquee-x ${speed}s linear infinite${reverse ? ' reverse' : ''}` }}
             >
                {children}

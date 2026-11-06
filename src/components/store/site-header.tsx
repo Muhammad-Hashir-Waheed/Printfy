@@ -2,9 +2,10 @@
 
 import { BUNDLE_KEY, DEPARTMENTS, getCategory, getProductByKey, SIGNATURE_CATEGORIES, type Department } from '@/catalog'
 import config from '@/config/site'
+import { SITE_STATS } from '@/config/stats'
 import { cn } from '@/lib/utils'
 import { useCart } from '@/state/cart-store'
-import { ArrowRight, ArrowUpRight, ChevronDown, Menu, Search, ShoppingBag, Sparkles, Star } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronDown, Menu, Phone, Search, ShoppingBag, Sparkles, Star } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -15,11 +16,12 @@ import { MobileMenu } from './mobile-menu'
 import { Magnetic } from './motion'
 import { SearchOverlay } from './search-overlay'
 
-const ANNOUNCEMENTS = [
-   'Free artwork check on every order',
-   'Custom sizes & shapes — quotes within 1 business day',
-   'Signage designed, fabricated & installed',
-   'Neon · Acrylic · Packaging · Print — one studio',
+const ANNOUNCEMENTS: { text: string; href?: string }[] = [
+   { text: `Call / WhatsApp ${config.phone}`, href: config.whatsappUrl },
+   { text: 'Free artwork check on every order' },
+   { text: `Custom sizes & shapes — quotes within ${SITE_STATS.quoteTurnaround}` },
+   { text: 'Signage designed, fabricated & installed' },
+   { text: 'Neon · Acrylic · Packaging · Print — one studio' },
 ]
 
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -427,10 +429,22 @@ export function SiteHeader() {
             <div className="flex w-max animate-marquee items-center py-2 text-[12.5px] font-medium hover:[animation-play-state:paused]">
                {[0, 1].map((copy) => (
                   <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
-                     {[...ANNOUNCEMENTS, ...ANNOUNCEMENTS].map((text, i) => (
+                     {[...ANNOUNCEMENTS, ...ANNOUNCEMENTS].map(({ text, href }, i) => (
                         <span key={`${copy}-${i}`} className="flex items-center gap-6 px-6">
                            <Sparkles className="h-3 w-3 text-coral" />
-                           {text}
+                           {href ? (
+                              <a
+                                 href={href}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 tabIndex={copy === 1 || i >= ANNOUNCEMENTS.length ? -1 : undefined}
+                                 className="underline-offset-2 hover:underline"
+                              >
+                                 {text}
+                              </a>
+                           ) : (
+                              text
+                           )}
                         </span>
                      ))}
                   </div>
@@ -506,11 +520,26 @@ export function SiteHeader() {
                      >
                         <Search className="h-[22px] w-[22px]" />
                      </button>
+                     <a
+                        href={config.phoneHref}
+                        aria-label="Call Joji Arts"
+                        className="grid h-11 w-11 place-items-center rounded-full transition hover:bg-ink/5 xl:hidden"
+                     >
+                        <Phone className="h-[20px] w-[20px]" />
+                     </a>
                      <BestsellersMenu />
+                     <a
+                        href={config.phoneHref}
+                        className="hidden items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold tabular-nums transition hover:bg-ink/5 xl:inline-flex"
+                     >
+                        <Phone className="h-4 w-4 text-primary" />
+                        <span className="sr-only">Call Joji Arts on </span>
+                        {config.phone}
+                     </a>
                      <Magnetic strength={0.25} className="hidden sm:inline-block">
                         <Link
                            href="/quote"
-                           className="ring-glow btn-shine group ml-1 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-semibold text-white transition hover:bg-ink/90"
+                           className="ring-glow btn-shine group ml-1 inline-flex h-11 items-center gap-2 whitespace-nowrap rounded-full bg-ink px-5 text-sm font-semibold text-white transition hover:bg-ink/90"
                         >
                            Get a quote
                            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

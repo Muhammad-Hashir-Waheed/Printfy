@@ -97,6 +97,7 @@ export function CatalogImage({
    dark,
    sizes = '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw',
    priority,
+   loading,
    className,
 }: {
    image: CatalogImageData | null
@@ -105,6 +106,8 @@ export function CatalogImage({
    dark?: boolean
    sizes?: string
    priority?: boolean
+   /** "eager" for above-the-fold images that shouldn't be preloaded (priority) but mustn't wait either */
+   loading?: 'eager' | 'lazy'
    className?: string
 }) {
    const [failed, setFailed] = useState(false)
@@ -124,6 +127,7 @@ export function CatalogImage({
          fill
          sizes={sizes}
          priority={priority}
+         loading={priority ? undefined : loading}
          loader={remote ? pexelsLoader : undefined}
          onError={() => setFailed(true)}
          className={cn('object-cover', className)}

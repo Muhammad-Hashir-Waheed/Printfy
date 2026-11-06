@@ -124,9 +124,16 @@ are needed.
   every catalog image to `public/_v/` (git-ignored). `src/lib/image-loader.ts` points images at
   the right copy, so no image server is needed.
 - `public/_headers`: cache and security headers for static files.
-- The home page hero, Signature, Signage and quote band use still catalog photos as backgrounds
+- The home page hero plays five 6-second real-footage clips from `public/videos/hero/`
+  (`src/components/store/hero-video.tsx`; sources and licences in `media-source/CREDITS.md`).
+  The poster image paints first; only clip 1 loads at first, each next clip is fetched just before
+  it is needed, and phones get 960 px encodes (about 0.45 MB for the first clip). Each clip is
+  downloaded whole and played from memory, because Cloudflare's static files don't answer
+  byte-range requests and Safari won't play video without them. Reduced-motion visitors and slow
+  or data-saver connections get the poster only.
+- Signature, Signage and the quote band use still catalog photos as backgrounds
   (`src/components/store/background-image.tsx`), served as resized WebP copies like every other
-  catalog image. The old background videos were removed because they slowed the page down.
+  catalog image.
 - Orders and artwork must go to Supabase in production. On Cloudflare there is no disk to fall
   back to (`src/studio/server/runtime.ts`), so if the Supabase secrets are missing, checkout
   shows an error instead of silently losing the order.

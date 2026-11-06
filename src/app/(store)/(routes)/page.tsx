@@ -1,6 +1,5 @@
 import {
    BUNDLE_KEY,
-   CATALOG_STATS,
    DEPARTMENTS,
    getCategory,
    getDepartment,
@@ -9,16 +8,21 @@ import {
    SIGNATURE_CATEGORIES,
    type Category,
 } from '@/catalog'
+import config from '@/config/site'
+import { SITE_STATS } from '@/config/stats'
 import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/components/store/cards'
 import { BackgroundImage } from '@/components/store/background-image'
 import { CatalogImage } from '@/components/store/catalog-image'
-import { HeroScene } from '@/components/store/hero-scene'
+import { HeroVideo } from '@/components/store/hero-video'
 import { CountUp, Magnetic, Marquee, Reveal, RotatingWords } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
+import { ReviewsSection } from '@/components/store/reviews-section'
 import { SignatureCard, type SignatureCardData } from '@/components/store/signature'
 import { SIGNATURE_CONTENT } from '@/components/store/signature-flagship'
 import { ArrowRight, BadgeCheck, Box, Clock3, CreditCard, Gift, Palette, Sparkle, Truck, Upload } from 'lucide-react'
+import { getReviews, type ReviewsData } from '@/lib/google-reviews'
 import Link from 'next/link'
+import { Fragment } from 'react'
 
 const cat = (key: string) => {
    const [d, c] = key.split('/')
@@ -26,47 +30,49 @@ const cat = (key: string) => {
 }
 
 function Hero() {
-   const signage = getDepartment('signage-displays')!
-   const rigid = getProductByKey('packaging/rigid-boxes/magnetic-closure-box')!
-   const mailer = getProductByKey('packaging/mailer-boxes/subscription-mailer-box')!
-   const cards = getProductByKey('printing/business-cards/foil-business-cards')!
-
    return (
-      <section className="grain relative overflow-hidden">
-         <HeroScene />
-         {/* A light wash behind the text column only; the photo stays clear everywhere else */}
-         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[hsl(var(--background)/0.62)] lg:hidden" />
+      <section className="relative isolate flex items-center overflow-hidden bg-[#141210] text-white lg:min-h-[min(820px,calc(100svh-160px))]">
+         <HeroVideo />
+         {/* Readability: an overall 30% darkening plus a stronger wash behind the text (left column on
+             desktop, the whole frame on phones). Measured on every clip: white text keeps at least
+             4.5:1 contrast against the 95th-percentile brightest background (5.3:1 desktop, 4.9:1 phone). */}
+         <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/30" />
          <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 hidden lg:block"
-            style={{
-               background:
-                  'linear-gradient(90deg, hsl(var(--background) / 0.86) 0%, hsl(var(--background) / 0.72) 32%, hsl(var(--background) / 0.2) 50%, transparent 62%)',
-            }}
+            className="pointer-events-none absolute inset-0 hidden md:block"
+            style={{ background: 'linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.75) 40%, rgba(0,0,0,.4) 58%, transparent 75%)' }}
          />
-         <div className="page-shell relative grid items-center gap-10 pb-14 pt-8 sm:pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pb-20 lg:pt-16">
-            <div className="text-on-film">
-               <p className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-3 py-1.5 text-[13px] font-medium shadow-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-700">
+         <div aria-hidden className="pointer-events-none absolute inset-0 bg-black/70 md:hidden" />
+
+         <div className="page-shell relative w-full pb-20 pt-8 sm:pb-24 sm:pt-12 lg:pb-24 lg:pt-12">
+            <div className="text-on-dark-film max-w-2xl">
+               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium text-ink shadow-sm animate-in fade-in-0 slide-in-from-bottom-2 duration-700">
                   <span className="relative flex h-2 w-2">
                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
                      <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                   </span>
                   Rigid boxes · Mailer boxes · Business cards
                </p>
-               <h1 className="display-xl mt-6">
-                  <span className="word-rise block">
-                     {['Make', 'your', 'brand'].map((w, i) => (
-                        <span key={w} style={{ animationDelay: `${120 + i * 90}ms` }} className="mr-[0.22em]">
-                           {w}
-                        </span>
-                     ))}
-                  </span>
-                  <span className="word-rise block">
-                     <span style={{ animationDelay: '420ms' }} className="relative text-primary">
+               {/* The H1 is exactly "Make your brand stand out." for screen readers and search engines.
+                   The rotating second line sits outside it and is visual only. */}
+               <div className="hero-title mt-5 font-display font-extrabold tracking-[-0.035em]">
+                  <h1>
+                     <span className="word-rise block">
+                        {['Make', 'your', 'brand'].map((w, i) => (
+                           <Fragment key={w}>
+                              {i > 0 ? ' ' : null}
+                              <span style={{ animationDelay: `${120 + i * 90}ms` }}>{w}</span>
+                           </Fragment>
+                        ))}
+                     </span>
+                     <span className="sr-only"> stand out.</span>
+                  </h1>
+                  <span aria-hidden="true" className="word-rise block">
+                     <span style={{ animationDelay: '420ms' }} className="relative text-coral">
                         <RotatingWords words={['unboxable.', 'unforgettable.', 'luxe.', 'stand out.']} interval={2600} />
                         <svg
                            viewBox="0 0 300 20"
-                           className="absolute -bottom-2 left-0 h-3 w-full text-coral sm:-bottom-3 sm:h-4"
+                           className="absolute -bottom-2 left-0 h-3 w-full text-primary sm:-bottom-3 sm:h-4"
                            preserveAspectRatio="none"
                            aria-hidden
                         >
@@ -84,16 +90,16 @@ function Hero() {
                         </svg>
                      </span>
                   </span>
-               </h1>
-               <p className="mt-7 max-w-xl text-[17px] font-medium leading-relaxed text-foreground/85 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
-                  Luxury rigid boxes, mailer boxes made for unboxing and business cards finished in foil — plus
-                  everything else your brand touches. Designed with you, printed with care, delivered on time.
+               </div>
+               <p className="mt-5 max-w-xl text-[17px] font-medium leading-relaxed text-white/90 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
+                  Luxury rigid boxes, mailer boxes and foil business cards — designed with you, printed with care,
+                  delivered on time.
                </p>
-               <div className="mt-8 flex flex-col gap-3 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:flex-row" style={{ animationDelay: '650ms', animationFillMode: 'both' }}>
+               <div className="mt-7 flex flex-col gap-3 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:flex-row" style={{ animationDelay: '650ms', animationFillMode: 'both' }}>
                   <Magnetic className="w-full sm:w-auto">
                      <Link
                         href="#signature"
-                        className="btn-shine group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-ink px-8 text-base font-semibold text-white transition hover:bg-ink/90 sm:w-auto"
+                        className="btn-shine group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-semibold text-ink transition hover:bg-white/90 sm:w-auto"
                      >
                         See our bestsellers <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                      </Link>
@@ -101,93 +107,30 @@ function Hero() {
                   <Magnetic className="w-full sm:w-auto">
                      <Link
                         href="/quote"
-                        className="ring-glow inline-flex h-14 w-full items-center justify-center rounded-full bg-white px-8 text-base font-semibold transition hover:bg-white/80 sm:w-auto"
+                        className="inline-flex h-14 w-full items-center justify-center rounded-full border border-white/45 bg-white/5 px-8 text-base font-semibold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/15 sm:w-auto"
                      >
                         Get a free quote
                      </Link>
                   </Magnetic>
                </div>
-               <ul className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-ink/10 pt-6 animate-in fade-in-0 duration-1000" style={{ animationDelay: '800ms', animationFillMode: 'both' }}>
+               <ul className="mt-8 grid max-w-xl grid-cols-3 gap-4 border-t border-white/20 pt-6 animate-in fade-in-0 duration-1000" style={{ animationDelay: '800ms', animationFillMode: 'both' }}>
                   <li>
                      <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-                        <CountUp to={CATALOG_STATS.products} suffix="+" />
+                        <CountUp to={SITE_STATS.productCount} suffix="+" />
                      </p>
-                     <p className="mt-1 text-xs font-medium text-foreground/75 sm:text-[13px]">products to customise</p>
+                     <p className="mt-1 text-xs font-medium text-white/80 sm:text-[13px]">products to customise</p>
                   </li>
                   <li>
                      <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-                        <CountUp to={CATALOG_STATS.departments} />
+                        <CountUp to={SITE_STATS.departmentCount} />
                      </p>
-                     <p className="mt-1 text-xs font-medium text-foreground/75 sm:text-[13px]">departments, one studio</p>
+                     <p className="mt-1 text-xs font-medium text-white/80 sm:text-[13px]">departments, one studio</p>
                   </li>
                   <li>
-                     <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">
-                        <CountUp to={24} suffix="h" />
-                     </p>
-                     <p className="mt-1 text-xs font-medium text-foreground/75 sm:text-[13px]">quote turnaround</p>
+                     <p className="font-display text-2xl font-extrabold tracking-tight sm:text-4xl">{SITE_STATS.quoteTurnaroundShort}</p>
+                     <p className="mt-1 text-xs font-medium text-white/80 sm:text-[13px]">quote turnaround</p>
                   </li>
                </ul>
-            </div>
-
-            {/* Bento collage */}
-            <div className="relative grid h-[440px] grid-cols-6 grid-rows-6 gap-3 animate-in fade-in-0 zoom-in-95 duration-1000 sm:h-[540px] lg:h-[600px]" style={{ animationDelay: '250ms', animationFillMode: 'both' }}>
-               <span aria-hidden className="float-y absolute -left-4 top-[16%] z-10 hidden rotate-[-8deg] rounded-full bg-[#FFD84D] px-4 py-2 font-display text-sm font-extrabold text-ink shadow-lg sm:block">
-                  ✦ Foil &amp; spot UV
-               </span>
-               <span aria-hidden className="float-y absolute -right-3 top-[52%] z-10 hidden rotate-[6deg] rounded-full bg-[linear-gradient(110deg,#d8d8d8,#ffffff_40%,#b9b9b9_60%,#f2f2f2)] px-4 py-2 font-display text-sm font-extrabold text-ink shadow-lg ring-1 ring-black/10 sm:block" style={{ animationDelay: '1.4s' }}>
-                  Metalized finishes
-               </span>
-               <Link href={rigid.href} className="group relative col-span-4 row-span-4 overflow-hidden rounded-[1.75rem] bg-[#0d2b24]">
-                  <CatalogImage image={rigid.image} label={rigid.name} accent={rigid.accent} priority sizes="(min-width:1024px) 34vw, 66vw" className="transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#0d2b24]/60 via-transparent to-black/75" />
-                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#F3D88C] ring-1 ring-[#F3D88C]/40 backdrop-blur">
-                     ★ Bestseller
-                  </span>
-                  <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between gap-3 text-white">
-                     <div>
-                        <p className="bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text pb-1 font-display text-3xl font-extrabold italic leading-none tracking-tight text-transparent sm:text-5xl">
-                           Luxury, unboxed.
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-white/85 sm:text-base">Rigid boxes · magnetic, drawer &amp; book-style</p>
-                     </div>
-                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-ink transition group-hover:-rotate-45">
-                        <ArrowRight className="h-4 w-4" />
-                     </span>
-                  </div>
-               </Link>
-
-               <Link href={mailer.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
-                  <CatalogImage image={mailer.image} label={mailer.name} accent={mailer.accent} priority sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
-                  <span className="absolute bottom-2 left-2 whitespace-nowrap rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold shadow sm:bottom-3 sm:left-3 sm:px-3 sm:text-xs">★ Mailers</span>
-               </Link>
-
-               <Link href={cards.href} className="group relative col-span-2 row-span-3 overflow-hidden rounded-[1.75rem] bg-muted">
-                  <CatalogImage image={cards.image} label={cards.name} accent={cards.accent} sizes="(min-width:1024px) 17vw, 33vw" className="transition duration-700 group-hover:scale-105" />
-                  <span className="absolute bottom-2 left-2 whitespace-nowrap rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold shadow sm:bottom-3 sm:left-3 sm:px-3 sm:text-xs">★ Cards</span>
-               </Link>
-
-               <Link
-                  href={signage.href}
-                  className="group relative col-span-4 row-span-2 overflow-hidden rounded-[1.75rem] bg-[#140d18]"
-                  style={{ ['--accent-hex' as string]: signage.accent }}
-               >
-                  <CatalogImage image={signage.image} label={signage.name} accent={signage.accent} dark sizes="(min-width:1024px) 34vw, 66vw" className="opacity-70 transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/75 to-transparent" />
-                  <div className="absolute inset-y-0 left-5 flex flex-col justify-center text-white">
-                     <p className="neon-text animate-flicker font-display text-2xl font-extrabold italic tracking-tight sm:text-3xl">open late</p>
-                     <p className="text-sm text-white/80">Neon, 3D letters &amp; LED signage</p>
-                  </div>
-               </Link>
-
-               <div className="float-y absolute -bottom-5 right-4 z-10 hidden items-center gap-2.5 rounded-2xl bg-white px-4 py-3 shadow-[0_20px_40px_-15px_rgba(30,20,10,0.4)] lg:flex" style={{ animationDelay: '0.7s' }}>
-                  <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-100 text-emerald-700">
-                     <BadgeCheck className="h-5 w-5" />
-                  </span>
-                  <span>
-                     <span className="block text-sm font-semibold">Proof approved</span>
-                     <span className="block text-xs text-muted-foreground">Printing starts today</span>
-                  </span>
-               </div>
             </div>
          </div>
       </section>
@@ -439,7 +382,7 @@ function AcrylicSpotlight() {
 
 function HowItWorks() {
    const steps = [
-      { icon: Palette, title: 'Choose your product', text: 'Pick from 375+ products and set size, material, finish and quantity.' },
+      { icon: Palette, title: 'Choose your product', text: `Pick from ${SITE_STATS.productCountLabel} products and set size, material, finish and quantity.` },
       { icon: Upload, title: 'Add your artwork', text: 'Upload your design, or let our designers create it for you.' },
       { icon: BadgeCheck, title: 'Approve your proof', text: 'We check every file and send a digital proof before printing.' },
       { icon: Truck, title: 'Delivered — or installed', text: 'Fast production and delivery. Signage installed by our team.' },
@@ -580,9 +523,39 @@ function KineticBand() {
    )
 }
 
-export default function HomePage() {
+/** Business details for search engines; everything comes from the site config. */
+function LocalBusinessJsonLd({ reviews }: { reviews: ReviewsData | null }) {
+   const { address } = config
+   const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: config.name,
+      description: config.description,
+      url: config.url,
+      telephone: config.phoneIntl,
+      email: config.adminEmail,
+      address: {
+         '@type': 'PostalAddress',
+         streetAddress: `${address.line1}, ${address.line2}`,
+         addressLocality: address.city,
+         addressRegion: address.region,
+         addressCountry: address.countryCode,
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: address.geo.lat, longitude: address.geo.lng },
+      hasMap: address.mapsUrl,
+      // Only from Google's live data, never from hand-copied reviews
+      ...(reviews?.source === 'google-api' && reviews.rating && reviews.count
+         ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: reviews.rating, reviewCount: reviews.count, bestRating: 5 } }
+         : {}),
+   }
+   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+}
+
+export default async function HomePage() {
+   const reviews = await getReviews()
    return (
       <>
+         <LocalBusinessJsonLd reviews={reviews} />
          <Hero />
          <Guarantees />
          <SignatureThree />
@@ -594,6 +567,7 @@ export default function HomePage() {
          <AcrylicSpotlight />
          <HowItWorks />
          <Industries />
+         <ReviewsSection data={reviews} />
          <QuoteBand image="/catalog/c/packaging/mailer-boxes.jpg" />
       </>
    )

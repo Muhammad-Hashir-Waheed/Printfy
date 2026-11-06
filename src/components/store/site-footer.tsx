@@ -3,11 +3,12 @@
 import { DEPARTMENTS, getCategory, SIGNATURE_CATEGORIES, type Department } from '@/catalog'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
-import { ArrowUp, ArrowUpRight, Mail, MapPin, Sparkle } from 'lucide-react'
+import { ArrowUp, ArrowUpRight, Facebook, Instagram, Mail, MapPin, Phone, Sparkle } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
 import { BrandLogo } from './brand-logo'
+import { TikTokIcon, WhatsAppIcon } from './brand-icons'
 import { CatalogImage } from './catalog-image'
 import { Magnetic, Marquee, RotatingWords, Spotlight, SpotlightGlow, WaveText } from './motion'
 
@@ -103,7 +104,12 @@ function DepartmentLinks() {
    )
 }
 
-function BackToTop() {
+/**
+ * Floating actions, bottom-right on every store page: WhatsApp at the bottom, back-to-top
+ * stacked 12px above it. On pages with a fixed mobile action bar (the product configurator,
+ * marked with data-mobile-cta-bar) the stack lifts above that bar on small screens.
+ */
+function FloatingActions() {
    const [progress, setProgress] = useState(0)
    useEffect(() => {
       const onScroll = () => {
@@ -117,25 +123,54 @@ function BackToTop() {
 
    const r = 22
    const c = 2 * Math.PI * r
+   const showTop = progress > 0.15
 
    return (
-      <button
-         type="button"
-         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-         className={cn(
-            'group fixed bottom-24 right-4 z-30 grid h-14 w-14 place-items-center rounded-full bg-white text-ink shadow-[0_15px_40px_-15px_rgba(30,20,10,.5)] transition-all duration-500 hover:-translate-y-1 lg:bottom-6 lg:right-6',
-            progress > 0.15 ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
-         )}
-         aria-label="Back to top"
-      >
-         <svg viewBox="0 0 52 52" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden>
-            <circle cx="26" cy="26" r={r} fill="none" stroke="rgba(0,0,0,.08)" strokeWidth="3" />
-            <circle cx="26" cy="26" r={r} fill="none" stroke="#D42F25" strokeWidth="3" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - progress)} />
-         </svg>
-         <ArrowUp className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
-      </button>
+      <div className="floating-actions fixed bottom-4 right-4 z-30 flex flex-col items-center gap-3 lg:bottom-6 lg:right-6">
+         <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={cn(
+               'group relative grid h-14 w-14 place-items-center rounded-full bg-white text-ink shadow-[0_15px_40px_-15px_rgba(30,20,10,.5)] transition-all duration-500 hover:-translate-y-1',
+               showTop ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
+            )}
+            aria-label="Back to top"
+            tabIndex={showTop ? undefined : -1}
+         >
+            <svg viewBox="0 0 52 52" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden>
+               <circle cx="26" cy="26" r={r} fill="none" stroke="rgba(0,0,0,.08)" strokeWidth="3" />
+               <circle cx="26" cy="26" r={r} fill="none" stroke="#D42F25" strokeWidth="3" strokeLinecap="round" strokeDasharray={c} strokeDashoffset={c * (1 - progress)} />
+            </svg>
+            <ArrowUp className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+         </button>
+         <a
+            href={config.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            className="grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_15px_40px_-12px_rgba(18,140,70,.65)] transition hover:-translate-y-1 hover:bg-[#1ebe5b]"
+         >
+            <WhatsAppIcon className="h-7 w-7" />
+         </a>
+      </div>
    )
 }
+
+/** Social profiles from the site config; any without a URL is left out. */
+const SOCIALS = [
+   { label: 'Instagram', href: config.links.instagram, icon: Instagram },
+   { label: 'Facebook', href: config.links.facebook, icon: Facebook },
+   { label: 'TikTok', href: config.links.tiktok, icon: TikTokIcon },
+   { label: 'Google Maps', href: config.links.googleMaps, icon: MapPin },
+].filter((l) => l.href)
+
+/** Phone, WhatsApp and both inboxes, each with a matching icon (the address follows below). */
+const CONTACT_LINES = [
+   { icon: Phone, label: config.phone, href: config.phoneHref, hint: 'Call', external: false },
+   { icon: WhatsAppIcon, label: 'WhatsApp us', href: config.whatsappUrl, hint: '', external: true },
+   { icon: Mail, label: config.adminEmail, href: `mailto:${config.adminEmail}`, hint: '', external: false },
+   { icon: Mail, label: config.email, href: `mailto:${config.email}`, hint: '', external: false },
+]
 
 export function SiteFooter() {
    return (
@@ -219,23 +254,52 @@ export function SiteFooter() {
                         Packaging, print and signage for brands that care how they show up. Designed, produced and
                         delivered by one team.
                      </p>
-                     <a href={`mailto:${config.email}`} className="link-draw mt-5 inline-block text-[15px] font-medium text-white/85">
-                        {config.email}
-                     </a>
-                     {config.phone ? <p className="mt-2 text-sm text-white/60">{config.phone}</p> : null}
+                     <ul className="mt-5 space-y-2.5 text-[15px]">
+                        {CONTACT_LINES.map(({ icon: Icon, label, href, hint, external }) => (
+                           <li key={href}>
+                              <a
+                                 href={href}
+                                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                 className="group inline-flex items-center gap-2.5 font-medium text-white/85 transition-colors hover:text-white"
+                              >
+                                 <Icon className="h-4 w-4 shrink-0 text-white/50 transition-colors group-hover:text-coral" />
+                                 {hint ? <span className="sr-only">{hint} </span> : null}
+                                 <span className="link-draw tabular-nums">{label}</span>
+                              </a>
+                           </li>
+                        ))}
+                     </ul>
                      <a
                         href={config.address.mapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-4 flex items-start gap-2 text-sm leading-relaxed text-white/60 transition-colors hover:text-white"
+                        className="group mt-3 flex items-start gap-2.5 text-sm leading-relaxed text-white/60 transition-colors hover:text-white"
                      >
-                        <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+                        <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white/50 transition-colors group-hover:text-coral" />
                         <address className="not-italic">
                            {config.address.line1},
                            <br />
                            {config.address.line2}, {config.address.city}, {config.address.country}
                         </address>
                      </a>
+                     {SOCIALS.length ? (
+                        <ul className="mt-6 flex flex-wrap gap-2" aria-label="Joji Arts on social media">
+                           {SOCIALS.map(({ label, href, icon: Icon }) => (
+                              <li key={label}>
+                                 <a
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={label}
+                                    title={label}
+                                    className="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/75 transition hover:border-white hover:bg-white hover:text-ink"
+                                 >
+                                    <Icon className="h-[18px] w-[18px]" />
+                                 </a>
+                              </li>
+                           ))}
+                        </ul>
+                     ) : null}
                   </div>
 
                   <div className="grid gap-10 sm:grid-cols-[2fr_1fr_1fr]">
@@ -275,16 +339,17 @@ export function SiteFooter() {
                   />
                </Link>
 
-               <div className="flex flex-col gap-2 border-t border-white/10 py-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
+               {/* Bottom padding clears the floating WhatsApp + back-to-top stack (2 × 56px + 12px gap + 24px offset) plus 16px */}
+               <div className="flex flex-col gap-2 border-t border-white/10 pb-[10.5rem] pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
                   <p>
                      © {new Date().getFullYear()} {config.name}. All rights reserved.
                   </p>
-                  <p>Crafted with care · Photos via Pixabay</p>
+                  <p>Crafted with care · Photos via Pixabay · Video via Pexels</p>
                </div>
             </div>
          </Spotlight>
 
-         <BackToTop />
+         <FloatingActions />
       </footer>
    )
 }

@@ -17,7 +17,7 @@ export default function ContactPage() {
       description: config.description,
       url: config.url,
       email: config.email,
-      ...(config.phone ? { telephone: config.phone } : {}),
+      telephone: config.phoneIntl,
       address: {
          '@type': 'PostalAddress',
          streetAddress: `${address.line1}, ${address.line2}`,

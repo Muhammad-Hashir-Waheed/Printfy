@@ -411,7 +411,7 @@ export function Configurator({ productKey }: { productKey: string }) {
          )}
 
          {/* Mobile sticky bar */}
-         <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-white/95 p-3 backdrop-blur-xl lg:hidden">
+         <div data-mobile-cta-bar className="fixed inset-x-0 bottom-0 z-30 border-t bg-white/95 p-3 backdrop-blur-xl lg:hidden">
             <div className="mx-auto flex max-w-xl items-center gap-3">
                <div className="min-w-0 flex-1">
                   <p className="truncate text-xs text-muted-foreground">{units(qty, preset.unit)}</p>

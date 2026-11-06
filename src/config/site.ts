@@ -9,12 +9,19 @@ const config = {
       'https://jojiarts.com',
    description:
       'Custom packaging, printing, labels, acrylic boxes and signage — designed, printed and delivered by Joji Arts.',
+   /** Customer support inbox (shown across the site, used for mailto: links) */
    email: 'support@jojiarts.com',
+   /** Main business inbox (footer, structured data) */
+   adminEmail: 'admin@jojiarts.com',
    /** Order requests and quotes are emailed here until online payments go live. */
    ordersEmail: 'orders@jojiarts.com',
-   /** Leave empty to hide. Fill in to show across the site (e.g. "+971 50 000 0000"). */
-   phone: '',
-   whatsapp: '',
+   /** Phone as people read it */
+   phone: '0315-61-111-81',
+   /** International form for tel: links and structured data */
+   phoneIntl: '+92-315-6111181',
+   phoneHref: 'tel:+923156111181',
+   /** Opens a WhatsApp chat with a pre-filled opening line */
+   whatsappUrl: 'https://wa.me/923156111181?text=Hi%20Joji%20Arts%2C%20I%27d%20like%20a%20quote%20for%20',
    /** Office address — shown on the contact page, footer, legal pages and in structured data. */
    address: {
       line1: 'Office #5, Second Floor, ESA Musa Center',
@@ -39,10 +46,14 @@ const config = {
    locale: 'en-US',
    shippingFlat: 15,
    freeShippingOver: 250,
+   /** Social profiles: a link is hidden while its URL is empty (never links to "#") */
    links: {
       instagram: '',
       facebook: '',
+      tiktok: '',
       linkedin: '',
+      /** Google Maps listing (the owner's share link) */
+      googleMaps: 'https://maps.app.goo.gl/4i7TMakh6HCcpPaeA',
    },
 }
 
