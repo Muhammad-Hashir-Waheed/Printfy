@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs><mask id="perf"><rect width="64" height="64" fill="#fff"/><circle cx="10" cy="0" r="3.4" fill="#000"/><circle cx="10" cy="64" r="3.4" fill="#000"/><circle cx="0" cy="10" r="3.4" fill="#000"/><circle cx="64" cy="10" r="3.4" fill="#000"/><circle cx="21" cy="0" r="3.4" fill="#000"/><circle cx="21" cy="64" r="3.4" fill="#000"/><circle cx="0" cy="21" r="3.4" fill="#000"/><circle cx="64" cy="21" r="3.4" fill="#000"/><circle cx="32" cy="0" r="3.4" fill="#000"/><circle cx="32" cy="64" r="3.4" fill="#000"/><circle cx="0" cy="32" r="3.4" fill="#000"/><circle cx="64" cy="32" r="3.4" fill="#000"/><circle cx="43" cy="0" r="3.4" fill="#000"/><circle cx="43" cy="64" r="3.4" fill="#000"/><circle cx="0" cy="43" r="3.4" fill="#000"/><circle cx="64" cy="43" r="3.4" fill="#000"/><circle cx="54" cy="0" r="3.4" fill="#000"/><circle cx="54" cy="64" r="3.4" fill="#000"/><circle cx="0" cy="54" r="3.4" fill="#000"/><circle cx="64" cy="54" r="3.4" fill="#000"/></mask></defs>
+  <rect width="64" height="64" rx="7" fill="#D42F25" mask="url(#perf)"/>
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 18.5C20.5 17.4 29.5 17.3 38.5 17.6" stroke-width="2.8"/>
+    <path d="M23.3 18.2V36.6C23.3 42.2 20.2 45.2 14.8 44.4" stroke-width="5.6"/>
+    <path d="M38.5 17.6L30.4 46" stroke-width="2.9"/>
+    <path d="M38.5 17.6L47.6 46" stroke-width="5.6"/>
+    <path d="M31.6 36.4C36.6 35 42.6 34.2 49.6 33.5" stroke-width="2.8"/>
+  </g>
+</svg>

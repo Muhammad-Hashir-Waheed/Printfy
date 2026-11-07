@@ -477,7 +477,7 @@ export function SiteHeader() {
 
                   <Link href="/" aria-label={`${config.name} home`} className="group shrink-0">
                      <span className="inline-block transition-transform duration-500 group-hover:-rotate-2 group-hover:scale-[1.03]">
-                        <BrandLogo />
+                        <BrandLogo className="block h-8 lg:h-9" />
                      </span>
                   </Link>
 

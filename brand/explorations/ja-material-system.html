@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; margin:0 }
+  body { font-family:'Bricolage Grotesque',sans-serif; background:#ece6dc; padding:40px; width:1600px }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px }
+  .tile { border-radius:24px; position:relative; height:440px; display:flex; align-items:center; justify-content:center; overflow:hidden }
+  .label { position:absolute; left:24px; bottom:20px; font:600 13px Inter; letter-spacing:.08em; text-transform:uppercase }
+  .sub { position:absolute; left:24px; bottom:42px; font:800 26px 'Bricolage Grotesque'; letter-spacing:-.02em }
+</style>
+</head>
+<body>
+<div class="grid" id="g"></div>
+<script>
+/* The JA skeleton — centre-lines on a 100×100 grid.
+   Roof: the J's top bar runs on to become the A's apex (one lid over both letters). */
+const S = {
+  roof: 'M10 18H62',
+  right: 'M62 18L88 84',
+  left: 'M62 18L41 84',
+  bar: 'M50.5 58H76.5',
+  j: 'M30 18V60C30 75 21 82 10.5 77.5',
+}
+const all = Object.values(S).join(' ')
+const W = 11 // stroke weight in grid units
+
+/* 1 · DIELINE — the letters as a die-cut box net: solid = cut, dashed = crease, hatched = glue flap */
+function dieline() {
+  return `<svg viewBox="-4 -4 108 104" width="360" height="346">
+    <defs><pattern id="hatch" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V2.4" stroke="#D42F25" stroke-width=".7"/></pattern></defs>
+    <path d="M88 84L94 70L76 25L62 18Z" fill="url(#hatch)" stroke="#D42F25" stroke-width=".9" stroke-linejoin="round" opacity=".9"/>
+    <path d="${all}" fill="none" stroke="#D42F25" stroke-width="${W + 1.8}" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${all}" fill="none" stroke="#f6f1e8" stroke-width="${W}" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${all}" fill="none" stroke="#1a1512" stroke-width=".7" stroke-dasharray="2.2 1.6" stroke-linecap="round" opacity=".75"/>
+    <g fill="none" stroke="#1a1512" stroke-width=".5" opacity=".5"><path d="M-2 2H4M2 -2V4M98 2H104M102 -2V4M-2 96H4M2 92V98M98 96H104M102 92V98"/></g>
+    <circle cx="10.5" cy="77.5" r="1.4" fill="#D42F25"/>
+  </svg>`
+}
+
+/* 2 · OVERPRINT — J in red, A in gold, printed slightly out of register; the overlap darkens like real ink */
+function overprint() {
+  const jPart = `${S.roof} ${S.j}`
+  const aPart = `${S.right} ${S.left} ${S.bar}`
+  return `<svg viewBox="-4 -4 108 104" width="360" height="346" style="isolation:isolate">
+    <defs><pattern id="dots" width="2.2" height="2.2" patternUnits="userSpaceOnUse" patternTransform="rotate(15)"><circle cx="1.1" cy="1.1" r=".75" fill="#1a1512"/></pattern>
+      <mask id="amask"><path d="${aPart}" fill="none" stroke="#fff" stroke-width="${W}" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.6 1.2)"/></mask></defs>
+    <path d="${jPart}" fill="none" stroke="#D42F25" stroke-width="${W}" stroke-linecap="round" stroke-linejoin="round" style="mix-blend-mode:multiply"/>
+    <path d="${aPart}" fill="none" stroke="#E8B53A" stroke-width="${W}" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.6 1.2)" style="mix-blend-mode:multiply"/>
+    <rect x="-4" y="-4" width="108" height="104" fill="url(#dots)" mask="url(#amask)" opacity=".16"/>
+    <g stroke="#1a1512" stroke-width=".45" fill="none"><circle cx="97" cy="7" r="3"/><path d="M93 7H101M97 3V11"/><circle cx="3" cy="93" r="3"/><path d="M-1 93H7M3 89V97"/></g>
+  </svg>`
+}
+
+/* 3 · NEON — the same skeleton bent in glass: lit tubes, with electrode ends and wall stand-offs */
+function neon() {
+  const ends = [[10, 18], [88, 84], [41, 84], [50.5, 58], [76.5, 58], [10.5, 77.5]]
+  return `<svg viewBox="-8 -8 116 112" width="380" height="367" style="overflow:visible">
+    <defs><filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.1" result="a"/><feGaussianBlur in="SourceGraphic" stdDeviation="3.6" result="b"/><feGaussianBlur in="SourceGraphic" stdDeviation="9" result="c"/>
+      <feMerge><feMergeNode in="c"/><feMergeNode in="b"/><feMergeNode in="a"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <path d="${all}" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" transform="translate(2.5 3.5)" filter="blur(1.6px)"/>
+    <g filter="url(#glow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="${all}" stroke="#ff4636" stroke-width="3.6"/>
+      <path d="${all}" stroke="#ffe3dc" stroke-width="1.3"/>
+    </g>
+    ${ends.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.1" fill="#2a2124" stroke="#6d5c60" stroke-width=".5"/>`).join('')}
+    ${[[22, 18], [52, 18], [33, 40], [79, 66], [46, 70]].map(([x, y]) => `<g><circle cx="${x}" cy="${y}" r="1.5" fill="none" stroke="#b9a9a2" stroke-width=".5" opacity=".7"/></g>`).join('')}
+  </svg>`
+}
+
+/* 4 · FOIL — hot-foil gold pressed into a black card: debossed edge, metallic sheen */
+function foil() {
+  const st = (stroke, w, extra = '') => `<path d="${all}" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`
+  return `<svg viewBox="-4 -4 108 104" width="360" height="346">
+    <defs>
+      <linearGradient id="fg" gradientUnits="userSpaceOnUse" x1="8" y1="12" x2="92" y2="88">
+        <stop offset="0" stop-color="#8a6420"/><stop offset=".22" stop-color="#F7E3A1"/><stop offset=".38" stop-color="#C99A3E"/>
+        <stop offset=".55" stop-color="#FFF4CF"/><stop offset=".7" stop-color="#B8892F"/><stop offset="1" stop-color="#6f4e17"/></linearGradient>
+      <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="8"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 .95  0 0 0 0 .8  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+    </defs>
+    ${st('#000', W + 2.4, 'opacity=".75" transform="translate(-.5 -.7)"')}
+    ${st('#3a3029', W + 2.4, 'opacity=".55" transform="translate(.5 .8)"')}
+    ${st('url(#fg)', W)}
+    ${st('#fff', W, 'filter="url(#grain)"')}
+    ${st('#FFF6D8', .7, 'opacity=".55" transform="translate(-.6 -.9)"')}
+  </svg>`
+}
+
+/* CORE — the flat master: solid strokes, works in one colour at any size */
+function core(size, color = '#D42F25') {
+  return `<svg viewBox="2 6 96 90" width="${size}" height="${size * 90 / 96}"><path d="${all}" fill="none" stroke="${color}" stroke-width="${W + 1}" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+}
+function coreTile(size, bg = '#D42F25', fg = '#fff') {
+  return `<svg viewBox="-14 -12 128 128" width="${size}" height="${size}"><rect x="-14" y="-12" width="128" height="128" rx="28" fill="${bg}"/><path d="${all}" fill="none" stroke="${fg}" stroke-width="${W + 2}" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+}
+
+const tiles = [
+  { svg: dieline(), bg: '#f6f1e8', sub: 'Dieline', label: 'Packaging · cut, crease & glue flap', c: '#1a1512' },
+  { svg: overprint(), bg: '#fbf8f2', sub: 'Overprint', label: 'Print · two inks, slightly off register', c: '#1a1512' },
+  { svg: neon(), bg: 'radial-gradient(110% 90% at 50% 45%, #2b1e22, #0c0809 72%)', sub: 'Neon', label: 'Signage · lit glass with electrodes', c: '#ffb3aa' },
+  { svg: foil(), bg: 'radial-gradient(120% 100% at 30% 20%, #26211d, #0f0c0a 70%)', sub: 'Foil', label: 'Luxury · gold hot-foil pressed into black board', c: '#E8C77A' },
+]
+const head = `
+  <div class="tile" style="grid-column:span 2;background:#fbf8f2;height:380px;gap:34px">
+    ${core(190)}
+    <span style="font-size:118px;letter-spacing:-.04em;line-height:1;color:#1a1512"><b style="font-weight:800">Joji</b> <span style="font-weight:500;opacity:.55">Arts</span></span>
+    <span class="sub" style="color:#1a1512">The core mark</span><span class="label" style="color:#1a1512;opacity:.6">One roof over J and A — a lid, a sign board, a shared studio</span>
+  </div>
+  <div class="tile" style="grid-column:span 2;background:#1a1512;height:220px;gap:30px;align-items:flex-end;padding-bottom:70px">
+    ${coreTile(120)}${coreTile(64)}${coreTile(40)}${coreTile(24)}${coreTile(16)}
+    <span style="width:30px"></span>${core(90, '#fff')}${core(90, '#E8B53A')}
+    <span class="label" style="color:#fff;opacity:.6">App icon → favicon 16px · one-colour white & gold</span>
+  </div>`
+document.getElementById('g').innerHTML = head + tiles.map((t) => `<div class="tile" style="background:${t.bg}">${t.svg}<span class="sub" style="color:${t.c}">${t.sub}</span><span class="label" style="color:${t.c};opacity:.6">${t.label}</span></div>`).join('')
+</script>
+</body>
+</html>

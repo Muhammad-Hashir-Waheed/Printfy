@@ -32,7 +32,7 @@ export function MobileMenu({ trigger }: { trigger: ReactNode }) {
             <SheetTitle className="sr-only">Menu</SheetTitle>
             <div className="flex h-16 items-center border-b px-5">
                <Link href="/" onClick={() => setOpen(false)}>
-                  <BrandLogo />
+                  <BrandLogo className="block h-8" />
                </Link>
             </div>
 

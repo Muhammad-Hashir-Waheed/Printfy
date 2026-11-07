@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+  :root { --red:#D42F25; --ink:#1a1512; --paper:#FAF7F2; }
+  * { box-sizing:border-box; margin:0 }
+  body { font-family:'Bricolage Grotesque',sans-serif; background:#ece6dc; padding:40px; width:1600px }
+  h1 { font-size:22px; letter-spacing:.2em; text-transform:uppercase; color:#8a7f72; margin-bottom:6px; font-weight:500 }
+  h2 { font-size:46px; letter-spacing:-.035em; color:var(--ink); margin-bottom:28px; font-weight:800 }
+  .grid { display:grid; grid-template-columns:repeat(6,1fr); gap:20px }
+  .tile { border-radius:24px; overflow:hidden; position:relative; min-height:300px; display:flex; align-items:center; justify-content:center }
+  .label { position:absolute; left:20px; bottom:16px; font:500 13px Inter,sans-serif; letter-spacing:.06em; text-transform:uppercase; opacity:.6 }
+  .word { font-size:44px; letter-spacing:-.035em; line-height:1; white-space:nowrap }
+  .word .j { font-weight:800 } .word .a { font-weight:500; opacity:.55 }
+
+  /* hero lockup */
+  .hero { grid-column: span 4; background:var(--paper); min-height:360px }
+  .hero .lock { display:flex; align-items:center; gap:26px }
+  .hero .word { font-size:96px }
+  /* construction */
+  .cons { grid-column: span 2; background:#fff; min-height:360px }
+
+  /* kraft mailer */
+  .kraft { grid-column: span 3; background:linear-gradient(160deg,#e9e2d6,#d9cfbf); perspective:1100px }
+  .box { width:360px; height:250px; transform:rotateX(52deg) rotateZ(-28deg); transform-style:preserve-3d; position:relative; margin-top:-30px }
+  .box .top { position:absolute; inset:0; background:linear-gradient(135deg,#caa47a,#b98f63); border-radius:6px; box-shadow:inset 0 0 0 1px rgba(90,55,25,.25); display:flex; align-items:center; justify-content:center }
+  .box .side { position:absolute; left:0; right:0; bottom:-70px; height:70px; background:linear-gradient(#a57c52,#8e6942); transform-origin:top; transform:rotateX(-90deg); border-radius:0 0 6px 6px }
+  .box .side2 { position:absolute; top:0; bottom:0; right:-70px; width:70px; background:linear-gradient(90deg,#9b744b,#83603c); transform-origin:left; transform:rotateY(90deg) }
+  .stamp { opacity:.92; mix-blend-mode:multiply; filter: url(#rough) }
+
+  /* foil card */
+  .card-wrap { grid-column: span 3; background:#2a2420; perspective:1200px }
+  .bcard { width:380px; height:220px; border-radius:12px; background:#151210; box-shadow:0 40px 60px -25px rgba(0,0,0,.8); transform: rotate(-8deg) translateY(-6px); display:flex; align-items:center; justify-content:center; gap:18px; position:relative }
+  .bcard.back { position:absolute; background:#f4efe7; transform: rotate(7deg) translate(150px,-58px); z-index:0 }
+  .bcard.back p { font:500 13px Inter; color:#5d544b; position:absolute; right:26px; top:58px; line-height:1.6; text-align:right }
+  .bcard.back b { font:800 18px 'Bricolage Grotesque'; color:var(--ink); position:absolute; right:26px; top:26px; letter-spacing:-.02em }
+  .foil-word { font-size:34px; letter-spacing:-.035em; background:linear-gradient(100deg,#F7E3A1,#D9AE4F 45%,#FFF1C4 60%,#C99A3E); -webkit-background-clip:text; color:transparent }
+
+  /* neon */
+  .neon { grid-column: span 2; background: radial-gradient(120% 90% at 50% 40%, #2a1d24, #0d090c 70%); }
+  .neon .wall { position:absolute; inset:0; background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 46px 23px }
+
+  /* browser + app icon */
+  .ui { grid-column: span 2; background:#dcd5ca; flex-direction:column; gap:26px }
+  .tab { background:#fff; border-radius:12px 12px 0 0; padding:10px 16px; display:flex; align-items:center; gap:10px; font:500 14px Inter; color:#333; width:270px; box-shadow:0 -1px 0 rgba(0,0,0,.05) }
+  .bar { background:#fff; width:330px; border-radius:10px; padding:9px 14px; font:400 13px Inter; color:#666; margin-top:-14px; box-shadow: 0 8px 20px -12px rgba(0,0,0,.3) }
+  .apps { display:flex; gap:22px; align-items:flex-end }
+  .app { display:flex; flex-direction:column; align-items:center; gap:7px; font:500 12px Inter; color:#4d443c }
+
+  /* signage on storefront */
+  .store { grid-column: span 2; background: linear-gradient(#cfc6b8,#b9ae9e) }
+  .fascia { width:330px; height:110px; background:#1a1512; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:16px; box-shadow:0 30px 40px -20px rgba(0,0,0,.6) }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="2.2" result="b1"/><feGaussianBlur stdDeviation="7" result="b2" in="SourceGraphic"/><feGaussianBlur stdDeviation="16" result="b3" in="SourceGraphic"/>
+    <feMerge><feMergeNode in="b3"/><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7E3A1"/><stop offset=".45" stop-color="#D9AE4F"/><stop offset=".6" stop-color="#FFF1C4"/><stop offset="1" stop-color="#C99A3E"/></linearGradient>
+</svg>
+
+<h1>Recommended direction</h1>
+<h2>The Fold — “J.” for Joji Arts</h2>
+<div class="grid" id="g"></div>
+
+<script>
+const FOLD_TILE = 'M14 0H44L64 20V50A14 14 0 0 1 50 64H14A14 14 0 0 1 0 50V14A14 14 0 0 1 14 0Z'
+const FLAP = 'M44 0V12A8 8 0 0 0 52 20H64Z'
+const J = 'M17 19H37M33 19V39.5C33 46.5 28.5 50 22.5 50C19.6 50 17.4 49.1 15.8 47.6'
+function mark({ size, bg = '#D42F25', fg = '#fff', flap = '#F3B4A9', extra = '' }) {
+  return `<svg viewBox="0 0 64 64" width="${size}" height="${size}" ${extra}>
+    <path d="${FOLD_TILE}" fill="${bg}"/><path d="${FLAP}" fill="${flap}"/>
+    <path d="${J}" fill="none" stroke="${fg}" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="46.5" cy="45.5" r="4.2" fill="${fg}"/></svg>`
+}
+// One-colour version for stamping / foil: tile with the J and dot knocked out
+function knockout({ size, color, extra = '' }) {
+  return `<svg viewBox="0 0 64 64" width="${size}" height="${size}" ${extra}>
+    <defs><mask id="ko${size}"><rect width="64" height="64" fill="#fff"/>
+      <path d="${J}" fill="none" stroke="#000" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46.5" cy="45.5" r="4.2" fill="#000"/>
+      <path d="M44 0V12A8 8 0 0 0 52 20H64" fill="none" stroke="#000" stroke-width="2.4"/></mask></defs>
+    <path d="${FOLD_TILE}" fill="${color}" mask="url(#ko${size})"/></svg>`
+}
+// Neon: tube outlines only
+function neon(size) {
+  return `<svg viewBox="-6 -6 76 76" width="${size}" height="${size}" style="overflow:visible">
+    <g filter="url(#glow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="${FOLD_TILE}" stroke="#ff6a5c" stroke-width="1.6"/>
+      <path d="M44 1V12A8 8 0 0 0 52 20H63" stroke="#ff6a5c" stroke-width="1.6"/>
+      <path d="${J}" stroke="#fff3ee" stroke-width="3"/>
+      <circle cx="46.5" cy="45.5" r="2.6" stroke="#fff3ee" stroke-width="3"/>
+    </g></svg>`
+}
+const word = (c, extra = '') => `<span class="word" style="color:${c};${extra}"><span class="j">Joji</span> <span class="a">Arts</span></span>`
+
+// Construction drawing on a 64 grid
+const grid = Array.from({ length: 9 }, (_, i) => i * 8).map((v) => `<path d="M${v} 0V64M0 ${v}H64" stroke="#e7dfd3" stroke-width=".3"/>`).join('')
+const cons = `<svg viewBox="-4 -4 72 72" width="280" height="280">${grid}
+  <path d="${FOLD_TILE}" fill="#D42F25" opacity=".12"/><path d="${FOLD_TILE}" fill="none" stroke="#D42F25" stroke-width=".5"/>
+  <path d="${FLAP}" fill="#F3B4A9" opacity=".7"/>
+  <path d="${J}" fill="none" stroke="#1a1512" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+  <circle cx="46.5" cy="45.5" r="4.2" fill="#1a1512" opacity=".85"/>
+  <circle cx="14" cy="14" r="14" fill="none" stroke="#5b8def" stroke-width=".35" stroke-dasharray="1.2 1"/>
+  <circle cx="22.5" cy="39.5" r="10.5" fill="none" stroke="#5b8def" stroke-width=".35" stroke-dasharray="1.2 1"/>
+  <path d="M44 -3V23M41 20H67" stroke="#5b8def" stroke-width=".35" stroke-dasharray="1.2 1"/>
+  <text x="46" y="-0.6" font-size="2.6" fill="#5b8def" font-family="Inter">fold 20u</text>
+</svg>`
+
+document.getElementById('g').innerHTML = `
+  <div class="tile hero"><div class="lock">${mark({ size: 150 })}${word('#1a1512')}</div><span class="label">Primary lockup</span></div>
+  <div class="tile cons">${cons}<span class="label">64-unit grid · 14u radius · 20u fold</span></div>
+
+  <div class="tile kraft"><div class="box"><div class="side"></div><div class="side2"></div><div class="top">
+    <span class="stamp">${knockout({ size: 120, color: '#a3241c' })}</span></div></div>
+    <span class="label" style="color:#3b2c1e">Mailer box · one-colour stamp</span></div>
+
+  <div class="tile card-wrap">
+    <div class="bcard back"><b>Your name</b><p>Joji Arts<br>0315-61-111-81 · jojiarts.com</p></div>
+    <div class="bcard">${knockout({ size: 84, color: 'url(#foil)' })}<span class="foil-word"><b style="font-weight:800">Joji</b> <span style="font-weight:500">Arts</span></span></div>
+    <span class="label" style="color:#cdbfa8">Business card · gold foil on black</span></div>
+
+  <div class="tile neon"><div class="wall"></div><div style="position:relative">${neon(200)}</div><span class="label" style="color:#ffb3aa">Neon sign</span></div>
+
+  <div class="tile store"><div class="fascia">${mark({ size: 70 })}${word('#fff', 'font-size:40px')}</div><span class="label" style="color:#3a332c">Shop fascia</span></div>
+
+  <div class="tile ui">
+    <div><div class="tab">${mark({ size: 18 })} Joji Arts — Custom Packaging… <span style="margin-left:auto;color:#999">×</span></div>
+    <div class="bar">jojiarts.com</div></div>
+    <div class="apps">
+      <div class="app"><div style="width:76px;height:76px;border-radius:18px;background:#D42F25;display:grid;place-items:center;box-shadow:0 10px 20px -10px rgba(0,0,0,.5)">${mark({ size: 58, bg: '#D42F25' })}</div>App icon</div>
+      <div class="app">${mark({ size: 48 })}48px</div>
+      <div class="app">${mark({ size: 32 })}32px</div>
+      <div class="app">${mark({ size: 16 })}16px</div>
+    </div>
+    <span class="label" style="color:#3a332c">Favicon & app icon</span></div>
+`
+</script>
+</body>
+</html>

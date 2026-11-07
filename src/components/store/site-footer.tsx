@@ -247,8 +247,8 @@ export function SiteFooter() {
                {/* Links */}
                <div className="grid gap-10 py-14 lg:grid-cols-[1fr_2fr]">
                   <div className="max-w-sm">
-                     <Link href="/" className="inline-block [&_svg]:h-11 [&_svg]:w-11 [&>span>span]:text-[1.7rem]">
-                        <BrandLogo inverted />
+                     <Link href="/" aria-label="Joji Arts home" className="inline-block">
+                        <BrandLogo inverted className="block h-12" />
                      </Link>
                      <p className="mt-5 text-[15px] leading-relaxed text-white/60">
                         Packaging, print and signage for brands that care how they show up. Designed, produced and
