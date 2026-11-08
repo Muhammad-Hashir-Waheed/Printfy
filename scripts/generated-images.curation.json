@@ -2136,7 +2136,7 @@
     ],
     "d:packaging": [
       "packaging/kraft-boxes/kraft-shipping-box",
-      "variation-3"
+      "variation-1"
     ],
     "d:printing": [
       "printing/business-cards/foil-business-cards",
@@ -2144,7 +2144,7 @@
     ],
     "d:retail-packaging": [
       "retail-packaging/product-boxes/jewelry-box",
-      "variation-3"
+      "variation-1"
     ],
     "d:signage-displays": [
       "signage-displays/3d-raised-letter-signs/channel-letters",
@@ -2220,11 +2220,11 @@
     ],
     "c:food-packaging/food-accessories": [
       "food-packaging/food-accessories/4-bottle-carrier",
-      "variation-3"
+      "variation-2"
     ],
     "c:food-packaging/food-bags": [
       "food-packaging/food-bags/bakery-bread-bag",
-      "variation-2"
+      "variation-1"
     ],
     "c:food-packaging/food-boxes": [
       "food-packaging/food-boxes/branded-burger-box",
@@ -2272,7 +2272,7 @@
     ],
     "c:packaging/kraft-boxes": [
       "packaging/kraft-boxes/kraft-window-box",
-      "variation-3"
+      "variation-1"
     ],
     "c:packaging/mailer-boxes": [
       "packaging/mailer-boxes/rigid-mailer-box",
@@ -2320,7 +2320,7 @@
     ],
     "c:retail-packaging/product-boxes": [
       "retail-packaging/product-boxes/candle-box",
-      "variation-3"
+      "variation-1"
     ],
     "c:retail-packaging/specialty-packaging": [
       "retail-packaging/specialty-packaging/custom-tissue-paper",
