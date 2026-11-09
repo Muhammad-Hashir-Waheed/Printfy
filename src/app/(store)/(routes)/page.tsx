@@ -492,29 +492,88 @@ function Guarantees() {
    )
 }
 
+/** Printer's registration mark — the separator on the press-sheet ribbon */
+function RegMark({ className }: { className?: string }) {
+   return (
+      <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth="1.4">
+         <circle cx="12" cy="12" r="6.5" />
+         <circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none" />
+         <path d="M12 1.5V22.5M1.5 12H22.5" />
+      </svg>
+   )
+}
+
+/** The colour-control strip printed along the edge of every press sheet (C, M, Y, K and their tints) */
+const CONTROL_STRIP = ['#00a3e0', '#e6007e', '#ffe600', '#1d1d1b', '#7fd1ef', '#f27fbe', '#fff27f', '#8e8e8d', '#d42f25', '#d9ae4f']
+
+function ControlStrip() {
+   return (
+      <div
+         aria-hidden
+         className="h-2 w-full"
+         style={{
+            backgroundImage: `repeating-linear-gradient(90deg, ${CONTROL_STRIP.map((c, i) => `${c} ${i * 14}px ${(i + 1) * 14 - 2}px, transparent ${(i + 1) * 14 - 2}px ${(i + 1) * 14}px`).join(', ')})`,
+            backgroundSize: `${CONTROL_STRIP.length * 14}px 100%`,
+         }}
+      />
+   )
+}
+
+/**
+ * "Press sheet" band + "swatch book" strip.
+ * Row 1: an ink-black press-sheet ribbon edged with a CMYK colour-control strip; the words alternate
+ * between solid ink, outline and gold foil, separated by registration marks.
+ * Row 2: categories as Pantone-style swatch cards (photo, department colour bar, swatch code, name).
+ */
 function KineticBand() {
    const words = ['Packaging', 'Printing', 'Neon', 'Labels', 'Acrylic', 'Signage', 'Bags', 'Displays']
-   const strip = DEPARTMENTS.flatMap((d) => d.categories.slice(0, 2)).filter((c) => c.image)
+   const styles = [
+      'text-white',
+      'text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,.75)]',
+      'bg-[linear-gradient(100deg,#F7E3A1,#D9AE4F_45%,#FFF1C4_60%,#C99A3E)] bg-clip-text text-transparent',
+   ]
+   const swatches = DEPARTMENTS.flatMap((d) => d.categories.slice(0, 2).map((c) => ({ c, accent: d.accent }))).filter(({ c }) => c.image)
+
    return (
-      <section aria-hidden className="relative overflow-hidden py-10 sm:py-14">
-         <div className="-rotate-2 scale-105 bg-primary py-4 text-white shadow-[0_20px_50px_-20px_rgba(212,47,37,.6)]">
-            <Marquee speed={35}>
-               {words.map((w) => (
-                  <span key={w} className="flex items-center gap-6 px-6 font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
-                     {w}
-                     <Sparkle className="h-7 w-7 fill-white sm:h-9 sm:w-9" />
-                  </span>
-               ))}
-            </Marquee>
-         </div>
-         <div className="mt-6 rotate-1">
-            <Marquee speed={60} reverse>
-               {strip.map((c) => (
-                  <Link key={c.key} href={c.href} tabIndex={-1} className="group mx-2 flex items-center gap-3 rounded-full bg-white py-2 pl-2 pr-5 shadow-sm ring-1 ring-black/5 transition hover:-translate-y-1">
-                     <span className="relative h-12 w-12 overflow-hidden rounded-full">
-                        <CatalogImage image={c.image} label={c.name} accent={c.accent} dark={c.dark} sizes="48px" />
+      <section aria-hidden className="relative overflow-hidden pb-4 pt-12 sm:pb-6 sm:pt-16">
+         {/* Press sheet */}
+         <div className="relative mx-[-3%] -rotate-[1.5deg] bg-[#16110f] shadow-[0_30px_60px_-30px_rgba(22,17,15,.7)]">
+            <ControlStrip />
+            <div className="flex items-center gap-3 px-6 pt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+               <span>Joji Arts · Press sheet 01</span>
+               <span className="ml-auto hidden sm:inline">CMYK + Foil · 350gsm</span>
+            </div>
+            <div className="py-3 sm:py-4">
+               <Marquee speed={42}>
+                  {words.map((w, i) => (
+                     <span key={w} className="flex items-center gap-7 px-7">
+                        <span className={`font-display text-[2.6rem] font-extrabold leading-none tracking-[-0.03em] sm:text-7xl ${styles[i % styles.length]}`}>{w}</span>
+                        <RegMark className="h-6 w-6 shrink-0 text-white/40 sm:h-8 sm:w-8" />
                      </span>
-                     <span className="whitespace-nowrap text-sm font-semibold">{c.name}</span>
+                  ))}
+               </Marquee>
+            </div>
+            <ControlStrip />
+         </div>
+
+         {/* Swatch book */}
+         <div className="mt-10 sm:mt-12">
+            <Marquee speed={70} reverse className="py-3">
+               {swatches.map(({ c, accent }, i) => (
+                  <Link
+                     key={c.key}
+                     href={c.href}
+                     tabIndex={-1}
+                     className="group mx-2.5 block w-36 shrink-0 overflow-hidden rounded-md bg-white shadow-[0_10px_24px_-14px_rgba(30,20,10,.45)] ring-1 ring-black/5 transition duration-300 hover:-translate-y-2 hover:rotate-[-1.5deg] sm:w-44"
+                  >
+                     <span className="relative block aspect-square">
+                        <CatalogImage image={c.image} label={c.name} accent={c.accent} dark={c.dark} sizes="176px" />
+                     </span>
+                     <span className="block h-2.5" style={{ backgroundColor: accent }} />
+                     <span className="block px-3 pb-3 pt-2">
+                        <span className="block font-mono text-[10px] font-semibold tracking-[0.12em] text-ink/50">JA {101 + i} C</span>
+                        <span className="mt-0.5 block truncate text-[13px] font-bold text-ink sm:text-sm">{c.name}</span>
+                     </span>
                   </Link>
                ))}
             </Marquee>

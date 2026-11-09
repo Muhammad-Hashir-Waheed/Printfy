@@ -2108,11 +2108,11 @@
     ],
     "d:bags": [
       "bags/paper-bags/rope-handle-gift-bag",
-      "variation-3"
+      "variation-1"
     ],
     "d:corporate": [
       "corporate/corporate-gifts/employee-welcome-kits",
-      "variation-3"
+      "variation-1"
     ],
     "d:custom-packaging": [
       "custom-packaging/custom-boxes/custom-luxury-box",
@@ -2124,15 +2124,15 @@
     ],
     "d:food-packaging": [
       "food-packaging/food-boxes/custom-pizza-box",
-      "variation-2"
+      "variation-1"
     ],
     "d:labels-stickers": [
       "labels-stickers/product-labels/cosmetic-labels",
-      "variation-2"
+      "variation-1"
     ],
     "d:marketing": [
       "marketing/banners/vinyl-banners",
-      "variation-3"
+      "variation-1"
     ],
     "d:packaging": [
       "packaging/kraft-boxes/kraft-shipping-box",
@@ -2140,7 +2140,7 @@
     ],
     "d:printing": [
       "printing/business-cards/foil-business-cards",
-      "variation-2"
+      "variation-1"
     ],
     "d:retail-packaging": [
       "retail-packaging/product-boxes/jewelry-box",
@@ -2152,15 +2152,15 @@
     ],
     "c:acrylic-plastic-packaging/acrylic-boxes": [
       "acrylic-plastic-packaging/acrylic-boxes/acrylic-gift-boxes",
-      "variation-2"
+      "variation-1"
     ],
     "c:acrylic-plastic-packaging/plastic-packaging": [
       "acrylic-plastic-packaging/plastic-packaging/plastic-cosmetic-containers",
-      "variation-2"
+      "variation-1"
     ],
     "c:bags/fabric-bags": [
       "bags/fabric-bags/jute-bag",
-      "variation-3"
+      "variation-1"
     ],
     "c:bags/kraft-bags": [
       "bags/kraft-bags/kraft-shopping-bag",
@@ -2172,7 +2172,7 @@
     ],
     "c:bags/pouches": [
       "bags/pouches/stand-up-pouch",
-      "variation-2"
+      "variation-1"
     ],
     "c:corporate/apparel": [
       "corporate/apparel/hoodies",
@@ -2180,11 +2180,11 @@
     ],
     "c:corporate/corporate-gifts": [
       "corporate/corporate-gifts/executive-gift-sets",
-      "variation-2"
+      "variation-1"
     ],
     "c:corporate/promotional-products": [
       "corporate/promotional-products/custom-mugs",
-      "variation-2"
+      "variation-1"
     ],
     "c:custom-packaging/custom-bags": [
       "custom-packaging/custom-bags/custom-luxury-bags",
@@ -2192,7 +2192,7 @@
     ],
     "c:custom-packaging/custom-boxes": [
       "custom-packaging/custom-boxes/custom-printed-box",
-      "variation-2"
+      "variation-1"
     ],
     "c:custom-packaging/custom-printing": [
       "custom-packaging/custom-printing/brand-launch-kit",
@@ -2204,15 +2204,15 @@
     ],
     "c:display-racks/countertop-racks": [
       "display-racks/countertop-racks/tiered-countertop-stand",
-      "variation-2"
+      "variation-1"
     ],
     "c:display-racks/floor-standing-racks": [
       "display-racks/floor-standing-racks/mobile-accessories-display",
-      "variation-3"
+      "variation-1"
     ],
     "c:display-racks/wall-mounted-racks": [
       "display-racks/wall-mounted-racks/wall-shelving-unit",
-      "variation-2"
+      "variation-1"
     ],
     "c:food-packaging/cups": [
       "food-packaging/cups/double-wall-coffee-cup",
@@ -2220,7 +2220,7 @@
     ],
     "c:food-packaging/food-accessories": [
       "food-packaging/food-accessories/4-bottle-carrier",
-      "variation-2"
+      "variation-1"
     ],
     "c:food-packaging/food-bags": [
       "food-packaging/food-bags/bakery-bread-bag",
@@ -2228,15 +2228,15 @@
     ],
     "c:food-packaging/food-boxes": [
       "food-packaging/food-boxes/branded-burger-box",
-      "variation-2"
+      "variation-1"
     ],
     "c:food-packaging/food-containers": [
       "food-packaging/food-containers/salad-bowl-container",
-      "variation-3"
+      "variation-1"
     ],
     "c:labels-stickers/barcode-qr-labels": [
       "labels-stickers/barcode-qr-labels/inventory-labels",
-      "variation-2"
+      "variation-1"
     ],
     "c:labels-stickers/product-labels": [
       "labels-stickers/product-labels/jar-labels",
@@ -2244,31 +2244,31 @@
     ],
     "c:labels-stickers/shipping-labels": [
       "labels-stickers/shipping-labels/return-address-labels",
-      "variation-2"
+      "variation-1"
     ],
     "c:labels-stickers/stickers": [
       "labels-stickers/stickers/window-decals",
-      "variation-3"
+      "variation-1"
     ],
     "c:marketing/banners": [
       "marketing/banners/mesh-banners",
-      "variation-2"
+      "variation-1"
     ],
     "c:marketing/posters": [
       "marketing/posters/canvas-prints",
-      "variation-2"
+      "variation-1"
     ],
     "c:marketing/promotional-materials": [
       "marketing/promotional-materials/gift-vouchers",
-      "variation-3"
+      "variation-1"
     ],
     "c:packaging/corrugated-boxes": [
       "packaging/corrugated-boxes/corrugated-shipping-box",
-      "main"
+      "variation-1"
     ],
     "c:packaging/folding-cartons": [
       "packaging/folding-cartons/makeup-folding-carton",
-      "variation-2"
+      "variation-1"
     ],
     "c:packaging/kraft-boxes": [
       "packaging/kraft-boxes/kraft-window-box",
@@ -2276,39 +2276,39 @@
     ],
     "c:packaging/mailer-boxes": [
       "packaging/mailer-boxes/rigid-mailer-box",
-      "variation-2"
+      "variation-1"
     ],
     "c:packaging/rigid-boxes": [
       "packaging/rigid-boxes/magnetic-closure-box",
-      "variation-2"
+      "variation-1"
     ],
     "c:packaging/specialty-boxes": [
       "packaging/specialty-boxes/hexagon-box",
-      "variation-2"
+      "variation-1"
     ],
     "c:printing/brochures": [
       "printing/brochures/catalog-printing",
-      "variation-2"
+      "variation-1"
     ],
     "c:printing/business-cards": [
       "printing/business-cards/premium-matte-business-cards",
-      "variation-3"
+      "variation-1"
     ],
     "c:printing/envelopes": [
       "printing/envelopes/c5-envelopes",
-      "variation-2"
+      "variation-1"
     ],
     "c:printing/flyers": [
       "printing/flyers/premium-flyers",
-      "variation-2"
+      "variation-1"
     ],
     "c:printing/letterheads": [
       "printing/letterheads/two-sided-letterhead",
-      "variation-2"
+      "variation-1"
     ],
     "c:printing/office-stationery": [
       "printing/office-stationery/desk-calendars",
-      "variation-2"
+      "variation-1"
     ],
     "c:retail-packaging/display-boxes": [
       "retail-packaging/display-boxes/counter-display-box",
@@ -2316,7 +2316,7 @@
     ],
     "c:retail-packaging/inserts": [
       "retail-packaging/inserts/fragrance-cards",
-      "variation-2"
+      "variation-1"
     ],
     "c:retail-packaging/product-boxes": [
       "retail-packaging/product-boxes/candle-box",
@@ -2324,7 +2324,7 @@
     ],
     "c:retail-packaging/specialty-packaging": [
       "retail-packaging/specialty-packaging/custom-tissue-paper",
-      "variation-2"
+      "variation-1"
     ],
     "c:signage-displays/3d-raised-letter-signs": [
       "signage-displays/3d-raised-letter-signs/gold-and-silver-letters",

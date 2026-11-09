@@ -44,9 +44,11 @@ const ALIASES = {
 /**
  * Curation lives in scripts/generated-images.curation.json:
  *   products["<catalog key without p:>"] — by file name without extension:
- *     lead — shown first, in this order;  last — moved to the end (collages, busy scenes, garbled lettering).
+ *     lead — shown first (after variation-1, which always leads), in this order;
+ *     last — moved to the end (collages, busy scenes, garbled lettering). Never applies to variation-1.
  *     Every generated photo is shown; curation only orders them.
- *   covers["c:<dept>/<category>" | "d:<dept>"] — [product key, image file name] used as that page's cover.
+ *   covers["c:<dept>/<category>" | "d:<dept>"] — [product key, image file name] used as that page's cover
+ *     (always "variation-1", so covers match the products' lead photos).
  */
 const { products: CURATION, covers: COVERS } = JSON.parse(fs.readFileSync(path.join(root, 'scripts/generated-images.curation.json'), 'utf8'))
 
@@ -70,6 +72,8 @@ function order(files, rule = {}) {
    const last = new Set(rule.last ?? [])
    const rank = (f) => {
       const s = stem(f)
+      // House rule: variation-1 is always the lead photo, whatever the curation says
+      if (s === 'variation-1') return [-2, 0]
       if (lead.includes(s)) return [-1, lead.indexOf(s)]
       if (last.has(s)) return [9, 0]
       return defaultRank(s)

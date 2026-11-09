@@ -20,7 +20,7 @@ import { useEffect, useRef, useState } from 'react'
  */
 
 const DIR = '/videos/hero'
-const CLIPS = ['01-press', '02-stamp', '03-cut', '04-pack', '05-neon']
+const CLIPS = ['01-press', '02-stamp', '03-cut', '04-assemble', '05-pack', '06-neon']
 const FADE_MS = 600
 /** Start loading the next clip this many seconds before the current one ends */
 const PRELOAD_LEAD = 2.5

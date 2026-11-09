@@ -124,7 +124,7 @@ are needed.
   every catalog image to `public/_v/` (git-ignored). `src/lib/image-loader.ts` points images at
   the right copy, so no image server is needed.
 - `public/_headers`: cache and security headers for static files.
-- The home page hero plays five 6-second real-footage clips from `public/videos/hero/`
+- The home page hero plays six 6-second real-footage clips from `public/videos/hero/`
   (`src/components/store/hero-video.tsx`; sources and licences in `media-source/CREDITS.md`).
   The poster image paints first; only clip 1 loads at first, each next clip is fetched just before
   it is needed, and phones get 960 px encodes (about 0.45 MB for the first clip). Each clip is
