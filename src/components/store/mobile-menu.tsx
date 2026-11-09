@@ -1,7 +1,7 @@
 'use client'
 
 import { DEPARTMENTS, getCategory, SIGNATURE_CATEGORIES } from '@/catalog'
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ArrowLeft, ChevronRight, HelpCircle, Info, MessageSquareQuote, Newspaper } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -30,6 +30,7 @@ export function MobileMenu({ trigger }: { trigger: ReactNode }) {
          <SheetTrigger asChild>{trigger}</SheetTrigger>
          <SheetContent side="left" className="flex w-[88vw] max-w-sm flex-col gap-0 p-0">
             <SheetTitle className="sr-only">Menu</SheetTitle>
+            <SheetDescription className="sr-only">Browse departments, bestsellers and help pages.</SheetDescription>
             <div className="flex h-16 items-center border-b px-5">
                <Link href="/" onClick={() => setOpen(false)}>
                   <BrandLogo className="block h-8" />

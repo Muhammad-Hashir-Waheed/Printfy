@@ -23,6 +23,27 @@ export function reference(prefix = 'JA') {
 
 /* ───────────── Best-effort in-memory rate limiter (per server instance) ───────────── */
 
+type EdgeLimiter = { limit(options: { key: string }): Promise<{ success: boolean }> }
+
+/**
+ * Cloudflare's shared rate limiter (Workers "ratelimits" bindings in wrangler.jsonc).
+ * Unlike the in-memory buckets below, it is shared by every copy of the Worker, so a burst of
+ * requests can't slip through by landing on different isolates.
+ * Returns true when the request is over the limit, false when it's fine, and null where the
+ * binding isn't available (local `next dev` / `next start`); callers then rely on rateLimit().
+ */
+export async function edgeLimited(binding: 'LOGIN_LIMITER' | 'SUBMIT_LIMITER', key: string): Promise<boolean | null> {
+   try {
+      const { getCloudflareContext } = await import('@opennextjs/cloudflare')
+      const limiter = (getCloudflareContext().env as unknown as Record<string, EdgeLimiter | undefined>)[binding]
+      if (!limiter) return null
+      const { success } = await limiter.limit({ key })
+      return !success
+   } catch {
+      return null
+   }
+}
+
 const buckets = new Map<string, { count: number; reset: number }>()
 
 export function rateLimit(key: string, limit: number, windowMs: number) {

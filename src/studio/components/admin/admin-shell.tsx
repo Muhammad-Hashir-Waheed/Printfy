@@ -31,8 +31,18 @@ export function AdminShell({
    const [open, setOpen] = useState(false)
 
    useEffect(() => setOpen(false), [pathname])
+   // Prefix the unread count to whatever title the page has ("(3) Design inbox · …"). Next.js
+   // may apply a page's title after this runs, so re-apply whenever <title> changes.
    useEffect(() => {
-      document.title = inboxCount ? `(${inboxCount}) Design Studio` : 'Design Studio'
+      const apply = () => {
+         const base = document.title.replace(/^\(\d+\)\s*/, '')
+         const wanted = inboxCount ? `(${inboxCount}) ${base}` : base
+         if (document.title !== wanted) document.title = wanted
+      }
+      apply()
+      const observer = new MutationObserver(apply)
+      observer.observe(document.head, { subtree: true, childList: true, characterData: true })
+      return () => observer.disconnect()
    }, [inboxCount, pathname])
 
    async function logout() {

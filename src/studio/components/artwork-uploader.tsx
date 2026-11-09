@@ -1,7 +1,7 @@
 'use client'
 
 import type { CatalogImage as CatalogImageData } from '@/catalog'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import {
    ACCEPT,
@@ -283,6 +283,9 @@ export function ArtworkUploader({
                   <div className="grid gap-0 lg:grid-cols-[1.6fr_1fr]">
                      <div className="p-4 sm:p-6">
                         <DialogTitle className="mb-4 font-display text-2xl font-bold tracking-tight">Preview your design</DialogTitle>
+                        <DialogDescription className="sr-only">
+                           Your uploaded artwork shown on the product, with size, print effect and an automatic print check.
+                        </DialogDescription>
                         <DesignMockup
                            imageUrl={active.localUrl ?? active.uploaded?.previewUrl}
                            pdfUrl={active.localPdf}

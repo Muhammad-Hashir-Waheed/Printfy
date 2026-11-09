@@ -2,7 +2,7 @@ import { getProductByKey, isValidQuantity, sanitizeSelections } from '@/catalog'
 import { claimFiles, UploadError } from '@/studio/server/files'
 import { baseUrlFrom, notifyNewSubmission } from '@/studio/server/notify'
 import { createSubmission, timeline } from '@/studio/server/submissions'
-import { clientIp, handleError, jsonError, newId, newToken, rateLimit, reference } from '@/studio/server/util'
+import { clientIp, edgeLimited, handleError, jsonError, newId, newToken, rateLimit, reference } from '@/studio/server/util'
 import type { Submission, SubmissionItem } from '@/studio/types'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -44,7 +44,8 @@ const schema = z.object({
 })
 
 export async function POST(req: Request) {
-   if (!rateLimit(`submit:${clientIp(req)}`, 10, 10 * 60_000)) {
+   const ip = clientIp(req)
+   if ((await edgeLimited('SUBMIT_LIMITER', `submit:${ip}`)) || !rateLimit(`submit:${ip}`, 10, 10 * 60_000)) {
       return jsonError(429, 'Too many requests — please wait a few minutes.')
    }
    try {

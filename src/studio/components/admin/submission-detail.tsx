@@ -2,7 +2,7 @@
 
 import { getProductByKey } from '@/catalog'
 import { CatalogImage } from '@/components/store/catalog-image'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { units } from '@/lib/money'
 import { cn } from '@/lib/utils'
 import { formatBytes } from '@/studio/client/upload'
@@ -548,6 +548,7 @@ export function SubmissionDetail({ initial }: { initial: Submission }) {
          <Dialog open={changesOpen} onOpenChange={setChangesOpen}>
             <DialogContent className="max-w-lg rounded-3xl">
                <DialogTitle className="font-display text-2xl font-bold">Request changes</DialogTitle>
+               <DialogDescription className="sr-only">Tell the customer what to change. They are emailed and see it on their design page.</DialogDescription>
                <p className="text-sm text-muted-foreground">
                   The customer sees this on their design page and can upload a revised file straight back to you.
                </p>

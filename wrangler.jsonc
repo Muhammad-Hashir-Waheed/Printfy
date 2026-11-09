@@ -35,6 +35,15 @@
    "vars": {
       "ENABLE_ACCOUNTS": "false"
    },
+   // Shared rate limiters (every copy of the Worker counts together; see edgeLimited() in
+   // src/studio/server/util.ts). Counted per IP within each Cloudflare location.
+   // namespace_id is any number unique to this account.
+   "ratelimits": [
+      // Admin login: at most 5 attempts per IP per minute
+      { "name": "LOGIN_LIMITER", "namespace_id": "4101", "simple": { "limit": 5, "period": 60 } },
+      // Quote / checkout requests: at most 5 per IP per minute (stops form spam)
+      { "name": "SUBMIT_LIMITER", "namespace_id": "4102", "simple": { "limit": 5, "period": 60 } }
+   ],
    "observability": {
       "enabled": true
    }

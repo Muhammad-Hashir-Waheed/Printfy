@@ -1,6 +1,6 @@
 import { ADMIN_COOKIE, ADMIN_COOKIE_MAX_AGE, adminConfigured, signAdminSession } from '@/studio/admin-session'
 import { checkAdminCredentials } from '@/studio/server/admin'
-import { clientIp, isRateLimited, jsonError, rateLimit } from '@/studio/server/util'
+import { clientIp, edgeLimited, isRateLimited, jsonError, rateLimit } from '@/studio/server/util'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -12,8 +12,14 @@ export async function POST(req: Request) {
    if (!adminConfigured()) {
       return jsonError(503, 'Admin login is not configured. Set ADMIN_EMAIL, ADMIN_PASSWORD and ADMIN_SESSION_SECRET.')
    }
-   // Per-IP limit, plus a global cap on failed logins so rotating IPs can't brute-force the password
-   if (!rateLimit(`admin-login:${clientIp(req)}`, 8, 15 * 60_000) || isRateLimited('admin-login-fail:all', 30)) {
+   // Shared Cloudflare limit per IP (all Worker copies count together), then the in-memory
+   // per-IP limit and a global cap on failed logins so rotating IPs can't brute-force the password
+   const ip = clientIp(req)
+   if (
+      (await edgeLimited('LOGIN_LIMITER', `admin-login:${ip}`)) ||
+      !rateLimit(`admin-login:${ip}`, 8, 15 * 60_000) ||
+      isRateLimited('admin-login-fail:all', 30)
+   ) {
       return jsonError(429, 'Too many attempts. Try again in 15 minutes.')
    }
    const parsed = schema.safeParse(await req.json().catch(() => null))
