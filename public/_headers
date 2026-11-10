@@ -20,3 +20,9 @@
   Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
 /videos/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+# Service worker and offline page: always revalidate, so a new version reaches phones right away
+/sw.js
+  Cache-Control: no-cache
+/offline.html
+  Cache-Control: no-cache

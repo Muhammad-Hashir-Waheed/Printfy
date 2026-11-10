@@ -1,3 +1,4 @@
+import { PwaRegister } from '@/components/pwa-register'
 import config from '@/config/site'
 import { ModalProvider } from '@/providers/modal-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
@@ -44,6 +45,9 @@ export const metadata: Metadata = {
       description: config.description,
    },
    twitter: { card: 'summary_large_image' },
+   // Installed as an app (home screen): name, plus full-screen launch on iPhone
+   applicationName: config.name,
+   appleWebApp: { capable: true, title: config.name, statusBarStyle: 'default' },
 }
 
 export const viewport: Viewport = {
@@ -59,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                <ModalProvider />
                {children}
             </ThemeProvider>
+            <PwaRegister />
          </body>
       </html>
    )
