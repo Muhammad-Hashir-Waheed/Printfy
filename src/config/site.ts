@@ -8,7 +8,7 @@ const config = {
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
       'https://jojiarts.com',
    description:
-      'Custom packaging, printed boxes, business cards, labels, acrylic boxes and signage in Lahore, Pakistan — designed, printed and delivered by Joji Arts.',
+      'Custom packaging, printed boxes, business cards, labels, acrylic boxes and signage in Lahore — designed, printed and delivered across Pakistan by Joji Arts.',
    /** Customer support inbox (shown across the site, used for mailto: links) */
    email: 'support@jojiarts.com',
    /** Main business inbox (footer, structured data) */
@@ -42,12 +42,20 @@ const config = {
     * quote list and contact us instead. Set to true to show prices and totals.
     */
    showPrices: false,
-   // TODO(owner): switch to 'PKR' / 'en-PK' together with PKR catalog prices and shipping amounts
-   // before turning showPrices on. The catalog's base prices and the shipping values below are USD.
-   currency: 'USD',
-   locale: 'en-US',
+   // TODO(owner): catalog base prices and the shipping values below are still the old USD figures.
+   // Replace them with PKR amounts before turning showPrices on.
+   currency: 'PKR',
+   locale: 'en-PK',
    shippingFlat: 15,
    freeShippingOver: 250,
+   /** Opening hours: shown to search engines (LocalBusiness schema). Days use schema.org names. */
+   hours: {
+      days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      opens: '11:00',
+      closes: '21:00',
+   },
+   /** Delivery coverage, used in structured data */
+   deliversNationwide: true,
    /** Social profiles: a link is hidden while its URL is empty (never links to "#") */
    links: {
       instagram: '',

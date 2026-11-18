@@ -15,6 +15,7 @@ import { ProductFinishProvider } from '@/components/store/product-finish'
 import { ProductGallery } from '@/components/store/product-gallery'
 import { resolveImage } from '@/catalog/images'
 import config from '@/config/site'
+import { roundMoney } from '@/lib/money'
 import { BadgeCheck, Check, Leaf, ShieldCheck, Truck } from 'lucide-react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -142,7 +143,7 @@ export default async function ProductPage(props: Params) {
                   {[
                      { icon: BadgeCheck, text: 'Free artwork check & digital proof' },
                      { icon: ShieldCheck, text: 'Reprint guarantee on print defects' },
-                     { icon: Truck, text: config.showPrices ? `Free shipping over $${config.freeShippingOver}` : 'Tracked delivery to your door' },
+                     { icon: Truck, text: config.showPrices ? `Free shipping over ${roundMoney(config.freeShippingOver)}` : 'Tracked delivery across Pakistan' },
                      { icon: Leaf, text: 'Recyclable & FSC options' },
                   ].map(({ icon: Icon, text }) => (
                      <li key={text} className="flex items-center gap-2.5 rounded-2xl bg-white p-3 ring-1 ring-black/5">
@@ -181,8 +182,8 @@ export default async function ProductPage(props: Params) {
                         <p>
                            Production takes {preset.leadTime} after you approve your proof.{' '}
                            {config.showPrices
-                              ? `Shipping is a flat $${config.shippingFlat}, free on orders over $${config.freeShippingOver}.`
-                              : 'Delivery options and costs are included in your quote.'}
+                              ? `Shipping is a flat ${roundMoney(config.shippingFlat)}, free on orders over ${roundMoney(config.freeShippingOver)}.`
+                              : 'We deliver across Pakistan — delivery options and costs are included in your quote.'}
                         </p>
                         <p>Custom printed items can&apos;t be returned, but if anything arrives damaged or misprinted we reprint it free.</p>
                      </AccordionContent>

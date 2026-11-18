@@ -44,9 +44,18 @@ export function localBusinessJsonLd(extra: Record<string, unknown> = {}) {
          longitude: address.geo.lng,
       },
       hasMap: address.mapsUrl,
-      // TODO(owner): add Pakistan here too once nationwide delivery is confirmed
-      areaServed: { '@type': 'City', name: address.city },
-      // TODO(owner): add openingHoursSpecification once business hours are confirmed
+      areaServed: config.deliversNationwide
+         ? [
+              { '@type': 'City', name: address.city },
+              { '@type': 'Country', name: address.country },
+           ]
+         : { '@type': 'City', name: address.city },
+      openingHoursSpecification: {
+         '@type': 'OpeningHoursSpecification',
+         dayOfWeek: config.hours.days.map((d) => `https://schema.org/${d}`),
+         opens: config.hours.opens,
+         closes: config.hours.closes,
+      },
       ...(sameAs.length ? { sameAs } : {}),
       ...extra,
    }
