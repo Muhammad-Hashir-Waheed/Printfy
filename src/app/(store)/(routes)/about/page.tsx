@@ -5,8 +5,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-   title: 'About',
-   description: `About ${config.name} — packaging, printing, labels, acrylic boxes and signage under one roof.`,
+   title: 'About Us — Lahore Print & Packaging Studio',
+   description: `About ${config.name}, a Lahore studio for custom packaging, printing, labels, acrylic boxes and signage under one roof.`,
 }
 
 export default function AboutPage() {

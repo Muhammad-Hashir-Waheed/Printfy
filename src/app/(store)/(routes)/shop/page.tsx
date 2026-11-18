@@ -7,7 +7,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-   title: 'Shop all products',
+   title: 'Shop Custom Packaging, Printing & Signage in Lahore',
    description:
       'Browse every Joji Arts department — packaging, food packaging, bags, printing, labels, marketing, corporate, acrylic & plastic and signage.',
 }

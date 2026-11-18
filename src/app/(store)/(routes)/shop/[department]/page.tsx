@@ -18,11 +18,26 @@ export function generateStaticParams() {
    return DEPARTMENTS.map((d) => ({ department: d.slug }))
 }
 
+/** Search-friendly page titles; department names that don't read well on their own get a phrase people search for. */
+const TITLES: Record<string, string> = {
+   packaging: 'Printed Packaging Boxes in Lahore',
+   printing: 'Printing Services in Lahore',
+   marketing: 'Flyer, Poster & Banner Printing in Lahore',
+   corporate: 'Corporate Gifts & Stationery in Lahore',
+}
+
+function departmentTitle(slug: string, name: string) {
+   return TITLES[slug] ?? (/^custom\b/i.test(name) ? `${name} in Lahore` : `Custom ${name} in Lahore`)
+}
+
 export async function generateMetadata(props: Params): Promise<Metadata> {
    const params = await props.params
    const dept = getDepartment(params.department)
    if (!dept) return {}
-   return { title: dept.name, description: dept.description }
+   return {
+      title: departmentTitle(dept.slug, dept.name),
+      description: `${dept.description} From Joji Arts in Lahore, Pakistan.`,
+   }
 }
 
 export default async function DepartmentPage(props: Params) {
