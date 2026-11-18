@@ -16,6 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             .map((c) => ({ url: `${base}${c.href}`, priority: 0.8 }))
       ),
       ...ALL_PRODUCTS.map((p) => ({ url: `${base}${p.href}`, priority: 0.7 })),
-      ...getStaticBlogs().map((b) => ({ url: `${base}/blog/${b.slug}`, priority: 0.5 })),
+      ...getStaticBlogs().map((b) => ({ url: `${base}/blog/${b.slug}`, lastModified: b.updatedAt, priority: 0.5 })),
    ]
 }

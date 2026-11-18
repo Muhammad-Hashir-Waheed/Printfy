@@ -1,37 +1,16 @@
 import { ContactForm } from './contact-form'
-import config from '@/config/site'
+import { JsonLd, localBusinessJsonLd } from '@/lib/seo'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-   title: 'Contact',
-   description: 'Contact us about custom packaging orders, artwork, and bulk quotes.',
+   title: 'Contact Us — Lahore Office',
+   description: 'Visit or contact Joji Arts at Lakshmi Chowk, Lahore — call or WhatsApp 0315-61-111-81 about custom packaging, printing, signage and bulk quotes.',
 }
 
 export default function ContactPage() {
-   const { address } = config
-   /** Business details for search engines — address, map and pin all come from the site config. */
-   const jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'LocalBusiness',
-      name: config.name,
-      description: config.description,
-      url: config.url,
-      email: config.email,
-      telephone: config.phoneIntl,
-      address: {
-         '@type': 'PostalAddress',
-         streetAddress: `${address.line1}, ${address.line2}`,
-         addressLocality: address.city,
-         addressRegion: address.region,
-         addressCountry: address.countryCode,
-      },
-      geo: { '@type': 'GeoCoordinates', latitude: address.geo.lat, longitude: address.geo.lng },
-      hasMap: address.mapsUrl,
-   }
-
    return (
       <>
-         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+         <JsonLd data={localBusinessJsonLd()} />
          <ContactForm />
       </>
    )

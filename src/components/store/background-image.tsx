@@ -9,13 +9,15 @@ type Props = {
    /** Extra classes for the image itself, e.g. an `object-[…]` position */
    imageClassName?: string
    className?: string
+   /** Describe the photo when it shows real products (helps image search); leave empty for pure decoration */
+   alt?: string
 }
 
 /** Full-bleed still background for a section (place it first inside a `relative` section). */
-export function BackgroundImage({ src, eager, imageClassName, className }: Props) {
+export function BackgroundImage({ src, eager, imageClassName, className, alt = '' }: Props) {
    return (
-      <div aria-hidden className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)}>
-         <Image src={src} alt="" fill priority={eager} sizes="100vw" className={cn('object-cover', imageClassName)} />
+      <div aria-hidden={alt ? undefined : true} className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)}>
+         <Image src={src} alt={alt} fill priority={eager} sizes="100vw" className={cn('object-cover', imageClassName)} />
       </div>
    )
 }

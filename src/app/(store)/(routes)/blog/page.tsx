@@ -3,8 +3,8 @@ import { getStaticBlogs } from '@/lib/static-blogs'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-   title: 'Ideas & guides',
-   description: 'Packaging tips for restaurants, e-commerce brands, and retailers.',
+   title: 'Packaging & Printing Guides',
+   description: 'Packaging, printing and branding guides for restaurants, e-commerce brands and retailers in Pakistan, from the Joji Arts studio in Lahore.',
 }
 
 export default function BlogIndexPage() {

@@ -8,7 +8,7 @@ import {
    SIGNATURE_CATEGORIES,
    type Category,
 } from '@/catalog'
-import config from '@/config/site'
+import { JsonLd, localBusinessJsonLd } from '@/lib/seo'
 import { SITE_STATS } from '@/config/stats'
 import { CategoryCard, DepartmentTile, ProductCard, SectionHeading } from '@/components/store/cards'
 import { BackgroundImage } from '@/components/store/background-image'
@@ -51,7 +51,7 @@ function Hero() {
                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
                      <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                   </span>
-                  Rigid boxes · Mailer boxes · Business cards
+                  Packaging · Printing · Signage — Lahore, Pakistan
                </p>
                {/* The H1 is exactly "Make your brand stand out." for screen readers and search engines.
                    The rotating second line sits outside it and is visual only. */}
@@ -92,8 +92,8 @@ function Hero() {
                   </span>
                </div>
                <p className="mt-5 max-w-xl text-[17px] font-medium leading-relaxed text-white/90 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
-                  Luxury rigid boxes, mailer boxes and foil business cards — designed with you, printed with care,
-                  delivered on time.
+                  Custom packaging, printed boxes, business cards and signage from our studio in Lahore — designed
+                  with you, printed with care, delivered on time.
                </p>
                <div className="mt-7 flex flex-col gap-3 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:flex-row" style={{ animationDelay: '650ms', animationFillMode: 'both' }}>
                   <Magnetic className="w-full sm:w-auto">
@@ -161,7 +161,7 @@ function SignatureThree() {
 
    return (
       <section id="signature" className="grain relative scroll-mt-28 overflow-hidden bg-[#120d0a] py-16 text-white sm:py-20">
-         <BackgroundImage src="/catalog/c/custom-packaging/custom-printing.jpg" />
+         <BackgroundImage src="/catalog/c/custom-packaging/custom-printing.jpg" alt="Custom printed brand launch kit packaging by Joji Arts, Lahore" />
          <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgb(18_13_10/0.72)_0%,rgb(18_13_10/0.38)_30%,rgb(18_13_10/0.38)_70%,rgb(18_13_10/0.6)_100%)]" />
          <div className="pointer-events-none absolute -left-32 top-10 h-[460px] w-[460px] rounded-full bg-[#D9AE4F]/15 blur-[120px]" />
          <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-[#D42F25]/20 blur-[120px]" />
@@ -292,7 +292,7 @@ function SignageFeature() {
          className="relative mt-8 overflow-hidden bg-[#0f0a14] py-20 text-white sm:py-28"
          style={{ ['--accent-hex' as string]: dept.accent }}
       >
-         <BackgroundImage src="/catalog/c/signage-displays/neon-signs.jpg" />
+         <BackgroundImage src="/catalog/c/signage-displays/neon-signs.jpg" alt="Custom neon signs made by Joji Arts in Lahore" />
          <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0f0a14]/80 via-[#0f0a14]/40 to-[#0f0a14]/10" />
          <div className="pointer-events-none absolute -left-40 top-0 h-[520px] w-[520px] rounded-full bg-[#ff2e88]/25 blur-[120px]" />
          <div className="pointer-events-none absolute -right-40 bottom-0 h-[460px] w-[460px] rounded-full bg-[#2ee6ff]/15 blur-[120px]" />
@@ -584,30 +584,12 @@ function KineticBand() {
 
 /** Business details for search engines; everything comes from the site config. */
 function LocalBusinessJsonLd({ reviews }: { reviews: ReviewsData | null }) {
-   const { address } = config
-   const jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'LocalBusiness',
-      name: config.name,
-      description: config.description,
-      url: config.url,
-      telephone: config.phoneIntl,
-      email: config.adminEmail,
-      address: {
-         '@type': 'PostalAddress',
-         streetAddress: `${address.line1}, ${address.line2}`,
-         addressLocality: address.city,
-         addressRegion: address.region,
-         addressCountry: address.countryCode,
-      },
-      geo: { '@type': 'GeoCoordinates', latitude: address.geo.lat, longitude: address.geo.lng },
-      hasMap: address.mapsUrl,
-      // Only from Google's live data, never from hand-copied reviews
-      ...(reviews?.source === 'google-api' && reviews.rating && reviews.count
+   // Rating only from Google's live data, never from hand-copied reviews
+   const rating =
+      reviews?.source === 'google-api' && reviews.rating && reviews.count
          ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: reviews.rating, reviewCount: reviews.count, bestRating: 5 } }
-         : {}),
-   }
-   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+         : {}
+   return <JsonLd data={localBusinessJsonLd(rating)} />
 }
 
 export default async function HomePage() {

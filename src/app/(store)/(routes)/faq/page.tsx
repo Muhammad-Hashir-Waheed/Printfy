@@ -1,10 +1,11 @@
 import { ContentPage } from '@/components/native/content-page'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { JsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-   title: 'FAQ',
-   description: 'Frequently asked questions about custom packaging orders, artwork, and shipping.',
+   title: 'FAQ — Ordering Custom Packaging & Printing',
+   description: 'Answers about ordering custom packaging, printing and signage from Joji Arts in Lahore: artwork, proofs, turnaround, pricing and bulk orders.',
 }
 
 const FAQS: Array<{ q: string; a: string }> = [
@@ -47,11 +48,22 @@ const FAQS: Array<{ q: string; a: string }> = [
 ]
 
 export default function FaqPage() {
+   const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: FAQS.map((item) => ({
+         '@type': 'Question',
+         name: item.q,
+         acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+   }
+
    return (
       <ContentPage
          title="FAQ"
          description="Answers to common questions about ordering packaging, print and signage."
       >
+         <JsonLd data={jsonLd} />
          {FAQS.map((item) => (
             <div key={item.q}>
                <h2>{item.q}</h2>

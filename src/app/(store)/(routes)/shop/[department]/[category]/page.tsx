@@ -28,8 +28,8 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
    const category = getCategory(params.department, params.category)
    if (!category) return {}
    return {
-      title: `${category.name} — ${category.departmentName}`,
-      description: `${category.blurb} Shop ${category.products.length} custom ${category.name.toLowerCase()} at Joji Arts.`,
+      title: /^custom\b/i.test(category.name) ? `${category.name} in Lahore` : `Custom ${category.name} in Lahore`,
+      description: `${category.blurb} Choose from ${category.products.length} styles, made by Joji Arts in Lahore, Pakistan.`,
       alternates: { canonical: category.canonical ? category.canonical.href : './' },
    }
 }

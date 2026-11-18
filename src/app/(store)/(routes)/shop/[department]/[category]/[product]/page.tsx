@@ -32,13 +32,20 @@ export function generateStaticParams() {
    }))
 }
 
+/** "Custom X in Lahore", kept within ~60 characters once the " | Joji Arts" suffix is added. */
+function productTitle(name: string) {
+   const suffix = ` | ${config.name}`.length
+   const custom = /^custom\b/i.test(name) ? `${name} in Lahore` : `Custom ${name} in Lahore`
+   return custom.length + suffix <= 60 ? custom : `${name} in Lahore`
+}
+
 export async function generateMetadata(props: Params): Promise<Metadata> {
    const params = await props.params
    const product = getProduct(params.department, params.category, params.product)
    if (!product) return {}
    return {
-      title: product.name,
-      description: `${product.summary} Custom ${product.name.toLowerCase()} from ${config.name} — ${product.preset.leadTime} production.`,
+      title: productTitle(product.name),
+      description: `${product.summary} Custom ${product.name.toLowerCase()} printed in Lahore by ${config.name} — ${product.preset.leadTime} production.`,
       openGraph: product.image ? { images: [{ url: `${product.image.src}?auto=compress&w=1200` }] } : undefined,
    }
 }

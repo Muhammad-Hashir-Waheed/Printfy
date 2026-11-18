@@ -1,6 +1,7 @@
 import { Separator } from '@/components/native/separator'
 import { getStaticBlog, getStaticBlogs, type StaticBlogPost } from '@/lib/static-blogs'
 import { BlogBody } from './components/blog-body'
+import { JsonLd, siteUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,7 +18,14 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
    return {
       title: blog.title,
       description: blog.description,
-      openGraph: { type: 'article', title: blog.title, description: blog.description, images: [blog.image] },
+      openGraph: {
+         type: 'article',
+         title: blog.title,
+         description: blog.description,
+         images: [blog.image],
+         publishedTime: blog.createdAt,
+         modifiedTime: blog.updatedAt,
+      },
    }
 }
 
@@ -39,8 +47,22 @@ export default async function BlogPostPage(
       .filter((post) => post.slug !== blog.slug)
       .slice(0, 3)
 
+   const jsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: blog.title,
+      description: blog.description,
+      image: blog.image,
+      datePublished: blog.createdAt,
+      dateModified: blog.updatedAt,
+      author: { '@type': 'Organization', name: blog.author.name },
+      publisher: { '@id': `${siteUrl}/#business` },
+      mainEntityOfPage: `${siteUrl}/blog/${blog.slug}`,
+   }
+
    return (
       <div className="page-shell grid grid-cols-1 gap-6 pb-10 pt-10 md:grid-cols-4">
+         <JsonLd data={jsonLd} />
          <Content blog={blog} />
          <Recommendations recommendations={recommendations} />
       </div>

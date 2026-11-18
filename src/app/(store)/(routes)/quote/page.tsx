@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
 export const metadata: Metadata = {
-   title: 'Request a quote',
+   title: 'Get a Free Printing & Packaging Quote',
    description: 'Custom sizes, special finishes, bulk orders and signage projects — get a tailored quote from Joji Arts within one business day.',
 }
 

@@ -1,5 +1,6 @@
 import { SiteFooter } from '@/components/store/site-footer'
 import { SiteHeader } from '@/components/store/site-header'
+import { JsonLd, websiteJsonLd } from '@/lib/seo'
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
    return (
@@ -10,6 +11,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
          >
             Skip to content
          </a>
+         <JsonLd data={websiteJsonLd()} />
          <SiteHeader />
          <main id="main">{children}</main>
          <SiteFooter />
