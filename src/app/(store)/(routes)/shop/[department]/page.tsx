@@ -4,6 +4,8 @@ import { CategoryCard, ProductCard, SectionHeading } from '@/components/store/ca
 import { CatalogImage } from '@/components/store/catalog-image'
 import { Reveal } from '@/components/store/motion'
 import { QuoteBand } from '@/components/store/quote-band'
+import { SeoContentSection } from '@/components/store/seo-content'
+import { seoContentFor } from '@/catalog/seo-content'
 import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -21,6 +23,7 @@ export function generateStaticParams() {
 /** Search-friendly page titles; department names that don't read well on their own get a phrase people search for. */
 const TITLES: Record<string, string> = {
    packaging: 'Printed Packaging Boxes in Lahore',
+   bags: 'Personalised & Printed Bags in Lahore',
    printing: 'Printing Services in Lahore',
    marketing: 'Flyer, Poster & Banner Printing in Lahore',
    corporate: 'Corporate Gifts & Stationery in Lahore',
@@ -46,6 +49,7 @@ export default async function DepartmentPage(props: Params) {
    if (!dept) notFound()
 
    const dark = dept.dark
+   const seo = seoContentFor(dept.slug)
    const picks = dept.categories
       .filter((c) => !c.canonical)
       .flatMap((c) => c.products.slice(0, 2))
@@ -121,6 +125,8 @@ export default async function DepartmentPage(props: Params) {
                </Reveal>
             </section>
          ) : null}
+
+         {seo ? <SeoContentSection content={seo} dark={dark} /> : null}
 
          <QuoteBand
             title={dark ? 'Planning a sign or a full fit-out?' : undefined}
