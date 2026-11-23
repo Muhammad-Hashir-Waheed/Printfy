@@ -33,7 +33,7 @@ const config = {
       /** Single-line form for compact spots and the map search. */
       full: 'Office #5, Second Floor, ESA Musa Center, Royal Park, Lakshmi Chowk, Lahore, Pakistan',
       /** Share link from the owner — used for "Get directions". */
-      mapsUrl: 'https://maps.app.goo.gl/4i7TMakh6HCcpPaeA',
+      mapsUrl: 'https://maps.google.com/?cid=15492792891243253056',
       /** Pin coordinates, taken from where the share link above resolves. */
       geo: { lat: 31.5660052, lng: 74.3246282 },
    },
@@ -63,7 +63,7 @@ const config = {
       tiktok: '',
       linkedin: '',
       /** Google Maps listing (the owner's share link) */
-      googleMaps: 'https://maps.app.goo.gl/4i7TMakh6HCcpPaeA',
+      googleMaps: 'https://maps.google.com/?cid=15492792891243253056',
    },
 }
 

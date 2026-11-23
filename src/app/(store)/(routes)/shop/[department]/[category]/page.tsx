@@ -3,7 +3,9 @@ import { Breadcrumbs } from '@/components/store/breadcrumbs'
 import { CatalogImage } from '@/components/store/catalog-image'
 import { ProductGrid } from '@/components/store/product-grid'
 import { QuoteBand } from '@/components/store/quote-band'
+import { SeoContentSection } from '@/components/store/seo-content'
 import { SignatureFlagship, signatureContentFor } from '@/components/store/signature-flagship'
+import { seoContentFor } from '@/catalog/seo-content'
 import { unitMoney } from '@/lib/money'
 import config from '@/config/site'
 import { cn } from '@/lib/utils'
@@ -43,6 +45,7 @@ export default async function CategoryPage(props: Params) {
    const dark = dept.dark
    const canonicalDept = category.canonical ? getDepartment(category.canonical.departmentSlug) : null
    const signature = signatureContentFor(category)
+   const seo = seoContentFor(params.department, params.category)
 
    return (
       <div style={{ ['--accent-hex' as string]: dept.accent }}>
@@ -104,6 +107,8 @@ export default async function CategoryPage(props: Params) {
          </section>
 
          {signature ? <SignatureFlagship category={category} content={signature} /> : null}
+
+         {seo ? <SeoContentSection content={seo} dark={dark} /> : null}
 
          <section className="page-shell mt-16">
             <p className="eyebrow mb-4 text-muted-foreground">More in {dept.name}</p>

@@ -16,7 +16,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
    const blog = getStaticBlog(params.slug)
    if (!blog) return {}
    return {
-      title: blog.title,
+      title: blog.seoTitle ?? blog.title,
       description: blog.description,
       openGraph: {
          type: 'article',
@@ -52,7 +52,7 @@ export default async function BlogPostPage(
       '@type': 'BlogPosting',
       headline: blog.title,
       description: blog.description,
-      image: blog.image,
+      image: blog.image.startsWith('/') ? `${siteUrl}${blog.image}` : blog.image,
       datePublished: blog.createdAt,
       dateModified: blog.updatedAt,
       author: { '@type': 'Organization', name: blog.author.name },
