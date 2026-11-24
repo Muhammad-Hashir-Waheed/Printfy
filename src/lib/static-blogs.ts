@@ -13,6 +13,125 @@ export type StaticBlogPost = {
 
 export const STATIC_BLOGS: StaticBlogPost[] = [
    {
+      slug: 'mailer-vs-corrugated-vs-rigid-box',
+      seoTitle: 'Mailer vs Corrugated vs Rigid Box: Which to Choose?',
+      title: 'Mailer box, corrugated box or rigid box: which packaging is right for your product?',
+      description:
+         'Compare mailer, corrugated, rigid, folding carton and kraft boxes by strength, look, cost and lead time, and pick the right custom box for your product.',
+      image: '/catalog/c/packaging/rigid-boxes.jpg',
+      author: { name: 'Joji Arts Team' },
+      createdAt: '2026-11-24T00:00:00.000Z',
+      updatedAt: '2026-11-24T00:00:00.000Z',
+      content: `Choosing a box is a balance between protection, presentation and budget. A box that is too weak gets crushed by the courier; a box that is too fancy eats into your margin. This guide compares the five most common custom packaging boxes so you can match the box to your product.
+
+## Quick comparison
+
+- **Mailer box:** best for e-commerce and subscription orders. Strong, self-locking and looks great when opened. From 100 boxes, 7–10 business days.
+- **Corrugated box:** best for shipping, heavy items and storage. The strongest option, especially in double wall. From 100 boxes, 7–10 business days.
+- **Rigid box:** best for luxury products and gifts. Thick, heavy and premium. From 50 boxes, 12–15 business days.
+- **Folding carton:** best for retail shelves, cosmetics and pharma. Light, printable and ships flat. From 100 cartons, 7–10 business days.
+- **Kraft box:** best for eco-friendly and handmade brands. A natural brown look. From 100 boxes, 7–10 business days.
+
+## Mailer boxes: for online stores
+
+A [mailer box](/shop/packaging/mailer-boxes) is a one-piece corrugated box with a tuck-in lid that locks without tape. It is strong enough to go straight into a courier bag, and it gives customers a proper unboxing moment, especially when you print the inside of the lid. Clothing, cosmetics, candle, gadget and gift brands use mailers more than any other box.
+
+**Choose it if:** you sell online, ship by courier, and want the box itself to feel like part of the brand.
+
+## Corrugated boxes: for strength
+
+[Corrugated boxes](/shop/packaging/corrugated-boxes) are made from fluted board, the wavy layer between two flat sheets that gives the box its strength. Single wall (E or B flute) suits most products; double wall (BC flute) is for heavy, fragile or high-value items, and for warehouse storage. They can be printed with a 1-colour logo, in full colour, or left plain.
+
+**Choose it if:** your product is heavy or fragile, or you ship in bulk to shops and distributors.
+
+## Rigid boxes: for luxury
+
+[Rigid boxes](/shop/packaging/rigid-boxes) are built from 1.5–2.5 mm greyboard wrapped in printed or textured paper, and finished by hand. They don't fold flat, they feel heavy in the hand, and they say "premium" before the customer even opens them. Styles include magnetic closure, drawer, book-style and lift-off lid boxes, often with foil, embossing and a foam or velvet insert.
+
+**Choose it if:** you sell perfume, jewellery, watches, premium clothing or gift sets, or you are launching a product and want a memorable first impression.
+
+## Folding cartons: for shelves
+
+[Folding cartons](/shop/packaging/folding-cartons) are made from 350–400 gsm paperboard and printed with offset CMYK. They are light, ship flat to save space, and are ideal for products that sit on a shop shelf, such as cosmetics, skincare, medicines and small food items. Add a clear window, spot UV or foil to stand out.
+
+**Choose it if:** your product is light and sold in shops, and you need a sharp, detailed print.
+
+## Kraft boxes: for an eco look
+
+[Kraft boxes](/shop/packaging/kraft-boxes) use natural brown, recyclable board. They work in many styles, including tuck boxes, pillow boxes, window boxes, soap boxes and shipping boxes, and look best with a simple 1-colour logo.
+
+**Choose it if:** your brand is natural, handmade or eco-conscious.
+
+## What else affects your choice?
+
+1. **Size:** a box made to your product size protects better, looks neater and can lower courier charges. Every style can be made to a custom size.
+2. **Quantity:** most styles start from 100 boxes, and rigid boxes from 50. The price per box drops as the quantity goes up.
+3. **Finish:** matte, gloss or soft-touch lamination, foil, spot UV and inside printing all lift the look, and each adds some cost.
+4. **Timeline:** allow 7–10 business days for most boxes and 12–15 for rigid boxes, plus delivery.
+
+## Still not sure?
+
+Send us your product, its size and your budget, and we will recommend the right box and send a free proof. You can browse all our [custom packaging boxes in Pakistan](/shop/packaging), order a [sample box](/shop/custom-packaging/custom-printing/prototype-and-sample-box) first, or [request a quote](/quote). We print in Lahore and deliver across Pakistan.`,
+   },
+   {
+      slug: 'ecommerce-packaging-pakistan',
+      seoTitle: 'E-commerce Packaging in Pakistan: A Seller’s Guide',
+      title: 'Packaging for online stores in Pakistan: ship safely and impress customers',
+      description:
+         'A practical guide for online sellers in Pakistan: choosing boxes, mailers and pouches, branding the unboxing, and cutting damage and courier costs.',
+      image: '/catalog/c/packaging/mailer-boxes.jpg',
+      author: { name: 'Joji Arts Team' },
+      createdAt: '2026-11-24T00:00:00.000Z',
+      updatedAt: '2026-11-24T00:00:00.000Z',
+      content: `For an online store, the parcel is the first physical contact a customer has with your brand. It has to survive couriers and bumpy roads between cities, and it should make the customer happy to order again. Here is how to get e-commerce packaging right in Pakistan without overspending.
+
+## 1. Pick the right outer packaging
+
+Match the packaging to what you sell:
+
+- **Clothing, scarves and soft goods:** printed [poly mailers or pouches](/shop/bags/pouches) are light and cheap to ship, while a [mailer box](/shop/packaging/mailer-boxes) feels more premium for higher-value orders
+- **Cosmetics, skincare and candles:** a mailer box with an insert or tissue keeps bottles and jars from moving
+- **Electronics and fragile items:** a [corrugated box](/shop/packaging/corrugated-boxes), double wall for heavier products
+- **Food and snacks:** stand-up pouches, [kraft boxes](/shop/packaging/kraft-boxes) or food-grade [containers](/shop/food-packaging/food-containers)
+- **Gifts and premium products:** a [rigid box](/shop/packaging/rigid-boxes) inside a plain shipping carton
+
+## 2. Get the size right
+
+Oversized boxes need more filler, let products move around, and can push you into a higher courier weight or size band. Order boxes made to your product size, with just enough room for protection. If you sell a few product sizes, two or three box sizes usually cover everything.
+
+## 3. Protect what's inside
+
+Most damage happens when products move inside the box. Use:
+
+- A snug box size
+- Tissue paper, crinkle paper or a card insert for bottles and jars
+- Double-wall board for anything heavy
+- Tape or a sticker seal on mailers that will travel long distances
+
+## 4. Brand the unboxing, not just the outside
+
+You don't need full-colour printing everywhere to create a memorable unboxing. A few affordable touches go a long way:
+
+- A **1-colour logo** on a kraft mailer looks clean and premium
+- **Inside printing** on the mailer lid, such as a thank-you message, pattern or your Instagram handle
+- A **[custom sticker](/shop/labels-stickers/stickers)** to seal the tissue paper
+- A printed **thank-you card or flyer** with a discount code for the next order
+
+These small details get your parcels photographed and shared, which is free marketing.
+
+## 5. Label clearly
+
+Use [shipping labels](/shop/labels-stickers/shipping-labels) printed with your logo and return address, and [barcode or QR labels](/shop/labels-stickers/barcode-qr-labels) if you track stock. Clear labels mean fewer failed deliveries and returns.
+
+## 6. Plan stock and lead times
+
+Running out of boxes during a sale is costly. Custom mailer and corrugated boxes start from 100 pieces and take 7–10 business days after proof approval; pouches take 10–12 business days; stickers and labels take 4–6. Reorder when you still have a few weeks of stock left.
+
+## Packaging that grows with your store
+
+Start simple with a kraft mailer, a logo sticker and a thank-you card, then upgrade to full-colour or inside-printed boxes as your order volume grows. Joji Arts prints all of it at our studio in Lahore and delivers across Pakistan, so your packaging can grow with your store. Browse our [custom packaging boxes](/shop/packaging) or [request a quote](/quote), and we will reply within one business day with prices and a free proof.`,
+   },
+   {
       slug: 'food-packaging-lahore-guide',
       seoTitle: 'Food Packaging in Lahore: Guide for Restaurants',
       title: 'Food packaging in Lahore: a practical guide for restaurants and cloud kitchens',

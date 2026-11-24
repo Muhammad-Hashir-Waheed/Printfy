@@ -8,6 +8,10 @@
 export type SeoFaq = { q: string; a: string }
 
 export type SeoContent = {
+   /** Overrides the page's <title> (the " | Joji Arts" suffix is added automatically) */
+   title?: string
+   /** Overrides the meta description; keep it under ~160 characters */
+   description?: string
    heading: string
    paragraphs: string[]
    faqs: SeoFaq[]
@@ -25,6 +29,181 @@ const DELIVERY: SeoFaq = {
 
 /** Keyed by department slug, or `department/category` for a category page. */
 export const SEO_CONTENT: Record<string, SeoContent> = {
+
+   packaging: {
+      title: 'Custom Packaging Boxes in Pakistan',
+      description:
+         'Custom printed packaging boxes in Pakistan: mailer, corrugated, rigid, kraft and folding carton boxes made to your size. From 100 boxes, printed in Lahore.',
+      heading: 'Custom packaging boxes in Pakistan, made to your size',
+      paragraphs: [
+         'Joji Arts designs and prints custom packaging boxes for brands, online stores, restaurants and manufacturers across Pakistan. Every box is made to your product size and printed with your logo, from simple 1-colour shipping cartons to luxury rigid gift boxes with foil and embossing. Our studio is at Lakshmi Chowk in Lahore, and we deliver to Karachi, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar and every other city in Pakistan.',
+         '**Which box do you need?** [Mailer boxes](/shop/packaging/mailer-boxes) are self-locking boxes for e-commerce and subscription orders that look great when opened. [Corrugated boxes](/shop/packaging/corrugated-boxes) are strong single and double-wall cartons for shipping, storage and moving. [Rigid boxes](/shop/packaging/rigid-boxes) are heavyweight luxury boxes for perfume, jewellery, watches and gifts. [Folding cartons](/shop/packaging/folding-cartons) are paperboard boxes for retail shelves, cosmetics and pharmaceuticals. [Kraft boxes](/shop/packaging/kraft-boxes) give an eco-friendly, natural look, and [specialty boxes](/shop/packaging/specialty-boxes) include hexagon, cylinder, pillow and sliding-sleeve shapes.',
+         '**Materials and printing.** Shipping and mailer boxes use white or kraft corrugated board in E, B or double-wall BC flute. Folding cartons use 350–400 gsm SBS white, kraft or metallic board. Print the outside, or the outside and inside, in full colour with Pantone matching, or keep costs low with a 1-colour logo or unprinted boxes. Finish with matte, gloss or soft-touch lamination, foil accents, spot UV or a clear window.',
+         '**Minimums and lead times.** Mailer, corrugated, kraft and folding carton boxes start from 100 boxes and take 7–10 business days after you approve the proof. Rigid and specialty boxes start from 50 boxes and take 12–15 business days. Every order includes a free structural and artwork check, and a digital proof before anything is printed. Need a sample first? Order a [prototype or sample box](/shop/custom-packaging/custom-printing/prototype-and-sample-box), or get help from our [packaging design service](/shop/custom-packaging/custom-printing/packaging-design-service).',
+      ],
+      faqs: [
+         {
+            q: 'What is the minimum order for custom packaging boxes?',
+            a: 'Mailer, corrugated, kraft and folding carton boxes start from 100 boxes per design. Rigid and specialty luxury boxes start from 50. Larger quantities lower the price per box, and we price every quantity tier in your quote.',
+         },
+         {
+            q: 'Can you make boxes in my exact size?',
+            a: 'Yes. Every style is available in small, medium and large, or in a custom size made to your product. Send us your product dimensions and we will check the structure for free before printing.',
+         },
+         {
+            q: 'How long does custom box printing take?',
+            a: 'Most boxes take 7–10 business days after proof approval, and rigid luxury boxes 12–15 business days, plus delivery time to your city.',
+         },
+         {
+            q: 'Which box is best for an online store?',
+            a: 'Mailer boxes are the most popular for e-commerce: they lock without tape, protect products in transit and can be printed inside for a memorable unboxing. For heavy items, choose a double-wall corrugated box.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'packaging/mailer-boxes': {
+      title: 'Custom Mailer Boxes in Pakistan',
+      description:
+         'Printed mailer boxes for e-commerce and subscription brands in Pakistan: self-locking, printed inside and out, made to your size. From 100 boxes.',
+      heading: 'Custom printed mailer boxes for e-commerce brands',
+      paragraphs: [
+         'Mailer boxes are the go-to packaging for online stores and subscription brands. They fold together and lock without tape, protect your products in the post, and turn every delivery into a branded unboxing. Choose a [branded mailer box](/shop/packaging/mailer-boxes/branded-mailer-box), a sturdier [rigid mailer box](/shop/packaging/mailer-boxes/rigid-mailer-box), an economical lite mailer, an eco [kraft mailer box](/shop/packaging/mailer-boxes/kraft-mailer-box), a subscription mailer, or an [inside-printed mailer box](/shop/packaging/mailer-boxes/inside-printed-mailer-box) that reveals a message when it opens.',
+         'Mailers are made from white or kraft corrugated board, or double-wall for heavier items, and printed in full colour outside, outside and inside, or with a 1-colour logo. Add a matte, gloss or soft-touch finish or foil accents. Every size can be made to fit your product, which also keeps courier charges down. The minimum order is 100 boxes, produced in 7–10 business days after proof approval.',
+         'We print mailer boxes in Lahore for clothing, cosmetics, candles, bakery, gadget and gift brands, and deliver them across Pakistan. Pair them with [custom stickers](/shop/labels-stickers/stickers) and tissue for a complete unboxing.',
+      ],
+      faqs: [
+         {
+            q: 'What is a mailer box?',
+            a: 'A one-piece corrugated box with a tuck-in lid that locks without tape. It is strong enough to ship by courier and looks premium when the customer opens it, which is why most e-commerce brands use it.',
+         },
+         {
+            q: 'Can you print inside the mailer box?',
+            a: 'Yes. Choose "outside + inside" printing to add a pattern, thank-you note or social handles on the inside of the lid.',
+         },
+         {
+            q: 'What is the minimum order for mailer boxes?',
+            a: '100 boxes per design and size, with production in 7–10 business days after you approve the proof.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'printing/business-cards': {
+      title: 'Business Card Printing in Lahore',
+      description:
+         'Business card printing in Lahore: matte, soft-touch, spot UV, foil and kraft cards on 350–600 gsm stock. From 100 cards, ready in 3–5 days.',
+      heading: 'Business card printing in Lahore, ready in 3–5 days',
+      paragraphs: [
+         'A good business card is still the quickest way to leave a lasting impression. Joji Arts prints [standard business cards](/shop/printing/business-cards/standard-business-cards), [premium matte cards](/shop/printing/business-cards/premium-matte-business-cards), [spot UV cards](/shop/printing/business-cards/spot-uv-business-cards), [foil business cards](/shop/printing/business-cards/foil-business-cards), recycled [kraft business cards](/shop/printing/business-cards/kraft-business-cards) and rounded-corner cards.',
+         'Choose 350 gsm silk, 400 gsm matte or thick 600 gsm luxe paper, or recycled kraft, printed on one or both sides at the standard 85 × 55 mm size. Finish with matte, gloss, soft-touch or spot UV, with square or rounded corners. Cards start from 100 and are printed in 3–5 business days, with a free design check and Pantone-accurate colour.',
+         'Pick up from our studio at Lakshmi Chowk, Lahore, or have your cards delivered anywhere in Pakistan. Matching [letterheads](/shop/printing/letterheads), [envelopes](/shop/printing/envelopes) and [flyers](/shop/printing/flyers) are available in the same style.',
+      ],
+      faqs: [
+         {
+            q: 'How fast can you print business cards?',
+            a: 'Business cards are printed in 3–5 business days after you approve the proof, plus delivery time if you are outside Lahore.',
+         },
+         {
+            q: 'What is the minimum order for business cards?',
+            a: '100 cards per design. Larger quantities lower the price per card.',
+         },
+         {
+            q: 'Which finish looks most premium?',
+            a: 'Soft-touch lamination on 600 gsm luxe board feels the most premium. Add spot UV or foil on your logo to make it stand out.',
+         },
+         {
+            q: 'Can you design my business card?',
+            a: 'Yes. Send your logo and details and our team will lay out the card and send a free proof before printing.',
+         },
+         DELIVERY,
+      ],
+   },
+
+   'labels-stickers': {
+      title: 'Custom Stickers & Labels in Pakistan',
+      description:
+         'Custom stickers and product labels printed in Lahore: waterproof vinyl, holographic, kraft and BOPP labels on rolls or sheets. From 250, delivered across Pakistan.',
+      heading: 'Custom stickers and product labels, printed in Lahore',
+      paragraphs: [
+         'Labels and stickers are the easiest way to brand jars, bottles, boxes, bags and parcels. Joji Arts prints [product labels](/shop/labels-stickers/product-labels) for food, cosmetics and drinks, [custom stickers](/shop/labels-stickers/stickers) for packaging and giveaways, [shipping labels](/shop/labels-stickers/shipping-labels), and [barcode and QR labels](/shop/labels-stickers/barcode-qr-labels).',
+         'Product labels come in white paper, waterproof white BOPP, clear BOPP, kraft paper or metallic, with permanent, removable or freezer adhesive, supplied on machine-ready rolls or sheets. Stickers are printed on gloss, matte, holographic or clear vinyl that is waterproof and UV-resistant, and can be cut to any shape. Both start from 250 pieces and are printed in 4–6 business days after proof approval.',
+         'We print in Lahore and deliver to businesses across Pakistan. Pair your labels with our [custom packaging boxes](/shop/packaging) for a consistent brand look.',
+      ],
+      faqs: [
+         {
+            q: 'What is the minimum order for custom stickers and labels?',
+            a: '250 stickers or labels per design. Larger runs lower the price per piece.',
+         },
+         {
+            q: 'Are your labels waterproof?',
+            a: 'Yes, if you choose white or clear BOPP for labels or vinyl for stickers. Both resist water and oil, which makes them ideal for drinks, sauces, cosmetics and fridge or freezer products.',
+         },
+         {
+            q: 'Can I get labels on rolls for a labelling machine?',
+            a: 'Yes. Product labels can be supplied on machine-ready rolls or on sheets for hand application.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'signage-displays/neon-signs': {
+      title: 'Custom Neon Signs in Lahore',
+      description:
+         'Custom LED neon signs in Lahore: your logo, name or quote in any colour, 50–150 cm wide, plug-and-play with a 2-year warranty. Delivered across Pakistan.',
+      heading: 'Custom LED neon signs made in Lahore',
+      paragraphs: [
+         'Neon signs make shops, cafés, salons, offices and events instantly recognisable, and they look great in photos. Joji Arts makes [custom neon signs](/shop/signage-displays/neon-signs/custom-neon-signs), [neon logo signs](/shop/signage-displays/neon-signs/neon-logo-signs), [neon name signs](/shop/signage-displays/neon-signs/neon-name-signs) for weddings and bedrooms, neon quotes and wall signs, all with modern [LED neon](/shop/signage-displays/neon-signs/led-neon-signs) that is safe, light and energy-efficient.',
+         'Choose a size from 50 cm to 150 cm wide, a colour such as hot pink, ice blue, warm white or purple, or RGB colour-changing, and a backboard cut to shape, clear rectangle, black acrylic or free-standing. Every sign is plug-and-play on a 12V adapter and comes with a 2-year warranty. You can order just one sign, and it is made in 7–10 business days after you approve the design mock-up.',
+         'We make neon signs in Lahore and deliver across Pakistan. For bigger shop-front projects, see our [sign boards](/shop/signage-displays/sign-boards) and [3D letter signs](/shop/signage-displays/3d-raised-letter-signs).',
+      ],
+      faqs: [
+         {
+            q: 'How much does a custom neon sign cost?',
+            a: 'The price depends mainly on size, the length of the text or logo, and the colours. Send us your text or logo and preferred size, and we will send a mock-up and price within one business day.',
+         },
+         {
+            q: 'Can I order just one neon sign?',
+            a: 'Yes. Neon signs are made to order, so the minimum is one sign.',
+         },
+         {
+            q: 'Are LED neon signs safe to use indoors?',
+            a: 'Yes. LED neon runs on a low-voltage 12V adapter, stays cool to the touch and uses far less power than glass neon. Every sign has a 2-year warranty.',
+         },
+         {
+            q: 'How long does a custom neon sign take?',
+            a: '7–10 business days after you approve the design mock-up, plus delivery time to your city.',
+         },
+         DELIVERY,
+      ],
+   },
+
+   'food-packaging/food-containers': {
+      title: 'Custom Food Containers & Meal Trays',
+      description:
+         'Branded food containers for restaurants and caterers in Pakistan: clamshells, compartment boxes, salad bowls, meal trays and soup containers. From 100.',
+      heading: 'Food containers for delivery and catering',
+      paragraphs: [
+         'Delivery food has to arrive hot, sealed and looking good. Joji Arts supplies branded [hinged food containers](/shop/food-packaging/food-containers/hinged-food-container) (clamshells), [compartment containers](/shop/food-packaging/food-containers/compartmented-container) for rice and curry meals, [salad bowls](/shop/food-packaging/food-containers/salad-bowl-container), [kraft meal trays with lids](/shop/food-packaging/food-containers/kraft-meal-tray-with-lid), [catering meal trays](/shop/food-packaging/food-containers/catering-meal-tray) and soup containers.',
+         'Containers are made from food-grade board with a water-based barrier coating in white, kraft or grease-resistant finishes, and can be printed with a 1-colour logo, 2 colours or full colour. The minimum order is 100 pieces, with production in 6–9 business days after you approve the proof.',
+         'Complete your takeaway packaging with [pizza and burger boxes](/shop/food-packaging/food-boxes), [cups](/shop/food-packaging/cups) and [food bags](/shop/food-packaging/food-bags). Read our [guide to food packaging in Lahore](/blog/food-packaging-lahore-guide) for help choosing.',
+      ],
+      faqs: [
+         {
+            q: 'Are your food containers leak-proof?',
+            a: 'They are made from food-grade board with a water-based barrier coating that resists grease and moisture. For very liquid dishes, choose soup containers or the grease-resistant coated option.',
+         },
+         {
+            q: 'What is the minimum order for printed food containers?',
+            a: '100 pieces per design, produced in 6–9 business days after proof approval.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
    'food-packaging': {
       heading: 'Custom food packaging in Lahore, delivered across Pakistan',
       paragraphs: [

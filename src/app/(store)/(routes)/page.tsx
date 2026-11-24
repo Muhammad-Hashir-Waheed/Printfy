@@ -92,8 +92,11 @@ function Hero() {
                   </span>
                </div>
                <p className="mt-5 max-w-xl text-[17px] font-medium leading-relaxed text-white/90 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:text-lg" style={{ animationDelay: '500ms', animationFillMode: 'both' }}>
-                  Custom packaging, printed boxes, business cards and signage from our studio in Lahore — designed
-                  with you, printed with care, delivered on time.
+                  <Link href="/shop/packaging" className="underline decoration-white/40 underline-offset-4 hover:decoration-white">
+                     Custom packaging boxes
+                  </Link>
+                  , business cards and signage from our studio in Lahore — designed with you, printed with care,
+                  delivered across Pakistan.
                </p>
                <div className="mt-7 flex flex-col gap-3 animate-in fade-in-0 slide-in-from-bottom-3 duration-1000 sm:flex-row" style={{ animationDelay: '650ms', animationFillMode: 'both' }}>
                   <Magnetic className="w-full sm:w-auto">

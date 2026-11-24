@@ -24,6 +24,8 @@ export function generateStaticParams() {
 const TITLES: Record<string, string> = {
    packaging: 'Printed Packaging Boxes in Lahore',
    bags: 'Personalised & Printed Bags in Lahore',
+   // Packaging targets "custom packaging boxes"; keep this one on design and prototypes so they don't compete
+   'custom-packaging': 'Custom Packaging Design & Prototypes in Lahore',
    printing: 'Printing Services in Lahore',
    marketing: 'Flyer, Poster & Banner Printing in Lahore',
    corporate: 'Corporate Gifts & Stationery in Lahore',
@@ -37,9 +39,10 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
    const params = await props.params
    const dept = getDepartment(params.department)
    if (!dept) return {}
+   const seo = seoContentFor(dept.slug)
    return {
-      title: departmentTitle(dept.slug, dept.name),
-      description: `${dept.description} From Joji Arts in Lahore, Pakistan.`,
+      title: seo?.title ?? departmentTitle(dept.slug, dept.name),
+      description: seo?.description ?? `${dept.description} From Joji Arts in Lahore, Pakistan.`,
    }
 }
 

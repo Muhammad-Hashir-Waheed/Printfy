@@ -29,9 +29,14 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
    const params = await props.params
    const category = getCategory(params.department, params.category)
    if (!category) return {}
+   const seo = seoContentFor(params.department, params.category)
    return {
-      title: /^custom\b/i.test(category.name) ? `${category.name} in Lahore` : `Custom ${category.name} in Lahore`,
-      description: `${category.blurb} Choose from ${category.products.length} styles, made by Joji Arts in Lahore, Pakistan.`,
+      title:
+         seo?.title ??
+         (/^custom\b/i.test(category.name) ? `${category.name} in Lahore` : `Custom ${category.name} in Lahore`),
+      description:
+         seo?.description ??
+         `${category.blurb} Choose from ${category.products.length} styles, made by Joji Arts in Lahore, Pakistan.`,
       alternates: { canonical: category.canonical ? category.canonical.href : './' },
    }
 }
