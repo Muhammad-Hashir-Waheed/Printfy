@@ -13,6 +13,121 @@ export type StaticBlogPost = {
 
 export const STATIC_BLOGS: StaticBlogPost[] = [
    {
+      slug: 'acrylic-vs-acp-vs-3d-sign-boards',
+      seoTitle: 'Acrylic vs ACP vs 3D Sign Boards: Which Is Best?',
+      title: 'Acrylic, ACP or 3D letters: choosing the right sign board for your shop',
+      description:
+         'Compare acrylic, ACP, metal, flex and 3D letter sign boards for shops and offices in Pakistan: looks, durability, lighting and when to use each.',
+      image: '/catalog/c/signage-displays/sign-boards.jpg',
+      author: { name: 'Joji Arts Team' },
+      createdAt: '2026-11-24T00:00:00.000Z',
+      updatedAt: '2026-11-24T00:00:00.000Z',
+      content: `Your sign board is the first thing customers see, often from across the road. The right material makes a shop look established and trustworthy; the wrong one fades, peels or gets lost among the neighbours. Here is how the most common sign board options compare.
+
+## Acrylic sign boards
+
+[Acrylic sign boards](/shop/signage-displays/sign-boards/acrylic-sign-boards) have a glossy, glass-like finish that looks premium and modern. They are popular for boutiques, salons, clinics, offices and reception areas. Acrylic can be printed, cut to shape, layered for depth, or lit from behind.
+
+**Best for:** premium shop fronts, receptions and indoor signs.
+
+## ACP sign boards
+
+[ACP (aluminium composite panel)](/shop/signage-displays/sign-boards/acp-sign-boards) is two thin aluminium sheets with a solid core. It is light, flat, rigid and very weather-resistant, which makes it the standard for large outdoor shop fronts and fascias. ACP is often combined with 3D or acrylic letters on top.
+
+**Best for:** large outdoor shop fronts that need to last.
+
+## Metal sign boards
+
+Aluminium and stainless steel boards are the most durable option and give a solid, corporate look. Brushed steel and aluminium are common for office names, building plaques and reception walls.
+
+**Best for:** corporate offices and long-term outdoor signs.
+
+## Flex and PVC boards
+
+Flex and PVC boards are the most economical choice, good for temporary signs, promotions, events and budget-friendly shop boards. They don't last as long outdoors as ACP or metal, but they are quick and affordable.
+
+**Best for:** temporary signs, events and tight budgets.
+
+## 3D and raised letter signs
+
+[3D letter signs](/shop/signage-displays/3d-raised-letter-signs) stand out from the wall in acrylic or metal, creating shadows and depth that flat boards can't match. They can be front-lit, back-lit (halo glow) or unlit, and are often mounted on an ACP base outdoors or straight onto a wall indoors.
+
+**Best for:** brands that want a premium, high-impact look.
+
+## Lit or unlit?
+
+If you are open after dark, lighting pays for itself:
+
+- **Front-lit** signs shine light onto or through the face for clear night-time visibility
+- **Back-lit** signs glow from behind for a soft, premium halo effect
+- **[Neon signs](/shop/signage-displays/neon-signs)** add colour and personality, and are great inside cafés, salons and shop windows
+
+## Practical tips
+
+1. **Check the viewing distance.** Letters need to be large enough to read from the road or the far end of the mall corridor.
+2. **Keep it simple.** Your name and one line about what you do is usually enough.
+3. **Choose outdoor-grade materials** and UV-resistant inks for anything in the sun.
+4. **Ask for a mock-up** on a photo of your shop front before production.
+
+## How we work
+
+Joji Arts makes [sign boards](/shop/signage-displays/sign-boards) in acrylic, ACP, metal and PVC, in indoor and outdoor grades with weatherproof UV inks and a warranty of up to 5 years outdoors. You can order a single sign, and we send a free layout mock-up first. Signs take 5–10 business days, and we offer delivery or delivery with installation. We are based at Lakshmi Chowk, Lahore. [Request a quote](/quote) with a photo of your space and your logo.`,
+   },
+   {
+      slug: 'custom-stickers-small-business',
+      seoTitle: 'Custom Stickers for Small Businesses in Pakistan',
+      title: '7 smart ways small businesses in Pakistan can use custom stickers',
+      description:
+         'Seal parcels, label products, brand packaging and promote your business: practical ways to use custom stickers and labels, plus which material to choose.',
+      image: '/catalog/c/labels-stickers/stickers.jpg',
+      author: { name: 'Joji Arts Team' },
+      createdAt: '2026-11-24T00:00:00.000Z',
+      updatedAt: '2026-11-24T00:00:00.000Z',
+      content: `Custom stickers are one of the cheapest ways to make plain packaging look branded. A roll of logo stickers can turn a plain box, bag or jar into something that looks professionally designed, without paying for fully printed packaging. Here are seven ways small businesses use them.
+
+## 1. Seal your packaging
+
+A round logo sticker sealing tissue paper, a pouch or a mailer box is the simplest unboxing upgrade there is. It looks deliberate, shows the parcel hasn't been opened, and puts your logo in every customer photo.
+
+## 2. Brand plain boxes and bags
+
+Ordering fully printed packaging for every product isn't always practical. Instead, buy plain [kraft boxes](/shop/packaging/kraft-boxes) or [paper bags](/shop/bags/paper-bags) and add a logo sticker. It is a smart way to start, then upgrade to printed packaging as you grow.
+
+## 3. Label your products
+
+Jars of honey, bottles of oil, candles, soaps, sauces, cosmetics: every product needs a label with your name, ingredients and contact details. [Product labels](/shop/labels-stickers/product-labels) on waterproof BOPP stay readable even when the product gets wet or oily.
+
+## 4. Add a thank-you or review request
+
+A small sticker saying "Thank you for your order", or one with a QR code to your Google reviews or Instagram, gently reminds happy customers to come back and tell others.
+
+## 5. Show your social media and WhatsApp
+
+Many customers in Pakistan reorder through WhatsApp or Instagram. A sticker with your number or handle on every box, bag or product makes the next order one tap away.
+
+## 6. Give them away
+
+People love stickers. Drop a few into orders, hand them out at events, or give them to students and young customers, and your logo ends up on laptops, bottles and phone cases.
+
+## 7. Track stock and shipments
+
+[Barcode and QR labels](/shop/labels-stickers/barcode-qr-labels) help you track stock, and [shipping labels](/shop/labels-stickers/shipping-labels) with your logo and return address make parcels look professional and reduce failed deliveries.
+
+## Which material should you choose?
+
+- **Gloss or matte vinyl:** waterproof and UV-resistant, best for stickers that will be handled or used outdoors
+- **Holographic vinyl:** eye-catching and fun, great for giveaways and youth brands
+- **Clear vinyl:** your design without a background, ideal on glass jars and bottles
+- **White BOPP:** waterproof product labels for food, drinks and cosmetics
+- **Kraft paper:** a natural look for handmade and organic products
+
+Stickers can be cut to any shape, and labels can be supplied on rolls or sheets, with permanent, removable or freezer adhesive.
+
+## Order custom stickers from Joji Arts
+
+[Custom stickers](/shop/labels-stickers/stickers) and [labels](/shop/labels-stickers) start from 250 pieces and are printed in 4–6 business days after proof approval. Send us your logo and we will prepare a free proof. We print in Lahore and deliver across Pakistan. [Request a quote](/quote) to get started.`,
+   },
+   {
       slug: 'mailer-vs-corrugated-vs-rigid-box',
       seoTitle: 'Mailer vs Corrugated vs Rigid Box: Which to Choose?',
       title: 'Mailer box, corrugated box or rigid box: which packaging is right for your product?',

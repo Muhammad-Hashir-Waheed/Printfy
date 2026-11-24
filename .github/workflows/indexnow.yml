@@ -1,0 +1,24 @@
+name: IndexNow
+
+# After a push to master, wait for Cloudflare to finish deploying, then tell
+# Bing, Yandex and other IndexNow engines to recrawl the sitemap's pages.
+on:
+   push:
+      branches: [master]
+      paths: ['src/**', 'public/**']
+   workflow_dispatch:
+
+jobs:
+   submit:
+      runs-on: ubuntu-latest
+      timeout-minutes: 30
+      steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-node@v4
+           with:
+              node-version: 20
+         - name: Wait for the Cloudflare deploy
+           if: github.event_name == 'push'
+           run: sleep 900
+         - name: Submit URLs to IndexNow
+           run: node scripts/indexnow.mjs https://jojiarts.com

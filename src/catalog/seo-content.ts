@@ -29,6 +29,148 @@ const DELIVERY: SeoFaq = {
 
 /** Keyed by department slug, or `department/category` for a category page. */
 export const SEO_CONTENT: Record<string, SeoContent> = {
+   'packaging/corrugated-boxes': {
+      title: 'Custom Corrugated Boxes in Pakistan',
+      description:
+         'Printed corrugated shipping boxes in Pakistan: single and double-wall cartons in white or kraft, made to your size. From 100 boxes, printed in Lahore.',
+      heading: 'Custom corrugated boxes for shipping and storage',
+      paragraphs: [
+         'Corrugated boxes are the workhorse of packaging: strong, light and recyclable. Joji Arts makes [corrugated shipping boxes](/shop/packaging/corrugated-boxes/corrugated-shipping-box), [heavy-duty double-wall boxes](/shop/packaging/corrugated-boxes/heavy-duty-double-wall-box), cube shipping boxes, [printed corrugated boxes](/shop/packaging/corrugated-boxes/printed-corrugated-box), tray-and-lid boxes, moving and storage boxes, and slim [E-flute retail boxes](/shop/packaging/corrugated-boxes/e-flute-retail-box).',
+         'Boxes are made from white or kraft corrugated board in E or B flute, or double-wall BC flute for heavy, fragile and high-value goods. Print the outside in full colour with Pantone matching, the outside and inside, or a simple 1-colour logo, or order them unprinted. Every size can be made to your product. The minimum order is 100 boxes, produced in 7–10 business days after proof approval.',
+         'We supply corrugated boxes to online stores, manufacturers, distributors and exporters across Pakistan from our studio in Lahore. For e-commerce orders, see our self-locking [mailer boxes](/shop/packaging/mailer-boxes), or compare styles in our guide to [mailer, corrugated and rigid boxes](/blog/mailer-vs-corrugated-vs-rigid-box).',
+      ],
+      faqs: [
+         {
+            q: 'What is the difference between single-wall and double-wall boxes?',
+            a: 'Single-wall boxes (E or B flute) have one layer of fluting and suit most products. Double-wall boxes (BC flute) have two layers and are much stronger, for heavy, fragile or stacked goods and long-distance shipping.',
+         },
+         {
+            q: 'Can I order plain corrugated boxes without printing?',
+            a: 'Yes. Unprinted boxes are the most economical, and you can add a printed logo later or brand them with stickers.',
+         },
+         {
+            q: 'What is the minimum order for printed corrugated boxes?',
+            a: '100 boxes per design and size, produced in 7–10 business days after you approve the proof.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'packaging/folding-cartons': {
+      title: 'Custom Folding Cartons & Retail Boxes',
+      description:
+         'Custom folding cartons for cosmetics, perfume, pharma and retail in Pakistan: 350–400 gsm board, offset print, foil, spot UV and windows. From 100.',
+      heading: 'Printed folding cartons for retail, cosmetics and pharma',
+      paragraphs: [
+         'Folding cartons are the boxes you see on shop shelves: light, sharp and printed in rich detail. Joji Arts prints [tuck-end cartons](/shop/packaging/folding-cartons/tuck-end-carton), [cosmetic set cartons](/shop/packaging/folding-cartons/cosmetic-set-carton), [perfume sleeve cartons](/shop/packaging/folding-cartons/perfume-sleeve-carton), makeup cartons, [pharmaceutical cartons](/shop/packaging/folding-cartons/pharmaceutical-carton), auto-lock bottom cartons and gable boxes.',
+         'Cartons are made from 350 gsm SBS white or kraft board, premium 400 gsm board or metallic board, and printed in offset CMYK with food- and cosmetic-safe inks. Finish them with matte, gloss or soft-touch lamination, foil accents or spot UV, and add a clear PET window to show the product. They ship flat to save space and are made in standard or custom sizes. The minimum order is 100 cartons, produced in 7–10 business days after proof approval.',
+         'Cosmetics, skincare, perfume, pharmaceutical and small food brands across Pakistan use our cartons. For a heavier, luxury feel, see our [rigid boxes](/shop/packaging/rigid-boxes), and pair cartons with [product labels](/shop/labels-stickers/product-labels).',
+      ],
+      faqs: [
+         {
+            q: 'What board is used for folding cartons?',
+            a: '350 gsm SBS white board is the standard for crisp colour; kraft gives a natural look; premium 400 gsm feels sturdier; metallic board adds shine for perfume and gifts.',
+         },
+         {
+            q: 'Can you add a window, foil or spot UV?',
+            a: 'Yes. Add a clear PET window, foil accents, spot UV, and matte, gloss or soft-touch lamination.',
+         },
+         {
+            q: 'What is the minimum order for folding cartons?',
+            a: '100 cartons per design, produced in 7–10 business days after proof approval.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'packaging/kraft-boxes': {
+      title: 'Custom Kraft Boxes in Pakistan',
+      description:
+         'Eco-friendly custom kraft boxes in Pakistan: gift, pillow, tuck, window, soap and shipping boxes printed with your logo. From 100 boxes, made in Lahore.',
+      heading: 'Eco-friendly kraft boxes with your logo',
+      paragraphs: [
+         'Kraft boxes have a warm, natural look that suits handmade, organic and eco-conscious brands. Joji Arts makes [kraft gift boxes](/shop/packaging/kraft-boxes/kraft-gift-box), [kraft pillow boxes](/shop/packaging/kraft-boxes/kraft-pillow-box), [kraft tuck boxes](/shop/packaging/kraft-boxes/kraft-tuck-box), [kraft window boxes](/shop/packaging/kraft-boxes/kraft-window-box), [kraft soap boxes](/shop/packaging/kraft-boxes/kraft-soap-box) and kraft shipping boxes.',
+         'Kraft boxes are made from recyclable 350 gsm kraft board and look best with a simple 1-colour logo, though full-colour print, foil accents and clear windows are also available. Choose a standard size or a custom size made to your product. The minimum order is 100 boxes, produced in 7–10 business days after proof approval.',
+         'Soap makers, candle brands, bakeries, tea and spice sellers and gift shops across Pakistan use kraft boxes from our studio in Lahore. For shipping, see [kraft mailer boxes](/shop/packaging/mailer-boxes/kraft-mailer-box), and seal them with a [custom sticker](/shop/labels-stickers/stickers).',
+      ],
+      faqs: [
+         {
+            q: 'Are kraft boxes eco-friendly?',
+            a: 'Yes. Kraft board is made from unbleached paper fibre and is recyclable. It is a popular choice for brands that want natural, low-impact packaging.',
+         },
+         {
+            q: 'Can you print colour on kraft boxes?',
+            a: 'Yes. A 1-colour logo in black or white looks cleanest on kraft, but full-colour print and foil are also available. Colours print slightly darker on brown board.',
+         },
+         {
+            q: 'What is the minimum order for kraft boxes?',
+            a: '100 boxes per design, produced in 7–10 business days after proof approval.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'signage-displays/sign-boards': {
+      title: 'Sign Boards in Lahore: Acrylic, ACP & 3D',
+      description:
+         'Shop and office sign boards in Lahore: acrylic, ACP, metal, PVC, 3D and lit signs, made to size with installation available. Delivered across Pakistan.',
+      heading: 'Shop and office sign boards made in Lahore',
+      paragraphs: [
+         'A good sign board brings customers through the door. Joji Arts designs and fabricates [shop sign boards](/shop/signage-displays/sign-boards/shop-sign-boards), [office sign boards](/shop/signage-displays/sign-boards/office-sign-boards), [acrylic sign boards](/shop/signage-displays/sign-boards/acrylic-sign-boards), [ACP sign boards](/shop/signage-displays/sign-boards/acp-sign-boards), aluminium and stainless steel boards, PVC and flex boards, [3D sign boards](/shop/signage-displays/sign-boards/3d-sign-boards), and front-lit and [back-lit sign boards](/shop/signage-displays/sign-boards/back-lit-sign-boards), plus directional, safety and parking signs.',
+         'Boards are made in acrylic, ACP, metal or PVC, in indoor or outdoor grades with weatherproof UV inks, and outdoor boards carry a warranty of up to 5 years. Choose a standard size from 60 × 40 cm to 180 × 90 cm or a custom size, and wall, stand-off, hanging or free-standing mounting. You can order a single sign, made in 5–10 business days, with a free layout mock-up before production.',
+         'We can deliver your sign or install it for you. For dimensional lettering, see our [3D and raised letter signs](/shop/signage-displays/3d-raised-letter-signs), and for an eye-catching feature, [custom neon signs](/shop/signage-displays/neon-signs).',
+      ],
+      faqs: [
+         {
+            q: 'Which sign board material is best for outdoors?',
+            a: 'ACP (aluminium composite) and metal boards are the most durable outdoors. Acrylic looks premium for shop fronts and receptions. All outdoor boards use weatherproof UV inks, with a warranty of up to 5 years.',
+         },
+         {
+            q: 'Do you install sign boards?',
+            a: 'Yes. Choose delivery only, or delivery and installation, when you request your quote.',
+         },
+         {
+            q: 'Can I order just one sign board?',
+            a: 'Yes. Signs are made to order, so the minimum is one. We send a free layout mock-up before production.',
+         },
+         {
+            q: 'How long does a sign board take?',
+            a: '5–10 business days after you approve the mock-up, depending on the material and size.',
+         },
+         DELIVERY,
+      ],
+   },
+
+   'printing/flyers': {
+      title: 'Flyer Printing in Lahore',
+      description:
+         'Flyer printing in Lahore: A6, A5, A4 and DL flyers, menus, door hangers and rack cards on 150–350 gsm paper. From 100, printed in 2–4 days.',
+      heading: 'Fast flyer printing in Lahore',
+      paragraphs: [
+         'Flyers are still one of the cheapest ways to reach local customers. Joji Arts prints [standard flyers](/shop/printing/flyers/standard-flyers), [premium flyers](/shop/printing/flyers/premium-flyers), [folded flyers](/shop/printing/flyers/folded-flyers), [menu flyers](/shop/printing/flyers/menu-flyers) for restaurants and takeaways, [door hangers](/shop/printing/flyers/door-hangers) and rack cards.',
+         'Choose A6, A5, A4 or DL size on 150 gsm gloss, 250 gsm silk or 350 gsm matte paper, printed in vivid full colour on one or both sides. The minimum order is 100 flyers, printed in 2–4 business days after you approve the proof, with volume discounts on larger runs.',
+         'Collect from our studio at Lakshmi Chowk, Lahore, or get delivery anywhere in Pakistan. Need more room? See our [brochures](/shop/printing/brochures), and match your flyers with [business cards](/shop/printing/business-cards).',
+      ],
+      faqs: [
+         {
+            q: 'How fast can you print flyers?',
+            a: 'Flyers are printed in 2–4 business days after you approve the proof.',
+         },
+         {
+            q: 'Which paper should I choose for flyers?',
+            a: '150 gsm gloss is economical for handouts; 250 gsm silk feels more substantial; 350 gsm matte is card-like and best for menus and premium flyers.',
+         },
+         {
+            q: 'What is the minimum order for flyers?',
+            a: '100 flyers per design. Larger quantities get volume discounts.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
 
    packaging: {
       title: 'Custom Packaging Boxes in Pakistan',
