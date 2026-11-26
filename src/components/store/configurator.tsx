@@ -124,6 +124,7 @@ export function Configurator({ productKey }: { productKey: string }) {
                </ul>
                <Link
                   href={`/quote?product=${encodeURIComponent(product.key)}`}
+                  rel="nofollow"
                   className="mt-6 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-base font-semibold text-white transition hover:bg-primary/90"
                >
                   <MessageSquareQuote className="h-5 w-5" /> Request a quote
@@ -255,7 +256,8 @@ export function Configurator({ productKey }: { productKey: string }) {
             )}
             <p className="mt-2 text-xs text-muted-foreground">
                Need a different quantity or size?{' '}
-               <Link href={`/quote?product=${encodeURIComponent(product.key)}`} className="-my-2 inline-block py-2 font-medium text-primary underline">
+               <Link href={`/quote?product=${encodeURIComponent(product.key)}`}
+                  rel="nofollow" className="-my-2 inline-block py-2 font-medium text-primary underline">
                   Ask for a custom quote
                </Link>
             </p>
