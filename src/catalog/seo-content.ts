@@ -29,6 +29,66 @@ const DELIVERY: SeoFaq = {
 
 /** Keyed by department slug, or `department/category` for a category page. */
 export const SEO_CONTENT: Record<string, SeoContent> = {
+
+   'bags/fabric-bags': {
+      title: 'Custom Cotton & Drawstring Bags in Pakistan',
+      description:
+         'Custom printed cotton drawstring bags, canvas totes, jute and non-woven bags in Pakistan. Screen print, full-colour DTF or embroidery. From 50 bags.',
+      heading: 'Custom cotton, canvas, jute and drawstring bags',
+      paragraphs: [
+         'Reusable fabric bags carry your logo for months, not minutes, which makes them one of the best-value branded items you can order. Joji Arts makes [custom cotton drawstring bags](/shop/bags/fabric-bags/cotton-drawstring-bag), [canvas tote bags](/shop/bags/fabric-bags/canvas-tote-bag), [jute bags](/shop/bags/fabric-bags/jute-bag), [non-woven bags](/shop/bags/fabric-bags/non-woven-bag), [foldable shopping bags](/shop/bags/fabric-bags/foldable-shopping-bag) and [velvet pouches](/shop/bags/fabric-bags/velvet-pouch) for jewellery and gifts.',
+         'Choose natural or dyed cotton, canvas, jute or non-woven fabric in the standard 38 × 42 cm size, large 45 × 50 cm, or with a gusset for extra volume. Decorate them with a 1-colour silk screen print, full-colour digital (DTF) print for photos and detailed logos, or embroidery for a premium finish. The minimum order is just 50 bags, produced in 10–14 business days after proof approval.',
+         'Drawstring and tote bags are popular for brand merchandise, events, schools, gyms, conferences, wedding favours and retail packaging. We make them in Lahore and deliver across Pakistan, from Karachi to Khuzdar and Dera Ghazi Khan. For paper options, see our [paper shopping bags](/shop/bags/paper-bags), or read our guide to [choosing paper, kraft or fabric bags](/blog/personalised-bags-pakistan).',
+      ],
+      faqs: [
+         {
+            q: 'What is the minimum order for custom drawstring or cotton bags?',
+            a: '50 bags per design. Larger quantities lower the price per bag, and every quantity tier is priced in your quote.',
+         },
+         {
+            q: 'Screen print, digital (DTF) print or embroidery: which should I choose?',
+            a: 'Silk screen printing is the most economical for a 1-colour logo on larger runs. Full-colour digital DTF printing suits photos, gradients and multi-colour designs. Embroidery gives a raised, premium look that lasts the longest.',
+         },
+         {
+            q: 'What sizes do cotton and drawstring bags come in?',
+            a: 'Standard 38 × 42 cm, large 45 × 50 cm, or with a gusset for bulkier items. Velvet pouches and smaller bags are available for jewellery and gifts.',
+         },
+         {
+            q: 'How long do custom fabric bags take?',
+            a: '10–14 business days after you approve the proof, plus delivery time to your city.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
+
+   'bags/pouches': {
+      title: 'Custom Printed Pouches & Mailers in Pakistan',
+      description:
+         'Custom printed stand-up pouches, zip pouches, flat-bottom pouches and poly mailers in Pakistan. Digital print with your logo. From 100 pouches.',
+      heading: 'Custom printed pouches and mailer bags',
+      paragraphs: [
+         'Printed pouches make snacks, tea, coffee, spices, dry fruit, pet food, cosmetics and supplements look shelf-ready, and branded mailers make every online order recognisable at the door. Joji Arts prints [stand-up pouches](/shop/bags/pouches/stand-up-pouch), [zipper pouches](/shop/bags/pouches/zipper-pouch), [flat-bottom pouches](/shop/bags/pouches/flat-bottom-pouch), [custom poly mailers](/shop/bags/pouches/custom-poly-mailer), [kraft paper mailers](/shop/bags/pouches/kraft-paper-mailer) and [branded bubble mailers](/shop/bags/pouches/branded-bubble-mailer).',
+         'Pouches are made from PET, PE or kraft laminates in matte film, kraft with an inner liner, or recyclable mono-PE, with a moisture and aroma barrier and a tear notch. Choose small (about 100 g), medium (250 g) or large (1 kg) sizes, and a zip lock, heat seal or zip with degassing valve for coffee. They are digitally printed with no plate costs, so even small runs are affordable. The minimum order is 100 pouches, produced in 10–12 business days after proof approval.',
+         'We print pouches in Lahore for small brands and online sellers across Pakistan. Add [product labels](/shop/labels-stickers/product-labels) for batch details, or read our guide to [e-commerce packaging in Pakistan](/blog/ecommerce-packaging-pakistan).',
+      ],
+      faqs: [
+         {
+            q: 'What is the minimum order for custom printed pouches?',
+            a: '100 pouches per design. Because pouches are digitally printed, there are no plate costs, so small first runs stay affordable.',
+         },
+         {
+            q: 'Are your pouches food-safe and resealable?',
+            a: 'Pouches have a moisture and aroma barrier for dry foods, and you can choose a resealable zip lock, a heat seal only, or a zip with a degassing valve for fresh coffee.',
+         },
+         {
+            q: 'What sizes of pouches can you make?',
+            a: 'Small (about 100 g), medium (about 250 g) and large (about 1 kg). Tell us your product and fill weight and we will suggest the right size.',
+         },
+         ORDERING,
+         DELIVERY,
+      ],
+   },
    'packaging/corrugated-boxes': {
       title: 'Custom Corrugated Boxes in Pakistan',
       description:

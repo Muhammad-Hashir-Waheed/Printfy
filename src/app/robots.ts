@@ -7,7 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       rules: {
          userAgent: '*',
          allow: '/',
-         disallow: ['/admin', '/api', '/profile', '/login', '/cart', '/checkout', '/search'],
+         // '/quote?' stops Google crawling one quote URL per product (/quote?product=...);
+         // they all canonicalise to /quote, and crawling them slows down indexing of real pages
+         disallow: ['/admin', '/api', '/profile', '/login', '/cart', '/checkout', '/search', '/quote?'],
       },
       sitemap: `${base}/sitemap.xml`,
    }
