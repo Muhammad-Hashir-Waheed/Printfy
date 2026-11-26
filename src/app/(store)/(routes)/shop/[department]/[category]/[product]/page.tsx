@@ -76,29 +76,32 @@ export default async function ProductPage(props: Params) {
       : undefined
    const { preset } = product
 
-   const jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'Product',
-      name: product.name,
-      description: product.summary,
-      category: `${dept.name} > ${category.name}`,
-      brand: { '@type': 'Brand', name: config.name },
-      image: product.image?.src,
-      ...(config.showPrices
-         ? {
-              offers: {
-                 '@type': 'AggregateOffer',
-                 priceCurrency: config.currency,
-                 lowPrice: product.quote ? product.basePrice : startingUnitPrice(product),
-                 availability: 'https://schema.org/InStock',
-              },
-           }
-         : {}),
-   }
+   // Google requires offers, reviews or a rating on Product structured data; without them every
+   // product page is reported as an invalid "Product snippet". Prices are hidden while showPrices
+   // is false, so only output Product data once there is a price to put in it.
+   const site = config.url.replace(/\/$/, '')
+   const image = product.image?.src
+   const jsonLd = config.showPrices
+      ? {
+           '@context': 'https://schema.org',
+           '@type': 'Product',
+           name: product.name,
+           description: product.summary,
+           category: `${dept.name} > ${category.name}`,
+           brand: { '@type': 'Brand', name: config.name },
+           image: image?.startsWith('/') ? `${site}${image}` : image,
+           offers: {
+              '@type': 'AggregateOffer',
+              priceCurrency: config.currency,
+              lowPrice: product.quote ? product.basePrice : startingUnitPrice(product),
+              availability: 'https://schema.org/InStock',
+           },
+        }
+      : null
 
    return (
       <div className="pb-24 lg:pb-0" style={{ ['--accent-hex' as string]: dept.accent }}>
-         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+         {jsonLd ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} /> : null}
          <div className="page-shell pt-6 sm:pt-8">
             <Breadcrumbs
                items={[
